@@ -97,4 +97,10 @@ shape = SubResource( 4 )
 
 [node name="DamageTimer" type="Timer" parent="."]
 
+[node name="ColorRect" type="ColorRect" parent="."]
+margin_left = -11.0
+margin_top = -33.0
+margin_right = 32.0
+margin_bottom = 27.0
+
 [connection signal="timeout" from="DamageTimer" to="." method="_on_DamageTimer_timeout"]
