@@ -46,5 +46,3 @@ Right    Move Right
 
 * **Christopher Nguyen** - *Initial work* - [ctopherngoc](https://github.com/ctopherngoc)
 
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
-
