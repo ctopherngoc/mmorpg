@@ -5,39 +5,35 @@ Character sprites from Maplestory were used as templates for the player containe
 client executables to replicate multiple users logging into the server. Currently the server has one working map that populates monsters and players. You are able to navigate around the map and attack/kill/be killed with
 the monsters.
 
-## Getting Started
-
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
-
 ### Prerequisites
 
 Install Godot 3.5 on the running machine
 
-### Installing
+### Installing/Executing
 
 Download the current release (v1.0.1) .zip from the release section.
-Unzip the 4 executables.
-
-Run the executables in the following order:  
-1. authentication.exe  
-2. gateway.exe  
-3. server.exe  
-4. client.exe   
-
-When running the client, test login credentials will be automatically populated  
-Click on log-in  
-Select the character and click on select character  
-Character should connect and populated into the server  
+Unzip the 4 executables.<br />
+<br />
+Run the executables in the following order:<br />
+1. authentication.exe<br />
+2. gateway.exe<br />
+3. server.exe<br />
+4. client.exe<br />
+<br />
+When running the client, test login credentials will be automatically populated<br />
+Click on log-in<br />
+Select the character and click on select character<br />
+Character should connect and populated into the server<br />
 
 
 ## Controls
 
-CRTL: Attack  
-ALT:     Jump  
-Up       Climb up/ Use Portal  
-Down     Climb Down  
-Left:    Move Left  
-Right    Move Right  
+CRTL: Attack<br />
+ALT:     Jump<br />
+Up       Climb up/ Use Portal<br />
+Down     Climb Down<br />
+Left:    Move Left<br />
+Right    Move Right<br />
 
 ## Built With
 
