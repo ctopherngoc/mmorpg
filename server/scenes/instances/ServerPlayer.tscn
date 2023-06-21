@@ -1,0 +1,61 @@
+[gd_scene load_steps=5 format=2]
+
+[sub_resource type="RectangleShape2D" id=19]
+extents = Vector2( 2.25, 30.25 )
+
+[sub_resource type="RectangleShape2D" id=8]
+extents = Vector2( 21.5, 31 )
+
+[sub_resource type="RectangleShape2D" id=14]
+extents = Vector2( 31, 20 )
+
+[sub_resource type="RectangleShape2D" id=20]
+extents = Vector2( 20, 32 )
+
+[node name="Player" type="KinematicBody2D" groups=["climber", "player"]]
+position = Vector2( -7, -29 )
+collision_layer = 2433
+collision_mask = 576
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 6.5, -2.75 )
+shape = SubResource( 19 )
+
+[node name="lootbox" type="Area2D" parent="."]
+visible = false
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="lootbox"]
+position = Vector2( 10.5, -2 )
+shape = SubResource( 8 )
+
+[node name="take_damage" type="Area2D" parent="."]
+visible = false
+collision_layer = 0
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="take_damage"]
+position = Vector2( 10.5, -2 )
+shape = SubResource( 8 )
+
+[node name="do_damage" type="Area2D" parent="."]
+visible = false
+collision_layer = 32
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="do_damage"]
+position = Vector2( 1, 9 )
+shape = SubResource( 14 )
+disabled = true
+
+[node name="Area2D" type="Area2D" parent="."]
+position = Vector2( 8, -3 )
+collision_layer = 1024
+collision_mask = 1024
+
+[node name="noCol" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource( 20 )
+
+[connection signal="area_entered" from="Area2D" to="." method="_on_Area2D_area_entered"]
+[connection signal="area_exited" from="Area2D" to="." method="_on_Area2D_area_exited"]

@@ -1,0 +1,44 @@
+[gd_scene load_steps=4 format=2]
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 16.75, 17.5 )
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 16, 17.5 )
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 16, 17.5 )
+
+[node name="Monster" type="KinematicBody2D"]
+collision_layer = 16
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 0.25, 0.5 )
+shape = SubResource( 2 )
+
+[node name="do_damage" type="Area2D" parent="."]
+position = Vector2( 0, 1 )
+scale = Vector2( 0.999998, 1 )
+collision_layer = 4
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="do_damage"]
+position = Vector2( -2.38419e-07, -0.5 )
+shape = SubResource( 3 )
+
+[node name="take_damage" type="Area2D" parent="."]
+scale = Vector2( 1.58333, 1.5 )
+collision_layer = 0
+collision_mask = 32
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="take_damage"]
+position = Vector2( 0, 0.333333 )
+scale = Vector2( 0.631579, 0.666667 )
+shape = SubResource( 1 )
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 1.5
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
