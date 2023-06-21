@@ -17,11 +17,16 @@ Install Godot 3.5 on the running machine
 
 Download the current release (v1.0.0) .zip from the repro release section.
 Unzip the 4 executables.
+
 Run the executables in the following order:
-    1. authentication.exe
-    2. gateway.exe
-    3. server.exe
-    4. client.exe
+
+1. authentication.exe
+
+2. gateway.exe
+
+3. server.exe
+
+4. client.exe
 
 When running the client, test login credentials will be automatically populated
 Click on log-in
@@ -31,11 +36,16 @@ Character should connect and populated into the server
 
 ## Controls
 
-Control: Attack
+CRTL: Attack
+
 ALT:     Jump
+
 Up       Climb up/ Use Portal
+
 Down     Climb Down
+
 Left:    Move Left
+
 Right    Move Right
 
 ## Built With
