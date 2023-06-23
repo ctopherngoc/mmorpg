@@ -10,7 +10,7 @@ config_version=4
 
 [application]
 
-config/name="dumastory auth"
+config/name="authenticator server"
 run/main_scene="res://Authenticate.tscn"
 config/icon="res://icon.png"
 
