@@ -1,9 +1,11 @@
 extends Node
-
-var network = NetworkedMultiplayerENet.new()
+var network
 var ip = "127.0.0.1"
 var port = 1000
 var token
+var email
+
+var loginStatus = 0
 
 var latency_array = []
 var latency = 0 
@@ -14,7 +16,10 @@ var serverStatus = false
 var timer = Timer.new()
 
 func _ready():
-	pass
+	timer.wait_time = 0.5
+	#timer.autostart = true
+	timer.connect("timeout", self, "DetermineLatency")
+	self.add_child(timer)
 
 func _physics_process(delta):
 	client_clock += int(delta*1000) + delta_latency
@@ -27,6 +32,7 @@ func _physics_process(delta):
 ######################################################################
 # Server connection/latency functions
 func ConnectToServer():
+	var network = NetworkedMultiplayerENet.new()
 	network.create_client(ip, port)
 	get_tree().set_network_peer(network)
 
@@ -37,22 +43,33 @@ func ConnectToServer():
 func _OnConnectionFailed():
 	print("Failed to connected")
 
+
 func _OnConnectionSucceeded():
 	serverStatus = true
 	print("Successfully connected")
 	rpc_id(1, "FetchServerTime", OS.get_system_time_msecs())
 	#var timer = Timer.new()
-	timer.wait_time = 0.5
-	timer.autostart = true
-	timer.connect("timeout", self, "DetermineLatency")
-	self.add_child(timer)
+	#timer.wait_time = 0.5
+	#timer.autostart = true
+	#timer.connect("timeout", self, "DetermineLatency")
+	#self.add_child(timer)
+	timer.start()
 
 func _OnServerDisconnect():
 	serverStatus = false
 	Global.world_state_buffer.clear()
-	self.remove_child(timer)
+	timer.stop()
+	#network.disconnect("connection_failed", self, "_OnConnectionFailed")
+	#network.disconnect("connection_succeeded", self, "_OnConnectionSucceeded")
+	#network.disconnect("server_disconnected", self, "_OnServerDisconnect")
+	#network.close_connection()
+	#self.remove_child(timer)
 	print("server disconnected")
-	SceneHandler.changeScene(SceneHandler.scenes["mainMenu"])
+	
+	if loginStatus == 1:
+		SceneHandler.changeScene(SceneHandler.scenes["mainMenu"])
+		loginStatus = 0
+		#self.get_node("timer").queue_free()
 #	SceneHandler.changeMenuMessage("Server Disconnected")
 
 func DetermineLatency():
@@ -152,7 +169,7 @@ remote func returnMonsterDamage(s_damage, requester):
 ##############################################################################
 # Authentication
 remote func FetchToken():
-	rpc_id(1, "ReturnToken", token)
+	rpc_id(1, "ReturnToken", token, email)
 
 remote func ReturnTokenVerificationResults(result, array):
 	if result == true:
@@ -160,9 +177,25 @@ remote func ReturnTokenVerificationResults(result, array):
 		# print(array)
 		Global.character_list = array
 		FetchPlayerStats()
+		loginStatus = 1
 		SceneHandler.changeScene(SceneHandler.scenes["characterSelect"])
 	else:
 		print("login failed, please try again")
+		var loginScene = get_tree().get_current_scene()
+		loginScene.login_button.disabled = false
+		loginScene.notification.text = "login failed, please try again"
+
+remote func AlreadyLoggedIn():
+	print("Account already logged in")
+	var loginScene = get_tree().get_current_scene()
+	loginScene.login_button.disabled = false
+	loginScene.notification.text = "Account already logged in"
+	#timer.queue_free()
+	timer.stop()
+	#network.disconnect("connection_failed", self, "_OnConnectionFailed")
+	#network.disconnect("connection_succeeded", self, "_OnConnectionSucceeded")
+	#network.disconnect("server_disconnected", self, "_OnServerDisconnect")
+	#network.close_connection()
 
 #################################################################################
 # Player functions
@@ -241,6 +274,7 @@ func Portal(portal):
 	rpc_id(1, "Portal", portal)
 	print("RPC to server for portal")
 	
+# warning-ignore:unused_argument
 remote func ReturnPortal(player_id):
 	print("got return from server portal")
 #	if results == "F":
