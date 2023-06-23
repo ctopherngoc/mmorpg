@@ -1,8 +1,15 @@
 extends Node
-
 var player_location = {}
 var username_list = {}
 var player_state_collection = {}
+
+# current emails logged in
+var logged_emails = []
+
+# dictionary player_id: email
+# maybe not needed
+var player_id_emails = {}
+var multiLogIn = []
 
 var skill_data
 
