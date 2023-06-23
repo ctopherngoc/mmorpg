@@ -7,6 +7,7 @@ onready var timer =$Timer
 var db_info = {}
 
 # post firestore convert
+var email = ""
 var characters = []
 var characters_info_list = []
 var damage = 10
