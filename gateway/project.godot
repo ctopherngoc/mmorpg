@@ -10,7 +10,7 @@ config_version=4
 
 [application]
 
-config/name="dumastory gateaway"
+config/name="gateaway server"
 run/main_scene="res://GatewayServer.tscn"
 config/icon="res://icon.png"
 
