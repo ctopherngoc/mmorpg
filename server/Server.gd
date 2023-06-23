@@ -38,47 +38,63 @@ func _process(_delta):
 # Player connect
 func _Peer_Connected(player_id):
 	print("User " + str(player_id) + " Connected")
+	ServerData.player_location[str(player_id)] = 'connected'
 	player_verification_process.start(player_id)
 
 
 ##E 0:00:43.596   get_node: (Node not found: "/root/Server/World/Maps/BaseLevel/Ysort/Players/527585974" (absolute path attempted from "/root/Server").)
 # when player disconnects
 func _Peer_Disconnected(player_id):
-	print(ServerData.player_location[str(player_id)])
-	var playerContainer = get_node(ServerData.player_location[str(player_id)] + "/%s" % str(player_id))
-	if not "CharacterSelect" in ServerData.player_location[str(player_id)]:
-		Firebase.update_document("users/%s" % playerContainer.db_info["id"], playerContainer.http, playerContainer.db_info["token"], playerContainer)
-		print("firebase update_document before peer disconnect")
-		for character in playerContainer.characters_info_list:
-			var firebase = Firebase.update_document("characters/%s" % str(character['displayname']), playerContainer.http2, playerContainer.db_info["token"], character)
-			yield(firebase, 'completed')
+	# stuck at login after connecting to server
+	# discconect acccount and do not need to save
+	if ServerData.player_location[str(player_id)] == 'connected':
+		ServerData.player_location.erase(str(player_id))
+	else:
+		# issue with failed log-in, stuck in log-in screen
+		print(ServerData.player_location[str(player_id)])
+		var playerContainer = get_node(ServerData.player_location[str(player_id)] + "/%s" % str(player_id))
+		if not "CharacterSelect" in ServerData.player_location[str(player_id)]:
+			Firebase.update_document("users/%s" % playerContainer.db_info["id"], playerContainer.http, playerContainer.db_info["token"], playerContainer)
+			print("firebase update_document before peer disconnect")
 			
-	# uneeded else to confirm print
-	else:
-		print("dc in characterselect did not save")
-	ServerData.player_location.erase(str(player_id))
-	ServerData.player_state_collection.erase(player_id)
-	ServerData.username_list.erase(player_id)
-	playerContainer.timer.start()
-	yield(playerContainer.timer, "timeout")
-	rpc_id(0, "DespawnPlayer", player_id)
-	playerContainer.queue_free()
+			for character in playerContainer.characters_info_list:
+				var firebase = Firebase.update_document("characters/%s" % str(character['displayname']), playerContainer.http2, playerContainer.db_info["token"], character)
+				yield(firebase, 'completed')
+				
+		# uneeded else to confirm print
+		else:
+			print("dc in characterselect did not save")
+		ServerData.player_location.erase(str(player_id))
+		ServerData.player_state_collection.erase(player_id)
+		ServerData.username_list.erase(player_id)
+		ServerData.logged_emails.erase(ServerData.player_id_emails[str(player_id)])
+		ServerData.username_list.erase(str(player_id))
+		ServerData.player_id_emails.erase(str(player_id))
+		playerContainer.timer.start()
+		yield(playerContainer.timer, "timeout")
+		rpc_id(0, "DespawnPlayer", player_id)
+		playerContainer.queue_free()
 	print("User " + str(player_id) + " Disconnected")
-	
+		
 func ReturnTokenVerificationResults(player_id, result):
-	var playerContainer = get_node(ServerData.player_location[str(player_id)] + "/%s" % str(player_id))
 	#print(playerContainer.characters)
-	
-	if playerContainer.characters.empty():
-		rpc_id(player_id, "ReturnTokenVerificationResults", result, [])
+	if result != false:
+		var playerContainer = get_node(ServerData.player_location[str(player_id)] + "/%s" % str(player_id))
+		if playerContainer.characters.empty():
+			rpc_id(player_id, "ReturnTokenVerificationResults", result, [])
+		else:
+			rpc_id(player_id, "ReturnTokenVerificationResults", result, playerContainer.characters_info_list)
+			#load character data
+			if result == true:
+				pass
+		#print(ServerData.player_location[str(player_id)])
 	else:
-		rpc_id(player_id, "ReturnTokenVerificationResults", result, playerContainer.characters_info_list)
-		#load character data
-		if result == true:
-			pass
-	#print(ServerData.player_location[str(player_id)])
+		network.disconnect_peer(player_id)
+		print("playercontainer empty probably big issue")
 
 func FetchToken(player_id):
+	print(get_tree().multiplayer.get_network_connected_peers())
+	print('fetch token %s' % str(player_id))
 	rpc_id(player_id, "FetchToken")
 
 func _on_TokenExpiration_timeout():
@@ -96,13 +112,18 @@ func _on_TokenExpiration_timeout():
 		print("Expected Tokens:")
 		print(expected_tokens)
 
-remote func ReturnToken(token):
+remote func ReturnToken(token, email):
+	print("return token")
 	var player_id = get_tree().get_rpc_sender_id()
-	player_verification_process.Verify(player_id, token)
-	getPlayerInfo(player_id)
+	print('token returned running verify of %s' % str(player_id))
+	player_verification_process.Verify(player_id, token, email)
 
+
+func AlreadyLoggedIn(player_id, _email):
+	rpc_id(player_id, "AlreadyLoggedIn")
+	network.disconnect_peer(player_id)
 	#		rpc_id(0, "SpawnNewPlayer", player_id, Vector2(100, -250))
-
+	
 #######################################################
 # client/server time sync
 remote func FetchServerTime(client_time):
