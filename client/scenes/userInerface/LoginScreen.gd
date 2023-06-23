@@ -11,5 +11,6 @@ func _on_Button_pressed() -> void:
 		notification.text = "Enter username and password"
 	else:
 		login_button.disabled = true
+		Server.email = username.text
 		Gateway.ConnectToServer(username.text, password.text)
 
