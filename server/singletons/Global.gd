@@ -32,5 +32,6 @@ func NPCAttack(player, monster_stats):
 		print("Monster potentially miss")
 
 # WIP
+# warning-ignore:unused_argument
 func playerDeath(player_id):
 	pass

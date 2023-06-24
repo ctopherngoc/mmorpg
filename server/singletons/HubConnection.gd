@@ -34,5 +34,3 @@ func _OnConnectionSucceeded():
 
 remote func ReceivedLoginToken(token):
 	server.expected_tokens.append(token)
-	
-	
