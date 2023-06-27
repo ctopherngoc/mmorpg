@@ -15,12 +15,10 @@ func _ready():
 		Global.update_lastmap(get_filename())
 	playerSpawnPosition = $Player.global_position
 
-	if Global.door_name:
-		var door_node = find_node(Global.door_name)
-		if door_node:
-			$Player.global_position = door_node.global_position	
-	register_player($Player)
-	
+	if Global.last_portal:
+		$Player.global_position = Global.last_portal
+	print($Player.global_position)
+	print($MapObjects/Portal1.global_position)
 ###################################################################
 	
 func register_player(player):
