@@ -1,7 +1,6 @@
 extends Area2D
 
 #export(String, FILE, "*.tscn, *.scn") var target_scene
-#
 func _read():
 	pass
 

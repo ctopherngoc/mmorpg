@@ -2,7 +2,10 @@ extends Node2D
 var mapName = "BaseLevel2"
 var enemy_id_counter = 0
 var enemy_maximum = 2
-var spawn_position = Vector2(103, -290)
+#var portal = {
+#	'Portal1' : Vector2(103, -290),
+#	'Portal2' : Vector2(904, -525),
+#}
 
 ############################################
 # maybe create a list of dictionary map of how many monsters and their spawn location in the map in relation to open_location

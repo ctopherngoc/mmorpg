@@ -57,6 +57,10 @@ endLocation = Vector2( 103, -250 )
 position = Vector2( 103, -250 )
 script = ExtResource( 6 )
 
+[node name="Portal2" parent="MapObjects" instance=ExtResource( 2 )]
+position = Vector2( 904, -252 )
+script = ExtResource( 6 )
+
 [node name="YSort" type="YSort" parent="."]
 
 [node name="Players" type="YSort" parent="YSort"]
