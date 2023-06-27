@@ -154,6 +154,23 @@ var experienceTable = {
 	'29': 59511,
 	'30': 65462,
 }
+
+var portalData = {
+	"BaseLevel": {
+		'Portal1': {'map': 'BaseLevel2',
+					'spawn': Vector2(103, -290)},
+	},
+	'BaseLevel2': {
+		'Portal1': {'map': 'BaseLevel',
+					'spawn': Vector2(833, -89)},
+		'Portal2': {'map': 'BaseLevel3',
+					'spawn': Vector2(103, -290)}
+	},
+	'BaseLevel3' : {
+		'Portal1': {'map': 'BaseLevel2',
+					'spawn': Vector2(904, -252)}
+	},
+}
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass

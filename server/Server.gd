@@ -185,7 +185,7 @@ remote func ChooseCharacter(requester, charactername: String):
 	map = map.replace("res://scenes/maps/", "")
 	map = map.replace(".tscn", "")
 	# move user container to the map
-	MovePlayerContainer(player_id, playerContainer, map)
+	MovePlayerContainer(player_id, playerContainer, map, 'spawn')
 	rpc_id(player_id, "ReturnChooseCharacter", requester)
 	#rpc_id(0, "SpawnNewPlayer", player_id, map)
 
@@ -267,19 +267,21 @@ remote func SpawnCharacter(requester, displayname: String):
 	map = map.replace("res://scenes/maps/", "")
 	map = map.replace(".tscn", "")
 	# spawn selected player in world
-	MovePlayerContainer(player_id, playerContainer, map)
+	MovePlayerContainer(player_id, playerContainer, map, 'spawn')
 	# send rpc to spawn characters in other worlds
 	#rpc_id(0, "SpawnNewPlayer", player_id, map)
 
 func despawnPlayer(player_id):
 	rpc_unreliable_id(0, "ReceiveDespawnPlayer", player_id)
 
-func UpdatePlayerStats(player):
-	rpc_id(int(player.name), "UpdatePlayerStats", player.current_character)
+# arugment is a player container
+func UpdatePlayerStats(playerContainer):
+	print('updating player stats for client')
+	rpc_id(int(playerContainer.name), "UpdatePlayerStats", playerContainer.current_character)
 	pass
 #######################################################
 # Character containers/information 
-func MovePlayerContainer(player_id, playerContainer, map):
+func MovePlayerContainer(player_id, playerContainer, map, portal):
 	var old_parent = get_node(str(ServerData.player_location[str(player_id)]))
 	var new_parent = get_node("/root/Server/World/Maps/%s/YSort/Players" % map)
 	
@@ -290,8 +292,14 @@ func MovePlayerContainer(player_id, playerContainer, map):
 	var player = get_node("/root/Server/World/Maps/" + str(map) + "/YSort/Players/" + str(player_id))
 	var mapNode = get_node("/root/Server/World/Maps/%s" % map)
 	var mapPosition = mapNode.get_global_position()
-	var new_location = Vector2((mapPosition.x + mapNode.spawn_position.x), (mapPosition.y + mapNode.spawn_position.y))
-	player.position = new_location
+	
+	if typeof(portal) == TYPE_STRING:
+		var new_location = Vector2((mapPosition.x + mapNode.spawn_position.x), (mapPosition.y + mapNode.spawn_position.y))
+		player.position = new_location
+	else:
+		print(str(portal))
+		var new_location = Vector2((mapPosition.x + portal.x), (mapPosition.y + portal.y))
+		player.position = new_location
 
 func getPlayerInfo(player_id):
 	var playerContainer = get_node(ServerData.player_location[str(player_id)] + "/%s" % str(player_id))
@@ -300,12 +308,37 @@ func getPlayerInfo(player_id):
 
 remote func Portal(portalName):
 	var player_id = get_tree().get_rpc_sender_id()
+	var playerContainer = get_node(ServerData.player_location[str(player_id)] + "/%s" % player_id)
 	# validate
 	var portal = ServerData.player_location[str(player_id)].replace("YSort/Players", "MapObjects/%s" % portalName)
 	# get portal node
 	get_node(portal).overLappingBodies(player_id)
 	rpc_id(player_id, "ReturnPortal", player_id)
+	# move player container
 	
+	#get nextmap name
+	var map_name = get_node(ServerData.player_location[str(player_id)].replace("YSort/Players", "")).mapName
+	var next_map = ServerData.portalData[map_name][portalName]['map']
+	# get mapname
+	# move user container to the map
+	print("move character container to %s" % next_map)
+	print(map_name, portalName)
+	MovePlayerContainer(player_id, playerContainer, next_map, ServerData.portalData[map_name][portalName]['spawn'])
+	print('update current character last map')
+	playerContainer.current_character['lastmap'] = "res://scenes/maps/%s.tscn" %  next_map
+	
+	
+	UpdatePlayerStats(playerContainer)
+	
+	print("update character list last map")
+	for character in playerContainer.characters_info_list:
+		if character['displayname'] == playerContainer.current_character['displayname']:
+			character['lastmap'] = playerContainer.current_character['lastmap']
+		
+	# send rpc to client to change map
+	print('sending signal to client to change map')
+	rpc_id(player_id, "changeMap", next_map, ServerData.portalData[map_name][portalName]['spawn'])
+	# put some where if world state != current map ignore
 #######################################################
 #world states
 remote func ReceivedPlayerState(player_state):

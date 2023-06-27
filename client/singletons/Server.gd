@@ -59,11 +59,6 @@ func _OnServerDisconnect():
 	serverStatus = false
 	Global.world_state_buffer.clear()
 	timer.stop()
-	#network.disconnect("connection_failed", self, "_OnConnectionFailed")
-	#network.disconnect("connection_succeeded", self, "_OnConnectionSucceeded")
-	#network.disconnect("server_disconnected", self, "_OnServerDisconnect")
-	#network.close_connection()
-	#self.remove_child(timer)
 	print("server disconnected")
 	
 	if loginStatus == 1:
@@ -138,6 +133,7 @@ remote func ReturnChooseCharacter(requester):
 	#print("returnchoosecharacter")
 	instance_from_id(requester).EnterMap()
 
+# not sure if server use this
 # warning-ignore:unused_argument
 remote func updateAccountData(requester, characterArray: Array):
 	Global.character_list = characterArray
@@ -277,8 +273,7 @@ func Portal(portal):
 # warning-ignore:unused_argument
 remote func ReturnPortal(player_id):
 	print("got return from server portal")
-#	if results == "F":
-#		print("portal failed")
-#	elif results == "T":
-#		print("portal success")
 #
+remote func changeMap(map, position):
+	Global.last_portal = position
+	SceneHandler.changeScene("res://scenes/maps/%s.tscn" % map) 

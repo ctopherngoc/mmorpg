@@ -17,7 +17,7 @@ const interpolation_offset = 100
 
 var character_list = []
 var player = null
-var door_name = null
+var last_portal = null
 onready var stringValidation = [
 	"4r5e",
 	"5h1t",
