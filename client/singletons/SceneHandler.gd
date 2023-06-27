@@ -23,9 +23,10 @@ func changeScene(scene: String):
 		Global.current_map = scene.replace("res://scenes/maps/", "")
 		Global.current_map = Global.current_map.replace(".tscn", "")
 		print(Global.current_map)
+		
 		# insert call to send map change
 	get_tree().change_scene(scene)
-
+	
 # currently used by server.gd to display server dc message on main menu
 #func changeMenuMessage(message: String):
 #	var menuLabel = get_node("/root/mainMenu/Label")
