@@ -39,7 +39,7 @@ func ConnectToServer(_username, _password):
 func _OnConnectionFailed():
 	print("Failed to conect to login server")
 	print("Pop-up server offline")
-	# get_node("../scenes/userInterface/LoginScreen").login_button.disabled = false
+
 
 func _OnConnectionSucceeded():
 	print("Successfully connected to login server")
@@ -52,8 +52,6 @@ remote func RequestLogin():
 	password = ""
 
 remote func ReturnLoginRequest(results):
-	#print("results received")
-	#print(results)
 	"""
 	results[0] = code
 	results[1] = {token, id}
