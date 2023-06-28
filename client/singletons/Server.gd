@@ -5,20 +5,19 @@ var port = 1000
 var token
 var email
 
-var loginStatus = 0
+var login_status = 0
 
 var latency_array = []
 var latency = 0 
 var delta_latency = 0
 var client_clock = 0
 var decimal_collector = 0
-var serverStatus = false
+var server_status = false
 var timer = Timer.new()
 
 func _ready():
 	timer.wait_time = 0.5
-	#timer.autostart = true
-	timer.connect("timeout", self, "DetermineLatency")
+	timer.connect("timeout", self, "determine_latency")
 	self.add_child(timer)
 
 func _physics_process(delta):
@@ -31,50 +30,42 @@ func _physics_process(delta):
 
 ######################################################################
 # Server connection/latency functions
-func ConnectToServer():
+func connect_to_server():
 	var network = NetworkedMultiplayerENet.new()
 	network.create_client(ip, port)
 	get_tree().set_network_peer(network)
 
-	network.connect("connection_failed", self, "_OnConnectionFailed")
-	network.connect("connection_succeeded", self, "_OnConnectionSucceeded")
-	network.connect("server_disconnected", self, "_OnServerDisconnect")
+	network.connect("connection_failed", self, "_on_connection_failed")
+	network.connect("connection_succeeded", self, "_on_connection_succeeded")
+	network.connect("server_disconnected", self, "_on_server_disconnect")
 
-func _OnConnectionFailed():
+func _on_connection_failed():
 	print("Failed to connected")
 
-
-func _OnConnectionSucceeded():
-	serverStatus = true
+func _on_connection_succeeded():
+	server_status = true
 	print("Successfully connected")
 	rpc_id(1, "FetchServerTime", OS.get_system_time_msecs())
-	#var timer = Timer.new()
-	#timer.wait_time = 0.5
-	#timer.autostart = true
-	#timer.connect("timeout", self, "DetermineLatency")
-	#self.add_child(timer)
 	timer.start()
 
-func _OnServerDisconnect():
-	serverStatus = false
+func _on_server_disconnect():
+	server_status = false
 	Global.world_state_buffer.clear()
 	timer.stop()
 	print("server disconnected")
 	
-	if loginStatus == 1:
-		SceneHandler.changeScene(SceneHandler.scenes["mainMenu"])
-		loginStatus = 0
-		#self.get_node("timer").queue_free()
-#	SceneHandler.changeMenuMessage("Server Disconnected")
+	if login_status == 1:
+		SceneHandler.change_scene(SceneHandler.scenes["mainMenu"])
+		login_status = 0
 
-func DetermineLatency():
-	rpc_id(1, "DetermineLatency", OS.get_system_time_msecs())
+func determine_latency():
+	rpc_id(1, "determine_latency", OS.get_system_time_msecs())
 
-remote func ReturnServerTime(server_time, client_time):
+remote func return_server_time(server_time, client_time):
 	latency = (OS.get_system_time_msecs() - client_time) / 2
 	client_clock = server_time + latency
 
-remote func ReturnLatency(client_time):
+remote func return_latency(client_time):
 	latency_array.append((OS.get_system_time_msecs() - client_time) / 2)
 	if latency_array.size() == 9:
 		var total_latency = 0
@@ -88,152 +79,127 @@ remote func ReturnLatency(client_time):
 		delta_latency = (total_latency / latency_array.size() - latency)
 		latency = total_latency / latency_array.size()
 		#print("New Latency ", latency)
-		# print("Delta Latency ", delta_latency)
+		# \print("Delta Latency ", delta_latency)
 		latency_array.clear()
 
 #################################################################
 # Character functions
-func FetchCharacters():
-	rpc_id(1, "FetchCharacters")
 
-remote func ReturnFetchCharacter(results):
-	pass
-	print(results)
+#not used
+#############################################
+#func fetch_characters():
+#	rpc_id(1, "Fetch_characters")
+#
+#remote func return_fetch_character(results):
+#	pass
+#	print(results)
+#############################################
 
-func checkUsernames(requester, username):
-	rpc_id(1, "fetchUsernames", requester, username)
+func check_usernames(requester, username):
+	rpc_id(1, "fetch_usernames", requester, username)
 
-remote func returnfetchUsernames(requester, results):
-	print("client results from fetchUsernames: %s" % str(results))
-	instance_from_id(requester).returnUsernameCheck(results)
+remote func return_fetch_usernames(requester, results):
+	print("server username check: %s" % str(results))
+	instance_from_id(requester).username_check_results(results)
 
-func createCharacter(requester, username):
+func create_character(requester, username):
 	print("attempting to create character: %s" % username)
-	rpc_id(1, "createCharacter", requester, username)
+	rpc_id(1, "create_character", requester, username)
 
-remote func returnCreateCharacters(requester, characterArray: Array):
-	print('returnCreateCharacters')
-	Global.character_list = characterArray
-	instance_from_id(requester).successfulCreatedChar()
+remote func return_create_characters(requester, character_array: Array):
+	print('return_create_characters')
+	Global.character_list = character_array
+	instance_from_id(requester).created_character()
 
-func deleteCharacter(requester, username):
+func delete_character(requester, username):
 	print("attempting to delete character: %s" % username)
-	rpc_id(1, "deleteCharacter", requester, username)
+	rpc_id(1, "delete_character", requester, username)
 
-remote func returnDeleteCharacter(playerArray, requester):
-	Global.character_list = playerArray
-	instance_from_id(requester).populateCharacterInfo()
-	instance_from_id(requester).successfulDeleteChar()
+remote func return_delete_character(player_array, requester):
+	Global.character_list = player_array
+	instance_from_id(requester).populate_info()
+	instance_from_id(requester).deleted_character()
 	print("deleted character")
 
-func ChooseCharacter(requester, charactername):
-	rpc_id(1, "ChooseCharacter", requester, charactername)
+func choose_character(requester, player_name):
+	rpc_id(1, "choose_character", requester, player_name)
 
-remote func ReturnChooseCharacter(requester):
-	#print("returnchoosecharacter")
-	instance_from_id(requester).EnterMap()
+remote func return_choose_character(requester):
+	print("return_choose_character")
+	instance_from_id(requester).load_map()
 
 # not sure if server use this
 # warning-ignore:unused_argument
-remote func updateAccountData(requester, characterArray: Array):
-	Global.character_list = characterArray
+remote func update_account_data(requester, character_array: Array):
+	Global.character_list = character_array
 
-func FetchPlayerStats():
-	rpc_id(1, "FetchPlayerStats")
+func fetch_player_stats():
+	rpc_id(1, "fetch_player_stats")
 
-remote func ReturnPlayerStats(stats):
-	get_node("/root/currentScene/Player/Camera2D/UI/PlayerStats").LoadPlayerStats(stats)
-
-#########################################################################
-# Player/monster damage calculations to server
-# not in use
-func fetchPlayerDamage(requester):
-	rpc_id(1, "fetchPlayerDamage", requester)
-	
-func fetchMonsterDamage(requester):
-	rpc_id(1, "fetchMonsterDamage", requester)
-	
-remote func returnPlayerDamage(s_damage, requester):
-	print("retunplayerdamage damage = %s" % s_damage)
-	instance_from_id(requester).setDamage(s_damage)
-	
-remote func returnMonsterDamage(s_damage, requester):
-	print("retunmonserdamage damage = %s" % s_damage)
-	instance_from_id(requester).setDamage(s_damage)
-
+remote func return_player_stats(stats):
+	get_node("/root/currentScene/Player/Camera2D/UI/PlayerStats").load_player_stats(stats)
 
 ##############################################################################
 # Authentication
-remote func FetchToken():
-	rpc_id(1, "ReturnToken", token, email)
+remote func fetch_token():
+	rpc_id(1, "return_token", token, email)
 
-remote func ReturnTokenVerificationResults(result, array):
+remote func return_token_verification_results(result, array):
 	if result == true:
 		print("Successful token verification")
-		# print(array)
 		Global.character_list = array
-		FetchPlayerStats()
-		loginStatus = 1
-		SceneHandler.changeScene(SceneHandler.scenes["characterSelect"])
+		fetch_player_stats()
+		login_status = 1
+		SceneHandler.change_scene(SceneHandler.scenes["characterSelect"])
 	else:
 		print("login failed, please try again")
-		var loginScene = get_tree().get_current_scene()
-		loginScene.login_button.disabled = false
-		loginScene.notification.text = "login failed, please try again"
+		var login_scene = get_tree().get_current_scene()
+		login_scene.login_button.disabled = false
+		login_scene.notification.text = "login failed, please try again"
 
-remote func AlreadyLoggedIn():
+remote func already_logged_in():
 	print("Account already logged in")
-	var loginScene = get_tree().get_current_scene()
-	loginScene.login_button.disabled = false
-	loginScene.notification.text = "Account already logged in"
-	#timer.queue_free()
+	var login_scene = get_tree().get_current_scene()
+	login_scene.login_button.disabled = false
+	login_scene.notification.text = "Account already logged in"
 	timer.stop()
-	#network.disconnect("connection_failed", self, "_OnConnectionFailed")
-	#network.disconnect("connection_succeeded", self, "_OnConnectionSucceeded")
-	#network.disconnect("server_disconnected", self, "_OnServerDisconnect")
-	#network.close_connection()
 
 #################################################################################
 # Player functions
 remote func SpawnNewPlayer(player_id, map):
-	Global.SpawnNewPlayer(player_id, map)
-		
-	#get_node("../SceneHandler/currentScene").SpawnNewPlayer(player_id)
+	Global.spawn_new_player(player_id, map)
 
-remote func DespawnPlayer(player_id):
+remote func despawn_player(player_id):
 	print("inside despawn player")
-	var otherPlayers = get_node("/root/currentScene/OtherPlayers")
-	for player in otherPlayers.get_children():
+	var other_players = get_node("/root/currentScene/OtherPlayers")
+	for player in other_players.get_children():
 		print(str(player) + str(player_id))
 		if player.name == str(player_id):
 			print("mnatches despawning char")
 			player.queue_free()
-	#get_node("../SceneHandler/currentScene").DespawnPlayer(player_id)
 
-func SendPlayerState(player_state):
-	#print(player_state)
-	rpc_unreliable_id(1, "ReceivedPlayerState", player_state)
+func send_player_state(player_state):
+	rpc_unreliable_id(1, "received_player_state", player_state)
 
-remote func ReceiveWorldState(world_state):
+remote func receive_world_state(world_state):
 	if Global.current_map == "":
 		pass
 	else:	
+		Global.update_world_state(world_state)
 		# print(world_state)
-		Global.UpdateWorldState(world_state)
 		#print("Worldstate: ", world_state["T"], " && client_clock: ", client_clock)
 
-remote func ReceiveDespawnPlayer(player_id):
-	Global.DespawnPlayer(player_id)
+remote func receive_despawn_player(player_id):
+	Global.despawn_player(player_id)
 	
-func SendAttack():
+func send_attack():
 	print("sending my attack")
-	rpc_id(1, "Attack", Server.client_clock)
+	rpc_id(1, "attack", Server.client_clock)
 	
-remote func ReceiveAttack(player_id, attack_time):
+remote func receive_attack(player_id, attack_time):
 	print("attack recieved")
 	if player_id == get_tree().get_network_unique_id():
 		print("this is my own attack. pass")
-		pass
 	elif get_node("/root/currentScene/OtherPlayers").has_node(str(player_id)):
 		print(str(player_id) + " attack")
 		var player = get_node("/root/currentScene/OtherPlayers/%s" % player_id)
@@ -241,39 +207,40 @@ remote func ReceiveAttack(player_id, attack_time):
 	else:
 		pass
 
-remote func UpdatePlayerStats(player_stats):
+remote func update_player_stats(player_stats):
 	print(player_stats)
 	Global.player = player_stats
 	for character in Global.character_list:
 		if character["displayname"] == player_stats["displayname"]:
-			var playerNode = get_node("/root/currentScene/Player")
+			var player_node = get_node("/root/currentScene/Player")
+
 			# hp check
 			if player_stats["stats"]["health"] < character["stats"]["health"]:
-					playerNode.health = player_stats["stats"]["health"]
+					player_node.health = player_stats["stats"]["health"]
 					print("Player took %s damage." % str(character["stats"]["health"] - player_stats["stats"]["health"]))
-			
+
 			# level check -> exp check
 			if player_stats["stats"]["level"] > character["stats"]["level"]:
 				print("Level up")
-				playerNode.player["stats"]["experience"] = player_stats["stats"]["experience"]
-				playerNode.player["stats"]["level"] = player_stats["stats"]["level"]
+				player_node.player["stats"]["experience"] = player_stats["stats"]["experience"]
+				player_node.player["stats"]["level"] = player_stats["stats"]["level"]
 				# Add sp points, ability points
-				
+
 			elif player_stats["stats"]["experience"] > character["stats"]["experience"]:
-					playerNode.player["stats"]["experience"] = player_stats["stats"]["experience"]
+					player_node.player["stats"]["experience"] = player_stats["stats"]["experience"]
 					print("Player gained %s exp." % str(player_stats["stats"]["experience"] - character["stats"]["experience"]))
 			character = player_stats
-			playerNode.player = player_stats
+			player_node.player = player_stats
 			break
 
-func Portal(portal):
-	rpc_id(1, "Portal", portal)
+func portal(portal):
+	rpc_id(1, "portal", portal)
 	print("RPC to server for portal")
-	
+
 # warning-ignore:unused_argument
-remote func ReturnPortal(player_id):
+remote func return_portal(player_id):
 	print("got return from server portal")
 #
-remote func changeMap(map, position):
+remote func change_map(map, position):
 	Global.last_portal = position
-	SceneHandler.changeScene("res://scenes/maps/%s.tscn" % map) 
+	SceneHandler.change_scene("res://scenes/maps/%s.tscn" % map) 
