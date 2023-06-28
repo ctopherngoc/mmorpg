@@ -1,10 +1,10 @@
 extends Node
 
-var player_spawn = preload("res://scenes/playerObjects/PlayerTemplate.tscn")
-var playerScene = preload("res://scenes/playerObjects/Player.tscn")
+var other_player_template = preload("res://scenes/playerObjects/PlayerTemplate.tscn")
+var main_player_template = preload("res://scenes/playerObjects/Player.tscn")
 
-var playerSpawnPosition = Vector2.ZERO
-var currentPlayerNode = null
+var spawn_location = Vector2.ZERO
+var main_player = null
 
 var monsterScene = preload("res://scenes/Monster.tscn")
 
@@ -13,30 +13,25 @@ func _ready():
 	Global.change_background()
 	if Global.player.lastmap != get_filename():
 		Global.update_lastmap(get_filename())
-	playerSpawnPosition = $Player.global_position
+	spawn_location = $Player.global_position
 
 	if Global.last_portal:
 		$Player.global_position = Global.last_portal
-	print($Player.global_position)
-	print($MapObjects/Portal1.global_position)
-###################################################################
+	print("Player: ", $Player.global_position, " Portal1: ", $MapObjects/Portal1.global_position)
 	
 func register_player(player):
-		currentPlayerNode = player
-		currentPlayerNode.connect("died", self, "on_player_died", [], CONNECT_DEFERRED)
-
+		main_player = player
+		main_player.connect("died", self, "on_player_died", [], CONNECT_DEFERRED)
 
 func create_player():
-	var playerInstance = playerScene.instance()
-	add_child_below_node(currentPlayerNode, playerInstance)
-	playerInstance.global_position = playerSpawnPosition
-	print(playerSpawnPosition)
-	register_player(playerInstance)
-
+	var player_instance = main_player_template.instance()
+	add_child_below_node(main_player, player_instance)
+	player_instance.global_position = spawn_location
+	register_player(player_instance)
 
 func on_player_died():
 	print("Player Died")
-	currentPlayerNode.queue_free()
+	main_player.queue_free()
 	print("Play Respawned")
 	create_player()
 
