@@ -35,8 +35,8 @@ func move_player(new_position, animation):
 			$AnimationPlayer.play("jump")
 	set_position(new_position)
 	
-func _on_AnimationPlayer_animation_finished(anim_name):
-	if anim_name == "stab":
+func _on_AnimationPlayer_animation_finished(animation_name):
+	if animation_name == "stab":
 		attacking = false
 		
 func attack():
