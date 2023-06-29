@@ -8,14 +8,14 @@ var cert = load("res://Resources/Certificate/X509_Certificate.crt")
 var key = load("res://Resources/Certificate/x509_Key.key")
 
 func _ready():
-	StartServer()
+	start_server()
 	
 func _process(_delta):
 	if not custom_multiplayer.has_network_peer():
 		return
 	custom_multiplayer.poll()
 	
-func StartServer():
+func start_server():
 	network.set_dtls_enabled(true)
 	network.set_dtls_key(key)
 	network.set_dtls_certificate(cert)
@@ -34,12 +34,12 @@ func _Peer_Connected(player_id):
 func _Peer_Disconnected(player_id):
 	print("User " + str(player_id) + " Disconnected")
 	
-remote func LoginRequest(username, password):
+remote func login_request(username, password):
 	print("login request recieved")
 	var player_id = custom_multiplayer.get_rpc_sender_id()
-	Authenticate.AuthenticatePlayer(username, password, player_id)
+	Authenticate.authenticate_player(username, password, player_id)
 
-func ReturnLoginRequest(result, player_id):
+func return_login_request(result, player_id):
 	print("gateway returnloginrequest back to main login")
-	rpc_id(player_id, "ReturnLoginRequest", result)
+	rpc_id(player_id, "return_login_request", result)
 	network.disconnect_peer(player_id)
