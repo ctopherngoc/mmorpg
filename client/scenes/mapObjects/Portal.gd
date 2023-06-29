@@ -9,7 +9,7 @@ func _input(event):
 	if event.is_action_pressed("up"):
 		if get_overlapping_bodies().size() > 0:
 			print("initiating portal request to server")
-			Server.Portal(self.name)
+			Server.portal(self.name)
 
 
 func _on_Portal_area_entered(_area):
