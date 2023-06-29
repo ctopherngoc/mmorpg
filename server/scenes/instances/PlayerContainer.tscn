@@ -27,7 +27,7 @@ tracks/1/keys = {
 "transitions": PoolRealArray( 1 ),
 "values": [ {
 "args": [  ],
-"method": "overlappingBodies"
+"method": "overlapping_bodies"
 } ]
 }
 
@@ -84,7 +84,6 @@ collision_mask = 32
 [node name="CollisionShape2D" type="CollisionShape2D" parent="do_damage"]
 position = Vector2( 33, 9 )
 shape = SubResource( 3 )
-disabled = true
 
 [node name="Area2D" type="Area2D" parent="."]
 visible = false

@@ -31,4 +31,4 @@ func _physics_process(_delta):
 			#anything else
 			#print(world_state)
 			
-			get_parent().SendWorldState(world_state)
+			get_parent().send_world_state(world_state)

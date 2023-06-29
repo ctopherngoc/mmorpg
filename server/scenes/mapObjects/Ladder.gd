@@ -1,8 +1,5 @@
 extends Area2D
 
-#signal turnOffMapCollision
-#signal turnOnMapCollision
-
 func _on_Ladder_body_entered(body):
 	if body.is_in_group("climber"):
 		if body.climbing == false:

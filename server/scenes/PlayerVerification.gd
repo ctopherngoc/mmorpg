@@ -11,28 +11,23 @@ func start(player_id):
 	authenticate token
 	"""
 	awaiting_verification[player_id] = {"Timestamp": OS.get_unix_time()}
-	main_interface.FetchToken(player_id)
+	main_interface.fetch_token(player_id)
 	
-func Verify(player_id, token, email):
-	print('probably issue')
-	print(player_id, token, email)
+func verify(player_id, token, email):
 	var temp_token = token['token'] + str(token['timestamp'])
 	
 	if email in ServerData.logged_emails:
 		print("email in logged emails")
 		awaiting_verification.erase(player_id)
 		main_interface.expected_tokens.erase(temp_token)
-		#ServerData.multiLogIn.append(player_id)
-		main_interface.AlreadyLoggedIn(player_id, email)
+		main_interface.already_logged_in(player_id, email)
 	else:
-		print("email not in logged emails")
 		var token_verification = false
 		while OS.get_unix_time() - token["timestamp"] <= 30:
 			if main_interface.expected_tokens.has(temp_token):
 				token_verification = true
-				var playerContainer = CreatePlayerContainer(player_id, token, email)
-				yield(playerContainer, "completed")
-				# print('CreatePlayerContainer completed')
+				var player_container = create_player_container(player_id, token, email)
+				yield(player_container, "completed")
 				awaiting_verification.erase(player_id)
 				main_interface.expected_tokens.erase(temp_token)
 				break
@@ -40,13 +35,12 @@ func Verify(player_id, token, email):
 				yield(get_tree().create_timer(2), "timeout")
 
 		# add extra return argument for this for createokayercontainer == false
-		print("issue 2")
-		main_interface.ReturnTokenVerificationResults(player_id, token_verification)
+		main_interface.return_token_verification_results(player_id, token_verification)
 		if token_verification == false:
 			awaiting_verification.erase(player_id)
 			main_interface.network.disconnect_peer(player_id)
 		else:
-			main_interface.getPlayerInfo(player_id)
+			main_interface.get_player_data(player_id)
 
 func _on_VerificationExpiration_timeout():
 	var current_time = OS.get_unix_time()
@@ -60,46 +54,43 @@ func _on_VerificationExpiration_timeout():
 				awaiting_verification.erase(key)
 				var connected_peers = Array(get_tree().get_network_connected_peers())
 				if connected_peers.has(key):
-					print("issue 1")
-					main_interface.ReturnTokenVerificationResults(key, false)
+					main_interface.return_token_verification_results(key, false)
 					main_interface.network.disconnect_peer(key)
 	if(!awaiting_verification.empty()):
 		print("Awaiting verification: %s" % str(awaiting_verification))
-		#print(awaiting_verification)
 	
-func CreatePlayerContainer(player_id, token, email):
+func create_player_container(player_id, token, email):
 	var new_player_container = player_container_scene.instance()
 	new_player_container.name = str(player_id)
 	get_node("/root/Server/World/CharacterSelect").add_child(new_player_container, true)
 	ServerData.player_location[str(player_id)] = "/root/Server/World/CharacterSelect"
-	#ServerData.player_location[str(player_id)] = "/root/Server/World/CharacterSelect/%s" % str(player_id)
-	var playerContainer = get_node("/root/Server/World/CharacterSelect/" + str(player_id))
+	var player_container = get_node("/root/Server/World/CharacterSelect/" + str(player_id))
 	
 	# establish logged-in email and player network-id: email connection for single log-in
-	playerContainer.email = email
+	player_container.email = email
 	ServerData.logged_emails.append(email)
 	ServerData.player_id_emails[str(player_id)] = email
 	
-	playerContainer.db_info["token"] = token["token"]
-	playerContainer.db_info["id"] = token["id"]
+	player_container.db_info["token"] = token["token"]
+	player_container.db_info["id"] = token["id"]
 	
-	var firebase_call = Firebase.get_document("users/%s" % playerContainer.db_info["id"], playerContainer.http, playerContainer.db_info["token"], playerContainer)
+	var firebase_call = Firebase.get_document("users/%s" % player_container.db_info["id"], player_container.http, player_container.db_info["token"], player_container)
 	yield(firebase_call, "completed")
 	
-	# if there are no characters
 	# if container.character_array is empty
-	if playerContainer.characters.empty():
+	if player_container.characters.empty():
 		pass
 	else:
-		var fillPlayer = FillPlayerContainer(playerContainer)
-		yield(fillPlayer, "completed")
+		var fill_player_container = fill_player_container(player_container)
+		yield(fill_player_container, "completed")
 
 # this assumes from conditionals that there are characters	
-func FillPlayerContainer(playerContainer):
-	for character in playerContainer.characters:
-		var firebase_call = Firebase.get_document("characters/%s" % character, playerContainer.http, playerContainer.db_info["token"], playerContainer)#temp_array)
+func fill_player_container(player_container):
+	for character in player_container.characters:
+		var firebase_call = Firebase.get_document("characters/%s" % character, player_container.http, player_container.db_info["token"], player_container)
 		yield(firebase_call, "completed")
-		#print("FillPlayerContainer completed")
+		
+	print("fill_player_container completed")
 		
 	# temp player stats
-	playerContainer.player_stats = ServerData.test_data.Stats
+	player_container.player_stats = ServerData.test_data.Stats
