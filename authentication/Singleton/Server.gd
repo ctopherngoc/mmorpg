@@ -5,10 +5,10 @@ var gateway_api = MultiplayerAPI.new()
 var port = 1960
 var max_players = 100
 
-var gameServerList = {}
+var server_list = {}
 
 func _ready():
-	StartServer()
+	start_server()
 
 # warning-ignore:unused_argument
 func _process(_delta):
@@ -16,7 +16,7 @@ func _process(_delta):
 		return;
 	custom_multiplayer.poll()
 	
-func StartServer():
+func start_server():
 	network.create_server(port, max_players)
 	set_custom_multiplayer(gateway_api)
 	custom_multiplayer.set_root_node(self)
@@ -26,16 +26,16 @@ func StartServer():
 	network.connect("peer_connected", self, "_Peer_Connected")
 	network.connect("peer_disconnected", self, "_Peer_Disconnected")
 
-func _Peer_Connected(gameserver_id):
-	print("server " + str(gameserver_id) + " Connected")
-	gameServerList["GameServer1"] = gameserver_id
+func _Peer_Connected(server_id):
+	print("server " + str(server_id) + " Connected")
+	server_list["GameServer1"] = server_id
 	
 func _Peer_Disconnected(gameserver_id):
 	print("server " + str(gameserver_id) + " Disconnected")
 	
-func DistributeLoginToken(token, gameserver):
-	var gameServer_peer_id = gameServerList[gameserver]
+func distribute_login_token(token, server):
+	var server_peer_id = server_list[server]
 	print("sent token to server")
-	rpc_id(gameServer_peer_id, "ReceivedLoginToken", token)
+	rpc_id(server_peer_id, "received_login_token", token)
 	
 	
