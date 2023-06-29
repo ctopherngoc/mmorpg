@@ -1,7 +1,8 @@
 extends Node2D
-var mapName = "BaseLevel2"
+var map_id = "BaseLevel2"
 var enemy_id_counter = 0
 var enemy_maximum = 2
+var spawn_position = Vector2(234, -437)
 #var portal = {
 #	'Portal1' : Vector2(103, -290),
 #	'Portal2' : Vector2(904, -525),
@@ -73,9 +74,7 @@ func SpawnEnemy():
 				########################################
 				enemy_id_counter += 1
 				#open_locations.erase(i)
-				
-		#print("end")
-				
+
 	for enemy in enemy_list.keys():
 		if enemy_list[enemy]["EnemyState"] == "Dead":
 			if enemy_list[enemy]["time_out"] == 0:
@@ -86,4 +85,4 @@ func SpawnEnemy():
 				enemy_list.erase(enemy)
 			else:
 				enemy_list[enemy]['time_out'] = enemy_list[enemy]['time_out'] - 1
-	ServerData.monsters[mapName] = enemy_list
+	ServerData.monsters[map_id] = enemy_list

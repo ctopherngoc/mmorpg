@@ -1,5 +1,5 @@
 extends Node2D
-var mapName = "BaseLevel"
+var map_id = "BaseLevel"
 var enemy_id_counter = 0
 var enemy_maximum = 2
 var spawn_position = Vector2(99, -247)
@@ -81,4 +81,4 @@ func SpawnEnemy():
 				enemy_list.erase(enemy)
 			else:
 				enemy_list[enemy]['time_out'] = enemy_list[enemy]['time_out'] - 1
-	ServerData.monsters[mapName] = enemy_list
+	ServerData.monsters[map_id] = enemy_list
