@@ -21,4 +21,4 @@ func _on_Button_pressed() -> void:
 	if password.text != confirm.text or username.text.empty() or password.text.empty():
 		notification.text = "Invalid password or username"
 		return
-	Firebase.register(username.text, password.text, http)
+	#Firebase.register(username.text, password.text, http)

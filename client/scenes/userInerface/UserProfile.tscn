@@ -128,10 +128,10 @@ margin_right = 157.0
 margin_bottom = 673.0
 text = "Create New Character"
 
-[connection signal="pressed" from="CharacterBox/Character1/Button1" to="." method="_on_Button1_pressed"]
-[connection signal="pressed" from="CharacterBox/Character2/Button2" to="." method="_on_Button2_pressed"]
-[connection signal="pressed" from="CharacterBox/Character3/Button3" to="." method="_on_Button3_pressed"]
-[connection signal="pressed" from="Select" to="." method="_on_Select_pressed"]
-[connection signal="pressed" from="Delete" to="." method="_on_Delete_pressed"]
+[connection signal="pressed" from="CharacterBox/Character1/Button1" to="." method="_on_button1_pressed"]
+[connection signal="pressed" from="CharacterBox/Character2/Button2" to="." method="_on_button2_pressed"]
+[connection signal="pressed" from="CharacterBox/Character3/Button3" to="." method="_on_button3_pressed"]
+[connection signal="pressed" from="Select" to="." method="_on_select_pressed"]
+[connection signal="pressed" from="Delete" to="." method="_on_delete_pressed"]
 [connection signal="pressed" from="Create/UsernameCheck" to="." method="_on_UsernameCheck_pressed"]
-[connection signal="pressed" from="Create/Create" to="." method="_on_Create_pressed"]
+[connection signal="pressed" from="Create/Create" to="." method="_on_create_pressed"]

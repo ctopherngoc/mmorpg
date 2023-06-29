@@ -5,9 +5,9 @@ var port = 1943
 var ip = "127.0.0.1"
 
 func _ready():
-	ConnectToServer()
+	connect_to_server()
 	
-func ConnectToServer():
+func connect_to_server():
 	network.create_client(ip, port)
 	get_tree().set_network_peer(network)
 	
@@ -20,10 +20,10 @@ func _OnConnectionFailed():
 func _OnConnectionSucceeded():
 	print("Successfully connected to authentication server")
 	
-remote func AuthenticatePlayer(username, password, player_id):
+remote func authenticate_player(username, password, player_id):
 	print("sending out authentication request")
-	rpc_id(1, "AuthenticatePlayer", username, password, player_id)
+	rpc_id(1, "authenticate_player", username, password, player_id)
 	
-remote func AuthenticationResults(result, player_id):
+remote func authentication_results(result, player_id):
 	print("resuts received and replying to player login request")
-	Gateway.ReturnLoginRequest(result, player_id)
+	Gateway.return_login_request(result, player_id)

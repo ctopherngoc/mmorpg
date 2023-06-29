@@ -20,7 +20,7 @@ func _process(_delta):
 		return
 	custom_multiplayer.poll()
 
-func ConnectToServer(_username, _password):
+func connect_to_server(_username, _password):
 	network = NetworkedMultiplayerENet.new()
 	gateway_api = MultiplayerAPI.new()
 	network.set_dtls_enabled(true)
@@ -33,25 +33,25 @@ func ConnectToServer(_username, _password):
 	custom_multiplayer.set_root_node(self)
 	custom_multiplayer.set_network_peer(network)
 	
-	network.connect("connection_failed", self, "_OnConnectionFailed")
-	network.connect("connection_succeeded", self, "_OnConnectionSucceeded")
+	network.connect("connection_failed", self, "_on_connection_failed")
+	network.connect("connection_succeeded", self, "_on_connection_succeeded")
 
-func _OnConnectionFailed():
+func _on_connection_failed():
 	print("Failed to conect to login server")
 	print("Pop-up server offline")
 
 
-func _OnConnectionSucceeded():
+func _on_connection_succeeded():
 	print("Successfully connected to login server")
-	RequestLogin()
+	request_login()
 
-remote func RequestLogin():
+remote func request_login():
 	print("Connecting to gateway to request login")
-	rpc_id(1, "LoginRequest", username, password)
+	rpc_id(1, "login_request", username, password)
 	username = ""
 	password = ""
 
-remote func ReturnLoginRequest(results):
+remote func return_login_request(results):
 	"""
 	results[0] = code
 	results[1] = {token, id}
@@ -59,9 +59,9 @@ remote func ReturnLoginRequest(results):
 	if results[0] == 200:
 	
 		Server.token = results[1]
-		Server.ConnectToServer()
+		Server.connect_to_server()
 	else:
 		print("Please provide correct username and pasword")
-	network.disconnect("connection_failed", self, "_OnConnectionFailed")
-	network.disconnect("connection_succeeded", self, "_OnConnectionSucceeded")
+	network.disconnect("connection_failed", self, "_on_connection_failed")
+	network.disconnect("connection_succeeded", self, "_on_connection_succeeded")
 

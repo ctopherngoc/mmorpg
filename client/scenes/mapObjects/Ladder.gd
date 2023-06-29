@@ -1,21 +1,18 @@
 extends Area2D
 
-#signal turnOffMapCollision
-#signal turnOnMapCollision
-
 func _on_Ladder_body_entered(body):
 	if body.is_in_group("climber"):
-		if body.climbing == false:
-			body.climbing = true
-			print(body.climbing)
+		if body.can_climb == false:
+			body.can_climb = true
+			print(body.can_climb)
 	pass
-	
+
 func _on_Ladder_body_exited(body):
-	if !body.noColZone:
+	if !body.no_collision_zone:
 		body.set_collision_layer_bit(0, true)
 		body.set_collision_mask_bit(0, true)
 	if body.is_in_group("climber"):
-		if body.climbing == true:
-			body.climbing = false
-			print(body.climbing)
+		if body.can_climb == true:
+			body.can_climb = false
+			print(body.can_climb)
 	pass

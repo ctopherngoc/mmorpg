@@ -12,5 +12,5 @@ func _on_Button_pressed() -> void:
 	else:
 		login_button.disabled = true
 		Server.email = username.text
-		Gateway.ConnectToServer(username.text, password.text)
+		Gateway.connect_to_server(username.text, password.text)
 

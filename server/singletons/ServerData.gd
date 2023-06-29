@@ -13,8 +13,7 @@ var multiLogIn = []
 
 var skill_data
 
-# temp data for stat menu on client
-# should be converted to character info
+# temp data for stat menu on client, should be converted to character info
 var test_data = {
 	"Stats" : {
 		"Strength" : 42,
@@ -23,11 +22,10 @@ var test_data = {
 		"Intelligence" : 24,
 	}
 }
-#var userTemplate = {'characters':{'arrayValue':{'values': null }}}
+#var user_template = {'characters':{'arrayValue':{'values': null }}}
 
-# used to create new chracters
-# firebase
-var playerInfo = {
+#firebase used to create new chracters
+var player_info = {
 	"displayname": {'stringValue': null},
 	"lastmap": {'stringValue': null},
 	"position": {'doubleValue':null},
@@ -76,7 +74,7 @@ var playerInfo = {
 }
 
 # used by server
-var playerTemplate = {
+var player_template = {
 	"displayname": null,
 	"lastmap": "res://scenes/maps/BaseLevel.tscn",
 	"position": 0,
@@ -122,7 +120,7 @@ var monsters = {
 	"BaseLevel2" : {},
 }
 
-var experienceTable = {
+var experience_table = {
 	'1': 20,
 	'2': 38,
 	'3': 72,
@@ -155,7 +153,7 @@ var experienceTable = {
 	'30': 65462,
 }
 
-var portalData = {
+var portal_data = {
 	"BaseLevel": {
 		'Portal1': {'map': 'BaseLevel2',
 					'spawn': Vector2(103, -290)},

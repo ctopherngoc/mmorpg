@@ -1,5 +1,4 @@
 extends Node
-var network
 var ip = "127.0.0.1"
 var port = 1000
 var token
@@ -45,7 +44,7 @@ func _on_connection_failed():
 func _on_connection_succeeded():
 	server_status = true
 	print("Successfully connected")
-	rpc_id(1, "FetchServerTime", OS.get_system_time_msecs())
+	rpc_id(1, "fetch_server_time", OS.get_system_time_msecs())
 	timer.start()
 
 func _on_server_disconnect():
@@ -87,12 +86,12 @@ remote func return_latency(client_time):
 
 #not used
 #############################################
-#func fetch_characters():
-#	rpc_id(1, "Fetch_characters")
-#
-#remote func return_fetch_character(results):
-#	pass
-#	print(results)
+func fetch_characters():
+	rpc_id(1, "Fetch_characters")
+
+remote func return_fetch_character(results):
+	pass
+	print(results)
 #############################################
 
 func check_usernames(requester, username):
@@ -125,8 +124,8 @@ func choose_character(requester, player_name):
 	rpc_id(1, "choose_character", requester, player_name)
 
 remote func return_choose_character(requester):
-	print("return_choose_character")
-	instance_from_id(requester).load_map()
+	print("server.gd: return_choose_character")
+	instance_from_id(requester).load_world()
 
 # not sure if server use this
 # warning-ignore:unused_argument
@@ -145,20 +144,21 @@ remote func fetch_token():
 	rpc_id(1, "return_token", token, email)
 
 remote func return_token_verification_results(result, array):
+	print("server.gd: return_token_verification_results")
 	if result == true:
-		print("Successful token verification")
+		print("token verified")
 		Global.character_list = array
 		fetch_player_stats()
 		login_status = 1
 		SceneHandler.change_scene(SceneHandler.scenes["characterSelect"])
 	else:
-		print("login failed, please try again")
+		print("token unverified")
 		var login_scene = get_tree().get_current_scene()
 		login_scene.login_button.disabled = false
 		login_scene.notification.text = "login failed, please try again"
 
 remote func already_logged_in():
-	print("Account already logged in")
+	print("server.gd: already_logged_in")
 	var login_scene = get_tree().get_current_scene()
 	login_scene.login_button.disabled = false
 	login_scene.notification.text = "Account already logged in"
@@ -166,16 +166,16 @@ remote func already_logged_in():
 
 #################################################################################
 # Player functions
-remote func SpawnNewPlayer(player_id, map):
-	Global.spawn_new_player(player_id, map)
+#remote func SpawnNewPlayer(player_id, map):
+#	Global.spawn_new_player(player_id, map)
 
 remote func despawn_player(player_id):
-	print("inside despawn player")
+	print("server.gd: despawn player")
 	var other_players = get_node("/root/currentScene/OtherPlayers")
 	for player in other_players.get_children():
 		print(str(player) + str(player_id))
 		if player.name == str(player_id):
-			print("mnatches despawning char")
+			print("matches despawning char")
 			player.queue_free()
 
 func send_player_state(player_state):
@@ -193,13 +193,13 @@ remote func receive_despawn_player(player_id):
 	Global.despawn_player(player_id)
 	
 func send_attack():
-	print("sending my attack")
+	print("server.gd: send_attack")
 	rpc_id(1, "attack", Server.client_clock)
 	
 remote func receive_attack(player_id, attack_time):
-	print("attack recieved")
+	print("server.gd: recieve_attack")
 	if player_id == get_tree().get_network_unique_id():
-		print("this is my own attack. pass")
+		print("self attack: pass")
 	elif get_node("/root/currentScene/OtherPlayers").has_node(str(player_id)):
 		print(str(player_id) + " attack")
 		var player = get_node("/root/currentScene/OtherPlayers/%s" % player_id)
@@ -208,6 +208,7 @@ remote func receive_attack(player_id, attack_time):
 		pass
 
 remote func update_player_stats(player_stats):
+	print('server.gd: remote update_player_stats')
 	print(player_stats)
 	Global.player = player_stats
 	for character in Global.character_list:

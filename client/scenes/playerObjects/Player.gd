@@ -64,7 +64,7 @@ func _physics_process(delta):
 
 func define_player_state():
 	player_state = {"T": Server.client_clock, "P": get_global_position(), "M": Global.current_map, "A": animation}
-	Server.SendPlayerState(player_state)
+	Server.send_player_state(player_state)
 
 func movement_loop(delta):
 	#take_damage()

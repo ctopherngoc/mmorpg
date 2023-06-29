@@ -874,28 +874,24 @@ disabled = true
 position = Vector2( 8, -2 )
 frames = SubResource( 2 )
 animation = "stab"
-frame = 2
 flip_h = true
 
 [node name="Head" type="AnimatedSprite" parent="."]
 position = Vector2( 8, -3 )
 frames = SubResource( 3 )
 animation = "stab"
-frame = 2
 flip_h = true
 
 [node name="Ears" type="AnimatedSprite" parent="."]
 position = Vector2( 8, -5 )
 frames = SubResource( 4 )
 animation = "stab"
-frame = 2
 flip_h = true
 
 [node name="Arm" type="AnimatedSprite" parent="."]
 position = Vector2( 8, -2 )
 frames = SubResource( 5 )
 animation = "stab"
-frame = 2
 flip_h = true
 
 [node name="Weapon" type="AnimatedSprite" parent="."]
@@ -903,9 +899,8 @@ position = Vector2( 9, -1 )
 scale = Vector2( -1, 1 )
 frames = SubResource( 11 )
 animation = "stab"
-frame = 2
 centered = false
-offset = Vector2( 4.5, 6 )
+offset = Vector2( 4, 6 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 root_node = NodePath("../Weapon")

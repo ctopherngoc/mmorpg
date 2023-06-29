@@ -10,9 +10,9 @@ add so that server does firebase request for
 """
 
 func _ready():
-	Server.FetchPlayerStats()
+	Server.fetch_player_stats()
 
-func LoadPlayerStats(stats):
+func load_player_stats(stats):
 	strength.set_text(str(stats.Strength))
 	vitality.set_text(str(stats.Vitality))
 	dexterity.set_text(str(stats.Dexterity))

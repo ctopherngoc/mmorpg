@@ -1,8 +1,5 @@
 extends KinematicBody2D
 
-#signal monster_died
-#signal monster
-
 ###############################################
 # old variables
 var maxSpeed = 100
@@ -40,7 +37,7 @@ func _ready():
 	pass
 	
 func _process(delta):
-	TouchDamage()
+	touch_damage()
 	
 	# eventually incorperate take damage set aggro
 	# skip rng movement algo
@@ -64,10 +61,10 @@ func _process(delta):
 	velocity = move_and_slide(velocity, Vector2.UP)
 
 func _on_Timer_timeout():
-	move_state = floor(rand_range(0,3))# Replace with function body.
+	move_state = floor(rand_range(0,3))
 
 
-func NPCHit(dmg, player):
+func npc_hit(dmg, player):
 	current_hp -= dmg
 	if str(player) in attackers.keys():
 		attackers[str(player)] += dmg
@@ -76,30 +73,27 @@ func NPCHit(dmg, player):
 	# if dead change state and make it unhittable
 	if current_hp <= 0:
 		state = "Dead"
-		
+
 		for attacker in attackers.keys():
-			
 			# if atacker logged in
 			if attacker in ServerData.player_location.keys():
-				
+
 				# if attacker in map
 				if get_node("../../Players/%s" % attacker):
-					var playerContainer = get_node("../../Players/%s" % attacker)
-					
+					var player_container = get_node("../../Players/%s" % attacker)
+
 					# xp = rounded (dmg done / max hp) * experience 
-					playerContainer.experience(int(round((attackers[attacker] / max_hp) * experience)))
-				
+					player_container.experience(int(round((attackers[attacker] / max_hp) * experience)))
+
 		get_node("do_damage/CollisionShape2D").set_deferred("disabled", true)
-		yield(get_tree().create_timer(0.2), "timeout")
-		get_node("take_damage/CollisionShape2D").set_deferred("disabled", true)
-		
+		#yield(get_tree().create_timer(0.2), "timeout")
+		#get_node("take_damage/CollisionShape2D").set_deferred("disabled", true)
+
 	print("monster: " + self.name + " health: " + str(current_hp))
-	
-func TouchDamage():
+
+func touch_damage():
 	if $do_damage.get_overlapping_areas().size() > 0:
 		for player in $do_damage.get_overlapping_areas():
 			# call server to do damage to body
-			
-			Global.NPCAttack(player.get_parent(), stats)
-	else:
-		pass
+			Global.npc_attack(player.get_parent(), stats)
+

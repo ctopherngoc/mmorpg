@@ -5,20 +5,17 @@ extends KinematicBody2D
 
 ###############################################
 # old variables
-var maxSpeed = 100
-var velocity = Vector2.ZERO
-var direction = Vector2.RIGHT
-var gravity = 1600
-var jumpSpeed = 500
-var rng = RandomNumberGenerator.new()
-var speedFactor = 0.5
-var move_state
-#var hp = 25
-#onready var damage
-onready var take_damage = false
+#var maxSpeed = 100
+#var velocity = Vector2.ZERO
+#var direction = Vector2.RIGHT
+#var gravity = 1600
+#var jumpSpeed = 500
+#var rng = RandomNumberGenerator.new()
+#var speedFactor = 0.5
+#var move_state
+#onready var take_damage = false
 ##########################################################
 #currrent new variables
-#var location = null
 var current_hp = null
 var max_hp = null
 var state = null
@@ -27,8 +24,8 @@ var despawn = 1
 ############################################################
 
 func _ready():
-# warning-ignore:return_value_discarded
-	$take_damage.connect("area_entered", self, "on_hazard_area_entered")
+	# warning-ignore:return_value_discarded
+	#$take_damage.connect("area_entered", self, "on_hazard_area_entered")
 	#Server.fetchMonsterDamage(get_instance_id())
 	if state == "Idle":
 		pass
@@ -41,29 +38,11 @@ func _ready():
 		get_node("do_damage/CollisionShape2D").set_deferred("disabled", true)
 		get_node("take_damage/CollisionShape2D").set_deferred("disabled", true)
 
-func _on_Timer_timeout():
-	move_state = floor(rand_range(0,3))# Replace with function body.
-
-#func setDamage(s_damage):
-#	damage = s_damage
-#	take_damage = true
-#	print("monster set damage = %s" % damage)
-		
-#func on_hazard_area_entered(_area2d):
-#	pass
-#	if take_damage:
-#		hp -= damage
-#
-#		if hp > 0:
-#			print("monster took 15 dmg")
-#		else:
-#			emit_signal("monster_died")
-#	else:
-#		pass
-
+#func _on_Timer_timeout():
+#	move_state = floor(rand_range(0,3))# Replace with function body.
 ####################################################
 # new functions
-func MoveMonster(new_position):
+func move(new_position):
 	var curr_position = self.get_global_position()
 	#turn right
 	if new_position.x > curr_position.x:
@@ -73,7 +52,7 @@ func MoveMonster(new_position):
 		$Sprite.scale.x = xScale
 	set_position(new_position)
 
-func Health(health):
+func health(health):
 	if health != current_hp:
 		print(str(self.name) + " took " + str(current_hp - health) + " damage")
 		current_hp = health

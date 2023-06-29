@@ -8,7 +8,7 @@ var port = 1960
 onready var server = get_node("/root/Server")
 
 func _ready():
-	ConnectToServer()
+	connect_to_server()
 
 func _process(_delta):
 	if get_custom_multiplayer() == null:
@@ -17,7 +17,7 @@ func _process(_delta):
 		return;
 	custom_multiplayer.poll()
 	
-func ConnectToServer():
+func connect_to_server():
 	network.create_client(ip, port)
 	set_custom_multiplayer(gateway_api)
 	custom_multiplayer.set_root_node(self)
@@ -32,5 +32,5 @@ func _OnConnectionFailed():
 func _OnConnectionSucceeded():
 	print("Successfully connected to Game Server Hub")
 
-remote func ReceivedLoginToken(token):
+remote func received_login_token(token):
 	server.expected_tokens.append(token)
