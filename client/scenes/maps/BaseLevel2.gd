@@ -1,11 +1,12 @@
 extends Node
 
+var other_player_template = preload("res://scenes/playerObjects/PlayerTemplate.tscn")
+var main_player_template = preload("res://scenes/playerObjects/Player.tscn")
 
-var playerScene = preload("res://scenes/playerObjects/Player.tscn")
-var playerSpawnPosition = Vector2.ZERO
-var currentPlayerNode = null
+var spawn_location = Vector2.ZERO
+var main_player = null
 
-var monsterScene = preload("res://scenes/Monster.tscn")
+var monsterScene = preload("res://scenes/monsterObjects/000001/greenGuy.tscn")
 var monster1SpawnPosition = Vector2.ZERO
 var monster1Node = null
 
@@ -22,7 +23,7 @@ func _ready():
 	Global.change_background()
 	if Global.player.lastmap != get_filename():
 		Global.update_lastmap(get_filename())
-		playerSpawnPosition = $Player.global_position
+		spawn_location = Vector2(234, -437)
 	
 	if Global.last_portal:
 		$Player.global_position = Global.last_portal
@@ -30,58 +31,34 @@ func _ready():
 	print($MapObjects/Portal1.global_position)
 	
 func register_player(player):
-		currentPlayerNode = player
-		#print(currentPlayerNode.global_position)
-		currentPlayerNode.connect("died", self, "on_player_died", [], CONNECT_DEFERRED)
-		
-func register_monster(monster):
-		var monsterNode = monster
-		#print(currentMonsterNode.global_position)
-		monsterNode.connect("monster_died", self, "on_monster_died", [monsterNode, monsterNode.global_position], CONNECT_DEFERRED)
+		main_player = player
+		main_player.connect("died", self, "on_player_died", [], CONNECT_DEFERRED)
 
 func create_player():
-	var playerInstance = playerScene.instance()
-	add_child_below_node(currentPlayerNode, playerInstance)
-	playerInstance.global_position = playerSpawnPosition
-	print(playerSpawnPosition)
-	register_player(playerInstance)
-	
-func create_monster(monsterNode, monsterSpawnPosition):
-	var monsterInstance = monsterScene.instance()
-	add_child_below_node(monsterNode, monsterInstance)
-	monsterInstance.global_position = monsterSpawnPosition
-	register_monster(monsterInstance)
-	
+	var player_instance = main_player_template.instance()
+	add_child_below_node(main_player, player_instance)
+	player_instance.global_position = spawn_location
+	register_player(player_instance)
+
 func on_player_died():
 	print("Player Died")
-	currentPlayerNode.queue_free()
+	main_player.queue_free()
 	print("Play Respawned")
 	create_player()
-	
-func on_monster_died(monsterNode, monsterSpawnPosition):
-	print(str(monsterNode) + " Died")
-	#get_parent().add_child(Coin)
-	monsterNode.queue_free()
-	print("Monster Respawned")
-	create_monster(monsterNode, monsterSpawnPosition)
 
-#func _on_noCol_body_entered(body):
-#	if body.is_in_group("player"):
-#		body.set_collision_layer_bit(0, false)
-#		body.set_collision_mask_bit(0, false)
-#
-#
-#func _on_noCol_body_exited(body):
-#	print("out of area")
-#	if body.is_in_group("player"):
-#		body.set_collision_layer_bit(0, true)
-#		body.set_collision_mask_bit(0, true)
-
-#func _on_teleport_zone_area_entered(area):
-#	print("entered")
-#	currentPlayerNode.global_position = playerSpawnPosition
+func _on_noCol_body_entered(body):
+	if body.is_in_group("player"):
+		body.set_collision_layer_bit(0, false)
+		body.set_collision_mask_bit(0, false)
 
 
+func _on_noCol_body_exited(body):
+	print("out of area")
+	if body.is_in_group("player"):
+		body.set_collision_layer_bit(0, true)
+		body.set_collision_mask_bit(0, true)
+
+###############################################################################################
 func _on_teleport_zone_body_entered(body):
 	print("entered")
 	body.global_position = Vector2(103, -250)
