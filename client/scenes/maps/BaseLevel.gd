@@ -6,14 +6,14 @@ var main_player_template = preload("res://scenes/playerObjects/Player.tscn")
 var spawn_location = Vector2.ZERO
 var main_player = null
 
-var monsterScene = preload("res://scenes/Monster.tscn")
+var monster_scene = preload("res://scenes/monsterObjects/000001/greenGuy.tscn")
 
 func _ready():
 	self.name = "currentScene"
 	Global.change_background()
 	if Global.player.lastmap != get_filename():
 		Global.update_lastmap(get_filename())
-	spawn_location = $Player.global_position
+	spawn_location = Vector2(248,-407)
 
 	if Global.last_portal:
 		$Player.global_position = Global.last_portal
@@ -40,10 +40,8 @@ func _on_noCol_body_entered(body):
 		body.set_collision_layer_bit(0, false)
 		body.set_collision_mask_bit(0, false)
 
-
 func _on_noCol_body_exited(body):
 	print("out of area")
 	if body.is_in_group("player"):
 		body.set_collision_layer_bit(0, true)
 		body.set_collision_mask_bit(0, true)
-
