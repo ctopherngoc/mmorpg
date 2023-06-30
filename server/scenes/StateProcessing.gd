@@ -8,6 +8,7 @@ func _physics_process(_delta):
 	sync_clock_counter += 1
 	if sync_clock_counter == 3:
 		sync_clock_counter = 0
+		#print(ServerData.monsters)
 		if not ServerData.player_state_collection.empty():
 			
 			world_state["P"] = ServerData.player_state_collection.duplicate(true)
@@ -18,6 +19,7 @@ func _physics_process(_delta):
 			
 			# transfers global dictionary of list of monsters in each map
 			# dictionary keys are mapname
+			
 			world_state["E"] = ServerData.monsters.duplicate(true)
 			
 			#verification
