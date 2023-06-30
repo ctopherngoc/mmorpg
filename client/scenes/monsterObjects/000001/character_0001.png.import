@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/character_0000.png-1cd4d398953182f7dab78adddd0a09b4.stex"
+path="res://.import/character_0001.png-2939ee8c6d2a6a98a2c8a63e815bdbf7.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/monsters/character_0000.png"
-dest_files=[ "res://.import/character_0000.png-1cd4d398953182f7dab78adddd0a09b4.stex" ]
+source_file="res://scenes/monsterObjects/000001/character_0001.png"
+dest_files=[ "res://.import/character_0001.png-2939ee8c6d2a6a98a2c8a63e815bdbf7.stex" ]
 
 [params]
 
