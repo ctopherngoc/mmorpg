@@ -496,7 +496,7 @@ func _physics_process(_delta):
 						# monster dead on server
 						if world_state_buffer[2]["E"][current_map][monster]["EnemyHealth"] <= 0:
 							if monster_node.despawn != 0:
-								monster_node.OnDeath()
+								monster_node.on_death()
 						# monster alive: update monster stats and position
 						else:
 							var new_position = lerp(world_state_buffer[1]["E"][current_map][monster]["EnemyLocation"], world_state_buffer[2]["E"][current_map][monster]["EnemyLocation"], interpolation_factor)
@@ -542,7 +542,7 @@ func despawn_player(player_id):
 		get_node("/root/currentScene/OtherPlayers/%s" % str(player_id)).queue_free()
 		
 func spawn_monster(monster_id, monster_dict):
-	var monster = get_node("/root/currentScene").monster_scene.instance()
+	var monster = get_node("/root/currentScene").monster_list[monster_dict['id']].instance()
 	monster.position = monster_dict["EnemyLocation"]
 	monster.max_hp = monster_dict["EnemyMaxHealth"]
 	monster.current_hp = monster_dict["EnemyHealth"]
