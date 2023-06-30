@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://scenes/maps/BaseLevel2.gd" type="Script" id=1]
 [ext_resource path="res://scenes/mapObjects/Portal.tscn" type="PackedScene" id=2]
@@ -12,6 +12,12 @@ extents = Vector2( 306, 51 )
 
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 758, 71 )
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 15, 56.75 )
+
+[sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 19, 59 )
 
 [node name="Map" type="Node2D"]
 script = ExtResource( 1 )
@@ -60,6 +66,37 @@ script = ExtResource( 6 )
 [node name="Portal2" parent="MapObjects" instance=ExtResource( 2 )]
 position = Vector2( 904, -252 )
 script = ExtResource( 6 )
+
+[node name="Wall1" type="StaticBody2D" parent="MapObjects"]
+collision_layer = 16
+collision_mask = 16
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MapObjects/Wall1"]
+modulate = Color( 1, 0, 1, 1 )
+light_mask = 32
+position = Vector2( 148, -441.5 )
+shape = SubResource( 3 )
+
+[node name="Wall2" type="StaticBody2D" parent="MapObjects"]
+collision_layer = 16
+collision_mask = 16
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MapObjects/Wall2"]
+modulate = Color( 1, 0, 1, 1 )
+light_mask = 32
+position = Vector2( 791, -436.75 )
+shape = SubResource( 3 )
+
+[node name="Wall3" type="StaticBody2D" parent="MapObjects"]
+position = Vector2( 791, -434 )
+collision_layer = 16
+collision_mask = 16
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MapObjects/Wall3"]
+modulate = Color( 1, 0, 1, 1 )
+light_mask = 32
+position = Vector2( -304, -9 )
+shape = SubResource( 4 )
 
 [node name="YSort" type="YSort" parent="."]
 

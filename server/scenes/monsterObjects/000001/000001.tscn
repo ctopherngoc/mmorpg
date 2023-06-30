@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://scenes/monsters/GreenGuy.gd" type="Script" id=1]
+[ext_resource path="res://scenes/monsterObjects/000001/000001.gd" type="Script" id=1]
 
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 16.75, 17.5 )
@@ -52,6 +52,6 @@ margin_left = -16.0
 margin_top = -17.0
 margin_right = 16.0
 margin_bottom = 18.0
-color = Color( 1, 0, 0, 1 )
+color = Color( 0, 1, 0.203922, 1 )
 
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

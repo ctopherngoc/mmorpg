@@ -5,13 +5,13 @@ var main_player_template = preload("res://scenes/playerObjects/Player.tscn")
 
 var spawn_location = Vector2.ZERO
 var main_player = null
+var greenGuy = preload("res://scenes/monsterObjects/000001/000001.tscn")
+var blueGuy = preload("res://scenes/monsterObjects/000002/000002.tscn")
 
-var monsterScene = preload("res://scenes/monsterObjects/000001/greenGuy.tscn")
-var monster1SpawnPosition = Vector2.ZERO
-var monster1Node = null
-
-var monster2SpawnPosition = Vector2.ZERO
-var monster2Node = null
+var monster_list = {
+	'greenGuy': greenGuy,
+	'blueGuy': blueGuy,
+}
 
 #teleporter end locations
 onready var teleporter1 : Label = $MapObjects/Teleporter1/Label

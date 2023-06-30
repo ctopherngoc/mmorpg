@@ -2,35 +2,35 @@ extends KinematicBody2D
 
 ###############################################
 # old variables
-var maxSpeed = 100
+# no jump, not used
+var jump_speed = 500
+
+#onready var damage = 10
+#onready var take_damage = false
+##########################################################
+#currrent new variables
+var id = 'blueGuy'
+var title = "Blue Guy"
+var location = null
+var current_hp = 50
+var max_hp = 50
+var state = "idle"
+var stats = {
+	"Attack" : 15,
+	"Defense" : 20,
+	"Magic Defense" : 10,
+	"Accuracy" : 15,
+	"Avoidability" : 10,
+}
+var rng = RandomNumberGenerator.new()
+var max_speed = 100
 var velocity = Vector2.ZERO
 var direction = Vector2.RIGHT
 var gravity = 1600
-
-# no jump, not used
-var jumpSpeed = 500
-
-var rng = RandomNumberGenerator.new()
-var speedFactor = 0.5
-var move_state
+var speed_factor = 0.5
 var experience = 25
+var move_state
 var attackers = {}
-onready var damage = 10
-onready var take_damage = false
-##########################################################
-#currrent new variables
-var title = "Green Guy"
-var location = null
-var current_hp = 25
-var max_hp = 25
-var state = "idle"
-var stats = {
-	"Attack" : 10,
-	"Defense" : 5,
-	"Magic Defense" : 5,
-	"Accuracy" : 10,
-	"Avoidability" : 5,
-}
 ############################################################
 
 func _ready():
@@ -48,11 +48,11 @@ func _process(delta):
 
 		if move_state == 1:
 			direction= Vector2.RIGHT
-			velocity.x = (direction * maxSpeed *speedFactor).x
+			velocity.x = (direction * max_speed *speed_factor).x
 
 		elif move_state == 2:
 			direction= Vector2.LEFT
-			velocity.x = (direction * maxSpeed * speedFactor).x
+			velocity.x = (direction * max_speed * speed_factor).x
 
 		else:
 			velocity.x = 0
@@ -86,8 +86,6 @@ func npc_hit(dmg, player):
 					player_container.experience(int(round((attackers[attacker] / max_hp) * experience)))
 
 		get_node("do_damage/CollisionShape2D").set_deferred("disabled", true)
-		#yield(get_tree().create_timer(0.2), "timeout")
-		#get_node("take_damage/CollisionShape2D").set_deferred("disabled", true)
 
 	print("monster: " + self.name + " health: " + str(current_hp))
 
