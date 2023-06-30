@@ -6,7 +6,10 @@ var main_player_template = preload("res://scenes/playerObjects/Player.tscn")
 var spawn_location = Vector2.ZERO
 var main_player = null
 
-var monster_scene = preload("res://scenes/monsterObjects/000001/greenGuy.tscn")
+var greenGuy = preload("res://scenes/monsterObjects/000001/000001.tscn")
+var monster_list = {
+	'greenGuy': greenGuy,
+}
 
 func _ready():
 	self.name = "currentScene"
