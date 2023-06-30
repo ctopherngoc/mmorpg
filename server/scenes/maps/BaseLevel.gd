@@ -7,7 +7,7 @@ var spawn_position = Vector2(99, -247)
 ############################################
 # maybe create a list of dictionary map of how many monsters and their spawn location in the map in relation to open_location
 # not used
-var greenGuy = preload("res://scenes/monsters/GreenGuy.tscn")
+var greenGuy = preload("res://scenes/monsterObjects/000001/000001.tscn")
 var enemy_types = ["Green Guy"]
 ############################################
 
@@ -33,30 +33,24 @@ func _process(_delta):
 		for monster_id in enemy_list.keys():
 			if enemy_list[monster_id]['EnemyState'] != "Dead":
 				var monster_container = get_node("YSort/Monsters/%s" % str(monster_id))
-				enemy_list[monster_id]['EnemyLocation'] = monster_container.global_position
+				enemy_list[monster_id]['EnemyLocation'] = monster_container.position
 				enemy_list[monster_id]['EnemyHealth'] = monster_container.current_hp
 				enemy_list[monster_id]['EnemyState'] = monster_container.state
-			#else:
-				#open_locations.append(occupied_locations[monster_id])
-				#occupied_locations.erase(monster_id)
 
 # after timer function called
 func SpawnEnemy():
 	# only calculate/spawn monsters when at least 1 player is actively in the map
-	if get_node("/root/Server/World/Maps/BaseLevel/YSort/Players").get_child_count() == 0:
+	if not get_node("YSort/Players").get_child_count() == 0:
 		pass
 	elif enemy_list.size() >= enemy_maximum:
 		pass
 	else:
 		#print(" start open locations: ", open_locations)
 		for i in open_locations:
-			#print(i, occupied_locations)
-			#print(occupied_locations)
 			if i in occupied_locations:
 				pass
 			else:
 				var location = enemy_spawn_points[i]
-				#occupied_locations[i] = location
 				occupied_locations[i] = location
 				########################################### 
 				# spawns server enemy in map
@@ -64,13 +58,10 @@ func SpawnEnemy():
 				new_enemy.position = location
 				new_enemy.name = str(i)
 				get_node("YSort/Monsters/").add_child(new_enemy, true)
-				enemy_list[i] = {'EnemyName': new_enemy.title, 'EnemyLocation': new_enemy.location, 'EnemyHealth': new_enemy.current_hp, 'EnemyMaxHealth': new_enemy.max_hp, 'EnemyState': new_enemy.state, 'time_out': 1}
+				enemy_list[i] = {'id': new_enemy.id, 'EnemyName': new_enemy.title, 'EnemyLocation': new_enemy.location, 'EnemyHealth': new_enemy.current_hp, 'EnemyMaxHealth': new_enemy.max_hp, 'EnemyState': new_enemy.state, 'time_out': 1}
 				########################################
 				enemy_id_counter += 1
-				#open_locations.erase(i)
-				
-		#print("end")
-				
+
 	for enemy in enemy_list.keys():
 		if enemy_list[enemy]["EnemyState"] == "Dead":
 			if enemy_list[enemy]["time_out"] == 0:
