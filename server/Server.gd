@@ -48,9 +48,19 @@ func _Peer_Disconnected(player_id):
 		if not "CharacterSelect" in ServerData.player_location[str(player_id)]:
 			Firebase.update_document("users/%s" % player_container.db_info["id"], player_container.http, player_container.db_info["token"], player_container)
 			
-			for character in player_container.characters_info_list:
-				var firebase = Firebase.update_document("characters/%s" % str(character['displayname']), player_container.http2, player_container.db_info["token"], character)
-				yield(firebase, 'completed')
+			# no reason to update all characters since you only can make changes to current character
+			# if there is an implementation where you can change characters without logging out
+			# use the script below
+			# has to update cur character before running this or else the two dictionaries won't match
+			
+			#for character in player_container.characters_info_list:
+				#var firebase = Firebase.update_document("characters/%s" % str(character['displayname']), player_container.http2, player_container.db_info["token"], character)
+				#yield(firebase, 'completed')
+				
+			# store current character to firebase
+			var cur_character = player_container.current_character
+			var firebase = Firebase.update_document("characters/%s" % str(cur_character['displayname']), player_container.http2, player_container.db_info["token"], cur_character)
+			yield(firebase, 'completed')
 		# uneeded else to confirm print
 		else:
 			print("dc in characterselect did not save")
@@ -232,18 +242,19 @@ remote func delete_character(requester, display_name: String):
 	firebase_call = Firebase.delete_document("characters/%s" % display_name, player_container.http2, player_container.db_info["token"])
 	yield(firebase_call, "completed")
 	rpc_id(player_id, "return_delete_character", player_container.characters_info_list, requester)
-	
-remote func SpawnCharacter(requester, display_name: String):
-	# get node
-	var player_id = get_tree().get_rpc_sender_id()
-	var player_container = get_node(ServerData.player_location[str(player_id)])
-	# set selected player
-	player_container.current_character = player_container.characters_info_list[display_name]
-	var map = player_container.current_character["lastmap"]
-	map = map.replace("res://scenes/maps/", "")
-	map = map.replace(".tscn", "")
-	# spawn selected player in world
-	move_player_container(player_id, player_container, map, 'spawn')
+
+# not used
+#remote func SpawnCharacter(requester, display_name: String):
+#	# get node
+#	var player_id = get_tree().get_rpc_sender_id()
+#	var player_container = get_node(ServerData.player_location[str(player_id)])
+#	# set selected player
+#	player_container.current_character = player_container.characters_info_list[display_name]
+#	var map = player_container.current_character["lastmap"]
+#	map = map.replace("res://scenes/maps/", "")
+#	map = map.replace(".tscn", "")
+#	# spawn selected player in world
+#	move_player_container(player_id, player_container, map, 'spawn')
 
 func despawnPlayer(player_id):
 	rpc_unreliable_id(0, "receive_despawn_player", player_id)
@@ -252,7 +263,6 @@ func despawnPlayer(player_id):
 func update_player_stats(player_container):
 	print('updating player stats for client')
 	rpc_id(int(player_container.name), "update_player_stats", player_container.current_character)
-	pass
 
 #######################################################
 # Character containers/information 
@@ -275,6 +285,8 @@ func move_player_container(player_id, player_container, map_id, portal_position)
 		print(str(portal_position))
 		var new_location = Vector2((map_position.x + portal_position.x), (map_position.y + portal_position.y))
 		player.position = new_location
+	player_container.cur_position = player.position
+	player_container.start_idle_timer()
 
 func get_player_data(player_id):
 	var player_container = get_node(ServerData.player_location[str(player_id)] + "/%s" % str(player_id))
