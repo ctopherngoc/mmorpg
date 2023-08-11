@@ -7,7 +7,7 @@ func store_character_data(player_id, display_name):
 	var player_container = get_node(ServerData.player_location[str(player_id)] + "/%s" % str(player_id))
 	var firebase = Firebase.update_document("characters/%s" % display_name, player_container.http, player_container.db_info["token"], player_container.current_character)
 	yield(firebase, 'completed')
-	print("%s saved after level" % display_name)
+	print("%s saved data" % display_name)
 
 func npc_attack(player, monster_stats):
 	var player_stats = player.current_character.stats
@@ -30,3 +30,13 @@ func npc_attack(player, monster_stats):
 # warning-ignore:unused_argument
 func player_death(player_id):
 	pass
+
+# save all player data to firebase db every 10 minutes
+func _on_Timer_timeout():
+	if ServerData.username_list.size() > 0:
+		var player_id_arr = Array(ServerData.username_list.keys())
+		for player_id in player_id_arr:
+			store_character_data(player_id, ServerData.username_list[player_id])
+			print("Stored %s data to firebase db" % ServerData.username_list[player_id])
+	else:
+		print("no players no need to save db")
