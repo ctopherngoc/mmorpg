@@ -54,6 +54,8 @@ anims/attack = SubResource( 5 )
 
 [node name="HTTPRequest2" type="HTTPRequest" parent="."]
 
+[node name="idle_timer" type="Timer" parent="."]
+
 [node name="Timer" type="Timer" parent="."]
 wait_time = 3.0
 
@@ -102,4 +104,5 @@ margin_top = -33.0
 margin_right = 32.0
 margin_bottom = 27.0
 
+[connection signal="timeout" from="idle_timer" to="." method="_on_idle_timer_timeout"]
 [connection signal="timeout" from="DamageTimer" to="." method="_on_DamageTimer_timeout"]
