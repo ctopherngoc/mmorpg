@@ -19,7 +19,7 @@ config/icon="res://icon.png"
 ServerData="*res://singletons/ServerData.gd"
 HubConnection="*res://singletons/HubConnection.gd"
 Firebase="*res://singletons/Firebase.gd"
-Global="*res://singletons/Global.gd"
+Global="*res://singletons/Global.tscn"
 
 [global]
 
