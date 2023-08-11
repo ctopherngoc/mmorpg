@@ -40,7 +40,7 @@ func _process(_delta):
 # after timer function called
 func SpawnEnemy():
 	# only calculate/spawn monsters when at least 1 player is actively in the map
-	if not get_node("YSort/Players").get_child_count() == 0:
+	if get_node("YSort/Players").get_child_count() == 0:
 		pass
 	elif enemy_list.size() >= enemy_maximum:
 		pass

@@ -42,7 +42,7 @@ func _process(_delta):
 func SpawnEnemy():
 	# only calculate/spawn monsters when at least 1 player is actively in the map
 	# for testing set to spawn on load
-	if not get_node("YSort/Players").get_child_count() == 0:
+	if get_node("YSort/Players").get_child_count() == 0:
 		pass
 	elif enemy_list.size() >= enemy_maximum:
 		pass
@@ -56,7 +56,7 @@ func SpawnEnemy():
 				pass
 			else:
 				var location = enemy_spawn_points[i]
-				print('location: ', location)
+				# print('location: ', location)
 				#occupied_locations[i] = location
 				occupied_locations[i] = location
 				#print(location)
@@ -71,7 +71,7 @@ func SpawnEnemy():
 				########################################
 				enemy_id_counter += 1
 				#open_locations.erase(i)
-				print(enemy_list[i])
+				# print(enemy_list[i])
 
 	for enemy in enemy_list.keys():
 		if enemy_list[enemy]["EnemyState"] == "Dead":
