@@ -13,7 +13,7 @@ var monster_list = {
 
 func _ready():
 	self.name = "currentScene"
-	Global.change_background()
+	#Global.change_background()
 	if Global.player.lastmap != get_filename():
 		Global.update_lastmap(get_filename())
 	spawn_location = Vector2(248,-407)

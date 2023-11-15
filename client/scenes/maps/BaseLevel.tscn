@@ -13,6 +13,16 @@ extents = Vector2( 112.5, 43.5 )
 [node name="Map" type="Node"]
 script = ExtResource( 5 )
 
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_mirroring = Vector2( 1920, 0 )
+
+[node name="BaseLevel" type="Sprite" parent="ParallaxBackground/ParallaxLayer"]
+position = Vector2( 361, -436 )
+scale = Vector2( 1, 1.14173 )
+texture = ExtResource( 2 )
+
 [node name="TileMap" parent="." instance=ExtResource( 3 )]
 position = Vector2( 234, -17 )
 collision_layer = 1
@@ -47,13 +57,6 @@ position = Vector2( 833, -89 )
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
 position = Vector2( 95, -248 )
-
-[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
-
-[node name="BaseLevel" type="Sprite" parent="ParallaxBackground"]
-position = Vector2( 246.5, -385 )
-scale = Vector2( 0.716146, 1 )
-texture = ExtResource( 2 )
 
 [connection signal="body_entered" from="MapObjects/Ladder/noCol" to="." method="_on_noCol_body_entered"]
 [connection signal="body_exited" from="MapObjects/Ladder/noCol" to="." method="_on_noCol_body_exited"]
