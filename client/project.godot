@@ -35,6 +35,7 @@ layer=false
 LAyer=false
 Layer=false
 2d=false
+size=false
 
 [gui]
 
