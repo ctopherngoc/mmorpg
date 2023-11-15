@@ -195,6 +195,8 @@ func update_animation():
 func change_direction():
 	if Input.is_action_pressed("move_right") && !attacking && !Input.is_action_pressed("move_left"):
 		direction = "RIGHT"
+		if velocity.x < 0 && is_on_floor():
+			velocity.x = 0
 		get_node( "Head" ).set_flip_h( true )
 		get_node( "Body" ).set_flip_h( true )
 		get_node( "Ears" ).set_flip_h( true )
@@ -204,7 +206,8 @@ func change_direction():
 		animation["d"] = 1
 	elif Input.is_action_pressed("move_left") && !attacking && !Input.is_action_pressed("move_right"):
 		direction = "LEFT"
-
+		if velocity.x > 0 && is_on_floor():
+			velocity.x  = 0
 		get_node( "Head" ).set_flip_h( false )
 		get_node( "Body" ).set_flip_h( false )
 		get_node( "Ears" ).set_flip_h( false )
