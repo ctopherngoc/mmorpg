@@ -1,4 +1,4 @@
-# 2D MMORPG
+# BlossomStory
 
 This is a personal project to create a Maplestory-like 2D side scrolling mmorpg game using the Godot 3.5 game engine. It is broken up into a game server, authentication server, gateway server and client executable.
 Character sprites from Maplestory were used as templates for the player container. The current release allows local host of the game server, authentication server and gateway server. It is possible to open up multiple
@@ -11,20 +11,15 @@ Install Godot 3.5 on the running machine
 
 ### Installing/Executing
 
-Download the current release (v1.0.1) .zip from the release section.
-Unzip the 4 executables.<br />
+Download the current release (v1.1.0) .zip from the release section.
+Unzip the executable.<br />
 <br />
-Run the executables in the following order:<br />
-1. authentication.exe<br />
-2. gateway.exe<br />
-3. server.exe<br />
-4. client.exe<br />
+Run the client executable.<br />
 <br />
 When running the client, test login credentials will be automatically populated<br />
 Click on log-in<br />
-Select the character and click on select character<br />
-Character should connect and populated into the server<br />
-
+Once server authenticates user info and client is connected to server, select a character and click on select character<br />
+Character will spawn in last map and populated into the server<br />
 
 ## Controls
 
