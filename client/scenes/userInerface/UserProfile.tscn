@@ -1,10 +1,17 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://scenes/userInerface/UserProfile.gd" type="Script" id=1]
 [ext_resource path="res://scenes/userInerface/Character.tscn" type="PackedScene" id=2]
+[ext_resource path="res://resources/background/login_screen/login_screen.jpg" type="Texture" id=3]
 
 [node name="UserProfile" type="Control"]
+rect_pivot_offset = Vector2( -422, 85 )
 script = ExtResource( 1 )
+
+[node name="Background" type="Sprite" parent="."]
+position = Vector2( 639.778, 361 )
+scale = Vector2( 0.664815, 0.664815 )
+texture = ExtResource( 3 )
 
 [node name="SceneTitle" type="VBoxContainer" parent="."]
 margin_left = 18.0
@@ -19,6 +26,7 @@ margin_bottom = 14.0
 [node name="label" type="Label" parent="SceneTitle/CharacterScreen"]
 margin_right = 107.0
 margin_bottom = 14.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Character Screen"
 align = 1
 
@@ -29,6 +37,7 @@ margin_bottom = 32.0
 
 [node name="Label" type="Label" parent="SceneTitle/notification"]
 margin_bottom = 14.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
 
 [node name="CharacterBox" type="VBoxContainer" parent="."]
 margin_left = 19.0
@@ -95,6 +104,7 @@ margin_left = 16.0
 margin_top = 587.0
 margin_right = 86.0
 margin_bottom = 601.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Username:"
 
 [node name="notification" type="HBoxContainer" parent="Create"]
