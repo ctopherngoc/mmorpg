@@ -1,4 +1,4 @@
-extends Control
+extends Node
 
 onready var strength = get_node("HBoxContainer/VBoxContainer/Strength/Value")
 onready var vitality = get_node("HBoxContainer/VBoxContainer/Vitality/Value")

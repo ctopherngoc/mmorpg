@@ -8,7 +8,7 @@ var main_player = null
 var map_bound = {
 	"left": 0,
 	"right": 1000,
-	"bottom": 0,
+	"bottom": 30,
 }
 
 var greenGuy = preload("res://scenes/monsterObjects/000001/000001.tscn")
