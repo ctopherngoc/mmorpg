@@ -171,6 +171,10 @@ remote func choose_character(requester, display_name: String):
 	for character_dict in player_container.characters_info_list:
 		if  display_name == character_dict['displayname']:
 			player_container.current_character = character_dict
+			##########
+			"""Issue here fresh account no players
+			invalid set index '234234324' (on base:array) with value type string
+			"""
 			ServerData.username_list[str(player_id)] = display_name
 			break
 	var map = player_container.current_character['lastmap']
