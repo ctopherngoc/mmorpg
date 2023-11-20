@@ -100,10 +100,13 @@ custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
 text = "XP:"
 
 [node name="Label" type="Label" parent="Control/PlayerInfo/exp"]
-margin_left = 25.0
-margin_right = 65.0
-margin_bottom = 14.0
+margin_left = 22.0
+margin_top = 1.0
+margin_right = 62.0
+margin_bottom = 32.0
 custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "90.25
+"
 
 [node name="level" type="Label" parent="Control/PlayerInfo"]
 margin_left = 117.0

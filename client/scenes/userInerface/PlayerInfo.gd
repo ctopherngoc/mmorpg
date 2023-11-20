@@ -31,7 +31,8 @@ func update_level():
 	
 # for xp to show up as percentage, maximum xp for level must be stored and transferred
 func update_exp():
-	$exp/Label.text = str(Global.player["stats"]["experience"])
+	var exp_percent = (Global.player["stats"]["experience"] / GameData.experience_table[str(Global.player["stats"]["level"])]) * 100
+	$exp/Label.text = "%10.2f" % exp_percent
 
 func update_displayname():
 	$displayname/Label.text = str(Global.player["displayname"])
