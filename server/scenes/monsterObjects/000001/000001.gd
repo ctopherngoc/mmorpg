@@ -77,6 +77,7 @@ func npc_hit(dmg, player):
 		for attacker in attackers.keys():
 			# if atacker logged in
 			if attacker in ServerData.player_location.keys():
+				print(str(attacker) + " killed monster")
 
 				# if attacker in map
 				if get_node("../../Players/%s" % attacker):
