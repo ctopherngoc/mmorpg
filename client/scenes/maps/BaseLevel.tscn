@@ -20,8 +20,8 @@ script = ExtResource( 5 )
 motion_mirroring = Vector2( 1920, 0 )
 
 [node name="BaseLevel" type="Sprite" parent="ParallaxBackground/ParallaxLayer"]
-position = Vector2( 361, -436 )
-scale = Vector2( 1, 1.14173 )
+position = Vector2( 361, -545.5 )
+scale = Vector2( 1, 1.42913 )
 texture = ExtResource( 2 )
 
 [node name="TileMap" parent="." instance=ExtResource( 3 )]
