@@ -54,9 +54,9 @@ func take_damage(take_damage):
 		print("Current HP: %s" % current_character["stats"]["health"])
 		
 		# WIP 
-#		if current_character["stats"]["health"] <= 0:
-#			print("%s died" % current_character["displayname"])
-#			Global.player_death(self.name)
+		if current_character["stats"]["health"] <= 0:
+			print("%s died" % current_character["displayname"])
+			Global.player_death(self.name)
 
 		get_node("/root/Server").update_player_stats(self)
 		$DamageTimer.start()

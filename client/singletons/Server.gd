@@ -214,22 +214,34 @@ remote func update_player_stats(player_stats):
 	for character in Global.character_list:
 		if character["displayname"] == player_stats["displayname"]:
 			var player_node = get_node("/root/currentScene/Player")
+			var info_node = get_node("/root/currentScene/UI/Control/PlayerInfo")
 
 			# hp check
 			if player_stats["stats"]["health"] < character["stats"]["health"]:
 					player_node.health = player_stats["stats"]["health"]
+					info_node.health = player_stats["stats"]["health"]
+					
+					Signals.emit_signal("update_health")
 					print("Player took %s damage." % str(character["stats"]["health"] - player_stats["stats"]["health"]))
 
 			# level check -> exp check
 			if player_stats["stats"]["level"] > character["stats"]["level"]:
 				print("Level up")
+				
+				##### possible remove
 				player_node.player["stats"]["experience"] = player_stats["stats"]["experience"]
 				player_node.player["stats"]["level"] = player_stats["stats"]["level"]
-				# Add sp points, ability points
+				#####################
+				
+				info_node.exp = player_stats["stats"]["experience"]
+				info_node.level = player_stats["stats"]["level"]
+				Signals.emit_signal("update_level")
 
 			elif player_stats["stats"]["experience"] > character["stats"]["experience"]:
 					player_node.player["stats"]["experience"] = player_stats["stats"]["experience"]
 					print("Player gained %s exp." % str(player_stats["stats"]["experience"] - character["stats"]["experience"]))
+					info_node.experience = player_stats["stats"]["experience"]
+					Signals.emit_signal("update_exp")
 			character = player_stats
 			player_node.player = player_stats
 			break
