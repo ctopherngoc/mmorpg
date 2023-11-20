@@ -247,19 +247,6 @@ remote func delete_character(requester, display_name: String):
 	yield(firebase_call, "completed")
 	rpc_id(player_id, "return_delete_character", player_container.characters_info_list, requester)
 
-# not used
-#remote func SpawnCharacter(requester, display_name: String):
-#	# get node
-#	var player_id = get_tree().get_rpc_sender_id()
-#	var player_container = get_node(ServerData.player_location[str(player_id)])
-#	# set selected player
-#	player_container.current_character = player_container.characters_info_list[display_name]
-#	var map = player_container.current_character["lastmap"]
-#	map = map.replace("res://scenes/maps/", "")
-#	map = map.replace(".tscn", "")
-#	# spawn selected player in world
-#	move_player_container(player_id, player_container, map, 'spawn')
-
 func despawnPlayer(player_id):
 	rpc_unreliable_id(0, "receive_despawn_player", player_id)
 
