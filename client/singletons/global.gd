@@ -6,6 +6,11 @@ var last_world_state = 0
 var world_state_buffer = []
 onready var current_map = ""
 const interpolation_offset = 100
+onready var bgm = $bgm
+onready var bgm_dict = {
+	'menu': preload("res://scenes/bgm/menu_bgm.mp3"),
+	'baselevel': preload("res://scenes/bgm/game_bgm.mp3"),
+}
 
 var character_list = []
 var player = null
@@ -441,7 +446,7 @@ onready var string_validation = [
 # loads player info
 func _ready():
 	pass
-
+	
 # scene gets player info
 func register_player():
 	return player
@@ -528,13 +533,10 @@ func spawn_new_player(player_id, player_state):
 		pass
 	else:
 		var new_player = other_player.instance()
-		#####################################
 		new_player.position = get_node("/root/currentScene").spawn_location
 		new_player.name = str(player_id)
-		#print(get_node("/root/currentScene/OtherPlayers"))
 		get_node("/root/currentScene/OtherPlayers").add_child(new_player)
 		get_node("/root/currentScene/OtherPlayers/%s/Label" % player_id).text = player_state["U"]
-		
 
 func despawn_player(player_id):
 	if get_node("/root/currentScene/OtherPlayers").has_node(str(player_id)):
