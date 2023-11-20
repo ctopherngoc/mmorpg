@@ -40,7 +40,6 @@ margin_top = 1.0
 margin_right = 105.0
 margin_bottom = 15.0
 custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "50"
 
 [node name="mana" type="Label" parent="Control/PlayerInfo"]
 margin_left = 24.0
@@ -57,7 +56,6 @@ margin_top = 1.0
 margin_right = 82.0
 margin_bottom = 15.0
 custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "50"
 
 [node name="displayname" type="Label" parent="Control/PlayerInfo"]
 margin_left = 118.0
@@ -74,7 +72,23 @@ margin_right = 129.0
 margin_bottom = 14.0
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
-text = "dumachris"
+
+[node name="job" type="Label" parent="Control/PlayerInfo"]
+margin_left = 116.0
+margin_top = 46.0
+margin_right = 201.0
+margin_bottom = 60.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
+text = "job:"
+
+[node name="Label" type="Label" parent="Control/PlayerInfo/job"]
+margin_left = 30.0
+margin_top = 1.0
+margin_right = 97.0
+margin_bottom = 15.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
 
 [node name="exp" type="Label" parent="Control/PlayerInfo"]
 margin_left = 41.0
@@ -90,4 +104,19 @@ margin_left = 25.0
 margin_right = 65.0
 margin_bottom = 14.0
 custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "50%"
+
+[node name="level" type="Label" parent="Control/PlayerInfo"]
+margin_left = 117.0
+margin_top = 31.0
+margin_right = 157.0
+margin_bottom = 45.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
+text = "lvl: "
+
+[node name="Label" type="Label" parent="Control/PlayerInfo/level"]
+margin_left = 20.0
+margin_right = 60.0
+margin_bottom = 14.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
