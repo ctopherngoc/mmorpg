@@ -12,6 +12,14 @@ onready var bgm_dict = {
 	'baselevel': preload("res://scenes/bgm/game_bgm.mp3"),
 }
 
+onready var job_dict = {
+	"0": "Beginner",
+	"1": "Warrior",
+	"2": "Mage",
+	"3": "Archer",
+	"4": "Thief",
+}
+
 var character_list = []
 var player = null
 var last_portal = null
