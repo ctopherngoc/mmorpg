@@ -210,25 +210,37 @@ remote func receive_attack(player_id, attack_time):
 remote func update_player_stats(player_stats):
 	print('server.gd: remote update_player_stats')
 	print(player_stats)
-	Global.player = player_stats
+	# possibly change so packet only sends the actual character
+	#Global.player = player_stats
 	for character in Global.character_list:
 		if character["displayname"] == player_stats["displayname"]:
-			var player_node = get_node("/root/currentScene/Player")
-			var info_node = get_node("/root/currentScene/UI/Control/PlayerInfo")
+			character = player_stats
+			#var player_node = get_node("/root/currentScene/Player")
+			#var info_node = get_node("/root/currentScene/UI/Control/PlayerInfo")
 
-			# hp check
-			if player_stats["stats"]["health"] < character["stats"]["health"]:
-					player_node.health = player_stats["stats"]["health"]
-					info_node.health = player_stats["stats"]["health"]
-					
-					Signals.emit_signal("update_health")
+			# change in health
+			if player_stats["stats"]["health"] != Global.player["stats"]["health"]:
+				"""
+				if player_stats["stats"]["health"] < character["stats"]["health"]:
+						player_node.health = player_stats["stats"]["health"]
+						info_node.health = player_stats["stats"]["health"]
+						Signals.emit_signal("update_health")
+						print("Player took %s damage." % str(character["stats"]["health"] - player_stats["stats"]["health"]))
+				"""
+				# lose health
+				if player_stats["stats"]["health"] < Global.player["stats"]["health"]:
 					print("Player took %s damage." % str(character["stats"]["health"] - player_stats["stats"]["health"]))
-
+				# gained health
+				else:
+					print("Player healed %s health." % str(abs(character["stats"]["health"] - player_stats["stats"]["health"])))
+				Global.player["stats"]["health"] = player_stats["stats"]["health"]
+				Signals.emit_signal("update_health")
+				
 			# level check -> exp check
+			"""
 			if player_stats["stats"]["level"] > character["stats"]["level"]:
 				print("Level up")
-				
-				##### possible remove
+				#### possible remove
 				player_node.player["stats"]["experience"] = player_stats["stats"]["experience"]
 				player_node.player["stats"]["level"] = player_stats["stats"]["level"]
 				#####################
@@ -236,14 +248,24 @@ remote func update_player_stats(player_stats):
 				info_node.exp = player_stats["stats"]["experience"]
 				info_node.level = player_stats["stats"]["level"]
 				Signals.emit_signal("update_level")
-
-			elif player_stats["stats"]["experience"] > character["stats"]["experience"]:
-					player_node.player["stats"]["experience"] = player_stats["stats"]["experience"]
-					print("Player gained %s exp." % str(player_stats["stats"]["experience"] - character["stats"]["experience"]))
-					info_node.experience = player_stats["stats"]["experience"]
+				"""
+			if player_stats["stats"]["level"] > Global.player["stats"]["level"]:
+				print("Level up")
+				Global.player["stats"]["experience"] = player_stats["stats"]["experience"]
+				Global.player["stats"]["level"] = player_stats["stats"]["level"]
+				Signals.emit_signal("update_level")
+				""""
+				elif player_stats["stats"]["experience"] > character["stats"]["experience"]:
+						player_node.player["stats"]["experience"] = player_stats["stats"]["experience"]
+						print("Player gained %s exp." % str(player_stats["stats"]["experience"] - character["stats"]["experience"]))
+						info_node.experience = player_stats["stats"]["experience"]
+						Signals.emit_signal("update_exp")
+				"""
+			elif player_stats["stats"]["experience"] > Global.player["stats"]["experience"]:
+					print("Player gained %s exp." % str(player_stats["stats"]["experience"] - Global.player["stats"]["experience"]))
+					Global.player["stats"]["experience"] = player_stats["stats"]["experience"]
 					Signals.emit_signal("update_exp")
-			character = player_stats
-			player_node.player = player_stats
+			#player_node.player = player_stats
 			break
 
 func portal(portal):
