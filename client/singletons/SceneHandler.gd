@@ -13,10 +13,7 @@ onready var scenes = {
 
 func _ready():
 # warning-ignore:return_value_discarded
-	#print(get_tree())
 	get_tree().change_scene("res://scenes/userInerface/LoginScreen.tscn")
-	print(Global.bgm.stream)
-	#$bgm.play()
 
 func _process(_delta):
 	if Global.bgm.playing == false:
@@ -25,10 +22,9 @@ func _process(_delta):
 
 func change_scene(scene: String):
 # warning-ignore:return_value_discarded
-	#print(scene)
 	if "/maps" in scene:
 		if current_bgm == "login":
-			Global.bgm.set_stream(Global.bgm_dict["baselevel"])
+			Global.bgm.set_stream(GameData.bgm_dict["baselevel"])
 		Global.current_map = scene.replace("res://scenes/maps/", "")
 		Global.current_map = Global.current_map.replace(".tscn", "")
 		print(Global.current_map)

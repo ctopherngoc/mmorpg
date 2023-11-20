@@ -37,7 +37,7 @@ func update_displayname():
 	$displayname/Label.text = str(Global.player["displayname"])
 	
 func update_job():
-	$job/Label.text = str(Global.job_dict[str(Global.player["stats"]["job"])])
+	$job/Label.text = str(GameData.job_dict[str(Global.player["stats"]["job"])])
 	
 func load_info():
 	update_displayname()
