@@ -20,6 +20,7 @@ Global="*res://singletons/global.tscn"
 Server="*res://singletons/Server.gd"
 Gateway="*res://singletons/Gateway.gd"
 SceneHandler="*res://singletons/SceneHandler.gd"
+Signals="*res://singletons/Signals.gd"
 
 [display]
 
