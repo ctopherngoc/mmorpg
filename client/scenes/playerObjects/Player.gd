@@ -60,7 +60,7 @@ func _ready():
 func _physics_process(delta):
 	movement_loop(delta)
 	define_player_state()
-	update_health_display()
+	# update_health_display()
 
 func define_player_state():
 	player_state = {"T": Server.client_clock, "P": get_global_position(), "M": Global.current_map, "A": animation}
@@ -300,3 +300,4 @@ func overlappingBodies():
 
 func update_health_display():
 	$HP.text = str(player["stats"]["health"])
+	# emit global signal send hp value -> global signal emits signal to ui to update hp value
