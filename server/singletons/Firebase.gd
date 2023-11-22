@@ -1,8 +1,8 @@
 extends Node
 
 onready var httprequest
-const API_KEY := "AIzaSyC2PkBqVa6lm9zG7gfy7MLZvNpRytA8klU"
-const PROJECT_ID := "godotproject-ef224"
+const API_KEY := ""
+const PROJECT_ID := ""
 const DATABASE_URL := "https://firestore.googleapis.com/v1/projects/%s/databases/(default)/documents/" % PROJECT_ID 
 
 
