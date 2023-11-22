@@ -118,6 +118,8 @@ var player_template = {
 var monsters = {
 	"BaseLevel" : {},
 	"BaseLevel2" : {},
+	"BaseLevel3" : {},
+	"BaseLevel4" : {},
 }
 
 var experience_table = {
