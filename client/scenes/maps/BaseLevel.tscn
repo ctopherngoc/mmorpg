@@ -41,14 +41,15 @@ text = "MAP 1"
 [node name="MapObjects" type="Node" parent="."]
 
 [node name="Ladder" parent="MapObjects" instance=ExtResource( 10 )]
-position = Vector2( 187, -84 )
+position = Vector2( 188, -102 )
+scale = Vector2( 1, 0.95 )
 
 [node name="noCol" type="Area2D" parent="MapObjects/Ladder"]
 collision_layer = 1024
 collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="MapObjects/Ladder/noCol"]
-position = Vector2( 82.5, -247.5 )
+position = Vector2( 82, -243.158 )
 shape = SubResource( 1 )
 
 [node name="Portal1" parent="MapObjects" instance=ExtResource( 8 )]
