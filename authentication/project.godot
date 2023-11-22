@@ -24,6 +24,7 @@ Server="*res://Singleton/Server.gd"
 
 window/size/width=100
 window/size/height=100
+window/size/resizable=false
 
 [gui]
 
