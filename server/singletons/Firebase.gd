@@ -106,7 +106,11 @@ func firebase_dictionary_converter(database_data: Dictionary, client_data: Array
 	var keys = shortcut.keys()
 	temp_dict['stats'] = {}
 	for key in keys:
-		temp_dict['stats'][key] = shortcut[key]['doubleValue']
+		# added situation if value saved as integervalue
+		if shortcut[key]['integerValue']:
+			temp_dict['equipment'][key] = int(shortcut[key]['integerValue'])
+		else:
+			temp_dict['stats'][key] = shortcut[key]['doubleValue']
 
 	# equipment
 	shortcut = database_data["equipment"]["mapValue"]["fields"] 
