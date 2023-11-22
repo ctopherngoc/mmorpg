@@ -54,9 +54,9 @@ func take_damage(take_damage):
 		print("Current HP: %s" % current_character["stats"]["health"])
 		
 		# WIP 
-#		if current_character["stats"]["health"] <= 0:
-#			print("%s died" % current_character["displayname"])
-#			Global.player_death(self.name)
+		if current_character["stats"]["health"] <= 0:
+			print("%s died" % current_character["displayname"])
+			Global.player_death(self.name)
 
 		get_node("/root/Server").update_player_stats(self)
 		$DamageTimer.start()
@@ -80,9 +80,9 @@ func experience(experience):
 		# add ability point skill points
 		if current_character["stats"]["class"] != 0:
 			current_character["stats"]["ap"] += 3
-			
-		Global.store_character_data(self.name, current_character["displayname"])
-		
+	
+	current_character["stats"]["experience"] = current_exp
+	Global.store_character_data(self.name, current_character["displayname"])
 	print("Level: %s" % current_character["stats"]["level"])
 	print("EXP: %s" % current_character["stats"]["experience"])
 	get_node("/root/Server").update_player_stats(self)

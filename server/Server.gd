@@ -1,7 +1,7 @@
 extends Node
 
 var network = NetworkedMultiplayerENet.new()
-var port = 1000
+var port = 1999
 var max_players = 100
 
 # example tokens added
@@ -171,6 +171,10 @@ remote func choose_character(requester, display_name: String):
 	for character_dict in player_container.characters_info_list:
 		if  display_name == character_dict['displayname']:
 			player_container.current_character = character_dict
+			##########
+			"""Issue here fresh account no players
+			invalid set index '234234324' (on base:array) with value type string
+			"""
 			ServerData.username_list[str(player_id)] = display_name
 			break
 	var map = player_container.current_character['lastmap']
@@ -242,19 +246,6 @@ remote func delete_character(requester, display_name: String):
 	firebase_call = Firebase.delete_document("characters/%s" % display_name, player_container.http2, player_container.db_info["token"])
 	yield(firebase_call, "completed")
 	rpc_id(player_id, "return_delete_character", player_container.characters_info_list, requester)
-
-# not used
-#remote func SpawnCharacter(requester, display_name: String):
-#	# get node
-#	var player_id = get_tree().get_rpc_sender_id()
-#	var player_container = get_node(ServerData.player_location[str(player_id)])
-#	# set selected player
-#	player_container.current_character = player_container.characters_info_list[display_name]
-#	var map = player_container.current_character["lastmap"]
-#	map = map.replace("res://scenes/maps/", "")
-#	map = map.replace(".tscn", "")
-#	# spawn selected player in world
-#	move_player_container(player_id, player_container, map, 'spawn')
 
 func despawnPlayer(player_id):
 	rpc_unreliable_id(0, "receive_despawn_player", player_id)

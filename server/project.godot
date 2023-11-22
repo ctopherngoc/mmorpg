@@ -12,6 +12,7 @@ config_version=4
 
 config/name="game server"
 run/main_scene="res://Server.tscn"
+boot_splash/show_image=false
 config/icon="res://icon.png"
 
 [autoload]
@@ -20,6 +21,13 @@ ServerData="*res://singletons/ServerData.gd"
 HubConnection="*res://singletons/HubConnection.gd"
 Firebase="*res://singletons/Firebase.gd"
 Global="*res://singletons/Global.tscn"
+
+[display]
+
+window/size/width=640
+window/size/height=360
+window/size/always_on_top=true
+window/vsync/use_vsync=false
 
 [global]
 

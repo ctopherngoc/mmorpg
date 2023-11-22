@@ -1,20 +1,7 @@
 extends KinematicBody2D
-"""
-1. create ladders end height higher than player height (must jump to climb)
-2. make rope 2darea talller than floor
-3. holding up while on ground and in area2d does nothing
-*** 
-"""
-# player signals
-signal died
-# warning-ignore:unused_signal
-signal do_damage
-
-# timer for iframes
-onready var timer = get_node("Timer")
 
 # dynamic player variables
-onready var player
+onready var player = Global.player
 onready var jump_speed
 onready var health
 onready var max_horizontal_speed
@@ -31,9 +18,7 @@ export var can_climb = false
 export var is_climbing = false
 export var no_collision_zone = false
 onready var direction = "RIGHT"
-onready var took_damage = false
 onready var attacking = false
-onready var received_knockback = false
 onready var player_state
 
 onready var animation = {
@@ -41,9 +26,21 @@ onready var animation = {
 	"d": 1
 }
 
+# not used?
+"""
+# player signals
+signal died
+# warning-ignore:unused_signal
+signal do_damage
+
+onready var took_damage = false
+onready var received_knockback = false
+# timer for iframes
+onready var timer = get_node("Timer")
+"""
 
 func _ready():
-	timer.set_wait_time(1.5)
+	# timer.set_wait_time(1.5)
 	player = Global.register_player()
 	$Label.text = player.displayname
 	max_horizontal_speed = (player.stats.movementSpeed)
@@ -60,14 +57,13 @@ func _ready():
 func _physics_process(delta):
 	movement_loop(delta)
 	define_player_state()
-	update_health_display()
+	# update_health_display()
 
 func define_player_state():
 	player_state = {"T": Server.client_clock, "P": get_global_position(), "M": Global.current_map, "A": animation}
 	Server.send_player_state(player_state)
 
 func movement_loop(delta):
-	#take_damage()
 	change_direction()
 	var move_vector = get_movement_vector()
 	
@@ -134,7 +130,6 @@ func get_velocity(move_vector, delta):
 				is_climbing = false
 				velocity.y = move_vector.y * jump_speed * .8
 				velocity.x = move_vector.x * 200
-
 		# can climb but not climbing
 		else:
 			#if moving
@@ -157,7 +152,6 @@ func get_velocity(move_vector, delta):
 			velocity.y = move_vector.y * jump_speed
 		else:
 			velocity.y += gravity * delta
-			
 	if !can_climb:
 		is_climbing = false
 
@@ -215,56 +209,6 @@ func change_direction():
 		get_node( "Weapon" ).scale.x = 1
 		get_node("do_damage").scale.x = -1
 		animation["d"] = 0
-	
-######################################################################################
-# functions to work on
-#################################
-#knock back function
-# warning-ignore:unused_argument
-func on_hazard_area_entered(area2d):
-	pass
-	#recieve_knockback(area2d.global_position)
-
-# warning-ignore:unused_argument
-func recieve_knockback(damage_source_pos: Vector2):
-	pass
-#	var knockback_direction = damage_source_pos.direction_to(self.global_position)
-#	var knockback = knockback_direction * knockback_modifier *40	
-#	self.global_position += knockback
-#######################################################################################
-
-# take damage function
-func take_damage():
-	if !took_damage:
-		if $take_damage.get_overlapping_areas().size() > 0:
-
-			print("touch damage. HP = ", player.stats.mapValue.fields.health.doubleValue)
-			took_damage = true
-
-			if (player.stats.mapValue.fields.health.doubleValue <= 0):
-				# respawn hp
-				took_damage = false
-				player.stats.mapValue.fields.health.doubleValue = 25
-				print("died update")
-				Global.update_player(player)
-				emit_signal("died")
-			else:
-				$take_damage.set_monitoring(false) 
-				timer.start()
-		else:
-			pass
-	else:
-		pass
-
-func _on_Timer_timeout():
-	timer.stop()
-	took_damage = false
-	$take_damage.set_monitoring(true) 
-
-# insert iFrame
-func on_hazard_area_exit(_area2d):
-	if $take_damage.get_overlapping_areas().size() == 0:
-		print("no overlapping bodies")
 
 #########################################################################################
 # floor collision while in air
@@ -298,5 +242,53 @@ func overlappingBodies():
 	for body in $do_damage.get_overlapping_areas():
 		print('player overlapping with: ', body)
 
+######################################################################################
+# functions to work on
+#################################
+#knock back function
+# warning-ignore:unused_argument
+func on_hazard_area_entered(area2d):
+	pass
+	#recieve_knockback(area2d.global_position)
+
+# warning-ignore:unused_argument
+func recieve_knockback(damage_source_pos: Vector2):
+	pass
+#	var knockback_direction = damage_source_pos.direction_to(self.global_position)
+#	var knockback = knockback_direction * knockback_modifier *40	
+#	self.global_position += knockback
+
+# not used anymore?
+# take damage function
+"""
+func take_damage():
+	if !took_damage:
+		if $take_damage.get_overlapping_areas().size() > 0:
+			print("touch damage. HP = ", player.stats.mapValue.fields.health.doubleValue)
+			took_damage = true
+			if (player.stats.mapValue.fields.health.doubleValue <= 0):
+				# respawn hp
+				took_damage = false
+				player.stats.mapValue.fields.health.doubleValue = 25
+				print("died update")
+				Global.update_player(player)
+				emit_signal("died")
+			else:
+				$take_damage.set_monitoring(false) 
+				timer.start()
+
+
+func _on_Timer_timeout():
+	timer.stop()
+	took_damage = false
+	$take_damage.set_monitoring(true) 
+
+# insert iFrame
+func on_hazard_area_exit(_area2d):
+	if $take_damage.get_overlapping_areas().size() == 0:
+		print("no overlapping bodies")
+		
 func update_health_display():
 	$HP.text = str(player["stats"]["health"])
+	# emit global signal send hp value -> global signal emits signal to ui to update hp value
+"""

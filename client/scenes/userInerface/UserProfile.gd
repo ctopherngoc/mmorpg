@@ -152,7 +152,7 @@ func string_validation(username):
 			$Create/notification/Label.text = "invalid username"
 			check_button.disabled = false
 			return false
-	for banned_word in Global.string_validation:
+	for banned_word in GameData.string_validation:
 		if banned_word in username.to_lower():
 			$Create/notification/Label.text = "contains inappropirate words"
 			check_button.disabled = false

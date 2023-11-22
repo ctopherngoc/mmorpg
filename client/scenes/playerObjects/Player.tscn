@@ -933,6 +933,7 @@ collision_mask = 1024
 shape = SubResource( 20 )
 
 [node name="HP" type="Label" parent="."]
+visible = false
 margin_left = -14.0
 margin_top = -61.0
 margin_right = 34.0

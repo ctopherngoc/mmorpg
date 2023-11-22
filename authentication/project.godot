@@ -20,6 +20,12 @@ Firebase="*res://Singleton/Firebase.gd"
 Authenticate="*res://Authenticate.gd"
 Server="*res://Singleton/Server.gd"
 
+[display]
+
+window/size/width=100
+window/size/height=100
+window/size/resizable=false
+
 [gui]
 
 common/drop_mouse_on_gui_input_disabled=true
