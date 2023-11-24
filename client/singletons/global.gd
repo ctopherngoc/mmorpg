@@ -1,7 +1,8 @@
 extends Node
 
-const interpolation_offset = 100
+onready var ip = "127.0.0.1"
 
+const interpolation_offset = 100
 onready var mosnter_spawn
 onready var current_map = ""
 onready var bgm = $bgm

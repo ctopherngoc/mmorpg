@@ -1,5 +1,4 @@
 extends Node
-var ip = ""
 var port = 2733
 var token
 var email
@@ -31,7 +30,7 @@ func _physics_process(delta):
 # Server connection/latency functions
 func connect_to_server():
 	var network = NetworkedMultiplayerENet.new()
-	network.create_client(ip, port)
+	network.create_client(Global.ip, port)
 	get_tree().set_network_peer(network)
 
 	network.connect("connection_failed", self, "_on_connection_failed")
@@ -52,6 +51,7 @@ func _on_server_disconnect():
 	Global.world_state_buffer.clear()
 	timer.stop()
 	print("server disconnected")
+	Signals.emit_signal("fail_login")
 	
 	if login_status == 1:
 		SceneHandler.change_scene(SceneHandler.scenes["mainMenu"])
@@ -226,6 +226,7 @@ remote func update_player_stats(player_stats):
 				Global.player["stats"]["experience"] = player_stats["stats"]["experience"]
 				Global.player["stats"]["level"] = player_stats["stats"]["level"]
 				Signals.emit_signal("update_level")
+				Signals.emit_signal("update_exp")
 
 			elif player_stats["stats"]["experience"] > Global.player["stats"]["experience"]:
 					print("Player gained %s exp." % str(player_stats["stats"]["experience"] - Global.player["stats"]["experience"]))

@@ -1,10 +1,8 @@
 extends Node
 
-
 var network = NetworkedMultiplayerENet.new()
 var gateway_api = MultiplayerAPI.new()
 var port = 2734
-var ip = ""
 var cert = load("res://resources/Certificate/X509_Certificate.crt")
 
 var username
@@ -29,7 +27,7 @@ func _process(_delta):
 func connect_to_server(_username, _password):
 	username = _username
 	password = _password
-	network.create_client(ip, port)
+	network.create_client(Global.ip, port)
 	set_custom_multiplayer(gateway_api)
 	custom_multiplayer.set_root_node(self)
 	custom_multiplayer.set_network_peer(network)
