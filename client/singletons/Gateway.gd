@@ -3,7 +3,7 @@ extends Node
 
 var network = NetworkedMultiplayerENet.new()
 var gateway_api = MultiplayerAPI.new()
-var port = 2734
+var port = 27
 var ip = "172.17.0.3"
 var cert = load("res://resources/Certificate/X509_Certificate.crt")
 
@@ -39,6 +39,7 @@ func connect_to_server(_username, _password):
 func _on_connection_failed():
 	print("Failed to conect to login server")
 	print("Pop-up server offline")
+	
 
 
 func _on_connection_succeeded():

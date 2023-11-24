@@ -18,6 +18,7 @@ func _process(_delta):
 	custom_multiplayer.poll()
 	
 func connect_to_server():
+	print("attempting to connect to game server hub")
 	network.create_client(ip, port)
 	set_custom_multiplayer(gateway_api)
 	custom_multiplayer.set_root_node(self)
@@ -28,7 +29,7 @@ func connect_to_server():
 
 func _OnConnectionFailed():
 	print("Failed to connect to Game Server Hub")
-	
+
 func _OnConnectionSucceeded():
 	print("Successfully connected to Game Server Hub")
 
