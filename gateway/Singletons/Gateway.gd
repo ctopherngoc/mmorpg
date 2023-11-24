@@ -2,7 +2,7 @@ extends Node
 
 var network = NetworkedMultiplayerENet.new()
 var gateway_api = MultiplayerAPI.new()
-var port = 1944
+var port = 2734
 var max_players = 100
 var cert = load("res://Resources/Certificate/X509_Certificate.crt")
 var key = load("res://Resources/Certificate/x509_Key.key")

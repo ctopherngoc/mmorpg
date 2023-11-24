@@ -2,7 +2,7 @@ extends Node
 
 var network = NetworkedMultiplayerENet.new()
 var gateway_api = MultiplayerAPI.new()
-var port = 1960
+var port = 2736
 var max_players = 100
 
 var server_list = {}

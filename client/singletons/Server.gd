@@ -1,6 +1,6 @@
 extends Node
-var ip = "127.0.0.1"
-var port = 1999
+var ip = ""
+var port = 0000
 var token
 var email
 

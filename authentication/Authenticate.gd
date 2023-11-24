@@ -3,7 +3,7 @@ extends Node
 # singleton: http.gd links variable to httprequest
 onready var http : HTTPRequest
 var network = NetworkedMultiplayerENet.new()
-var port = 1943
+var port = 2735
 var max_servers = 5
 
 func _ready():
