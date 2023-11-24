@@ -77,19 +77,8 @@ remote func return_latency(client_time):
 		delta_latency = (total_latency / latency_array.size() - latency)
 		latency = total_latency / latency_array.size()
 		latency_array.clear()
-
 #################################################################
 # Character functions
-
-#not used
-#############################################
-func fetch_characters():
-	rpc_id(1, "Fetch_characters")
-
-remote func return_fetch_character(results):
-	pass
-	print(results)
-#############################################
 
 func check_usernames(requester, username):
 	rpc_id(1, "fetch_usernames", requester, username)
@@ -124,16 +113,8 @@ remote func return_choose_character(requester):
 	print("server.gd: return_choose_character")
 	instance_from_id(requester).load_world()
 
-# not sure if server use this
-# warning-ignore:unused_argument
-remote func update_account_data(requester, character_array: Array):
-	Global.character_list = character_array
-
 func fetch_player_stats():
 	rpc_id(1, "fetch_player_stats")
-
-remote func return_player_stats(stats):
-	get_node("/root/currentScene/Player/Camera2D/UI/PlayerStats").load_player_stats(stats)
 
 ##############################################################################
 # Authentication
