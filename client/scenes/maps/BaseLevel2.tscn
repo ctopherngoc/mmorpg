@@ -1,10 +1,11 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://scenes/maps/BaseLevel2.gd" type="Script" id=1]
 [ext_resource path="res://scenes/mapObjects/Portal.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/maps/Map.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scenes/playerObjects/Player.tscn" type="PackedScene" id=4]
 [ext_resource path="res://resources/background/maps/BaseLevel.jpg" type="Texture" id=5]
+[ext_resource path="res://scenes/userInerface/UI.tscn" type="PackedScene" id=6]
 [ext_resource path="res://scenes/mapObjects/Ladder.tscn" type="PackedScene" id=8]
 [ext_resource path="res://scenes/mapObjects/Teleporter.tscn" type="PackedScene" id=9]
 
@@ -81,6 +82,9 @@ position = Vector2( 103, -250 )
 
 [node name="Player" parent="." instance=ExtResource( 4 )]
 position = Vector2( 100, -248 )
+
+[node name="UI" parent="." instance=ExtResource( 6 )]
+layer = 2
 
 [connection signal="body_entered" from="MapObjects/Ladder/noCol" to="." method="_on_noCol_body_entered"]
 [connection signal="body_exited" from="MapObjects/Ladder/noCol" to="." method="_on_noCol_body_exited"]
