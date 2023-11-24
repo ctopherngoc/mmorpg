@@ -13,6 +13,13 @@ var monster_list = {
 	'blueGuy': blueGuy,
 }
 
+var map_bound = {
+	"left": 0,
+	"right": 1000,
+	"bottom": 30,
+	"top": -10000,
+}
+
 #teleporter end locations
 onready var teleporter1 : Label = $MapObjects/Teleporter1/Label
 onready var teleporter2 : Label = $MapObjects/Teleporter2/Label
@@ -24,11 +31,15 @@ func _ready():
 	if Global.player.lastmap != get_filename():
 		Global.update_lastmap(get_filename())
 		spawn_location = Vector2(234, -437)
+	$Player/Camera2D.limit_left = map_bound["left"]
+	$Player/Camera2D.limit_right = map_bound["right"]
+	$Player/Camera2D.limit_bottom = map_bound["bottom"]
+	$Player/Camera2D.limit_top = map_bound["top"]
 	
 	if Global.last_portal:
 		$Player.global_position = Global.last_portal
-	print($Player.global_position)
-	print($MapObjects/Portal1.global_position)
+	#print($Player.global_position)
+	#print($MapObjects/Portal1.global_position)
 	
 func register_player(player):
 		main_player = player
