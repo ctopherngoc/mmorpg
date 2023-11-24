@@ -1,15 +1,15 @@
 extends Node
 
 var network = NetworkedMultiplayerENet.new()
-var port = 1999
+var port = 2733
 var max_players = 100
 
 # example tokens added
 var expected_tokens = []
 onready var player_verification_process = get_node("PlayerVerification")
 onready var character_creation_queue = []
-
 #######################################################
+
 #server start 
 func _ready():
 	

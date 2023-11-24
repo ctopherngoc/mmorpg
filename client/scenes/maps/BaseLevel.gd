@@ -9,6 +9,7 @@ var map_bound = {
 	"left": 0,
 	"right": 1000,
 	"bottom": 30,
+	"top": -10000,
 }
 
 var greenGuy = preload("res://scenes/monsterObjects/000001/000001.tscn")
@@ -18,13 +19,13 @@ var monster_list = {
 
 func _ready():
 	self.name = "currentScene"
-	#Global.change_background()
 	if Global.player.lastmap != get_filename():
 		Global.update_lastmap(get_filename())
 	spawn_location = Vector2(248,-407)
 	$Player/Camera2D.limit_left = map_bound["left"]
 	$Player/Camera2D.limit_right = map_bound["right"]
 	$Player/Camera2D.limit_bottom = map_bound["bottom"]
+	$Player/Camera2D.limit_top = map_bound["top"]
 
 	if Global.last_portal:
 		$Player.global_position = Global.last_portal

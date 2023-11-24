@@ -1,6 +1,5 @@
 extends Node
-var ip = "127.0.0.1"
-var port = 1999
+var port = 2733
 var token
 var email
 
@@ -31,7 +30,7 @@ func _physics_process(delta):
 # Server connection/latency functions
 func connect_to_server():
 	var network = NetworkedMultiplayerENet.new()
-	network.create_client(ip, port)
+	network.create_client(Global.ip, port)
 	get_tree().set_network_peer(network)
 
 	network.connect("connection_failed", self, "_on_connection_failed")
@@ -54,7 +53,7 @@ func _on_server_disconnect():
 	print("server disconnected")
 	
 	if login_status == 1:
-		SceneHandler.change_scene(SceneHandler.scenes["mainMenu"])
+		SceneHandler.change_scene(SceneHandler.scenes["login"])
 		login_status = 0
 
 func determine_latency():
@@ -77,22 +76,9 @@ remote func return_latency(client_time):
 				total_latency += latency_array[i]
 		delta_latency = (total_latency / latency_array.size() - latency)
 		latency = total_latency / latency_array.size()
-		#print("New Latency ", latency)
-		# \print("Delta Latency ", delta_latency)
 		latency_array.clear()
-
 #################################################################
 # Character functions
-
-#not used
-#############################################
-func fetch_characters():
-	rpc_id(1, "Fetch_characters")
-
-remote func return_fetch_character(results):
-	pass
-	print(results)
-#############################################
 
 func check_usernames(requester, username):
 	rpc_id(1, "fetch_usernames", requester, username)
@@ -127,16 +113,8 @@ remote func return_choose_character(requester):
 	print("server.gd: return_choose_character")
 	instance_from_id(requester).load_world()
 
-# not sure if server use this
-# warning-ignore:unused_argument
-remote func update_account_data(requester, character_array: Array):
-	Global.character_list = character_array
-
 func fetch_player_stats():
 	rpc_id(1, "fetch_player_stats")
-
-remote func return_player_stats(stats):
-	get_node("/root/currentScene/Player/Camera2D/UI/PlayerStats").load_player_stats(stats)
 
 ##############################################################################
 # Authentication
@@ -166,9 +144,6 @@ remote func already_logged_in():
 
 #################################################################################
 # Player functions
-#remote func SpawnNewPlayer(player_id, map):
-#	Global.spawn_new_player(player_id, map)
-
 remote func despawn_player(player_id):
 	print("server.gd: despawn player")
 	var other_players = get_node("/root/currentScene/OtherPlayers")
@@ -186,8 +161,6 @@ remote func receive_world_state(world_state):
 		pass
 	else:	
 		Global.update_world_state(world_state)
-		# print(world_state)
-		#print("Worldstate: ", world_state["T"], " && client_clock: ", client_clock)
 
 remote func receive_despawn_player(player_id):
 	Global.despawn_player(player_id)
@@ -210,23 +183,14 @@ remote func receive_attack(player_id, attack_time):
 remote func update_player_stats(player_stats):
 	print('server.gd: remote update_player_stats')
 	print(player_stats)
-	# possibly change so packet only sends the actual character
-	#Global.player = player_stats
+
 	for character in Global.character_list:
 		if character["displayname"] == player_stats["displayname"]:
 			character = player_stats
-			#var player_node = get_node("/root/currentScene/Player")
-			#var info_node = get_node("/root/currentScene/UI/Control/PlayerInfo")
 
 			# change in health
 			if player_stats["stats"]["health"] != Global.player["stats"]["health"]:
-				"""
-				if player_stats["stats"]["health"] < character["stats"]["health"]:
-						player_node.health = player_stats["stats"]["health"]
-						info_node.health = player_stats["stats"]["health"]
-						Signals.emit_signal("update_health")
-						print("Player took %s damage." % str(character["stats"]["health"] - player_stats["stats"]["health"]))
-				"""
+
 				# lose health
 				if player_stats["stats"]["health"] < Global.player["stats"]["health"]:
 					print("Player took %s damage." % str(character["stats"]["health"] - player_stats["stats"]["health"]))
@@ -237,35 +201,17 @@ remote func update_player_stats(player_stats):
 				Signals.emit_signal("update_health")
 				
 			# level check -> exp check
-			"""
-			if player_stats["stats"]["level"] > character["stats"]["level"]:
-				print("Level up")
-				#### possible remove
-				player_node.player["stats"]["experience"] = player_stats["stats"]["experience"]
-				player_node.player["stats"]["level"] = player_stats["stats"]["level"]
-				#####################
-				
-				info_node.exp = player_stats["stats"]["experience"]
-				info_node.level = player_stats["stats"]["level"]
-				Signals.emit_signal("update_level")
-				"""
 			if player_stats["stats"]["level"] > Global.player["stats"]["level"]:
 				print("Level up")
 				Global.player["stats"]["experience"] = player_stats["stats"]["experience"]
 				Global.player["stats"]["level"] = player_stats["stats"]["level"]
 				Signals.emit_signal("update_level")
-				""""
-				elif player_stats["stats"]["experience"] > character["stats"]["experience"]:
-						player_node.player["stats"]["experience"] = player_stats["stats"]["experience"]
-						print("Player gained %s exp." % str(player_stats["stats"]["experience"] - character["stats"]["experience"]))
-						info_node.experience = player_stats["stats"]["experience"]
-						Signals.emit_signal("update_exp")
-				"""
+				Signals.emit_signal("update_exp")
+
 			elif player_stats["stats"]["experience"] > Global.player["stats"]["experience"]:
 					print("Player gained %s exp." % str(player_stats["stats"]["experience"] - Global.player["stats"]["experience"]))
 					Global.player["stats"]["experience"] = player_stats["stats"]["experience"]
 					Signals.emit_signal("update_exp")
-			#player_node.player = player_stats
 			break
 
 func portal(portal):

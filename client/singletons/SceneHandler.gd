@@ -2,7 +2,7 @@ extends Node
 
 onready var current_scene_container = preload("res://scenes/userInerface/LoginScreen.tscn")
 onready var current_scene = "menu"
-onready var current_bgm = "login"
+onready var current_bgm = "menu"
 
 onready var scenes = {
 	"mainMenu" : "res://scenes/userInerface/mainMenu.tscn",
@@ -23,11 +23,15 @@ func _process(_delta):
 func change_scene(scene: String):
 # warning-ignore:return_value_discarded
 	if "/maps" in scene:
-		if current_bgm == "login":
-			Global.bgm.set_stream(GameData.bgm_dict["baselevel"])
 		Global.current_map = scene.replace("res://scenes/maps/", "")
 		Global.current_map = Global.current_map.replace(".tscn", "")
 		print(Global.current_map)
+		for key in GameData.bgm_dict.keys():
+			if key in Global.current_map:
+				if key == current_bgm:
+					pass
+				else:
+					Global.bgm.set_stream(GameData.bgm_dict[key])
+					current_bgm = key
 		current_scene = Global.current_map
-		#Global.world_state_buffer.clear()
 	get_tree().change_scene(scene)
