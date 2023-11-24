@@ -50,7 +50,8 @@ func get_document(path: String, http: HTTPRequest, token: String, player_contain
 		var character_list = []
 		for character in document_list:
 			character_list.append(character['fields']['displayname']['stringValue'])
-		ServerData.username_list = character_list.duplicate()
+		"""Server Crash issue #9"""
+		#ServerData.username_list = character_list.duplicate()
 
 # saving characters/updating information
 # creating new characters in /users
