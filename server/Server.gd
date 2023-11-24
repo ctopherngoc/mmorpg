@@ -8,8 +8,8 @@ var max_players = 100
 var expected_tokens = []
 onready var player_verification_process = get_node("PlayerVerification")
 onready var character_creation_queue = []
-
 #######################################################
+
 #server start 
 func _ready():
 	
