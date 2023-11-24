@@ -7,12 +7,14 @@ const LOGIN_URL := "https://identitytoolkit.googleapis.com/v1/accounts:signInWit
 
 #func _get_token_id_from_result(result: Array) -> String:
 func _get_user_info(result: Array) -> Dictionary:
-	var result_body := JSON.parse(result[3].get_string_from_ascii()).result as Dictionary
+	var test_json_conv = JSON.new()
+	test_json_conv.parse(result[3].get_string_from_ascii()).result as Dictionary
+	var result_body := test_json_conv.get_data()
 	#return result_body.idToken
 	return {
 		"token" : result_body.idToken,
 		"id" : result_body.localId,
-		"timestamp" : OS.get_unix_time(),
+		"timestamp" : Time.get_unix_time_from_system(),
 	}
 		
 func login(email: String, password: String, http: HTTPRequest, results: Array):
@@ -25,8 +27,8 @@ func login(email: String, password: String, http: HTTPRequest, results: Array):
 	print("login %s" % body)
 	
 # warning-ignore:return_value_discarded
-	http.request(LOGIN_URL, [], false, HTTPClient.METHOD_POST, to_json(body))
-	var result := yield(http, "request_completed") as Array
+	http.request(LOGIN_URL, [], false, HTTPClient.METHOD_POST, JSON.new().stringify(body))
+	var result := await http.request_completed as Array
 
 	if result[1] == 200:
 		"""

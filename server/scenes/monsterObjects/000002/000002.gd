@@ -1,4 +1,4 @@
-extends KinematicBody2D
+extends CharacterBody2D
 
 ###############################################
 # old variables
@@ -58,10 +58,13 @@ func _process(delta):
 			velocity.x = 0
 
 	velocity.y += gravity * delta
-	velocity = move_and_slide(velocity, Vector2.UP)
+	set_velocity(velocity)
+	set_up_direction(Vector2.UP)
+	move_and_slide()
+	velocity = velocity
 
 func _on_Timer_timeout():
-	move_state = floor(rand_range(0,3))
+	move_state = floor(randf_range(0,3))
 
 
 func npc_hit(dmg, player):

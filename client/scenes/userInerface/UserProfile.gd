@@ -1,15 +1,15 @@
 extends Control
 
-onready var level : LineEdit = $CharacterBox/Character1/Container/Level/LineEdit
-onready var notification : Label = $SceneTitle/notification/Label
+@onready var level : LineEdit = $CharacterBox/Character1/Container/Level/LineEdit
+@onready var notification : Label = $SceneTitle/notification/Label
 var new_profile := false
 var information_sent := false
 
-onready var check_button = $Create/UsernameCheck
-onready var create_button = $Create/Create
-onready var username_field = $Create/usernameField
-onready var dictionary = "ABCDEFGHIJKLMOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890"
-onready var character_count
+@onready var check_button = $Create/UsernameCheck
+@onready var create_button = $Create/Create
+@onready var username_field = $Create/usernameField
+@onready var dictionary = "ABCDEFGHIJKLMOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890"
+@onready var character_count
 var display_name
 var new_username
 var username_check
@@ -22,7 +22,7 @@ func _process(_delta):
 	
 func populate_info():
 	create_button.disabled = false
-	if Global.character_list.empty():
+	if Global.character_list.is_empty():
 		notification.text = "No Character Found"
 	else:
 		var size = Global.character_list.size()
@@ -85,7 +85,7 @@ func _on_select_pressed():
 		$Select.disabled = false
 		
 func load_world():
-	SceneHandler.change_scene(Global.player['lastmap']) 
+	SceneHandler.change_scene_to_file(Global.player['lastmap']) 
 
 func _on_delete_pressed():
 	print('Attempting to delete selected character')

@@ -1,11 +1,11 @@
 extends Node
 
-onready var ip = "127.0.0.1"
+@onready var ip = "127.0.0.1"
 
 const interpolation_offset = 100
-onready var mosnter_spawn
-onready var current_map = ""
-onready var bgm = $bgm
+@onready var mosnter_spawn
+@onready var current_map = ""
+@onready var bgm = $bgm
 var other_player = preload("res://scenes/playerObjects/PlayerTemplate.tscn")
 var last_world_state = 0
 var world_state_buffer = []
@@ -26,7 +26,7 @@ func update_lastmap(map):
 	player.lastmap = map
 	
 func change_background():
-	VisualServer.set_default_clear_color(Color(0.4,0.4,0.4,1.0))
+	RenderingServer.set_default_clear_color(Color(0.4,0.4,0.4,1.0))
 		
 func update_world_state(world_state):
 	if world_state["T"] > last_world_state:
@@ -42,7 +42,7 @@ func _physics_process(_delta):
 		if world_state_buffer.size() > 2:
 			var interpolation_factor = float(render_time - world_state_buffer[1]["T"]) / float(world_state_buffer[2]["T"] - world_state_buffer[0]["T"])
 			for player_state in world_state_buffer[2]["P"].keys():
-				if player_state == get_tree().get_network_unique_id():
+				if player_state == get_tree().get_unique_id():
 					continue
 				if not world_state_buffer[1]["P"].has(player_state):
 					continue
@@ -87,7 +87,7 @@ func _physics_process(_delta):
 		elif render_time > world_state_buffer[1].T:
 			var extrapolation_factor = float(render_time - world_state_buffer[0]["T"]) / float(world_state_buffer[1]["T"] - world_state_buffer[0]["T"]) - 1.00
 			for player_state in world_state_buffer[1]["P"].keys():
-				if player_state == get_tree().get_network_unique_id():
+				if player_state == get_tree().get_unique_id():
 					continue
 				if not world_state_buffer[0]["P"].has(player_state):
 					continue
@@ -100,10 +100,10 @@ func _physics_process(_delta):
 						get_node("/root/currentScene/OtherPlayers/" + str(player_state)).move_player(new_position, animation)
 
 func spawn_new_player(player_id, player_state):
-	if player_id == get_tree().get_network_unique_id():
+	if player_id == get_tree().get_unique_id():
 		pass
 	else:
-		var new_player = other_player.instance()
+		var new_player = other_player.instantiate()
 		new_player.position = get_node("/root/currentScene").spawn_location
 		new_player.name = str(player_id)
 		get_node("/root/currentScene/OtherPlayers").add_child(new_player)
@@ -115,7 +115,7 @@ func despawn_player(player_id):
 		get_node("/root/currentScene/OtherPlayers/%s" % str(player_id)).queue_free()
 		
 func spawn_monster(monster_id, monster_dict):
-	var monster = get_node("/root/currentScene").monster_list[monster_dict['id']].instance()
+	var monster = get_node("/root/currentScene").monster_list[monster_dict['id']].instantiate()
 	monster.position = monster_dict["EnemyLocation"]
 	monster.max_hp = monster_dict["EnemyMaxHealth"]
 	monster.current_hp = monster_dict["EnemyHealth"]

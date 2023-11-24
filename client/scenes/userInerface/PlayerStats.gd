@@ -1,9 +1,9 @@
 extends Node
 
-onready var strength = get_node("HBoxContainer/VBoxContainer/Strength/Value")
-onready var vitality = get_node("HBoxContainer/VBoxContainer/Vitality/Value")
-onready var dexterity = get_node("HBoxContainer/VBoxContainer/Dexterity/Value")
-onready var intelligence = get_node("HBoxContainer/VBoxContainer/Intelligence/Value")
+@onready var strength = get_node("HBoxContainer/VBoxContainer/Strength/Value")
+@onready var vitality = get_node("HBoxContainer/VBoxContainer/Vitality/Value")
+@onready var dexterity = get_node("HBoxContainer/VBoxContainer/Dexterity/Value")
+@onready var intelligence = get_node("HBoxContainer/VBoxContainer/Intelligence/Value")
 
 """
 add so that server does firebase request for 

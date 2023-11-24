@@ -3,15 +3,15 @@ extends ColorRect
 # Called when the node enters the scene tree for the first time.
 func _ready():
 # warning-ignore:return_value_discarded
-	Signals.connect("update_health", self, "update_health")
+	Signals.connect("update_health", Callable(self, "update_health"))
 # warning-ignore:return_value_discarded
-	Signals.connect("update_mana", self, "update_mana")
+	Signals.connect("update_mana", Callable(self, "update_mana"))
 # warning-ignore:return_value_discarded
-	Signals.connect("update_level", self, "update_level")
+	Signals.connect("update_level", Callable(self, "update_level"))
 # warning-ignore:return_value_discarded
-	Signals.connect("update_exp", self, "update_exp")
+	Signals.connect("update_exp", Callable(self, "update_exp"))
 # warning-ignore:return_value_discarded
-	Signals.connect("update_displayname", self, "update_displayname")
+	Signals.connect("update_displayname", Callable(self, "update_displayname"))
 	load_info()
 
 func update_health():

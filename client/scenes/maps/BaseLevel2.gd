@@ -21,15 +21,15 @@ var map_bound = {
 }
 
 #teleporter end locations
-onready var teleporter1 : Label = $MapObjects/Teleporter1/Label
-onready var teleporter2 : Label = $MapObjects/Teleporter2/Label
-onready var teleporter = [Vector2(-135, -225.500488), Vector2(657.772644, -225.575974)]
+@onready var teleporter1 : Label = $MapObjects/Teleporter1/Label
+@onready var teleporter2 : Label = $MapObjects/Teleporter2/Label
+@onready var teleporter = [Vector2(-135, -225.500488), Vector2(657.772644, -225.575974)]
 
 func _ready():
 	self.name = "currentScene"
 	Global.change_background()
-	if Global.player.lastmap != get_filename():
-		Global.update_lastmap(get_filename())
+	if Global.player.lastmap != get_scene_file_path():
+		Global.update_lastmap(get_scene_file_path())
 		spawn_location = Vector2(234, -437)
 	$Player/Camera2D.limit_left = map_bound["left"]
 	$Player/Camera2D.limit_right = map_bound["right"]
@@ -43,11 +43,11 @@ func _ready():
 	
 func register_player(player):
 		main_player = player
-		main_player.connect("died", self, "on_player_died", [], CONNECT_DEFERRED)
+		main_player.connect("died", Callable(self, "on_player_died").bind(), CONNECT_DEFERRED)
 
 func create_player():
 	var player_instance = main_player_template.instance()
-	add_child_below_node(main_player, player_instance)
+	add_sibling(main_player, player_instance)
 	player_instance.global_position = spawn_location
 	register_player(player_instance)
 
@@ -59,15 +59,15 @@ func on_player_died():
 
 func _on_noCol_body_entered(body):
 	if body.is_in_group("player"):
-		body.set_collision_layer_bit(0, false)
-		body.set_collision_mask_bit(0, false)
+		body.set_collision_layer_value(0, false)
+		body.set_collision_mask_value(0, false)
 
 
 func _on_noCol_body_exited(body):
 	print("out of area")
 	if body.is_in_group("player"):
-		body.set_collision_layer_bit(0, true)
-		body.set_collision_mask_bit(0, true)
+		body.set_collision_layer_value(0, true)
+		body.set_collision_mask_value(0, true)
 
 ###############################################################################################
 func _on_teleport_zone_body_entered(body):

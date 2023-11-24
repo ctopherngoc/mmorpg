@@ -1,9 +1,9 @@
-extends KinematicBody2D
+extends CharacterBody2D
 
-onready var http = $HTTPRequest
-onready var http2 = $HTTPRequest2
-onready var timer =$Timer
-onready var idle_timer =$idle_timer
+@onready var http = $HTTPRequest
+@onready var http2 = $HTTPRequest2
+@onready var timer =$Timer
+@onready var idle_timer =$idle_timer
 #contains token and id
 var db_info = {}
 var cur_position = Vector2.ZERO

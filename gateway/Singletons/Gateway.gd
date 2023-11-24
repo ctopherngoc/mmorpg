@@ -1,6 +1,6 @@
 extends Node
 
-var network = NetworkedMultiplayerENet.new()
+var network = ENetMultiplayerPeer.new()
 var gateway_api = MultiplayerAPI.new()
 var port = 2734
 var max_players = 100
@@ -11,7 +11,7 @@ func _ready():
 	start_server()
 	
 func _process(_delta):
-	if not custom_multiplayer.has_network_peer():
+	if not custom_multiplayer.has_multiplayer_peer():
 		return
 	custom_multiplayer.poll()
 	
@@ -22,11 +22,11 @@ func start_server():
 	network.create_server(port, max_players)
 	set_custom_multiplayer(gateway_api)
 	custom_multiplayer.set_root_node(self)
-	custom_multiplayer.set_network_peer(network)
+	custom_multiplayer.set_multiplayer_peer(network)
 	print("Gateway server started")
 	
-	network.connect("peer_connected", self, "_Peer_Connected")
-	network.connect("peer_disconnected", self, "_Peer_Disconnected")
+	network.connect("peer_connected", Callable(self, "_Peer_Connected"))
+	network.connect("peer_disconnected", Callable(self, "_Peer_Disconnected"))
 	
 func _Peer_Connected(player_id):
 	print("User " + str(player_id) + " Connected")
@@ -34,9 +34,9 @@ func _Peer_Connected(player_id):
 func _Peer_Disconnected(player_id):
 	print("User " + str(player_id) + " Disconnected")
 	
-remote func login_request(username, password):
+@rpc("any_peer") func login_request(username, password):
 	print("login request recieved")
-	var player_id = custom_multiplayer.get_rpc_sender_id()
+	var player_id = custom_multiplayer.get_remote_sender_id()
 	Authenticate.authenticate_player(username, password, player_id)
 
 func return_login_request(result, player_id):

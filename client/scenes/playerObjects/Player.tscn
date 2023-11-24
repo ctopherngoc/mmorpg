@@ -1,88 +1,88 @@
 [gd_scene load_steps=92 format=2]
 
 [ext_resource path="res://scenes/playerObjects/Player.gd" type="Script" id=2]
-[ext_resource path="res://assets/CharacterSpriteSheet/default/0/walk1_0/L1,R1,C1,body,visible,normal,255.png" type="Texture" id=3]
-[ext_resource path="res://assets/CharacterSpriteSheet/default/0/walk1_3/L1,R1,C1,body,visible,normal,255.png" type="Texture" id=4]
-[ext_resource path="res://assets/CharacterSpriteSheet/default/0/stand1_0/L1,R1,C1,body,visible,normal,255.png" type="Texture" id=5]
-[ext_resource path="res://assets/CharacterSpriteSheet/default/0/stand1_3/L1,R1,C1,body,visible,normal,255.png" type="Texture" id=6]
-[ext_resource path="res://assets/CharacterSpriteSheet/default/0/walk1_4/L1,R1,C1,body,visible,normal,255.png" type="Texture" id=7]
-[ext_resource path="res://assets/CharacterSpriteSheet/default/0/stand1_2/L1,R1,C1,body,visible,normal,255.png" type="Texture" id=8]
-[ext_resource path="res://assets/CharacterSpriteSheet/default/0/stand1_1/L1,R1,C1,body,visible,normal,255.png" type="Texture" id=9]
-[ext_resource path="res://assets/CharacterSpriteSheet/default/0/walk1_1/L1,R1,C1,body,visible,normal,255.png" type="Texture" id=10]
-[ext_resource path="res://assets/CharacterSpriteSheet/default/0/walk1_3/L3,R1,C1,head,visible,normal,255.png" type="Texture" id=11]
-[ext_resource path="res://assets/CharacterSpriteSheet/default/0/walk1_0/L4,R1,C1,hairShade,visible,normal,255.png" type="Texture" id=12]
-[ext_resource path="res://assets/CharacterSpriteSheet/default/0/jump_1/L2,R1,C1,head,visible,normal,255.png" type="Texture" id=13]
-[ext_resource path="res://assets/CharacterSpriteSheet/default/0/walk1_1/L4,R1,C1,hairShade,visible,normal,255.png" type="Texture" id=14]
-[ext_resource path="res://assets/CharacterSpriteSheet/default/0/jump_0/L2,R1,C1,head,visible,normal,255.png" type="Texture" id=15]
-[ext_resource path="res://assets/CharacterSpriteSheet/default/0/stand1_1/L4,R1,C1,hairShade,visible,normal,255.png" type="Texture" id=16]
-[ext_resource path="res://assets/CharacterSpriteSheet/default/0/walk1_2/L4,R1,C1,hairShade,visible,normal,255.png" type="Texture" id=17]
-[ext_resource path="res://assets/CharacterSpriteSheet/default/0/walk1_0/L3,R1,C1,head,visible,normal,255.png" type="Texture" id=18]
-[ext_resource path="res://assets/CharacterSpriteSheet/default/0/walk1_2/L1,R1,C1,body,visible,normal,255.png" type="Texture" id=19]
-[ext_resource path="res://assets/CharacterSpriteSheet/default/0/jump_1/L4,R1,C1,armOverHair,visible,normal,255.png" type="Texture" id=20]
-[ext_resource path="res://assets/CharacterSpriteSheet/default/0/walk1_1/L3,R1,C1,head,visible,normal,255.png" type="Texture" id=21]
-[ext_resource path="res://assets/CharacterSpriteSheet/default/0/stand1_2/L4,R1,C1,hairShade,visible,normal,255.png" type="Texture" id=22]
-[ext_resource path="res://assets/CharacterSpriteSheet/default/0/jump_1/L1,R1,C1,body,visible,normal,255.png" type="Texture" id=23]
-[ext_resource path="res://assets/CharacterSpriteSheet/default/0/jump_0/L1,R1,C1,body,visible,normal,255.png" type="Texture" id=24]
-[ext_resource path="res://assets/CharacterSpriteSheet/default/0/walk1_3/L4,R1,C1,hairShade,visible,normal,255.png" type="Texture" id=25]
-[ext_resource path="res://assets/CharacterSpriteSheet/default/0/walk1_4/L3,R1,C1,head,visible,normal,255.png" type="Texture" id=26]
-[ext_resource path="res://assets/CharacterSpriteSheet/default/0/walk1_4/L4,R1,C1,hairShade,visible,normal,255.png" type="Texture" id=27]
-[ext_resource path="res://assets/CharacterSpriteSheet/default/0/alert_0/L2,R1,C1,head,visible,normal,255.png" type="Texture" id=28]
-[ext_resource path="res://assets/CharacterSpriteSheet/default/0/jump_1/L3,R1,C1,hairShade,visible,normal,255.png" type="Texture" id=29]
-[ext_resource path="res://assets/CharacterSpriteSheet/default/0/walk1_4/L2,R1,C1,arm,visible,normal,255.png" type="Texture" id=30]
-[ext_resource path="res://assets/CharacterSpriteSheet/default/0/stabO1_2/L3,R1,C1,head,visible,normal,255.png" type="Texture" id=31]
-[ext_resource path="res://assets/CharacterSpriteSheet/default/0/stand1_1/L3,R1,C1,head,visible,normal,255.png" type="Texture" id=32]
-[ext_resource path="res://assets/CharacterSpriteSheet/default/0/alert_0/L4,R1,C1,armOverHair,visible,normal,255.png" type="Texture" id=33]
-[ext_resource path="res://assets/CharacterSpriteSheet/default/0/walk1_0/L2,R1,C1,arm,visible,normal,255.png" type="Texture" id=34]
-[ext_resource path="res://assets/CharacterSpriteSheet/default/0/stand1_1/L2,R1,C1,arm,visible,normal,255.png" type="Texture" id=35]
-[ext_resource path="res://assets/CharacterSpriteSheet/default/0/stand1_0/L4,R1,C1,hairShade,visible,normal,255.png" type="Texture" id=36]
-[ext_resource path="res://assets/CharacterSpriteSheet/default/0/stabO1_1/L1,R1,C1,body,visible,normal,255.png" type="Texture" id=37]
-[ext_resource path="res://assets/CharacterSpriteSheet/default/0/alert_2/L4,R1,C1,armOverHair,visible,normal,255.png" type="Texture" id=38]
-[ext_resource path="res://assets/CharacterSpriteSheet/default/0/stabO1_0/L2,R1,C1,arm,visible,normal,255.png" type="Texture" id=39]
-[ext_resource path="res://assets/CharacterSpriteSheet/default/0/stand1_3/L3,R1,C1,head,visible,normal,255.png" type="Texture" id=40]
-[ext_resource path="res://assets/CharacterSpriteSheet/default/0/alert_2/L1,R1,C1,body,visible,normal,255.png" type="Texture" id=41]
-[ext_resource path="res://assets/CharacterSpriteSheet/default/0/stand1_3/L2,R1,C1,arm,visible,normal,255.png" type="Texture" id=42]
-[ext_resource path="res://assets/CharacterSpriteSheet/default/0/walk1_3/L2,R1,C1,arm,visible,normal,255.png" type="Texture" id=43]
-[ext_resource path="res://assets/CharacterSpriteSheet/default/0/stand1_0/L2,R1,C1,arm,visible,normal,255.png" type="Texture" id=44]
-[ext_resource path="res://assets/CharacterSpriteSheet/default/0/alert_2/L2,R1,C1,head,visible,normal,255.png" type="Texture" id=45]
-[ext_resource path="res://assets/CharacterSpriteSheet/default/0/alert_1/L1,R1,C1,body,visible,normal,255.png" type="Texture" id=46]
-[ext_resource path="res://assets/CharacterSpriteSheet/default/0/alert_2/L3,R1,C1,hairShade,visible,normal,255.png" type="Texture" id=47]
-[ext_resource path="res://assets/CharacterSpriteSheet/default/0/walk1_1/L2,R1,C1,arm,visible,normal,255.png" type="Texture" id=48]
-[ext_resource path="res://assets/CharacterSpriteSheet/default/0/alert_0/L3,R1,C1,hairShade,visible,normal,255.png" type="Texture" id=49]
-[ext_resource path="res://assets/CharacterSpriteSheet/default/0/stand1_2/L2,R1,C1,arm,visible,normal,255.png" type="Texture" id=50]
-[ext_resource path="res://assets/CharacterSpriteSheet/default/0/walk1_2/L2,R1,C1,arm,visible,normal,255.png" type="Texture" id=51]
-[ext_resource path="res://assets/CharacterSpriteSheet/default/0/alert_3/L2,R1,C1,head,visible,normal,255.png" type="Texture" id=52]
-[ext_resource path="res://assets/CharacterSpriteSheet/default/0/stand1_3/L4,R1,C1,hairShade,visible,normal,255.png" type="Texture" id=53]
-[ext_resource path="res://assets/CharacterSpriteSheet/default/0/stand1_0/L3,R1,C1,head,visible,normal,255.png" type="Texture" id=54]
-[ext_resource path="res://assets/CharacterSpriteSheet/default/0/alert_0/L1,R1,C1,body,visible,normal,255.png" type="Texture" id=55]
-[ext_resource path="res://assets/CharacterSpriteSheet/default/0/alert_3/L4,R1,C1,armOverHair,visible,normal,255.png" type="Texture" id=56]
-[ext_resource path="res://assets/CharacterSpriteSheet/default/0/stand1_2/L3,R1,C1,head,visible,normal,255.png" type="Texture" id=57]
-[ext_resource path="res://assets/CharacterSpriteSheet/default/0/alert_1/L4,R1,C1,armOverHair,visible,normal,255.png" type="Texture" id=58]
-[ext_resource path="res://assets/CharacterSpriteSheet/default/0/stabO1_0/L3,R1,C1,head,visible,normal,255.png" type="Texture" id=59]
-[ext_resource path="res://assets/CharacterSpriteSheet/default/0/alert_3/L3,R1,C1,hairShade,visible,normal,255.png" type="Texture" id=60]
-[ext_resource path="res://assets/CharacterSpriteSheet/default/0/alert_3/L1,R1,C1,body,visible,normal,255.png" type="Texture" id=61]
-[ext_resource path="res://assets/CharacterSpriteSheet/default/0/jump_0/L4,R1,C1,armOverHair,visible,normal,255.png" type="Texture" id=62]
-[ext_resource path="res://assets/CharacterSpriteSheet/default/0/alert_1/L3,R1,C1,hairShade,visible,normal,255.png" type="Texture" id=63]
-[ext_resource path="res://assets/CharacterSpriteSheet/weapons/kandine_1.png" type="Texture" id=64]
-[ext_resource path="res://assets/CharacterSpriteSheet/default/0/stabO1_2/L2,R1,C1,arm,visible,normal,255.png" type="Texture" id=65]
-[ext_resource path="res://assets/CharacterSpriteSheet/weapons/kandine_2.png" type="Texture" id=66]
-[ext_resource path="res://assets/CharacterSpriteSheet/default/0/stabO1_1/L4,R1,C1,armOverHair,visible,normal,255.png" type="Texture" id=67]
-[ext_resource path="res://assets/CharacterSpriteSheet/default/0/stabO1_1/L3,R1,C1,hairShade,visible,normal,255.png" type="Texture" id=68]
-[ext_resource path="res://assets/CharacterSpriteSheet/default/0/alert_1/L2,R1,C1,head,visible,normal,255.png" type="Texture" id=69]
-[ext_resource path="res://assets/CharacterSpriteSheet/weapons/kandine_walking_1_3_4.png" type="Texture" id=70]
-[ext_resource path="res://assets/CharacterSpriteSheet/weapons/kandine_walking_2.png" type="Texture" id=71]
-[ext_resource path="res://assets/CharacterSpriteSheet/default/0/walk1_2/L3,R1,C1,head,visible,normal,255.png" type="Texture" id=72]
-[ext_resource path="res://assets/CharacterSpriteSheet/default/0/stabO1_1/L2,R1,C1,head,visible,normal,255.png" type="Texture" id=73]
-[ext_resource path="res://assets/CharacterSpriteSheet/default/0/jump_0/L3,R1,C1,hairShade,visible,normal,255.png" type="Texture" id=74]
-[ext_resource path="res://assets/CharacterSpriteSheet/default/0/stabO1_0/L1,R1,C1,body,visible,normal,255.png" type="Texture" id=75]
-[ext_resource path="res://assets/CharacterSpriteSheet/default/0/stabO1_2/L1,R1,C1,body,visible,normal,255.png" type="Texture" id=76]
-[ext_resource path="res://assets/CharacterSpriteSheet/default/0/stabO1_2/L4,R1,C1,hairShade,visible,normal,255.png" type="Texture" id=77]
-[ext_resource path="res://assets/CharacterSpriteSheet/weapons/kandine_jump_2.png" type="Texture" id=78]
+[ext_resource path="res://assets/CharacterSpriteSheet/default/0/walk1_0/L1,R1,C1,body,visible,normal,255.png" type="Texture2D" id=3]
+[ext_resource path="res://assets/CharacterSpriteSheet/default/0/walk1_3/L1,R1,C1,body,visible,normal,255.png" type="Texture2D" id=4]
+[ext_resource path="res://assets/CharacterSpriteSheet/default/0/stand1_0/L1,R1,C1,body,visible,normal,255.png" type="Texture2D" id=5]
+[ext_resource path="res://assets/CharacterSpriteSheet/default/0/stand1_3/L1,R1,C1,body,visible,normal,255.png" type="Texture2D" id=6]
+[ext_resource path="res://assets/CharacterSpriteSheet/default/0/walk1_4/L1,R1,C1,body,visible,normal,255.png" type="Texture2D" id=7]
+[ext_resource path="res://assets/CharacterSpriteSheet/default/0/stand1_2/L1,R1,C1,body,visible,normal,255.png" type="Texture2D" id=8]
+[ext_resource path="res://assets/CharacterSpriteSheet/default/0/stand1_1/L1,R1,C1,body,visible,normal,255.png" type="Texture2D" id=9]
+[ext_resource path="res://assets/CharacterSpriteSheet/default/0/walk1_1/L1,R1,C1,body,visible,normal,255.png" type="Texture2D" id=10]
+[ext_resource path="res://assets/CharacterSpriteSheet/default/0/walk1_3/L3,R1,C1,head,visible,normal,255.png" type="Texture2D" id=11]
+[ext_resource path="res://assets/CharacterSpriteSheet/default/0/walk1_0/L4,R1,C1,hairShade,visible,normal,255.png" type="Texture2D" id=12]
+[ext_resource path="res://assets/CharacterSpriteSheet/default/0/jump_1/L2,R1,C1,head,visible,normal,255.png" type="Texture2D" id=13]
+[ext_resource path="res://assets/CharacterSpriteSheet/default/0/walk1_1/L4,R1,C1,hairShade,visible,normal,255.png" type="Texture2D" id=14]
+[ext_resource path="res://assets/CharacterSpriteSheet/default/0/jump_0/L2,R1,C1,head,visible,normal,255.png" type="Texture2D" id=15]
+[ext_resource path="res://assets/CharacterSpriteSheet/default/0/stand1_1/L4,R1,C1,hairShade,visible,normal,255.png" type="Texture2D" id=16]
+[ext_resource path="res://assets/CharacterSpriteSheet/default/0/walk1_2/L4,R1,C1,hairShade,visible,normal,255.png" type="Texture2D" id=17]
+[ext_resource path="res://assets/CharacterSpriteSheet/default/0/walk1_0/L3,R1,C1,head,visible,normal,255.png" type="Texture2D" id=18]
+[ext_resource path="res://assets/CharacterSpriteSheet/default/0/walk1_2/L1,R1,C1,body,visible,normal,255.png" type="Texture2D" id=19]
+[ext_resource path="res://assets/CharacterSpriteSheet/default/0/jump_1/L4,R1,C1,armOverHair,visible,normal,255.png" type="Texture2D" id=20]
+[ext_resource path="res://assets/CharacterSpriteSheet/default/0/walk1_1/L3,R1,C1,head,visible,normal,255.png" type="Texture2D" id=21]
+[ext_resource path="res://assets/CharacterSpriteSheet/default/0/stand1_2/L4,R1,C1,hairShade,visible,normal,255.png" type="Texture2D" id=22]
+[ext_resource path="res://assets/CharacterSpriteSheet/default/0/jump_1/L1,R1,C1,body,visible,normal,255.png" type="Texture2D" id=23]
+[ext_resource path="res://assets/CharacterSpriteSheet/default/0/jump_0/L1,R1,C1,body,visible,normal,255.png" type="Texture2D" id=24]
+[ext_resource path="res://assets/CharacterSpriteSheet/default/0/walk1_3/L4,R1,C1,hairShade,visible,normal,255.png" type="Texture2D" id=25]
+[ext_resource path="res://assets/CharacterSpriteSheet/default/0/walk1_4/L3,R1,C1,head,visible,normal,255.png" type="Texture2D" id=26]
+[ext_resource path="res://assets/CharacterSpriteSheet/default/0/walk1_4/L4,R1,C1,hairShade,visible,normal,255.png" type="Texture2D" id=27]
+[ext_resource path="res://assets/CharacterSpriteSheet/default/0/alert_0/L2,R1,C1,head,visible,normal,255.png" type="Texture2D" id=28]
+[ext_resource path="res://assets/CharacterSpriteSheet/default/0/jump_1/L3,R1,C1,hairShade,visible,normal,255.png" type="Texture2D" id=29]
+[ext_resource path="res://assets/CharacterSpriteSheet/default/0/walk1_4/L2,R1,C1,arm,visible,normal,255.png" type="Texture2D" id=30]
+[ext_resource path="res://assets/CharacterSpriteSheet/default/0/stabO1_2/L3,R1,C1,head,visible,normal,255.png" type="Texture2D" id=31]
+[ext_resource path="res://assets/CharacterSpriteSheet/default/0/stand1_1/L3,R1,C1,head,visible,normal,255.png" type="Texture2D" id=32]
+[ext_resource path="res://assets/CharacterSpriteSheet/default/0/alert_0/L4,R1,C1,armOverHair,visible,normal,255.png" type="Texture2D" id=33]
+[ext_resource path="res://assets/CharacterSpriteSheet/default/0/walk1_0/L2,R1,C1,arm,visible,normal,255.png" type="Texture2D" id=34]
+[ext_resource path="res://assets/CharacterSpriteSheet/default/0/stand1_1/L2,R1,C1,arm,visible,normal,255.png" type="Texture2D" id=35]
+[ext_resource path="res://assets/CharacterSpriteSheet/default/0/stand1_0/L4,R1,C1,hairShade,visible,normal,255.png" type="Texture2D" id=36]
+[ext_resource path="res://assets/CharacterSpriteSheet/default/0/stabO1_1/L1,R1,C1,body,visible,normal,255.png" type="Texture2D" id=37]
+[ext_resource path="res://assets/CharacterSpriteSheet/default/0/alert_2/L4,R1,C1,armOverHair,visible,normal,255.png" type="Texture2D" id=38]
+[ext_resource path="res://assets/CharacterSpriteSheet/default/0/stabO1_0/L2,R1,C1,arm,visible,normal,255.png" type="Texture2D" id=39]
+[ext_resource path="res://assets/CharacterSpriteSheet/default/0/stand1_3/L3,R1,C1,head,visible,normal,255.png" type="Texture2D" id=40]
+[ext_resource path="res://assets/CharacterSpriteSheet/default/0/alert_2/L1,R1,C1,body,visible,normal,255.png" type="Texture2D" id=41]
+[ext_resource path="res://assets/CharacterSpriteSheet/default/0/stand1_3/L2,R1,C1,arm,visible,normal,255.png" type="Texture2D" id=42]
+[ext_resource path="res://assets/CharacterSpriteSheet/default/0/walk1_3/L2,R1,C1,arm,visible,normal,255.png" type="Texture2D" id=43]
+[ext_resource path="res://assets/CharacterSpriteSheet/default/0/stand1_0/L2,R1,C1,arm,visible,normal,255.png" type="Texture2D" id=44]
+[ext_resource path="res://assets/CharacterSpriteSheet/default/0/alert_2/L2,R1,C1,head,visible,normal,255.png" type="Texture2D" id=45]
+[ext_resource path="res://assets/CharacterSpriteSheet/default/0/alert_1/L1,R1,C1,body,visible,normal,255.png" type="Texture2D" id=46]
+[ext_resource path="res://assets/CharacterSpriteSheet/default/0/alert_2/L3,R1,C1,hairShade,visible,normal,255.png" type="Texture2D" id=47]
+[ext_resource path="res://assets/CharacterSpriteSheet/default/0/walk1_1/L2,R1,C1,arm,visible,normal,255.png" type="Texture2D" id=48]
+[ext_resource path="res://assets/CharacterSpriteSheet/default/0/alert_0/L3,R1,C1,hairShade,visible,normal,255.png" type="Texture2D" id=49]
+[ext_resource path="res://assets/CharacterSpriteSheet/default/0/stand1_2/L2,R1,C1,arm,visible,normal,255.png" type="Texture2D" id=50]
+[ext_resource path="res://assets/CharacterSpriteSheet/default/0/walk1_2/L2,R1,C1,arm,visible,normal,255.png" type="Texture2D" id=51]
+[ext_resource path="res://assets/CharacterSpriteSheet/default/0/alert_3/L2,R1,C1,head,visible,normal,255.png" type="Texture2D" id=52]
+[ext_resource path="res://assets/CharacterSpriteSheet/default/0/stand1_3/L4,R1,C1,hairShade,visible,normal,255.png" type="Texture2D" id=53]
+[ext_resource path="res://assets/CharacterSpriteSheet/default/0/stand1_0/L3,R1,C1,head,visible,normal,255.png" type="Texture2D" id=54]
+[ext_resource path="res://assets/CharacterSpriteSheet/default/0/alert_0/L1,R1,C1,body,visible,normal,255.png" type="Texture2D" id=55]
+[ext_resource path="res://assets/CharacterSpriteSheet/default/0/alert_3/L4,R1,C1,armOverHair,visible,normal,255.png" type="Texture2D" id=56]
+[ext_resource path="res://assets/CharacterSpriteSheet/default/0/stand1_2/L3,R1,C1,head,visible,normal,255.png" type="Texture2D" id=57]
+[ext_resource path="res://assets/CharacterSpriteSheet/default/0/alert_1/L4,R1,C1,armOverHair,visible,normal,255.png" type="Texture2D" id=58]
+[ext_resource path="res://assets/CharacterSpriteSheet/default/0/stabO1_0/L3,R1,C1,head,visible,normal,255.png" type="Texture2D" id=59]
+[ext_resource path="res://assets/CharacterSpriteSheet/default/0/alert_3/L3,R1,C1,hairShade,visible,normal,255.png" type="Texture2D" id=60]
+[ext_resource path="res://assets/CharacterSpriteSheet/default/0/alert_3/L1,R1,C1,body,visible,normal,255.png" type="Texture2D" id=61]
+[ext_resource path="res://assets/CharacterSpriteSheet/default/0/jump_0/L4,R1,C1,armOverHair,visible,normal,255.png" type="Texture2D" id=62]
+[ext_resource path="res://assets/CharacterSpriteSheet/default/0/alert_1/L3,R1,C1,hairShade,visible,normal,255.png" type="Texture2D" id=63]
+[ext_resource path="res://assets/CharacterSpriteSheet/weapons/kandine_1.png" type="Texture2D" id=64]
+[ext_resource path="res://assets/CharacterSpriteSheet/default/0/stabO1_2/L2,R1,C1,arm,visible,normal,255.png" type="Texture2D" id=65]
+[ext_resource path="res://assets/CharacterSpriteSheet/weapons/kandine_2.png" type="Texture2D" id=66]
+[ext_resource path="res://assets/CharacterSpriteSheet/default/0/stabO1_1/L4,R1,C1,armOverHair,visible,normal,255.png" type="Texture2D" id=67]
+[ext_resource path="res://assets/CharacterSpriteSheet/default/0/stabO1_1/L3,R1,C1,hairShade,visible,normal,255.png" type="Texture2D" id=68]
+[ext_resource path="res://assets/CharacterSpriteSheet/default/0/alert_1/L2,R1,C1,head,visible,normal,255.png" type="Texture2D" id=69]
+[ext_resource path="res://assets/CharacterSpriteSheet/weapons/kandine_walking_1_3_4.png" type="Texture2D" id=70]
+[ext_resource path="res://assets/CharacterSpriteSheet/weapons/kandine_walking_2.png" type="Texture2D" id=71]
+[ext_resource path="res://assets/CharacterSpriteSheet/default/0/walk1_2/L3,R1,C1,head,visible,normal,255.png" type="Texture2D" id=72]
+[ext_resource path="res://assets/CharacterSpriteSheet/default/0/stabO1_1/L2,R1,C1,head,visible,normal,255.png" type="Texture2D" id=73]
+[ext_resource path="res://assets/CharacterSpriteSheet/default/0/jump_0/L3,R1,C1,hairShade,visible,normal,255.png" type="Texture2D" id=74]
+[ext_resource path="res://assets/CharacterSpriteSheet/default/0/stabO1_0/L1,R1,C1,body,visible,normal,255.png" type="Texture2D" id=75]
+[ext_resource path="res://assets/CharacterSpriteSheet/default/0/stabO1_2/L1,R1,C1,body,visible,normal,255.png" type="Texture2D" id=76]
+[ext_resource path="res://assets/CharacterSpriteSheet/default/0/stabO1_2/L4,R1,C1,hairShade,visible,normal,255.png" type="Texture2D" id=77]
+[ext_resource path="res://assets/CharacterSpriteSheet/weapons/kandine_jump_2.png" type="Texture2D" id=78]
 
 [sub_resource type="RectangleShape2D" id=8]
-extents = Vector2( 21.5, 31 )
+size = Vector2( 21.5, 31 )
 
 [sub_resource type="RectangleShape2D" id=14]
-extents = Vector2( 17.5, 20 )
+size = Vector2( 17.5, 20 )
 
 [sub_resource type="SpriteFrames" id=2]
 animations = [ {
@@ -228,8 +228,8 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 0,
 "values": [ Vector2( 0, -5 ) ]
 }
@@ -244,8 +244,8 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.2, 0.4, 0.6 ),
-"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"times": PackedFloat32Array( 0, 0.2, 0.4, 0.6 ),
+"transitions": PackedFloat32Array( 1, 1, 1, 1 ),
 "update": 1,
 "values": [ 0, 1, 2, 3 ]
 }
@@ -256,8 +256,8 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 1,
 "values": [ "idle" ]
 }
@@ -268,8 +268,8 @@ tracks/2/loop_wrap = true
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/keys = {
-"times": PoolRealArray( 0, 0.2, 0.4, 0.6 ),
-"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"times": PackedFloat32Array( 0, 0.2, 0.4, 0.6 ),
+"transitions": PackedFloat32Array( 1, 1, 1, 1 ),
 "update": 1,
 "values": [ 0, 1, 2, 3 ]
 }
@@ -280,8 +280,8 @@ tracks/3/loop_wrap = true
 tracks/3/imported = false
 tracks/3/enabled = true
 tracks/3/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 1,
 "values": [ "idle" ]
 }
@@ -292,8 +292,8 @@ tracks/4/loop_wrap = true
 tracks/4/imported = false
 tracks/4/enabled = true
 tracks/4/keys = {
-"times": PoolRealArray( 0, 0.2, 0.4, 0.6 ),
-"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"times": PackedFloat32Array( 0, 0.2, 0.4, 0.6 ),
+"transitions": PackedFloat32Array( 1, 1, 1, 1 ),
 "update": 1,
 "values": [ 0, 1, 2, 3 ]
 }
@@ -304,8 +304,8 @@ tracks/5/loop_wrap = true
 tracks/5/imported = false
 tracks/5/enabled = true
 tracks/5/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 1,
 "values": [ "idle" ]
 }
@@ -316,8 +316,8 @@ tracks/6/loop_wrap = true
 tracks/6/imported = false
 tracks/6/enabled = true
 tracks/6/keys = {
-"times": PoolRealArray( 0, 0.2, 0.4, 0.6 ),
-"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"times": PackedFloat32Array( 0, 0.2, 0.4, 0.6 ),
+"transitions": PackedFloat32Array( 1, 1, 1, 1 ),
 "update": 1,
 "values": [ 0, 1, 2, 3 ]
 }
@@ -328,8 +328,8 @@ tracks/7/loop_wrap = true
 tracks/7/imported = false
 tracks/7/enabled = true
 tracks/7/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 1,
 "values": [ "idle" ]
 }
@@ -340,8 +340,8 @@ tracks/8/loop_wrap = true
 tracks/8/imported = false
 tracks/8/enabled = true
 tracks/8/keys = {
-"times": PoolRealArray( 0.00543853, 0.186404, 0.395468, 0.582778 ),
-"transitions": PoolRealArray( 4.31583e-05, 1.63539e-05, 3.05175e-05, 0.000161072 ),
+"times": PackedFloat32Array( 0.00543853, 0.186404, 0.395468, 0.582778 ),
+"transitions": PackedFloat32Array( 4.31583e-05, 1.63539e-05, 3.05175e-05, 0.000161072 ),
 "update": 1,
 "values": [ 0, 1, 2, 3 ]
 }
@@ -352,8 +352,8 @@ tracks/9/loop_wrap = true
 tracks/9/imported = false
 tracks/9/enabled = true
 tracks/9/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 1,
 "values": [ "idle" ]
 }
@@ -364,8 +364,8 @@ tracks/10/loop_wrap = true
 tracks/10/imported = false
 tracks/10/enabled = true
 tracks/10/keys = {
-"times": PoolRealArray( 0, 0.1 ),
-"transitions": PoolRealArray( 1, 1 ),
+"times": PackedFloat32Array( 0, 0.1 ),
+"transitions": PackedFloat32Array( 1, 1 ),
 "update": 1,
 "values": [ Vector2( 9, 9 ), Vector2( 9, 9 ) ]
 }
@@ -376,8 +376,8 @@ tracks/11/loop_wrap = true
 tracks/11/imported = false
 tracks/11/enabled = true
 tracks/11/keys = {
-"times": PoolRealArray( 0, 0.2, 0.4, 0.6 ),
-"transitions": PoolRealArray( 1, 1e-05, 1e-05, 1.0067e-05 ),
+"times": PackedFloat32Array( 0, 0.2, 0.4, 0.6 ),
+"transitions": PackedFloat32Array( 1, 1e-05, 1e-05, 1.0067e-05 ),
 "update": 1,
 "values": [ Vector2( -2, 0 ), Vector2( -1, 0 ), Vector2( 0, 0 ), Vector2( -3, 0 ) ]
 }
@@ -392,8 +392,8 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0, 0.2 )
+"points": PackedFloat32Array( 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PackedFloat32Array( 0, 0.2 )
 }
 tracks/1/type = "bezier"
 tracks/1/path = NodePath("../Head:frame")
@@ -402,8 +402,8 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0, 0.200797 )
+"points": PackedFloat32Array( 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PackedFloat32Array( 0, 0.200797 )
 }
 tracks/2/type = "bezier"
 tracks/2/path = NodePath("../Ears:frame")
@@ -412,8 +412,8 @@ tracks/2/loop_wrap = true
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/keys = {
-"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0, 0.199942 )
+"points": PackedFloat32Array( 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PackedFloat32Array( 0, 0.199942 )
 }
 tracks/3/type = "bezier"
 tracks/3/path = NodePath("../Arm:frame")
@@ -422,8 +422,8 @@ tracks/3/loop_wrap = true
 tracks/3/imported = false
 tracks/3/enabled = true
 tracks/3/keys = {
-"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0, 0.200797 )
+"points": PackedFloat32Array( 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PackedFloat32Array( 0, 0.200797 )
 }
 tracks/4/type = "bezier"
 tracks/4/path = NodePath(".:frame")
@@ -432,8 +432,8 @@ tracks/4/loop_wrap = true
 tracks/4/imported = false
 tracks/4/enabled = true
 tracks/4/keys = {
-"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0, 0.201651 )
+"points": PackedFloat32Array( 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
+"times": PackedFloat32Array( 0, 0.201651 )
 }
 tracks/5/type = "value"
 tracks/5/path = NodePath(".:position")
@@ -442,8 +442,8 @@ tracks/5/loop_wrap = true
 tracks/5/imported = false
 tracks/5/enabled = true
 tracks/5/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 1,
 "values": [ Vector2( 9, 9 ) ]
 }
@@ -454,8 +454,8 @@ tracks/6/loop_wrap = true
 tracks/6/imported = false
 tracks/6/enabled = true
 tracks/6/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 1,
 "values": [ "jump" ]
 }
@@ -466,8 +466,8 @@ tracks/7/loop_wrap = true
 tracks/7/imported = false
 tracks/7/enabled = true
 tracks/7/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 1,
 "values": [ "jump" ]
 }
@@ -478,8 +478,8 @@ tracks/8/loop_wrap = true
 tracks/8/imported = false
 tracks/8/enabled = true
 tracks/8/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 1,
 "values": [ "jump" ]
 }
@@ -490,8 +490,8 @@ tracks/9/loop_wrap = true
 tracks/9/imported = false
 tracks/9/enabled = true
 tracks/9/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 1,
 "values": [ "jump" ]
 }
@@ -502,8 +502,8 @@ tracks/10/loop_wrap = true
 tracks/10/imported = false
 tracks/10/enabled = true
 tracks/10/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 1,
 "values": [ "jump" ]
 }
@@ -514,8 +514,8 @@ tracks/11/loop_wrap = true
 tracks/11/imported = false
 tracks/11/enabled = true
 tracks/11/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 0,
 "values": [ Vector2( -6, -15 ) ]
 }
@@ -530,8 +530,8 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 2, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0, 0.2, 0.5 )
+"points": PackedFloat32Array( 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 2, -0.25, 0, 0.25, 0 ),
+"times": PackedFloat32Array( 0, 0.2, 0.5 )
 }
 tracks/1/type = "value"
 tracks/1/path = NodePath(".:position")
@@ -540,8 +540,8 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0.00192392 ),
-"transitions": PoolRealArray( 0.00048828 ),
+"times": PackedFloat32Array( 0.00192392 ),
+"transitions": PackedFloat32Array( 0.00048828 ),
 "update": 1,
 "values": [ Vector2( 9, -1 ) ]
 }
@@ -552,8 +552,8 @@ tracks/2/loop_wrap = true
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/keys = {
-"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 2, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0, 0.2, 0.5 )
+"points": PackedFloat32Array( 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 2, -0.25, 0, 0.25, 0 ),
+"times": PackedFloat32Array( 0, 0.2, 0.5 )
 }
 tracks/3/type = "value"
 tracks/3/path = NodePath("../Head:frame")
@@ -562,8 +562,8 @@ tracks/3/loop_wrap = true
 tracks/3/imported = false
 tracks/3/enabled = true
 tracks/3/keys = {
-"times": PoolRealArray( 0, 0.25, 0.5 ),
-"transitions": PoolRealArray( 3.38615e-05, 1e-05, 1e-05 ),
+"times": PackedFloat32Array( 0, 0.25, 0.5 ),
+"transitions": PackedFloat32Array( 3.38615e-05, 1e-05, 1e-05 ),
 "update": 1,
 "values": [ 0, 1, 2 ]
 }
@@ -574,8 +574,8 @@ tracks/4/loop_wrap = true
 tracks/4/imported = false
 tracks/4/enabled = true
 tracks/4/keys = {
-"times": PoolRealArray( 0, 0.25, 0.5 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
+"times": PackedFloat32Array( 0, 0.25, 0.5 ),
+"transitions": PackedFloat32Array( 1, 1, 1 ),
 "update": 1,
 "values": [ 0, 1, 2 ]
 }
@@ -586,8 +586,8 @@ tracks/5/loop_wrap = true
 tracks/5/imported = false
 tracks/5/enabled = true
 tracks/5/keys = {
-"times": PoolRealArray( 0, 0.2, 0.5 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
+"times": PackedFloat32Array( 0, 0.2, 0.5 ),
+"transitions": PackedFloat32Array( 1, 1, 1 ),
 "update": 1,
 "values": [ true, false, true ]
 }
@@ -598,8 +598,8 @@ tracks/6/loop_wrap = true
 tracks/6/imported = false
 tracks/6/enabled = true
 tracks/6/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 1,
 "values": [ "stab" ]
 }
@@ -610,8 +610,8 @@ tracks/7/loop_wrap = true
 tracks/7/imported = false
 tracks/7/enabled = true
 tracks/7/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 1,
 "values": [ "stab" ]
 }
@@ -622,8 +622,8 @@ tracks/8/loop_wrap = true
 tracks/8/imported = false
 tracks/8/enabled = true
 tracks/8/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 1,
 "values": [ "stab" ]
 }
@@ -634,8 +634,8 @@ tracks/9/loop_wrap = true
 tracks/9/imported = false
 tracks/9/enabled = true
 tracks/9/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 1,
 "values": [ "stab" ]
 }
@@ -646,8 +646,8 @@ tracks/10/loop_wrap = true
 tracks/10/imported = false
 tracks/10/enabled = true
 tracks/10/keys = {
-"times": PoolRealArray( 0, 0.25, 0.5 ),
-"transitions": PoolRealArray( 1e-05, 1e-05, 1e-05 ),
+"times": PackedFloat32Array( 0, 0.25, 0.5 ),
+"transitions": PackedFloat32Array( 1e-05, 1e-05, 1e-05 ),
 "update": 1,
 "values": [ 0, 1, 2 ]
 }
@@ -658,8 +658,8 @@ tracks/11/loop_wrap = true
 tracks/11/imported = false
 tracks/11/enabled = true
 tracks/11/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1e-05 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1e-05 ),
 "update": 1,
 "values": [ "stab" ]
 }
@@ -670,8 +670,8 @@ tracks/12/loop_wrap = true
 tracks/12/imported = false
 tracks/12/enabled = true
 tracks/12/keys = {
-"times": PoolRealArray( 0, 0.2, 0.5 ),
-"transitions": PoolRealArray( 1e-05, 1e-05, 1e-05 ),
+"times": PackedFloat32Array( 0, 0.2, 0.5 ),
+"transitions": PackedFloat32Array( 1e-05, 1e-05, 1e-05 ),
 "update": 1,
 "values": [ Vector2( 4, 6 ), Vector2( -36, -5 ), Vector2( 4.5, 6 ) ]
 }
@@ -682,8 +682,8 @@ tracks/13/loop_wrap = true
 tracks/13/imported = false
 tracks/13/enabled = true
 tracks/13/keys = {
-"times": PoolRealArray( 0.4 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0.4 ),
+"transitions": PackedFloat32Array( 1 ),
 "values": [ {
 "args": [  ],
 "method": "overlappingBodies"
@@ -701,8 +701,8 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 2, -0.25, 0, 0.25, 0, 3, -0.25, 0, 0.25, 0, 4, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0, 0.4, 0.6, 0.8 )
+"points": PackedFloat32Array( 0, -0.25, 0, 0.25, 0, 2, -0.25, 0, 0.25, 0, 3, -0.25, 0, 0.25, 0, 4, -0.25, 0, 0.25, 0 ),
+"times": PackedFloat32Array( 0, 0.4, 0.6, 0.8 )
 }
 tracks/1/type = "bezier"
 tracks/1/path = NodePath("../Head:frame")
@@ -711,8 +711,8 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 2, -0.25, 0, 0.25, 0, 3, -0.25, 0, 0.25, 0, 4, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0, 0.2, 0.4, 0.6, 0.8 )
+"points": PackedFloat32Array( 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 2, -0.25, 0, 0.25, 0, 3, -0.25, 0, 0.25, 0, 4, -0.25, 0, 0.25, 0 ),
+"times": PackedFloat32Array( 0, 0.2, 0.4, 0.6, 0.8 )
 }
 tracks/2/type = "bezier"
 tracks/2/path = NodePath("../Arm:frame")
@@ -721,8 +721,8 @@ tracks/2/loop_wrap = true
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/keys = {
-"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 2, -0.25, 0, 0.25, 0, 3, -0.25, 0, 0.25, 0, 4, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0, 0.199942, 0.39903, 0.598972, 0.798914 )
+"points": PackedFloat32Array( 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 2, -0.25, 0, 0.25, 0, 3, -0.25, 0, 0.25, 0, 4, -0.25, 0, 0.25, 0 ),
+"times": PackedFloat32Array( 0, 0.199942, 0.39903, 0.598972, 0.798914 )
 }
 tracks/3/type = "bezier"
 tracks/3/path = NodePath("../Ears:frame")
@@ -731,8 +731,8 @@ tracks/3/loop_wrap = true
 tracks/3/imported = false
 tracks/3/enabled = true
 tracks/3/keys = {
-"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 2, -0.25, 0, 0.25, 0, 3, -0.25, 0, 0.25, 0, 4, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0, 0.199942, 0.399884, 0.598118, 0.801478 )
+"points": PackedFloat32Array( 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 2, -0.25, 0, 0.25, 0, 3, -0.25, 0, 0.25, 0, 4, -0.25, 0, 0.25, 0 ),
+"times": PackedFloat32Array( 0, 0.199942, 0.399884, 0.598118, 0.801478 )
 }
 tracks/4/type = "bezier"
 tracks/4/path = NodePath(".:frame")
@@ -741,8 +741,8 @@ tracks/4/loop_wrap = true
 tracks/4/imported = false
 tracks/4/enabled = true
 tracks/4/keys = {
-"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 2, -0.25, 0, 0.25, 0, 3, -0.25, 0, 0.25, 0, 4, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0, 0.200797, 0.39903, 0.597263, 0.801478 )
+"points": PackedFloat32Array( 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 2, -0.25, 0, 0.25, 0, 3, -0.25, 0, 0.25, 0, 4, -0.25, 0, 0.25, 0 ),
+"times": PackedFloat32Array( 0, 0.200797, 0.39903, 0.597263, 0.801478 )
 }
 tracks/5/type = "value"
 tracks/5/path = NodePath(".:position")
@@ -751,8 +751,8 @@ tracks/5/loop_wrap = true
 tracks/5/imported = false
 tracks/5/enabled = true
 tracks/5/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 4.31584e-05 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 4.31584e-05 ),
 "update": 1,
 "values": [ Vector2( 9, -1 ) ]
 }
@@ -763,8 +763,8 @@ tracks/6/loop_wrap = true
 tracks/6/imported = false
 tracks/6/enabled = true
 tracks/6/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 1,
 "values": [ "walk" ]
 }
@@ -775,8 +775,8 @@ tracks/7/loop_wrap = true
 tracks/7/imported = false
 tracks/7/enabled = true
 tracks/7/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 1,
 "values": [ "walk" ]
 }
@@ -787,8 +787,8 @@ tracks/8/loop_wrap = true
 tracks/8/imported = false
 tracks/8/enabled = true
 tracks/8/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 1,
 "values": [ "walk" ]
 }
@@ -799,8 +799,8 @@ tracks/9/loop_wrap = true
 tracks/9/imported = false
 tracks/9/enabled = true
 tracks/9/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 1,
 "values": [ "walk" ]
 }
@@ -811,8 +811,8 @@ tracks/10/loop_wrap = true
 tracks/10/imported = false
 tracks/10/enabled = true
 tracks/10/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 1,
 "values": [ "walk" ]
 }
@@ -823,19 +823,19 @@ tracks/11/loop_wrap = true
 tracks/11/imported = false
 tracks/11/enabled = true
 tracks/11/keys = {
-"times": PoolRealArray( 0.185611, 0.409372, 0.603133, 0.78 ),
-"transitions": PoolRealArray( 0.000370048, 0.000622344, 0.000714887, 1e-05 ),
+"times": PackedFloat32Array( 0.185611, 0.409372, 0.603133, 0.78 ),
+"transitions": PackedFloat32Array( 0.000370048, 0.000622344, 0.000714887, 1e-05 ),
 "update": 0,
 "values": [ Vector2( -1, 4 ), Vector2( -7, 5 ), Vector2( 0, 5 ), Vector2( 2, 3 ) ]
 }
 
 [sub_resource type="RectangleShape2D" id=19]
-extents = Vector2( 2.25, 30.25 )
+size = Vector2( 2.25, 30.25 )
 
 [sub_resource type="RectangleShape2D" id=20]
-extents = Vector2( 20, 32 )
+size = Vector2( 20, 32 )
 
-[node name="Player" type="KinematicBody2D" groups=["climber", "player"]]
+[node name="Player" type="CharacterBody2D" groups=["climber", "player"]]
 position = Vector2( -7, -29 )
 collision_layer = 3008
 script = ExtResource( 2 )
@@ -843,11 +843,11 @@ script = ExtResource( 2 )
 [node name="Camera2D" type="Camera2D" parent="."]
 current = true
 zoom = Vector2( 0.9, 0.9 )
-drag_margin_h_enabled = true
-drag_margin_v_enabled = true
-smoothing_enabled = true
-drag_margin_left = 0.4
-drag_margin_right = 0.4
+drag_horizontal_enabled = true
+drag_vertical_enabled = true
+position_smoothing_enabled = true
+drag_left_margin = 0.4
+drag_right_margin = 0.4
 editor_draw_limits = true
 editor_draw_drag_margin = true
 
@@ -877,31 +877,31 @@ scale = Vector2( -1, 1 )
 shape = SubResource( 14 )
 disabled = true
 
-[node name="Body" type="AnimatedSprite" parent="."]
+[node name="Body" type="AnimatedSprite2D" parent="."]
 position = Vector2( 8, -2 )
 frames = SubResource( 2 )
 animation = "stab"
 flip_h = true
 
-[node name="Head" type="AnimatedSprite" parent="."]
+[node name="Head" type="AnimatedSprite2D" parent="."]
 position = Vector2( 8, -3 )
 frames = SubResource( 3 )
 animation = "stab"
 flip_h = true
 
-[node name="Ears" type="AnimatedSprite" parent="."]
+[node name="Ears" type="AnimatedSprite2D" parent="."]
 position = Vector2( 8, -5 )
 frames = SubResource( 4 )
 animation = "stab"
 flip_h = true
 
-[node name="Arm" type="AnimatedSprite" parent="."]
+[node name="Arm" type="AnimatedSprite2D" parent="."]
 position = Vector2( 8, -2 )
 frames = SubResource( 5 )
 animation = "stab"
 flip_h = true
 
-[node name="Weapon" type="AnimatedSprite" parent="."]
+[node name="Weapon" type="AnimatedSprite2D" parent="."]
 position = Vector2( 9, -1 )
 scale = Vector2( -1, 1 )
 frames = SubResource( 11 )
@@ -919,10 +919,10 @@ anims/stab = SubResource( 13 )
 anims/walk = SubResource( 18 )
 
 [node name="Label" type="Label" parent="."]
-margin_left = -24.0
-margin_top = 30.0
-margin_right = 46.0
-margin_bottom = 44.0
+offset_left = -24.0
+offset_top = 30.0
+offset_right = 46.0
+offset_bottom = 44.0
 align = 1
 
 [node name="Timer" type="Timer" parent="."]
@@ -941,10 +941,10 @@ shape = SubResource( 20 )
 
 [node name="HP" type="Label" parent="."]
 visible = false
-margin_left = -14.0
-margin_top = -61.0
-margin_right = 34.0
-margin_bottom = -39.0
+offset_left = -14.0
+offset_top = -61.0
+offset_right = 34.0
+offset_bottom = -39.0
 align = 1
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]

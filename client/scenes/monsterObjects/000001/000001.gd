@@ -1,4 +1,4 @@
-extends KinematicBody2D
+extends CharacterBody2D
 
 ##########################################################
 var title = "Green Guy"
@@ -26,11 +26,11 @@ func move(new_position):
 	var curr_position = self.get_global_position()
 	#turn right
 	if new_position.x > curr_position.x:
-		$Sprite.scale.x = xScale * -1
+		$Sprite2D.scale.x = xScale * -1
 		animation_control('walk')
 	#turn left
 	elif new_position.x < curr_position.x:
-		$Sprite.scale.x = xScale
+		$Sprite2D.scale.x = xScale
 		animation_control('walk')
 	else:
 		animation_control('idle')
@@ -49,7 +49,7 @@ func health_bar_update():
 func on_death():
 	despawn = 0
 	get_node("do_damage/CollisionShape2D").set_deferred("disabled", true)
-	yield(get_tree().create_timer(0.2), "timeout")
+	await get_tree().create_timer(0.2).timeout
 	get_node("take_damage/CollisionShape2D").set_deferred("disabled", true)
 	self.visible = false
 	print("%s died" % self.name)

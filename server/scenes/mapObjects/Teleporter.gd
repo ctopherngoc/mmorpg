@@ -1,6 +1,6 @@
 extends Area2D
 
-export(Vector2) var endLocation
+@export var endLocation: Vector2
 
 """
 currently teleporter saves body as a singular variable.
@@ -9,8 +9,8 @@ currently teleporter saves body as a singular variable.
 3.remove body from list (on exit)
 """
 
-onready var players = []
-onready var player
+@onready var players = []
+@onready var player
 
 func _read():
 	pass

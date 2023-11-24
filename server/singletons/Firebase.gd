@@ -1,6 +1,6 @@
 extends Node
 
-onready var httprequest
+@onready var httprequest
 const API_KEY := ""
 const PROJECT_ID := ""
 const DATABASE_URL := "https://firestore.googleapis.com/v1/projects/%s/databases/(default)/documents/" % PROJECT_ID 
@@ -8,8 +8,8 @@ const DATABASE_URL := "https://firestore.googleapis.com/v1/projects/%s/databases
 
 var user_info := {}
 
-func _get_request_headers(token: String) -> PoolStringArray:
-	return PoolStringArray([
+func _get_request_headers(token: String) -> PackedStringArray:
+	return PackedStringArray([
 		"Content-Type: application/json",
 		"Authorization: Bearer %s" % token
 	])
@@ -18,25 +18,27 @@ func _get_request_headers(token: String) -> PoolStringArray:
 # create baseline in /users and chreating new character in /characters	
 func save_document(path: String, fields: Dictionary, http: HTTPRequest, token: String)-> void:
 	var document := {"fields": fields}
-	var body := to_json(document)
+	var body := JSON.new().stringify(document)
 	var url := DATABASE_URL + path
 # warning-ignore:return_value_discarded
 	if "users/" in path:
 		http.request(url, _get_request_headers(token),false, HTTPClient.METHOD_POST, body)
-		yield(http, "request_completed")
+		await http.request_completed
 		#var result := yield(http, "request_completed") as Array
 	else:
 # warning-ignore:return_value_discarded
 		http.request(url, _get_request_headers(token),false, HTTPClient.METHOD_POST, body)
-		yield(http, "request_completed")
+		await http.request_completed
 
 # because server controls database, requires user token as argument for get_request_header function
 func get_document(path: String, http: HTTPRequest, token: String, player_container)-> void:
 	var url := DATABASE_URL + path
 # warning-ignore:return_value_discarded
 	http.request(url, _get_request_headers(token), false, HTTPClient.METHOD_GET)
-	var result := yield(http, "request_completed") as Array
-	var result_body := JSON.parse(result[3].get_string_from_ascii()).result as Dictionary
+	var result := await http.request_completed as Array
+	var test_json_conv = JSON.new()
+	test_json_conv.parse(result[3].get_string_from_ascii()).result as Dictionary
+	var result_body := test_json_conv.get_data()
 	if result_body.has('fields'):
 		if "users/" in path:
 			if result_body["fields"]['characters']['arrayValue'].size() > 0:
@@ -67,21 +69,21 @@ func update_document(path: String, http: HTTPRequest, token: String, player_cont
 			character_array.append({'stringValue':str(character)})
 		var temp_dict = {'characters':{'arrayValue':{'values': character_array}}}
 		var document := {"fields": temp_dict}
-		var body := to_json(document)
+		var body := JSON.new().stringify(document)
 		var url := DATABASE_URL + path
 		# warning-ignore:return_value_discarded
 		http.request(url, _get_request_headers(token), false, HTTPClient.METHOD_PATCH, body)
-		yield(http, "request_completed")
+		await http.request_completed
 	else:
 		# update /character
 		var fb_data = ServerData.player_info.duplicate()
 		server_dictionary_converter(player_container, fb_data)
 		var document := {"fields": fb_data}
-		var body := to_json(document)
+		var body := JSON.new().stringify(document)
 		var url := DATABASE_URL + path
 		# warning-ignore:return_value_discarded
 		http.request(url, _get_request_headers(token), false, HTTPClient.METHOD_PATCH, body)
-		yield(http, "request_completed")
+		await http.request_completed
 
 # deleting a document will only occur if we are deleting a whole user account	
 # or deleting a character in /charaters
@@ -89,7 +91,7 @@ func delete_document(path: String, http: HTTPRequest, token: String) -> void:
 	var url := DATABASE_URL + path
 # warning-ignore:return_value_discarded
 	http.request(url, _get_request_headers(token), false, HTTPClient.METHOD_DELETE)
-	yield(http, "request_completed")
+	await http.request_completed
 	
 func firebase_dictionary_converter(database_data: Dictionary, client_data: Array):
 	"""

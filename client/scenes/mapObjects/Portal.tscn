@@ -3,7 +3,7 @@
 [ext_resource path="res://scenes/mapObjects/Portal.gd" type="Script" id=1]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 22, 4 )
+size = Vector2( 22, 4 )
 
 [node name="Portal" type="Area2D"]
 position = Vector2( -8, -36 )
@@ -16,10 +16,10 @@ position = Vector2( 8, 32 )
 shape = SubResource( 1 )
 
 [node name="Label" type="Label" parent="."]
-margin_left = -10.0
-margin_top = 39.0
-margin_right = 31.0
-margin_bottom = 53.0
+offset_left = -10.0
+offset_top = 39.0
+offset_right = 31.0
+offset_bottom = 53.0
 text = "Portal"
 
 [connection signal="area_entered" from="." to="." method="_on_Portal_area_entered"]

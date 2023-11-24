@@ -1,6 +1,6 @@
 extends Node
 
-var network = NetworkedMultiplayerENet.new()
+var network = ENetMultiplayerPeer.new()
 var gateway_api = MultiplayerAPI.new()
 var port = 2736
 var max_players = 100
@@ -12,7 +12,7 @@ func _ready():
 
 # warning-ignore:unused_argument
 func _process(_delta):
-	if not custom_multiplayer.has_network_peer():
+	if not custom_multiplayer.has_multiplayer_peer():
 		return;
 	custom_multiplayer.poll()
 	
@@ -20,11 +20,11 @@ func start_server():
 	network.create_server(port, max_players)
 	set_custom_multiplayer(gateway_api)
 	custom_multiplayer.set_root_node(self)
-	custom_multiplayer.set_network_peer(network)
+	custom_multiplayer.set_multiplayer_peer(network)
 	print("GameServerHub started")
 
-	network.connect("peer_connected", self, "_Peer_Connected")
-	network.connect("peer_disconnected", self, "_Peer_Disconnected")
+	network.connect("peer_connected", Callable(self, "_Peer_Connected"))
+	network.connect("peer_disconnected", Callable(self, "_Peer_Disconnected"))
 
 func _Peer_Connected(server_id):
 	print("server " + str(server_id) + " Connected")

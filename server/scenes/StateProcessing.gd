@@ -9,7 +9,7 @@ func _physics_process(_delta):
 	if sync_clock_counter == 3:
 		sync_clock_counter = 0
 		#print(ServerData.monsters)
-		if not ServerData.player_state_collection.empty():
+		if not ServerData.player_state_collection.is_empty():
 			
 			world_state["P"] = ServerData.player_state_collection.duplicate(true)
 			#remove timestamp for each player, add timestamp to worldstate

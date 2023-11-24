@@ -5,9 +5,9 @@ var value = rng.randi_range(40, 51)
 
 func _ready():
 # warning-ignore:return_value_discarded
-	$Area2D.connect("area_entered", self, "on_area_entered")
+	$Area2D.connect("area_entered", Callable(self, "on_area_entered"))
 # warning-ignore:return_value_discarded
-	$Area2D.connect("area_exited", self, "on_area_exited")
+	$Area2D.connect("area_exited", Callable(self, "on_area_exited"))
 	
 func on_area_entered(_area2d):
 	player = true

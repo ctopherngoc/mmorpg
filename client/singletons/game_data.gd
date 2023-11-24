@@ -3,12 +3,12 @@ extends Node
 func _ready():
 	pass # Replace with function body.
 	
-onready var bgm_dict = {
+@onready var bgm_dict = {
 	'menu': preload("res://scenes/bgm/menu_bgm.mp3"),
 	'BaseLevel': preload("res://scenes/bgm/game_bgm.mp3"),
 }
 
-onready var job_dict = {
+@onready var job_dict = {
 	"0": "Beginner",
 	"1": "Warrior",
 	"2": "Mage",
@@ -16,7 +16,7 @@ onready var job_dict = {
 	"4": "Thief",
 }
 
-onready var string_validation = [
+@onready var string_validation = [
 	"4r5e",
 	"5h1t",
 	"5hit",
@@ -445,7 +445,7 @@ onready var string_validation = [
   ]
 
 
-onready var experience_table = {
+@onready var experience_table = {
 	'1': 20,
 	'2': 38,
 	'3': 72,

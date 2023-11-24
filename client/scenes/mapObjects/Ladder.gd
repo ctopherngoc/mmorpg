@@ -9,8 +9,8 @@ func _on_Ladder_body_entered(body):
 
 func _on_Ladder_body_exited(body):
 	if !body.no_collision_zone:
-		body.set_collision_layer_bit(0, true)
-		body.set_collision_mask_bit(0, true)
+		body.set_collision_layer_value(0, true)
+		body.set_collision_mask_value(0, true)
 	if body.is_in_group("climber"):
 		if body.can_climb == true:
 			body.can_climb = false

@@ -6,7 +6,7 @@ func _ready():
 func store_character_data(player_id, display_name):
 	var player_container = get_node(ServerData.player_location[str(player_id)] + "/%s" % str(player_id))
 	var firebase = Firebase.update_document("characters/%s" % display_name, player_container.http, player_container.db_info["token"], player_container.current_character)
-	yield(firebase, 'completed')
+	await firebase.completed
 	print("%s saved data" % display_name)
 
 func npc_attack(player, monster_stats):

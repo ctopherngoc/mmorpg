@@ -1,4 +1,4 @@
-extends KinematicBody2D
+extends CharacterBody2D
 
 # T: clock : {A: Attack animation}
 var attack_dict = {}

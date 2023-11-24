@@ -1,27 +1,27 @@
-extends KinematicBody2D
+extends CharacterBody2D
 
 # dynamic player variables
-onready var player = Global.player
-onready var jump_speed
-onready var health
-onready var max_horizontal_speed
-onready var velocity = Vector2.ZERO
-onready var damage
+@onready var player = Global.player
+@onready var jump_speed
+@onready var health
+@onready var max_horizontal_speed
+@onready var velocity = Vector2.ZERO
+@onready var damage
 
 # static player varaibles
-onready var horizontal_acceleration = 3
-onready var knockback_modifier = 0.2
-onready var gravity = 800
+@onready var horizontal_acceleration = 3
+@onready var knockback_modifier = 0.2
+@onready var gravity = 800
 
 # player states
-export var can_climb = false
-export var is_climbing = false
-export var no_collision_zone = false
-onready var direction = "RIGHT"
-onready var attacking = false
-onready var player_state
+@export var can_climb = false
+@export var is_climbing = false
+@export var no_collision_zone = false
+@onready var direction = "RIGHT"
+@onready var attacking = false
+@onready var player_state
 
-onready var animation = {
+@onready var animation = {
 	"f": 1,
 	"d": 1
 }
@@ -33,10 +33,10 @@ signal died
 # warning-ignore:unused_signal
 signal do_damage
 
-onready var took_damage = false
-onready var received_knockback = false
+@onready var took_damage = false
+@onready var received_knockback = false
 # timer for iframes
-onready var timer = get_node("Timer")
+@onready var timer = get_node("Timer")
 """
 
 func _ready():
@@ -47,7 +47,7 @@ func _ready():
 	
 	jump_speed = (player.stats.jumpSpeed)
 # warning-ignore:return_value_discarded
-	$take_damage.connect("area_entered", self, "on_hazard_area_entered")
+	$take_damage.connect("area_entered", Callable(self, "on_hazard_area_entered"))
 	get_node( "Head" ).set_flip_h( true )
 	get_node( "Body" ).set_flip_h( true )
 	get_node( "Ears" ).set_flip_h( true )
@@ -70,7 +70,9 @@ func movement_loop(delta):
 	# change get velocity
 	get_velocity(move_vector, delta)
 	# warning-ignore:return_value_discarded
-	move_and_slide(velocity, Vector2.UP)
+	set_velocity(velocity)
+	set_up_direction(Vector2.UP)
+	move_and_slide()
 	
 	# player state if jumping
 	if is_on_floor():
@@ -79,7 +81,10 @@ func movement_loop(delta):
 		animation["f"] = 0
 	
 	if is_on_floor() or !is_climbing:
-		velocity = move_and_slide(velocity, Vector2.UP)
+		set_velocity(velocity)
+		set_up_direction(Vector2.UP)
+		move_and_slide()
+		velocity = velocity
 	if is_climbing:
 		velocity.x = 0
 
@@ -138,8 +143,8 @@ func get_velocity(move_vector, delta):
 			# press up on ladder initiates climbing
 			elif (!is_on_floor() && Input.is_action_pressed("ui_up")) or (is_on_floor() && Input.is_action_pressed("ui_down")):
 					is_climbing = true
-					self.set_collision_layer_bit(0, false)
-					self.set_collision_mask_bit(0, false)
+					self.set_collision_layer_value(0, false)
+					self.set_collision_mask_value(0, false)
 					velocity.y = 0
 					velocity.x = 0
 			# over lapping ladder pressing nothing allows gravity
@@ -214,14 +219,14 @@ func change_direction():
 # floor collision while in air
 func _on_Area2D_area_entered(_area):
 	no_collision_zone = true
-	self.set_collision_layer_bit(0, false)
-	self.set_collision_mask_bit(0, false)
+	self.set_collision_layer_value(0, false)
+	self.set_collision_mask_value(0, false)
 	print("no col")
 
 func _on_Area2D_area_exited(_area):
 	no_collision_zone = false
-	self.set_collision_layer_bit(0, true)
-	self.set_collision_mask_bit(0, true)
+	self.set_collision_layer_value(0, true)
+	self.set_collision_mask_value(0, true)
 	print("col")
 ##########################################################################################
 # attacking functions

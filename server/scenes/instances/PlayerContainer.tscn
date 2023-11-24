@@ -11,8 +11,8 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.2, 0.5 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
+"times": PackedFloat32Array( 0, 0.2, 0.5 ),
+"transitions": PackedFloat32Array( 1, 1, 1 ),
 "update": 1,
 "values": [ true, false, true ]
 }
@@ -23,8 +23,8 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0.4 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0.4 ),
+"transitions": PackedFloat32Array( 1 ),
 "values": [ {
 "args": [  ],
 "method": "overlapping_bodies"
@@ -32,18 +32,18 @@ tracks/1/keys = {
 }
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 2.25, 30.25 )
+size = Vector2( 2.25, 30.25 )
 
 [sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 21.5, 31 )
+size = Vector2( 21.5, 31 )
 
 [sub_resource type="RectangleShape2D" id=3]
-extents = Vector2( 31, 20 )
+size = Vector2( 31, 20 )
 
 [sub_resource type="RectangleShape2D" id=4]
-extents = Vector2( 20, 32 )
+size = Vector2( 20, 32 )
 
-[node name="PlayerContainer" type="KinematicBody2D" groups=["climber", "player"]]
+[node name="PlayerContainer" type="CharacterBody2D" groups=["climber", "player"]]
 collision_layer = 3
 script = ExtResource( 1 )
 
@@ -99,10 +99,10 @@ shape = SubResource( 4 )
 [node name="DamageTimer" type="Timer" parent="."]
 
 [node name="ColorRect" type="ColorRect" parent="."]
-margin_left = -11.0
-margin_top = -33.0
-margin_right = 32.0
-margin_bottom = 27.0
+offset_left = -11.0
+offset_top = -33.0
+offset_right = 32.0
+offset_bottom = 27.0
 
 [connection signal="timeout" from="idle_timer" to="." method="_on_idle_timer_timeout"]
 [connection signal="timeout" from="DamageTimer" to="." method="_on_DamageTimer_timeout"]
