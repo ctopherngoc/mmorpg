@@ -2,10 +2,10 @@ extends Node
 
 func _ready():
 	pass # Replace with function body.
-
+	
 onready var bgm_dict = {
 	'menu': preload("res://scenes/bgm/menu_bgm.mp3"),
-	'baselevel': preload("res://scenes/bgm/game_bgm.mp3"),
+	'BaseLevel': preload("res://scenes/bgm/game_bgm.mp3"),
 }
 
 onready var job_dict = {
