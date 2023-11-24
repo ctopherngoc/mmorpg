@@ -51,10 +51,9 @@ func _on_server_disconnect():
 	Global.world_state_buffer.clear()
 	timer.stop()
 	print("server disconnected")
-	Signals.emit_signal("fail_login")
 	
 	if login_status == 1:
-		SceneHandler.change_scene(SceneHandler.scenes["mainMenu"])
+		SceneHandler.change_scene(SceneHandler.scenes["login"])
 		login_status = 0
 
 func determine_latency():
