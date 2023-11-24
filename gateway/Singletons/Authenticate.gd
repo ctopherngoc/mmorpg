@@ -2,7 +2,8 @@ extends Node
 
 var network = NetworkedMultiplayerENet.new()
 var port = 2735
-var ip = "172.17.0.2"
+#var ip = "172.17.0.2"
+var ip = "127.0.0.1"
 
 func _ready():
 	connect_to_server()
