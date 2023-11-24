@@ -1,6 +1,6 @@
 extends Node
 var ip = ""
-var port = 0000
+var port = 2733
 var token
 var email
 
@@ -77,8 +77,6 @@ remote func return_latency(client_time):
 				total_latency += latency_array[i]
 		delta_latency = (total_latency / latency_array.size() - latency)
 		latency = total_latency / latency_array.size()
-		#print("New Latency ", latency)
-		# \print("Delta Latency ", delta_latency)
 		latency_array.clear()
 
 #################################################################
@@ -166,9 +164,6 @@ remote func already_logged_in():
 
 #################################################################################
 # Player functions
-#remote func SpawnNewPlayer(player_id, map):
-#	Global.spawn_new_player(player_id, map)
-
 remote func despawn_player(player_id):
 	print("server.gd: despawn player")
 	var other_players = get_node("/root/currentScene/OtherPlayers")
@@ -186,8 +181,6 @@ remote func receive_world_state(world_state):
 		pass
 	else:	
 		Global.update_world_state(world_state)
-		# print(world_state)
-		#print("Worldstate: ", world_state["T"], " && client_clock: ", client_clock)
 
 remote func receive_despawn_player(player_id):
 	Global.despawn_player(player_id)
@@ -210,23 +203,14 @@ remote func receive_attack(player_id, attack_time):
 remote func update_player_stats(player_stats):
 	print('server.gd: remote update_player_stats')
 	print(player_stats)
-	# possibly change so packet only sends the actual character
-	#Global.player = player_stats
+
 	for character in Global.character_list:
 		if character["displayname"] == player_stats["displayname"]:
 			character = player_stats
-			#var player_node = get_node("/root/currentScene/Player")
-			#var info_node = get_node("/root/currentScene/UI/Control/PlayerInfo")
 
 			# change in health
 			if player_stats["stats"]["health"] != Global.player["stats"]["health"]:
-				"""
-				if player_stats["stats"]["health"] < character["stats"]["health"]:
-						player_node.health = player_stats["stats"]["health"]
-						info_node.health = player_stats["stats"]["health"]
-						Signals.emit_signal("update_health")
-						print("Player took %s damage." % str(character["stats"]["health"] - player_stats["stats"]["health"]))
-				"""
+
 				# lose health
 				if player_stats["stats"]["health"] < Global.player["stats"]["health"]:
 					print("Player took %s damage." % str(character["stats"]["health"] - player_stats["stats"]["health"]))
@@ -237,35 +221,16 @@ remote func update_player_stats(player_stats):
 				Signals.emit_signal("update_health")
 				
 			# level check -> exp check
-			"""
-			if player_stats["stats"]["level"] > character["stats"]["level"]:
-				print("Level up")
-				#### possible remove
-				player_node.player["stats"]["experience"] = player_stats["stats"]["experience"]
-				player_node.player["stats"]["level"] = player_stats["stats"]["level"]
-				#####################
-				
-				info_node.exp = player_stats["stats"]["experience"]
-				info_node.level = player_stats["stats"]["level"]
-				Signals.emit_signal("update_level")
-				"""
 			if player_stats["stats"]["level"] > Global.player["stats"]["level"]:
 				print("Level up")
 				Global.player["stats"]["experience"] = player_stats["stats"]["experience"]
 				Global.player["stats"]["level"] = player_stats["stats"]["level"]
 				Signals.emit_signal("update_level")
-				""""
-				elif player_stats["stats"]["experience"] > character["stats"]["experience"]:
-						player_node.player["stats"]["experience"] = player_stats["stats"]["experience"]
-						print("Player gained %s exp." % str(player_stats["stats"]["experience"] - character["stats"]["experience"]))
-						info_node.experience = player_stats["stats"]["experience"]
-						Signals.emit_signal("update_exp")
-				"""
+
 			elif player_stats["stats"]["experience"] > Global.player["stats"]["experience"]:
 					print("Player gained %s exp." % str(player_stats["stats"]["experience"] - Global.player["stats"]["experience"]))
 					Global.player["stats"]["experience"] = player_stats["stats"]["experience"]
 					Signals.emit_signal("update_exp")
-			#player_node.player = player_stats
 			break
 
 func portal(portal):
