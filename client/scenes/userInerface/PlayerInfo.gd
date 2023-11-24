@@ -1,11 +1,5 @@
 extends ColorRect
 
-"""
-var health = Global.player["stats"]["health"] 
-var mana = Global.player["stats"]["mana"] 
-var level = Global.player["stats"]["level"] 
-var experience = Global.player["stats"]["experience"]
-"""
 # Called when the node enters the scene tree for the first time.
 func _ready():
 # warning-ignore:return_value_discarded
