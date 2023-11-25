@@ -1,0 +1,4 @@
+res://default_env.tres
+res://GatewayServer.tscn
+res://Singletons/Gateway.gd
+res://Singletons/Authenticate.gd

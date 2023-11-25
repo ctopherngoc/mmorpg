@@ -1,7 +1,7 @@
 extends Node
 
 var network = ENetMultiplayerPeer.new()
-var gateway_api = MultiplayerAPI.new()
+var gateway_api : MultiplayerAPI
 var port = 2734
 var max_players = 100
 var cert = load("res://Resources/Certificate/X509_Certificate.crt")
@@ -11,32 +11,34 @@ func _ready():
 	start_server()
 	
 func _process(_delta):
-	if not custom_multiplayer.has_multiplayer_peer():
+	if not gateway_api.has_multiplayer_peer():
 		return
-	custom_multiplayer.poll()
+	gateway_api.poll()
 	
 func start_server():
+	"""
 	network.set_dtls_enabled(true)
 	network.set_dtls_key(key)
 	network.set_dtls_certificate(cert)
+	"""
 	network.create_server(port, max_players)
-	set_custom_multiplayer(gateway_api)
-	custom_multiplayer.set_root_node(self)
-	custom_multiplayer.set_multiplayer_peer(network)
+	gateway_api =  MultiplayerAPI.create_default_interface()
+	get_tree().set_multiplayer(gateway_api, self.get_path())
+	gateway_api.multiplayer_peer = network
+	gateway_api.peer_connected.connect(_Peer_Connected)
+	gateway_api.peer_disconnected.connect(_Peer_Disconnected)
 	print("Gateway server started")
 	
-	network.connect("peer_connected", Callable(self, "_Peer_Connected"))
-	network.connect("peer_disconnected", Callable(self, "_Peer_Disconnected"))
-	
 func _Peer_Connected(player_id):
-	print("User " + str(player_id) + " Connected")
+	print("Gateway Server _on_peer_connected, peer_id: {0}".format([player_id]))
 
 func _Peer_Disconnected(player_id):
-	print("User " + str(player_id) + " Disconnected")
+	print("Custom Server _on_peer_disconnected, peer_id: {0}".format([player_id]))
 	
-@rpc("any_peer") func login_request(username, password):
+@rpc("any_peer")
+func login_request(username, password):
 	print("login request recieved")
-	var player_id = custom_multiplayer.get_remote_sender_id()
+	var player_id = multiplayer.get_remote_sender_id()
 	Authenticate.authenticate_player(username, password, player_id)
 
 func return_login_request(result, player_id):
