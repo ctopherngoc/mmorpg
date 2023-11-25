@@ -1,3 +1,5 @@
 res://default_env.tres
 res://Authenticate.tscn
 res://Singleton/Firebase.gd
+res://Authenticate.gd
+res://Singleton/Server.gd

@@ -3,6 +3,7 @@ extends Node
 # singleton: http.gd links variable to httprequest
 @onready var http : HTTPRequest
 var network = ENetMultiplayerPeer.new()
+var auth_api : MultiplayerAPI
 var port = 2735
 var max_servers = 5
 
@@ -11,27 +12,30 @@ func _ready():
 
 func start_server():
 	network.create_server(port, max_servers)
-	get_tree().set_multiplayer_peer(network)
+	auth_api =  MultiplayerAPI.create_default_interface()
+	get_tree().set_multiplayer(auth_api, self.get_path())
+	auth_api.multiplayer_peer = network
+	auth_api.peer_connected.connect(_Peer_Connected)
+	auth_api.peer_disconnected.connect(_Peer_Disconnected)
 	print("Authentication server started")
 
-	network.connect("peer_connected", Callable(self, "_Peer_Connected"))
-	network.connect("peer_disconnected", Callable(self, "_Peer_Discnnected"))
-
 func _Peer_Connected(gateway_id):
-	print("Gateway " + str(gateway_id) + " Connected")
+	print("Auth Server _on_peer_connected, peer_id: {0}".format([gateway_id]))
 
 func _Peer_Disconnected(gateway_id):
-	print("Gateway " + str(gateway_id) + " Disconnected")
+	print("Auth Server _on_peer_disconnected, peer_id: {0}".format([gateway_id]))
 	
-@rpc("any_peer") func authenticate_player(username, password, player_id):
+@rpc("any_peer")
+func authenticate_player(username, password, player_id):
 	print("authentication request received")
 	var gateway_id = get_tree().get_remote_sender_id()
 	
 	print("Starting authentication")
 	print("this is http: %s" % http)
 	var results = []
-	var firebaseStatus = Firebase.login(username, password, http, results)
-	await firebaseStatus.completed
+	await Firebase.login(username, password, http, results)
+	#var firebaseStatus = Firebase.login(username, password, http, results)
+	#await firebaseStatus.completed
 	
 	if results[0] != 200:
 		print("Signin Unsuccessful")
