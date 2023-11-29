@@ -8,12 +8,14 @@
 [node name="Control" type="Control" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
+mouse_filter = 2
 
 [node name="PlayerStats" parent="Control" instance=ExtResource( 1 )]
 margin_left = 368.0
 margin_top = 225.0
 margin_right = 823.0
 margin_bottom = 414.0
+mouse_filter = 2
 
 [node name="PlayerInfo" type="ColorRect" parent="Control"]
 modulate = Color( 0.12549, 0, 1, 1 )
@@ -21,6 +23,7 @@ margin_left = -4.0
 margin_top = 654.0
 margin_right = 1285.0
 margin_bottom = 738.0
+mouse_filter = 2
 script = ExtResource( 3 )
 
 [node name="health" type="Label" parent="Control/PlayerInfo"]
