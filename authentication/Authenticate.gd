@@ -26,16 +26,14 @@ func _Peer_Disconnected(gateway_id):
 	print("Auth Server _on_peer_disconnected, peer_id: {0}".format([gateway_id]))
 	
 @rpc("any_peer")
-func authenticate_player(username, password, player_id):
+func auth_player(username, password, player_id):
 	print("authentication request received")
-	var gateway_id = get_tree().get_remote_sender_id()
+	var gateway_id = multiplayer.get_remote_sender_id()
 	
 	print("Starting authentication")
 	print("this is http: %s" % http)
 	var results = []
-	await Firebase.login(username, password, http, results)
-	#var firebaseStatus = Firebase.login(username, password, http, results)
-	#await firebaseStatus.completed
+	await Firebase.login(username, password, results)
 	
 	if results[0] != 200:
 		print("Signin Unsuccessful")
@@ -47,3 +45,7 @@ func authenticate_player(username, password, player_id):
 		
 	print("authentication result send to gateway server")
 	rpc_id(gateway_id, "authentication_results", results, player_id)
+	
+@rpc("any_peer")
+func authentication_results(_result, _player_id):
+	pass

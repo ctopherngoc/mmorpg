@@ -40,13 +40,14 @@ func _on_AnimationPlayer_animation_finished(animation_name):
 		attacking = false
 		
 func attack():
-	for attack in attack_dict.keys():
+	for atk in attack_dict.keys():
 		print("there is an attack in dict")
-		if attack <= Server.client_clock:
+		if atk <= Server.client_clock:
 			print("before attacking animation")
 			attacking = true
 # warning-ignore:unused_variable
+			@warning_ignore("unused_variable")
 			var animation = $AnimationPlayer.play("stab")
 			print("other player attack done")
-			attack_dict.erase(attack)
+			attack_dict.erase(atk)
 			

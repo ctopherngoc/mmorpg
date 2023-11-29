@@ -18,6 +18,11 @@ var last_portal = null
 func _ready():
 	pass
 	
+func unix_msec():
+	@warning_ignore("narrowing_conversion")
+	var unix_time: int = (Time.get_unix_time_from_system() * 1000)
+	return unix_time
+	
 # scene gets player info
 func register_player():
 	return player
@@ -34,7 +39,7 @@ func update_world_state(world_state):
 		world_state_buffer.append(world_state)
 
 func _physics_process(_delta):
-	var render_time = OS.get_system_time_msecs() - interpolation_offset
+	var render_time = unix_msec() - interpolation_offset
 	if world_state_buffer.size() > 1 && Server.server_status:
 		while world_state_buffer.size() > 2 and render_time > world_state_buffer[2].T:
 			world_state_buffer.remove(0)

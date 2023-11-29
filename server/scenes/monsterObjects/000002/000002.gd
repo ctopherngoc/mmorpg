@@ -24,7 +24,7 @@ var stats = {
 }
 var rng = RandomNumberGenerator.new()
 var max_speed = 100
-var velocity = Vector2.ZERO
+#var velocity = Vector2.ZERO
 var direction = Vector2.RIGHT
 var gravity = 1600
 var speed_factor = 0.5

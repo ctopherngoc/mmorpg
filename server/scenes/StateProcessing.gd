@@ -15,7 +15,7 @@ func _physics_process(_delta):
 			#remove timestamp for each player, add timestamp to worldstate
 			for player in world_state["P"].keys():
 				world_state["P"][player].erase("T")
-			world_state["T"] = OS.get_system_time_msecs()
+			world_state["T"] = Global.unix_msec()
 			
 			# transfers global dictionary of list of monsters in each map
 			# dictionary keys are mapname

@@ -2,6 +2,8 @@ extends Node
 var port = 2733
 var token
 var email
+var network = ENetMultiplayerPeer.new()
+var sever_api = MultiplayerAPI
 
 var login_status = 0
 
@@ -29,42 +31,59 @@ func _physics_process(delta):
 ######################################################################
 # Server connection/latency functions
 func connect_to_server():
-	var network = ENetMultiplayerPeer.new()
 	network.create_client(Global.ip, port)
-	get_tree().set_multiplayer_peer(network)
+	sever_api = MultiplayerAPI.create_default_interface()
+	
+	get_tree().set_multiplayer(sever_api, self.get_path())
+	sever_api.multiplayer_peer = network
+	sever_api.connected_to_server.connect(_Connection_Succeeded)
+	sever_api.connection_failed.connect(_Connection_Failed)
+	sever_api.server_disconnected.connect(_Server_Disconnected)
 
-	network.connect("connection_failed", Callable(self, "_on_connection_failed"))
-	network.connect("connection_succeeded", Callable(self, "_on_connection_succeeded"))
-	network.connect("server_disconnected", Callable(self, "_on_server_disconnect"))
+func _Connection_Failed():
+	print("Failed to connect to server")
 
-func _on_connection_failed():
-	print("Failed to connected")
-
-func _on_connection_succeeded():
+func _Connection_Succeeded():
 	server_status = true
-	print("Successfully connected")
-	rpc_id(1, "fetch_server_time", OS.get_system_time_msecs())
-	timer.start()
+	print("Successfully connected to server")
+	var time = Global.unix_msec()
+	print(time)
+	rpc_id(1, "fetch_server_time", time)
+	#timer.start()
 
-func _on_server_disconnect():
+@rpc
+func fetch_server_time(_time):
+	pass
+
+func _Server_Disconnected():
 	server_status = false
 	Global.world_state_buffer.clear()
 	timer.stop()
-	print("server disconnected")
+	print("disconnected from game sever")
 	
 	if login_status == 1:
 		SceneHandler.change_scene_to_file(SceneHandler.scenes["login"])
 		login_status = 0
 
 func determine_latency():
-	rpc_id(1, "determine_latency", OS.get_system_time_msecs())
+	var time =  Global.unix_msec()
+	rpc_id(1, "server_determine_latency", time)
 
-@rpc("any_peer") func return_server_time(server_time, client_time):
-	latency = (OS.get_system_time_msecs() - client_time) / 2
+@rpc("any_peer")
+func server_determine_latency(_time):
+	pass
+
+@rpc("any_peer")
+func return_server_time(server_time, client_time):
+	print("in return_server_time")
+	var time = Global.unix_msec()
+	latency = (time - client_time) / 2
 	client_clock = server_time + latency
 
-@rpc("any_peer") func return_latency(client_time):
-	latency_array.append((OS.get_system_time_msecs() - client_time) / 2)
+@rpc("any_peer")
+func return_latency(client_time):
+	var time = Global.unix_msec()
+	latency_array.append((time - client_time) / 2)
 	if latency_array.size() == 9:
 		var total_latency = 0
 		latency_array.sort()
@@ -83,50 +102,81 @@ func determine_latency():
 func check_usernames(requester, username):
 	rpc_id(1, "fetch_usernames", requester, username)
 
-@rpc("any_peer") func return_fetch_usernames(requester, results):
+@rpc("any_peer")
+func fetch_usernames(_requester, _username):
+	pass
+
+@rpc("any_peer")
+func return_fetch_usernames(requester, results):
 	print("server username check: %s" % str(results))
 	instance_from_id(requester).username_check_results(results)
 
 func create_character(requester, username):
 	print("attempting to create character: %s" % username)
-	rpc_id(1, "create_character", requester, username)
+	rpc_id(1, "server_create_character", requester, username)
+	
+@rpc("any_peer")
+func server_create_character(_requester, _username):
+	pass
 
-@rpc("any_peer") func return_create_characters(requester, character_array: Array):
+@rpc("any_peer")
+func return_create_characters(requester, character_array: Array):
 	print('return_create_characters')
 	Global.character_list = character_array
 	instance_from_id(requester).created_character()
 
 func delete_character(requester, username):
 	print("attempting to delete character: %s" % username)
-	rpc_id(1, "delete_character", requester, username)
+	rpc_id(1, "server_delete_character", requester, username)
 
-@rpc("any_peer") func return_delete_character(player_array, requester):
+@rpc("any_peer")
+func server_delete_character(_requester, _username):
+	pass
+
+@rpc("any_peer")
+func return_delete_character(player_array, requester):
 	Global.character_list = player_array
 	instance_from_id(requester).populate_info()
 	instance_from_id(requester).deleted_character()
 	print("deleted character")
 
 func choose_character(requester, player_name):
-	rpc_id(1, "choose_character", requester, player_name)
+	rpc_id(1, "server_choose_character", requester, player_name)
 
-@rpc("any_peer") func return_choose_character(requester):
+@rpc("any_peer")
+func server_choose_character(_requester, _player_name):
+	pass
+
+@rpc("any_peer")
+func return_choose_character(requester):
 	print("server.gd: return_choose_character")
 	instance_from_id(requester).load_world()
 
 func fetch_player_stats():
-	rpc_id(1, "fetch_player_stats")
+	rpc_id(1, "server_fetch_player_stats")
+	
+@rpc("any_peer")
+func server_fetch_player_stats():
+	pass
 
 ##############################################################################
 # Authentication
-@rpc("any_peer") func fetch_token():
-	rpc_id(1, "return_token", token, email)
+@rpc("any_peer")
+func client_fetch_token():
+	print("client_fetch_token return calling server_return_token")
+	rpc_id(1, "server_return_token", token, email)
+	
+@rpc("any_peer")
+func server_return_token(_token, _email):
+	pass
 
-@rpc("any_peer") func return_token_verification_results(result, array):
+@rpc("any_peer")
+func token_verification_results(result, array):
 	print("server.gd: return_token_verification_results")
 	if result == true:
 		print("token verified")
 		Global.character_list = array
-		fetch_player_stats()
+		await fetch_player_stats()
 		login_status = 1
 		SceneHandler.change_scene_to_file(SceneHandler.scenes["characterSelect"])
 	else:
@@ -135,7 +185,8 @@ func fetch_player_stats():
 		login_scene.login_button.disabled = false
 		login_scene.notification.text = "login failed, please try again"
 
-@rpc("any_peer") func already_logged_in():
+@rpc("any_peer")
+func client_already_logged():
 	print("server.gd: already_logged_in")
 	var login_scene = get_tree().get_current_scene()
 	login_scene.login_button.disabled = false
@@ -144,7 +195,8 @@ func fetch_player_stats():
 
 #################################################################################
 # Player functions
-@rpc("any_peer") func despawn_player(player_id):
+@rpc("any_peer")
+func despawn_player(player_id):
 	print("server.gd: despawn player")
 	var other_players = get_node("/root/currentScene/OtherPlayers")
 	for player in other_players.get_children():
@@ -154,22 +206,33 @@ func fetch_player_stats():
 			player.queue_free()
 
 func send_player_state(player_state):
-	rpc_unreliable_id(1, "received_player_state", player_state)
+	rpc_id(1, "received_player_state", player_state)
 
-@rpc("any_peer") func receive_world_state(world_state):
+@rpc("any_peer")
+func received_player_state(_player_state):
+	pass
+
+@rpc("any_peer")
+func receive_world_state(world_state):
 	if Global.current_map == "":
 		pass
 	else:	
 		Global.update_world_state(world_state)
 
-@rpc("any_peer") func receive_despawn_player(player_id):
+@rpc("any_peer")
+func receive_despawn_player(player_id):
 	Global.despawn_player(player_id)
 	
 func send_attack():
 	print("server.gd: send_attack")
-	rpc_id(1, "attack", Server.client_clock)
+	rpc_id(1, "attack", client_clock)
+
+@rpc("any_peer")
+func attack(_time):
+	pass
 	
-@rpc("any_peer") func receive_attack(player_id, attack_time):
+@rpc("any_peer")
+func receive_attack(player_id, attack_time):
 	print("server.gd: recieve_attack")
 	if player_id == get_tree().get_unique_id():
 		print("self attack: pass")
@@ -180,7 +243,8 @@ func send_attack():
 	else:
 		pass
 
-@rpc("any_peer") func update_player_stats(player_stats):
+@rpc("any_peer")
+func client_update_player(player_stats):
 	print('server.gd: remote update_player_stats')
 	print(player_stats)
 
@@ -214,14 +278,20 @@ func send_attack():
 					Signals.emit_signal("update_exp")
 			break
 
+@warning_ignore("shadowed_variable")
 func portal(portal):
-	rpc_id(1, "portal", portal)
+	rpc_id(1, "server_portal", portal)
 	print("RPC to server for portal")
 
+@rpc("any_peer")
+func server_portal(_portal):
+	pass
+
 # warning-ignore:unused_argument
-@rpc("any_peer") func return_portal(player_id):
+@rpc("any_peer")
+func return_portal(_player_id):
 	print("got return from server portal")
 #
-@rpc("any_peer") func change_map(map, position):
+@rpc("any_peer")
+func change_map(_map, position):
 	Global.last_portal = position
-	SceneHandler.change_scene_to_file("res://scenes/maps/%s.tscn" % map) 

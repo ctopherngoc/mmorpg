@@ -24,13 +24,16 @@ func _Connection_Failed():
 
 func _Connection_Succeeded():
 	print("Successfully connected to authentication server")
-	print("Custom Peers: {0}".format([multiplayer.get_peers()]))
+	print("Auth Peers: {0}".format([multiplayer.get_peers()]))
 	
-@rpc("any_peer")
 func authenticate_player(username, password, player_id):
 	print("sending out authentication request")
-	rpc_id(1, "authenticate_player", username, password, player_id)
-	
+	rpc_id(1, "auth_player", username, password, player_id)
+
+@rpc("any_peer")
+func auth_player(_username, _password, _player_id):
+	pass
+
 @rpc("any_peer")
 func authentication_results(result, player_id):
 	print("resuts received and replying to player login request")

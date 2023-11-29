@@ -33,7 +33,7 @@ func _Peer_Connected(player_id):
 	print("Gateway Server _on_peer_connected, peer_id: {0}".format([player_id]))
 
 func _Peer_Disconnected(player_id):
-	print("Custom Server _on_peer_disconnected, peer_id: {0}".format([player_id]))
+	print("Gateway Server _on_peer_disconnected, peer_id: {0}".format([player_id]))
 	
 @rpc("any_peer")
 func login_request(username, password):
@@ -41,7 +41,18 @@ func login_request(username, password):
 	var player_id = multiplayer.get_remote_sender_id()
 	Authenticate.authenticate_player(username, password, player_id)
 
+@rpc("any_peer")
 func return_login_request(result, player_id):
-	print("gateway returnloginrequest back to main login")
-	rpc_id(player_id, "return_login_request", result)
+	print("return login request to client")
+	#print(result)
+	rpc_id(player_id, "return_login", result)
+
+@rpc("any_peer")
+func return_login(_result):
+	pass
+
+@rpc("any_peer")
+func client_disconnect():
+	print("disconnecting client")
+	var player_id = multiplayer.get_remote_sender_id()
 	network.disconnect_peer(player_id)

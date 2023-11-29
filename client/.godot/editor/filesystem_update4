@@ -1,0 +1,5 @@
+res://default_env.tres
+res://singletons/SceneHandler.tscn
+res://scenes/maps/BaseLevel.tscn
+res://scenes/maps/Map.tscn
+res://singletons/Server.gd

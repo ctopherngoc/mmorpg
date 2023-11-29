@@ -11,7 +11,7 @@ var greenGuy = preload("res://scenes/monsterObjects/000001/000001.tscn")
 var enemy_types = ["Green Guy"]
 ############################################
 
-var enemy_spawn_points = [Vector2(414, -69), Vector2(634, -70)]
+var enemy_spawn_points = [Vector2(414, -150), Vector2(634, -150)]
 
 # only used for rng spawning
 var open_locations = [0,1]
@@ -40,7 +40,7 @@ func _process(_delta):
 # after timer function called
 func SpawnEnemy():
 	# only calculate/spawn monsters when at least 1 player is actively in the map
-	if get_node("Node2D/Players").get_child_count() == 0:
+	if get_node("Node2D/Players").get_child_count() == -1:
 		pass
 	elif enemy_list.size() >= enemy_maximum:
 		pass

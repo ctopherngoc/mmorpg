@@ -22,12 +22,13 @@ func verify(player_id, token, email):
 		main_interface.expected_tokens.erase(temp_token)
 		main_interface.already_logged_in(player_id, email)
 	else:
+		print("email is not logged in")
 		var token_verification = false
 		while Time.get_unix_time_from_system() - token["timestamp"] <= 30:
 			if main_interface.expected_tokens.has(temp_token):
 				token_verification = true
-				var player_container = create_player_container(player_id, token, email)
-				await player_container.completed
+				await create_player_container(player_id, token, email)
+				#await player_container.completed
 				awaiting_verification.erase(player_id)
 				main_interface.expected_tokens.erase(temp_token)
 				break
@@ -52,7 +53,7 @@ func _on_VerificationExpiration_timeout():
 			start_time = awaiting_verification[key].Timestamp
 			if current_time - start_time >= 30:
 				awaiting_verification.erase(key)
-				var connected_peers = Array(get_tree().get_peers())
+				var connected_peers = Array(multiplayer.get_peers())
 				if connected_peers.has(key):
 					main_interface.return_token_verification_results(key, false)
 					main_interface.network.disconnect_peer(key)
@@ -74,21 +75,21 @@ func create_player_container(player_id, token, email):
 	player_container.db_info["token"] = token["token"]
 	player_container.db_info["id"] = token["id"]
 	
-	var firebase_call = Firebase.get_document("users/%s" % player_container.db_info["id"], player_container.http, player_container.db_info["token"], player_container)
-	await firebase_call.completed
+	await Firebase.get_document("users/%s" % player_container.db_info["id"], player_container.http, player_container.db_info["token"], player_container)
+	#await firebase_call.completed
 	
 	# if container.character_array is empty
 	if player_container.characters.is_empty():
 		pass
 	else:
-		var fill_player_container = fill_player_container(player_container)
-		await fill_player_container.completed
+		await fill_player_container(player_container)
+		#await fill_player_container.completed
 
 # this assumes from conditionals that there are characters	
 func fill_player_container(player_container):
 	for character in player_container.characters:
-		var firebase_call = Firebase.get_document("characters/%s" % character, player_container.http, player_container.db_info["token"], player_container)
-		await firebase_call.completed
+		await Firebase.get_document("characters/%s" % character, player_container.http, player_container.db_info["token"], player_container)
+		#await firebase_call.completed
 		
 	print("fill_player_container completed")
 		

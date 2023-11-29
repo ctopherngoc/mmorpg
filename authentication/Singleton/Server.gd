@@ -38,4 +38,6 @@ func distribute_login_token(token, server):
 	print("sent token to server")
 	rpc_id(server_peer_id, "received_login_token", token)
 	
-	
+@rpc("any_peer")
+func received_login_token(_token):
+	pass

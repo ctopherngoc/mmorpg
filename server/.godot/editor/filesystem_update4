@@ -1,0 +1,11 @@
+res://default_env.tres
+res://Server.tscn
+res://resources/tileset.tres
+res://assets/tiles/tilemap.tres
+res://scenes/maps/BaseLevel.tscn
+res://Map.tscn
+res://scenes/monsterObjects/000001/000001.tscn
+res://scenes/monsterObjects/000002/000002.tscn
+res://scenes/instances/PlayerContainer.tscn
+res://scenes/PlayerVerification.gd
+res://Server.gd

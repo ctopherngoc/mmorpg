@@ -1,71 +1,83 @@
 extends Node
 
 var network = ENetMultiplayerPeer.new()
-var gateway_api = MultiplayerAPI.new()
 var port = 2734
 var cert = load("res://resources/Certificate/X509_Certificate.crt")
-
+var gateway_api = null
 var username
 var password
 
 func _ready():
-	network = ENetMultiplayerPeer.new()
-	gateway_api = MultiplayerAPI.new()
+	"""
 	network.set_dtls_enabled(true)
 	network.set_dtls_verify_enabled(false)
 	network.set_dtls_certificate(cert)
-	network.connect("connection_failed", Callable(self, "_on_connection_failed"))
-	network.connect("connection_succeeded", Callable(self, "_on_connection_succeeded"))
+"""
 
 func _process(_delta):
-	if get_custom_multiplayer() == null:
+	if gateway_api == null:
 		return
-	if not custom_multiplayer.has_multiplayer_peer():
+	if not gateway_api.has_multiplayer_peer():
 		return
-	custom_multiplayer.poll()
+	gateway_api.poll()
 
 func connect_to_server(_username, _password):
 	username = _username
 	password = _password
+	await get_tree().create_timer(1).timeout
 	network.create_client(Global.ip, port)
-	set_custom_multiplayer(gateway_api)
-	custom_multiplayer.set_root_node(self)
-	custom_multiplayer.set_multiplayer_peer(network)
+	
+	gateway_api = MultiplayerAPI.create_default_interface()
+	get_tree().set_multiplayer(gateway_api, self.get_path())
+	gateway_api.multiplayer_peer = network
+	gateway_api.connected_to_server.connect(_Connection_Succeeded)
+	gateway_api.connection_failed.connect(_Connection_Failed)
 
-func _on_connection_failed():
+func _Connection_Failed():
 	print("Failed to conect to login server")
 	print("Pop-up server offline")
 	Signals.emit_signal("fail_login")
 	
 	network.close_connection()
-	custom_multiplayer.set_multiplayer_peer(null)
-	custom_multiplayer.set_multiplayer_peer(null)
-	#network = NetworkedMultiplayerENet.new()
-	#gateway_api = MultiplayerAPI.new()
-	
+	get_tree().set_multiplayer(null)
+	get_tree().set_multiplayer(null)
 
-
-func _on_connection_succeeded():
-	print("Successfully connected to login server")
+func _Connection_Succeeded():
+	print("Successfully connected to gateway")
+	print("Custom Peers: {0}".format([multiplayer.get_peers()]))
 	request_login()
 
-@rpc("any_peer") func request_login():
+func request_login():
 	print("Connecting to gateway to request login")
 	rpc_id(1, "login_request", username, password)
 	username = ""
 	password = ""
 
-@rpc("any_peer") func return_login_request(results):
+@rpc("any_peer")
+func login_request(_username, _password):
+	pass
+
+@rpc('any_peer')
+func return_login(result):
 	"""
 	results[0] = code
 	results[1] = {token, id}
 	"""
-	if results[0] == 200:
+	print(result)
+	rpc_id(1, "client_disconnect")
+	print("sending gateway disconnect")
+	if result[0] == 200:
 	
-		Server.token = results[1]
+		Server.token = result[1]
 		Server.connect_to_server()
 	else:
 		print("Please provide correct username and pasword")
-	network.disconnect("connection_failed", Callable(self, "_on_connection_failed"))
-	network.disconnect("connection_succeeded", Callable(self, "_on_connection_succeeded"))
+	gateway_api.connected_to_server.disconnect(_Connection_Succeeded)
+	gateway_api.connection_failed.disconnect(_Connection_Failed)
+
+@rpc("any_peer")
+func client_disconnect():
+	pass
+
+
 

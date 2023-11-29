@@ -1,7 +1,7 @@
 extends Node
 
 var network = ENetMultiplayerPeer.new()
-var gateway_api = MultiplayerAPI.new()
+var hub_api = null
 var ip = "127.0.0.1"
 var port = 2736
 
@@ -11,27 +11,27 @@ func _ready():
 	connect_to_server()
 
 func _process(_delta):
-	if get_custom_multiplayer() == null:
+	if hub_api == null:
 		return
-	if not custom_multiplayer.has_multiplayer_peer():
-		return;
-	custom_multiplayer.poll()
+	if not hub_api.has_multiplayer_peer():
+		return
+	hub_api.poll()
 	
 func connect_to_server():
 	print("attempting to connect to game server hub")
 	network.create_client(ip, port)
-	set_custom_multiplayer(gateway_api)
-	custom_multiplayer.set_root_node(self)
-	custom_multiplayer.set_multiplayer_peer(network)
+	hub_api = MultiplayerAPI.create_default_interface()
+	get_tree().set_multiplayer(hub_api, self.get_path())
+	hub_api.multiplayer_peer = network
+	hub_api.connected_to_server.connect(_Connection_Succeeded)
+	hub_api.connection_failed.connect(_Connection_Failed)
 
-	network.connect("connection_failed", Callable(self, "_OnConnectionFailed"))
-	network.connect("connection_succeeded", Callable(self, "_OnConnectionSucceeded"))
-
-func _OnConnectionFailed():
+func _Connection_Failed():
 	print("Failed to connect to Game Server Hub")
 
-func _OnConnectionSucceeded():
+func _Connection_Succeeded():
 	print("Successfully connected to Game Server Hub")
 
-@rpc("any_peer") func received_login_token(token):
+@rpc("any_peer")
+func received_login_token(token):
 	server.expected_tokens.append(token)

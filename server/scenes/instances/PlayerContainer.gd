@@ -46,11 +46,12 @@ func overlapping_bodies():
 		closest.get_parent().npc_hit(damage, self.name)
 	else:
 		pass
-func take_damage(take_damage):
+@warning_ignore("shadowed_variable")
+func take_damage(damage):
 	if hittable:
 		hittable = false
-		print(self.name + " takes %s damage" % str(take_damage))
-		current_character["stats"]["health"] -= take_damage
+		print(self.name + " takes %s damage" % str(damage))
+		current_character["stats"]["health"] -= damage
 		print("Current HP: %s" % current_character["stats"]["health"])
 		
 		# WIP 
@@ -64,11 +65,11 @@ func take_damage(take_damage):
 		pass
 		#print("Player I-Frame")
 		
-func experience(experience):
-	print(self.name + " gain %s exp" % str(experience))
+func experience(xp):
+	print(self.name + " gain %s exp" % str(xp))
 	var current_exp = current_character["stats"]["experience"]
 	var exp_limit = ServerData.experience_table[str(current_character["stats"]["level"])]
-	current_exp += experience
+	current_exp += xp
 	
 	# if level up
 	if current_exp >= exp_limit:
