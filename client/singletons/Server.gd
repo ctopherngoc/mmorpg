@@ -181,8 +181,8 @@ remote func receive_attack(player_id, attack_time):
 		pass
 
 remote func update_player_stats(player_stats):
-	print('server.gd: remote update_player_stats')
-	print(player_stats)
+	#print('server.gd: remote update_player_stats')
+	#print(player_stats)
 
 	for character in Global.character_list:
 		if character["displayname"] == player_stats["displayname"]:
