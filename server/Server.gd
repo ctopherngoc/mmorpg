@@ -288,6 +288,7 @@ remote func portal(portal_id):
 	var player_id = get_tree().get_rpc_sender_id()
 	var player_container = get_node(ServerData.player_location[str(player_id)] + "/%s" % player_id)
 	# validate
+	print(portal_id)
 	var portal = ServerData.player_location[str(player_id)].replace("YSort/Players", "MapObjects/%s" % portal_id)
 	# get portal node
 	get_node(portal).over_lapping_bodies(player_id)
@@ -302,7 +303,7 @@ remote func portal(portal_id):
 	print(map_id, portal_id)
 	move_player_container(player_id, player_container, next_map, ServerData.portal_data[map_id][portal_id]['spawn'])
 	print('update current character last map')
-	player_container.current_character['lastmap'] = "res://scenes/maps/%s.tscn" %  next_map
+	player_container.current_character['lastmap'] = next_map
 
 	update_player_stats(player_container)
 
