@@ -22,8 +22,8 @@ var map_bound = {
 }
 
 #teleporter end locations
-onready var teleporter1 : Label = $MapObjects/Teleporter1/Label
-onready var teleporter2 : Label = $MapObjects/Teleporter2/Label
+onready var teleporter1 : Label = $MapObjects/T1/Label
+onready var teleporter2 : Label = $MapObjects/T2/Label
 onready var teleporter = [Vector2(-135, -225.500488), Vector2(657.772644, -225.575974)]
 
 func _ready():
