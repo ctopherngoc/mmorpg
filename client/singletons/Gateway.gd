@@ -35,14 +35,12 @@ func connect_to_server(_username, _password):
 func _on_connection_failed():
 	print("Failed to conect to login server")
 	print("Pop-up server offline")
+	Server.email = null
 	Signals.emit_signal("fail_login")
 	
 	network.close_connection()
 	custom_multiplayer.set_network_peer(null)
 	custom_multiplayer.set_network_peer(null)
-	#network = NetworkedMultiplayerENet.new()
-	#gateway_api = MultiplayerAPI.new()
-	
 
 
 func _on_connection_succeeded():
@@ -63,6 +61,7 @@ remote func return_login_request(results):
 	if results[0] == 200:
 	
 		Server.token = results[1]
+		# pass email to below
 		Server.connect_to_server()
 	else:
 		print("Please provide correct username and pasword")
