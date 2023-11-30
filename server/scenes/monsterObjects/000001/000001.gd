@@ -9,7 +9,7 @@ var jump_speed = 500
 #onready var take_damage = false
 ##########################################################
 #currrent new variables
-var id = "greenGuy"
+var id = "000001"
 var title = "Green Guy"
 var location = null
 var current_hp = 25
