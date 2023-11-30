@@ -1,8 +1,10 @@
 extends Area2D
+var id = "000001"
+var title = "Kevin"
+
 var can_interact = false
 const DIALOG = preload("res://scenes/userInerface/Dialog.tscn")
 var clicked = false
-var id = "Kevin"
 var sprite = "res://scenes/npcObjects/000001/sprite/stand1_0.png"
 
 func _physics_process(_delta):
@@ -10,6 +12,7 @@ func _physics_process(_delta):
 # Called when the node enters the scene tree for the first time.
 func _ready():
 # warning-ignore:return_value_discarded
+	$Label.text = title
 	Signals.connect("dialog_closed", self, "dialog_closed")
 
 func dialog_closed():
