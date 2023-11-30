@@ -27,7 +27,6 @@ autostart = true
 [node name="Maps" type="Node" parent="World"]
 
 [node name="000001" parent="World/Maps" instance=ExtResource( 5 )]
-position = Vector2( 7, 1 )
 
 [node name="000002" parent="World/Maps" instance=ExtResource( 4 )]
 position = Vector2( 1272, 0 )
