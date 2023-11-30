@@ -1,7 +1,5 @@
 extends Area2D
 
-#export(String, FILE, "*.tscn, *.scn") var target_scene
-
 func _read():
 	pass
 
@@ -11,11 +9,8 @@ func _input(event):
 			print("initiating portal request to server")
 			Server.portal(self.name)
 
-
 func _on_Portal_area_entered(_area):
 	print("player on portal")
-
-
 
 func _on_Portal_area_exited(_area):
 	print("player left portal")
