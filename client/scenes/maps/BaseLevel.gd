@@ -2,9 +2,12 @@ extends Node
 
 var other_player_template = preload("res://scenes/playerObjects/PlayerTemplate.tscn")
 var main_player_template = preload("res://scenes/playerObjects/Player.tscn")
-
 var spawn_location = Vector2.ZERO
 var main_player = null
+var map_id = 000001
+var map_name = "Grassy Road 1"
+
+
 var map_bound = {
 	"left": 0,
 	"right": 1000,
@@ -30,22 +33,30 @@ func _ready():
 	if Global.last_portal:
 		$Player.global_position = Global.last_portal
 	print("Player: ", $Player.global_position, " Portal1: ", $MapObjects/Portal1.global_position)
-	
+
+# important for client side spawning and despawning
+##################
+"""
 func register_player(player):
 		main_player = player
 		main_player.connect("died", self, "on_player_died", [], CONNECT_DEFERRED)
+"""
 
 func create_player():
 	var player_instance = main_player_template.instance()
 	add_child_below_node(main_player, player_instance)
 	player_instance.global_position = spawn_location
-	register_player(player_instance)
+	main_player = player_instance
+	#register_player(player_instance)
 
+"""
 func on_player_died():
 	print("Player Died")
 	main_player.queue_free()
 	print("Play Respawned")
 	create_player()
+"""
+############################################
 
 func _on_noCol_body_entered(body):
 	if body.is_in_group("player"):

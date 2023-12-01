@@ -32,7 +32,7 @@ remote func authenticate_player(username, password, player_id):
 	var results = []
 	var firebaseStatus = Firebase.login(username, password, http, results)
 	yield(firebaseStatus, "completed")
-	
+	print(results)
 	if results[0] != 200:
 		print("Signin Unsuccessful")
 	else:

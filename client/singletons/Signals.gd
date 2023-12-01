@@ -13,6 +13,8 @@ signal update_level
 signal update_displayname
 # warning-ignore:unused_signal
 signal fail_login
+# warning-ignore:unused_signal
+signal dialog_closed
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

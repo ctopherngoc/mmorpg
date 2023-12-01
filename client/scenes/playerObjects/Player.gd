@@ -44,6 +44,8 @@ func _ready():
 	player = Global.register_player()
 	$Label.text = player.displayname
 	max_horizontal_speed = (player.stats.movementSpeed)
+# warning-ignore:return_value_discarded
+	Signals.connect("dialog_closed", self, "movable_switch")
 	
 	jump_speed = (player.stats.jumpSpeed)
 # warning-ignore:return_value_discarded
@@ -55,7 +57,8 @@ func _ready():
 	get_node( "Weapon" ).scale.x = -1
 
 func _physics_process(delta):
-	movement_loop(delta)
+	if Global.movable:
+		movement_loop(delta)
 	define_player_state()
 	# update_health_display()
 
@@ -185,6 +188,9 @@ func update_animation():
 
 		else:
 			$AnimationPlayer.play("idle")
+
+func movable_switch():
+	Global.movable = true
 
 func change_direction():
 	if Input.is_action_pressed("move_right") && !attacking && !Input.is_action_pressed("move_left"):

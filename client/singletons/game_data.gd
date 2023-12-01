@@ -8,6 +8,12 @@ onready var bgm_dict = {
 	'BaseLevel': preload("res://scenes/bgm/game_bgm.mp3"),
 }
 
+onready var map_dict = {
+	"000001": "Grassy Road 1",
+	"000002": "Grassy Road 2",
+	"000003": "Grassy Road 3",
+}
+
 onready var job_dict = {
 	"0": "Beginner",
 	"1": "Warrior",

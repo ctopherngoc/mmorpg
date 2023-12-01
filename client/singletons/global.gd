@@ -1,6 +1,6 @@
 extends Node
 
-onready var ip = "127.0.0.1"
+onready var ip = "192.168.1.221"
 
 const interpolation_offset = 100
 onready var mosnter_spawn
@@ -9,10 +9,13 @@ onready var bgm = $bgm
 var other_player = preload("res://scenes/playerObjects/PlayerTemplate.tscn")
 var last_world_state = 0
 var world_state_buffer = []
+var ui = null
+var movable = true
 
 var character_list = []
 var player = null
 var last_portal = null
+
 
 # loads player info
 func _ready():

@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://scenes/playerObjects/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://resources/background/maps/BaseLevel.jpg" type="Texture" id=2]
 [ext_resource path="res://scenes/maps/Map.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scenes/userInerface/UI.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scenes/maps/BaseLevel.gd" type="Script" id=5]
+[ext_resource path="res://scenes/npcObjects/000001/000001.tscn" type="PackedScene" id=6]
 [ext_resource path="res://scenes/mapObjects/Portal.tscn" type="PackedScene" id=8]
 [ext_resource path="res://scenes/mapObjects/Ladder.tscn" type="PackedScene" id=10]
 
@@ -38,7 +39,7 @@ text = "MAP 1"
 
 [node name="Monsters" type="Node" parent="."]
 
-[node name="MapObjects" type="Node" parent="."]
+[node name="MapObjects" type="Node2D" parent="."]
 
 [node name="Ladder" parent="MapObjects" instance=ExtResource( 10 )]
 position = Vector2( 188, -102 )
@@ -54,6 +55,9 @@ shape = SubResource( 1 )
 
 [node name="Portal1" parent="MapObjects" instance=ExtResource( 8 )]
 position = Vector2( 833, -89 )
+
+[node name="AnimatedSprite" parent="MapObjects" instance=ExtResource( 6 )]
+position = Vector2( 356, -409 )
 
 [node name="OtherPlayers" type="Node" parent="."]
 

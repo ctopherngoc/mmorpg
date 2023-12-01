@@ -1,5 +1,6 @@
 extends Node
-
+var map_id = 000002
+var map_name = "Grassy Road 2"
 var other_player_template = preload("res://scenes/playerObjects/PlayerTemplate.tscn")
 var main_player_template = preload("res://scenes/playerObjects/Player.tscn")
 

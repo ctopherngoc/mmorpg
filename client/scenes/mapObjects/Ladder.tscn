@@ -28,6 +28,7 @@ margin_left = -2.0
 margin_top = -297.0
 margin_right = 2.0
 margin_bottom = -21.0
+mouse_filter = 2
 color = Color( 0.0313726, 0, 1, 1 )
 
 [connection signal="area_entered" from="." to="." method="_on_Ladder_area_entered"]
