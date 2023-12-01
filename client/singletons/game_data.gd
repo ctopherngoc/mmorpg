@@ -5,13 +5,13 @@ func _ready():
 	
 onready var bgm_dict = {
 	'menu': preload("res://scenes/bgm/menu_bgm.mp3"),
-	'BaseLevel': preload("res://scenes/bgm/game_bgm.mp3"),
+	'Remy': preload("res://scenes/bgm/game_bgm.mp3"),
 }
 
 onready var map_dict = {
-	"000001": "Grassy Road 1",
-	"000002": "Grassy Road 2",
-	"000003": "Grassy Road 3",
+	"000001": {"name": "Grassy Road 1", "path": "res://scenes/maps/000001.tscn", "region": "Remy", "bgm": "Remy"},
+	"000002": {"name": "Grassy Road 2", "path": "res://scenes/maps/000002.tscn", "region": "Remy", "bgm": "Remy"},
+	"000003": {"name": "Grassy Road 3", "path": "res://scenes/maps/000003.tscn", "region": "Remy", "bgm": "Remy"},
 }
 
 onready var job_dict = {

@@ -1,7 +1,7 @@
 extends KinematicBody2D
 
 # dynamic player variables
-onready var player = Global.player
+#onready var player = Global.player
 onready var jump_speed
 onready var health
 onready var max_horizontal_speed
@@ -26,28 +26,15 @@ onready var animation = {
 	"d": 1
 }
 
-# not used?
-"""
-# player signals
-signal died
-# warning-ignore:unused_signal
-signal do_damage
-
-onready var took_damage = false
-onready var received_knockback = false
-# timer for iframes
-onready var timer = get_node("Timer")
-"""
-
 func _ready():
 	# timer.set_wait_time(1.5)
-	player = Global.register_player()
-	$Label.text = player.displayname
-	max_horizontal_speed = (player.stats.movementSpeed)
+	#player = Global.register_player()
+	$Label.text = Global.player.displayname
+	max_horizontal_speed = (Global.player.stats.movementSpeed)
 # warning-ignore:return_value_discarded
 	Signals.connect("dialog_closed", self, "movable_switch")
 	
-	jump_speed = (player.stats.jumpSpeed)
+	jump_speed = (Global.player.stats.jumpSpeed)
 # warning-ignore:return_value_discarded
 	$take_damage.connect("area_entered", self, "on_hazard_area_entered")
 	get_node( "Head" ).set_flip_h( true )
@@ -165,7 +152,7 @@ func update_animation():
 	if(attacking):
 		pass
 
-	elif(Input.is_action_pressed("attack") && !is_climbing):
+	elif(Input.is_action_pressed("attack") && !is_climbing && Global.movable):
 		$AnimationPlayer.playback_speed = 0.75
 		attacking = true
 		$AnimationPlayer.play("stab")
@@ -241,7 +228,10 @@ func _on_AnimationPlayer_animation_finished(animation_name):
 		
 func _unhandled_input(event):
 	if event.is_action_pressed("attack"):
-		Server.send_attack()
+		if Global.movable:
+			Server.send_attack()
+		else:
+			print("cannot attack")
 
 func overlappingBodies():
 	print("area ovlapping: " + str($do_damage.get_overlapping_areas().size()))

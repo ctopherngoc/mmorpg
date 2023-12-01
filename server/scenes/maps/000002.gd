@@ -1,20 +1,17 @@
 extends Node2D
-var map_id = "BaseLevel2"
+var map_id = "000002"
+var map_name = "Grassy Road 2"
+
 var enemy_id_counter = 0
 var enemy_maximum = 2
 var spawn_position = Vector2(234, -437)
 
-############################################
-# maybe create a list of dictionary map of how many monsters and their spawn location in the map in relation to open_location
-# not used
 var green_guy = preload("res://scenes/monsterObjects/000001/000001.tscn")
 var blue_guy = preload("res://scenes/monsterObjects/000002/000002.tscn")
 var enemy_types = [green_guy, green_guy, blue_guy, blue_guy]
-############################################
 
 var enemy_spawn_points = [Vector2(367, -93), Vector2(631, -93), Vector2(355, -433), Vector2(631, -433)]
 
-# only used for rng spawning
 var open_locations = [0,1,2,3]
 
 var occupied_locations = {}
@@ -47,22 +44,15 @@ func SpawnEnemy():
 	elif enemy_list.size() >= enemy_maximum:
 		pass
 	else:
-		#print(" start open locations: ", open_locations)
 		for i in open_locations:
 			print(str(i))
-			#print(i, occupied_locations)
-			#print(occupied_locations)
 			if i in occupied_locations:
 				pass
 			else:
 				var location = enemy_spawn_points[i]
-				# print('location: ', location)
-				#occupied_locations[i] = location
 				occupied_locations[i] = location
-				#print(location)
 				########################################### 
 				# spawns server enemy in map
-				# var new_enemy = green_guy.instance()
 				var new_enemy = enemy_types[i].instance()
 				new_enemy.position = location
 				new_enemy.name = str(i)
@@ -70,16 +60,12 @@ func SpawnEnemy():
 				enemy_list[i] = {'id': new_enemy.id,'EnemyName': new_enemy.title, 'EnemyLocation': location, 'EnemyHealth': new_enemy.current_hp, 'EnemyMaxHealth': new_enemy.max_hp, 'EnemyState': new_enemy.state, 'time_out': 1}
 				########################################
 				enemy_id_counter += 1
-				#open_locations.erase(i)
-				# print(enemy_list[i])
 
 	for enemy in enemy_list.keys():
 		if enemy_list[enemy]["EnemyState"] == "Dead":
 			if enemy_list[enemy]["time_out"] == 0:
-				#open_locations.append(occupied_locations[enemy])
 				occupied_locations.erase(enemy)
 				get_node("YSort/Monsters/%s" % enemy).queue_free()
-				# open_locations.append(int(enemy))
 				enemy_list.erase(enemy)
 			else:
 				enemy_list[enemy]['time_out'] = enemy_list[enemy]['time_out'] - 1

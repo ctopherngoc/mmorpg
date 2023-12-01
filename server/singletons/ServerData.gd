@@ -113,13 +113,12 @@ var player_template = {
 			} #inventory
 }
 
-# not used
 # possible to convert map monster dictionary and spawn position
 var monsters = {
-	"BaseLevel" : {},
-	"BaseLevel2" : {},
-	"BaseLevel3" : {},
-	"BaseLevel4" : {},
+	"000001" : {},
+	"000002" : {},
+	"000003" : {},
+	"000004" : {},
 }
 
 var experience_table = {
@@ -156,18 +155,18 @@ var experience_table = {
 }
 
 var portal_data = {
-	"BaseLevel": {
-		'Portal1': {'map': 'BaseLevel2',
+	"000001": {
+		'P1': {'map': '000002',
 					'spawn': Vector2(103, -290)},
 	},
-	'BaseLevel2': {
-		'Portal1': {'map': 'BaseLevel',
+	'000002': {
+		'P1': {'map': '000001',
 					'spawn': Vector2(833, -89)},
-		'Portal2': {'map': 'BaseLevel3',
+		'P2': {'map': '000003',
 					'spawn': Vector2(103, -290)}
 	},
-	'BaseLevel3' : {
-		'Portal1': {'map': 'BaseLevel2',
+	'000003' : {
+		'P1': {'map': '000002',
 					'spawn': Vector2(904, -252)}
 	},
 }

@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://scenes/maps/Map.tscn" type="PackedScene" id=1]
-[ext_resource path="res://scenes/maps/BaseLevel.gd" type="Script" id=2]
+[ext_resource path="res://scenes/maps/000001.gd" type="Script" id=2]
 [ext_resource path="res://scenes/mapObjects/Portal.tscn" type="PackedScene" id=8]
 [ext_resource path="res://scenes/mapObjects/Portal.gd" type="Script" id=9]
 [ext_resource path="res://scenes/mapObjects/Ladder.tscn" type="PackedScene" id=10]
@@ -30,7 +30,7 @@ collision_mask = 0
 position = Vector2( 82.5, -247.5 )
 shape = SubResource( 1 )
 
-[node name="Portal1" parent="MapObjects" instance=ExtResource( 8 )]
+[node name="P1" parent="MapObjects" instance=ExtResource( 8 )]
 position = Vector2( 833, -89 )
 script = ExtResource( 9 )
 

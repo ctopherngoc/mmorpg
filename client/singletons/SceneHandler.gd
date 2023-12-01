@@ -4,7 +4,8 @@ onready var current_scene_container = preload("res://scenes/userInerface/LoginSc
 onready var current_scene = "menu"
 onready var current_bgm = "menu"
 
-onready var scenes = {
+# menu hash map
+onready var menu_scenes = {
 	"mainMenu" : "res://scenes/userInerface/mainMenu.tscn",
 	"register" : "res://scenes/userInerface/RegisterScreen.tscn",
 	"login" : "res://scenes/userInerface/LoginScreen.tscn",
@@ -16,22 +17,25 @@ func _ready():
 	get_tree().change_scene("res://scenes/userInerface/LoginScreen.tscn")
 
 func _process(_delta):
+	# turn on music
 	if Global.bgm.playing == false:
 		Global.bgm.playing = true
 
-
 func change_scene(scene: String):
 # warning-ignore:return_value_discarded
-	if "/maps" in scene:
-		Global.current_map = scene.replace("res://scenes/maps/", "")
-		Global.current_map = Global.current_map.replace(".tscn", "")
-		print(Global.current_map)
-		for key in GameData.bgm_dict.keys():
-			if key in Global.current_map:
-				if key == current_bgm:
-					pass
-				else:
-					Global.bgm.set_stream(GameData.bgm_dict[key])
-					current_bgm = key
-		current_scene = Global.current_map
-	get_tree().change_scene(scene)
+	# if in menu
+	if scene in menu_scenes.keys():
+		get_tree().change_scene(menu_scenes[scene])
+		if current_bgm != "menu":
+			Global.bgm.set_stream(GameData.bgm_dict["menu"])
+	else:
+		# if in map
+		Global.current_map = scene
+		print(Global.current_map, " ", GameData.map_dict[scene]["name"])
+		
+		# if map different bgm
+		if GameData.map_dict[scene]["bgm"] != current_bgm:
+			current_bgm = GameData.map_dict[scene]["bgm"]
+			Global.bgm.set_stream(GameData.bgm_dict[GameData.map_dict[scene]["bgm"]])
+# warning-ignore:return_value_discarded
+		get_tree().change_scene(GameData.map_dict[scene]["path"])

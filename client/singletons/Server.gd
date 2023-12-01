@@ -53,7 +53,7 @@ func _on_server_disconnect():
 	print("server disconnected")
 	
 	if login_status == 1:
-		SceneHandler.change_scene(SceneHandler.scenes["login"])
+		SceneHandler.change_scene("login")
 		login_status = 0
 
 func determine_latency():
@@ -128,7 +128,7 @@ remote func return_token_verification_results(result, array):
 		Global.character_list = array
 		fetch_player_stats()
 		login_status = 1
-		SceneHandler.change_scene(SceneHandler.scenes["characterSelect"])
+		SceneHandler.change_scene("characterSelect")
 	else:
 		print("token unverified")
 		var login_scene = get_tree().get_current_scene()
@@ -181,8 +181,8 @@ remote func receive_attack(player_id, attack_time):
 		pass
 
 remote func update_player_stats(player_stats):
-	print('server.gd: remote update_player_stats')
-	print(player_stats)
+	#print('server.gd: remote update_player_stats')
+	#print(player_stats)
 
 	for character in Global.character_list:
 		if character["displayname"] == player_stats["displayname"]:
@@ -224,4 +224,4 @@ remote func return_portal(player_id):
 #
 remote func change_map(map, position):
 	Global.last_portal = position
-	SceneHandler.change_scene("res://scenes/maps/%s.tscn" % map) 
+	SceneHandler.change_scene(str(map)) 

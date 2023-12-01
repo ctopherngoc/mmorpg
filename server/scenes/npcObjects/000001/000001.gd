@@ -1,20 +1,20 @@
 extends Area2D
 var id = "000001"
 var title = "Kevin"
-
 var can_interact = false
-const DIALOG = preload("res://scenes/userInerface/Dialog.tscn")
+#const DIALOG = preload("res://scenes/userInerface/Dialog.tscn")
 var clicked = false
-var sprite = "res://scenes/npcObjects/000001/sprite/stand1_0.png"
+
 
 func _physics_process(_delta):
-	$AnimatedSprite.play()
+	pass
+	#$AnimatedSprite.play()
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	pass
 # warning-ignore:return_value_discarded
-	$Label.text = title
-	Signals.connect("dialog_closed", self, "dialog_closed")
-
+	#Signals.connect("dialog_closed", self, "dialog_closed")
+"""
 func dialog_closed():
 	clicked = false
 	print("dialog should be closed and kevin should be clickable")
@@ -27,7 +27,6 @@ func _on_Area2D_mouse_entered():
 func _on_Area2D_mouse_exited():
 	can_interact = false
 	print("cannot interact with kevin")
-
 
 func _on_Area2D_input_event(_viewport, event, _shape_idx):
 	#print(event)
@@ -42,3 +41,4 @@ func _on_Area2D_input_event(_viewport, event, _shape_idx):
 
 func _on_Area2D_area_entered(area):
 	print(area)# Replace with function body.
+"""
