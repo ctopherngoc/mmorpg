@@ -91,7 +91,7 @@ func _on_delete_pressed():
 	print('Attempting to delete selected character')
 	$Delete.disabled = true
 	Server.delete_character(get_instance_id(), Global.player['displayname'])
-
+"""
 func _on_create_pressed():
 	create_button.disabled = true
 	if Global.character_list.size() == 3:
@@ -135,13 +135,15 @@ func created_character():
 	$Create/notification/Label.text = "successfully created character"
 	username_field.clear()
 	check_button.disabled = false
-	
+"""
+
 func deleted_character():
 	widget_reset()
 	populate_info()
 	notification.text = "successfully deleted character"
 	$Delete.disabled = false
-
+	
+"""
 func string_validation(username):
 	if username.length() < 6:
 		$Create/notification/Label.text = "username must be at least 6 characters"
@@ -158,3 +160,14 @@ func string_validation(username):
 			check_button.disabled = false
 			return false
 	return true
+"""
+
+
+
+func _on_New_pressed():
+	create_button.disabled = true
+	if Global.character_list.size() == 3:
+		$Create/notification/Label.text = "you already have maximum amount of characters"
+		create_button.disabled = false
+	else:
+		SceneHandler.change_scene("create")

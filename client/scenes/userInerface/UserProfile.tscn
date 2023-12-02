@@ -97,51 +97,80 @@ margin_right = 138.0
 margin_bottom = 523.0
 text = "Delete"
 
+[node name="New" type="Button" parent="."]
+margin_left = 10.0
+margin_top = 540.0
+margin_right = 159.0
+margin_bottom = 560.0
+text = "Create New Character"
+
 [node name="Create" type="Node" parent="."]
 
 [node name="Label" type="Label" parent="Create"]
-margin_left = 16.0
-margin_top = 587.0
-margin_right = 86.0
-margin_bottom = 601.0
+visible = false
+margin_left = 988.0
+margin_top = 15.0
+margin_right = 1058.0
+margin_bottom = 29.0
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Username:"
+__meta__ = {
+"_edit_use_anchors_": true
+}
 
 [node name="notification" type="HBoxContainer" parent="Create"]
-margin_left = 16.0
-margin_top = 633.0
-margin_right = 123.0
-margin_bottom = 647.0
+visible = false
+margin_left = 988.0
+margin_top = 61.0
+margin_right = 1095.0
+margin_bottom = 75.0
+__meta__ = {
+"_edit_use_anchors_": true
+}
 
 [node name="Label" type="Label" parent="Create/notification"]
+visible = false
 margin_bottom = 14.0
 custom_colors/font_color = Color( 1, 0, 0, 1 )
 
 [node name="usernameField" type="LineEdit" parent="Create"]
-margin_left = 12.0
-margin_top = 605.0
-margin_right = 147.0
-margin_bottom = 629.0
+visible = false
+margin_left = 984.0
+margin_top = 33.0
+margin_right = 1119.0
+margin_bottom = 57.0
 rect_min_size = Vector2( 135, 24 )
+__meta__ = {
+"_edit_use_anchors_": true
+}
 
 [node name="UsernameCheck" type="Button" parent="Create"]
-margin_left = 160.0
-margin_top = 606.0
-margin_right = 172.0
-margin_bottom = 626.0
+visible = false
+margin_left = 1132.0
+margin_top = 34.0
+margin_right = 1252.0
+margin_bottom = 54.0
 text = "Check Username"
+__meta__ = {
+"_edit_use_anchors_": true
+}
 
 [node name="Create" type="Button" parent="Create"]
-margin_left = 8.0
-margin_top = 653.0
-margin_right = 157.0
-margin_bottom = 673.0
+visible = false
+margin_left = 980.0
+margin_top = 81.0
+margin_right = 1129.0
+margin_bottom = 101.0
 text = "Create New Character"
+__meta__ = {
+"_edit_use_anchors_": true
+}
 
 [connection signal="pressed" from="CharacterBox/Character1/Button1" to="." method="_on_button1_pressed"]
 [connection signal="pressed" from="CharacterBox/Character2/Button2" to="." method="_on_button2_pressed"]
 [connection signal="pressed" from="CharacterBox/Character3/Button3" to="." method="_on_button3_pressed"]
 [connection signal="pressed" from="Select" to="." method="_on_select_pressed"]
 [connection signal="pressed" from="Delete" to="." method="_on_delete_pressed"]
+[connection signal="pressed" from="New" to="." method="_on_New_pressed"]
 [connection signal="pressed" from="Create/UsernameCheck" to="." method="_on_UsernameCheck_pressed"]
 [connection signal="pressed" from="Create/Create" to="." method="_on_create_pressed"]
