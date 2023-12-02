@@ -141,22 +141,28 @@ func create_characters():
 		var character_array = character_creation_queue[0]
 		character_creation_queue.remove(0)
 		
+		# firebase call to see if characer name is taken
 		var firebase_call = Firebase.get_document("characters", character_array[2].http, character_array[2].db_info["token"], character_array)
 		yield(firebase_call, 'completed')
 		
-		if character_array[1] in ServerData.username_list:
+		if character_array[1]["un"] in ServerData.username_list:
 			print("%s already taken." % character_array[1])
 			rpc_id(character_array[0], "returnfetchUsernames", character_array[3], false)
 		else:
+			#####################################################################################################################################
+			#[player_id, char_dict, player_container, requester]
 			print("%s not taken." % character_array[1])
-			character_array[2].characters.append(character_array[1])
-			print(character_array)
-
+			character_array[2].characters.append(character_array[1]["un"])
+			print(character_array["un"])
+			
+			# update database account
 			var firebase_call2 = Firebase.update_document("users/%s" % character_array[2].db_info["id"], character_array[2].http, character_array[2].db_info["token"], character_array[2])
 			yield(firebase_call2, 'completed')
-
 			var temp_player = ServerData.player_template.duplicate()
-			temp_player['displayname'] = character_array[1]
+			temp_player['displayname'] = character_array[1]["un"]
+			##################################################################
+			#fill in character and top and bottom numbers
+			##################################################################
 			var firebase_call3 = Firebase.update_document("characters/%s" % character_array[1], character_array[2].http2, character_array[2].db_info["token"], temp_player)
 			yield(firebase_call3, 'completed')
 
@@ -212,11 +218,22 @@ remote func fetch_usernames(requester, username):
 		rpc_id(player_id, "return_fetch_usernames", requester, true)
 		pass
 
-remote func create_character(requester, username):
-	print("create_character: Username: %s" % username)
+remote func create_character(requester, char_dict):
+	print("create_character: Username: %s" % char_dict["un"])
 	var player_id = get_tree().get_rpc_sender_id()
 	var player_container = get_node(ServerData.player_location[str(player_id)] + "/%s" % player_id)
-	character_creation_queue.append([player_id, username, player_container, requester])
+	
+	"""
+	not in dict
+	var curr_lhand: int = 0
+	var curr_hgear: int = 0
+	var curr_eyewear: int = 0
+	var curr_earring: int = 0
+	var curr_glove: int = 0
+	var curr_rhand: int = 0
+	var bottom: int = 0
+	"""
+	character_creation_queue.append([player_id, char_dict, player_container, requester])
 
 remote func fetch_characters():
 # warning-ignore:unused_variable
