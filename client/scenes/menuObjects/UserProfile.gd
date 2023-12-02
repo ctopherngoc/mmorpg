@@ -85,7 +85,7 @@ func _on_select_pressed():
 		$Select.disabled = false
 		
 func load_world():
-	SceneHandler.change_scene(Global.player['lastmap']) 
+	SceneHandler.change_scene(Global.player['map']) 
 
 func _on_delete_pressed():
 	print('Attempting to delete selected character')
