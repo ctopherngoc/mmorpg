@@ -9,7 +9,8 @@ onready var menu_scenes = {
 	"mainMenu" : "res://scenes/userInerface/mainMenu.tscn",
 	"register" : "res://scenes/userInerface/RegisterScreen.tscn",
 	"login" : "res://scenes/userInerface/LoginScreen.tscn",
-	"characterSelect" : "res://scenes/userInerface/UserProfile.tscn",	
+	"characterSelect" : "res://scenes/userInerface/UserProfile.tscn",
+	"create": "res://scenes/userInerface/Create.tscn",
 }
 
 func _ready():
