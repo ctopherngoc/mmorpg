@@ -50,7 +50,7 @@ func compile_char_data():
 	"bc" : curr_bcolor,
 	"b": curr_body,
 	"he": curr_head,
-	"ha": curr_hcolor,
+	"hc": curr_hcolor,
 	"h": curr_hair,
 	"e": curr_eye,
 	"ec": curr_ecolor,
@@ -58,8 +58,8 @@ func compile_char_data():
 	"ea": curr_ear,
 	"o": curr_outfit,
 	"br": curr_brow,
-	
 	}
+	return data
 
 func createSprite(part):
 	if part == "body":
