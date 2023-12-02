@@ -1,18 +1,16 @@
 extends Node2D
-var map_id = "000002"
-var map_name = "Grassy Road 2"
+var map_id = "100001"
+var map_name = "Grassy Road 1"
 
 var enemy_id_counter = 0
 var enemy_maximum = 2
-var spawn_position = Vector2(234, -437)
+var spawn_position = Vector2(99, -247)
 
 var green_guy = preload("res://scenes/monsterObjects/000001/000001.tscn")
-var blue_guy = preload("res://scenes/monsterObjects/000002/000002.tscn")
-var enemy_types = [green_guy, green_guy, blue_guy, blue_guy]
+var enemy_types = [green_guy, green_guy]
 
-var enemy_spawn_points = [Vector2(367, -93), Vector2(631, -93), Vector2(355, -433), Vector2(631, -433)]
-
-var open_locations = [0,1,2,3]
+var enemy_spawn_points = [Vector2(414, -69), Vector2(634, -70)]
+var open_locations = [0,1]
 
 var occupied_locations = {}
 var enemy_list = {}
@@ -38,14 +36,12 @@ func _process(_delta):
 # after timer function called
 func SpawnEnemy():
 	# only calculate/spawn monsters when at least 1 player is actively in the map
-	# for testing set to spawn on load
 	if get_node("YSort/Players").get_child_count() == 0:
 		pass
 	elif enemy_list.size() >= enemy_maximum:
 		pass
 	else:
 		for i in open_locations:
-			print(str(i))
 			if i in occupied_locations:
 				pass
 			else:
