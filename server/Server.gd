@@ -159,9 +159,64 @@ func create_characters():
 			var firebase_call2 = Firebase.update_document("users/%s" % character_array[2].db_info["id"], character_array[2].http, character_array[2].db_info["token"], character_array[2])
 			yield(firebase_call2, 'completed')
 			var temp_player = ServerData.player_template.duplicate()
-			temp_player['displayname'] = character_array[1]["un"]
+			var new_char = character_array[1]
+			temp_player['displayname'] = new_char["un"]
 			##################################################################
 			#fill in character and top and bottom numbers
+			
+			""" 
+				"avatar" : {
+					"head": null,
+					"hair": null,
+					"hcolor": null,
+					"body": null,
+					"bcolor": null,
+					"ear": null,
+					"mouth": null,
+					"eye": null,
+					"ecolor": null,
+					
+					"bc": curr_bcolor,
+					"b": curr_body,
+					"he": curr_head,
+					"ha": curr_hcolor,
+					"h": curr_hair,
+					"e": curr_eye,
+					"ec": curr_ecolor,
+					"m": curr_mouth,
+					"ea": curr_ear,
+					"o": curr_outfit,
+					"br": curr_brow,
+				}
+			"""
+			var sprite = temp_player["avatar"]
+			sprite["bcolor"] = new_char["bc"]
+			sprite["body"] = new_char["b"]
+			sprite["head"] = new_char["he"]
+			sprite["hcolor"] = new_char["hc"]
+			sprite["hair"] = new_char["h"]
+			sprite["eye"] = new_char["e"]
+			sprite["ecolor"] = new_char["ec"]
+			sprite["mouth"] = new_char["m"]
+			sprite["ear"] = new_char["ea"]
+			sprite["brow"] = new_char["br"]
+			
+			"""
+				outfit:
+				0: top: 500000, bottom: 500001
+			 	1: top: 500002, bottom: 500003
+				2: top: 500004, bottom: 500005
+			"""
+			var equips = temp_player["equipment"]
+			if new_char["o"] == "0":
+				equips["top"] = ServerData.starter_equips[0][0]
+				equips["bottom"] = ServerData.starter_equips[0][1]
+			elif new_char["o"] == "1":
+				equips["top"] = ServerData.starter_equips[1][0]
+				equips["bottom"] = ServerData.starter_equips[1][1]
+			else:
+				equips["top"] = ServerData.starter_equips[2][0]
+				equips["bottom"] = ServerData.starter_equips[2][1]
 			##################################################################
 			var firebase_call3 = Firebase.update_document("characters/%s" % character_array[1], character_array[2].http2, character_array[2].db_info["token"], temp_player)
 			yield(firebase_call3, 'completed')
@@ -183,7 +238,7 @@ remote func choose_character(requester, display_name: String):
 			"""
 			ServerData.username_list[str(player_id)] = display_name
 			break
-	var map = player_container.current_character['lastmap']
+	var map = player_container.current_character['map']
 	map = map.replace("res://scenes/maps/", "")
 	map = map.replace(".tscn", "")
 	# move user container to the map
@@ -320,14 +375,14 @@ remote func portal(portal_id):
 	print(map_id, portal_id)
 	move_player_container(player_id, player_container, next_map, ServerData.portal_data[map_id][portal_id]['spawn'])
 	print('update current character last map')
-	player_container.current_character['lastmap'] = next_map
+	player_container.current_character['map'] = next_map
 
 	update_player_stats(player_container)
 
 	print("update character list last map")
 	for character in player_container.characters_info_list:
 		if character['displayname'] == player_container.current_character['displayname']:
-			character['lastmap'] = player_container.current_character['lastmap']
+			character['map'] = player_container.current_character['map']
 
 	# send rpc to client to change map
 	print('sending signal to client to change map')
