@@ -8,6 +8,10 @@ onready var bgm_dict = {
 	'Remy': preload("res://scenes/bgm/game_bgm.mp3"),
 }
 
+onready var region_dict = {
+	'0001': "Remy",
+}
+
 onready var map_dict = {
 	"000001": {"name": "Grassy Road 1", "path": "res://scenes/maps/000001.tscn", "region": "Remy", "bgm": "Remy"},
 	"000002": {"name": "Grassy Road 2", "path": "res://scenes/maps/000002.tscn", "region": "Remy", "bgm": "Remy"},

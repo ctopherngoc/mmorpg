@@ -9,19 +9,19 @@ Dark: 67502FFF
 Darker:45351FFF
 """
 const body_spritesheet = {
-	#body-color
+	#color-body
 	"00" : preload("res://assets/character/creation/body/00.png"),
-	"01" : preload("res://assets/character/creation/body/01.png"),
-	"02" : preload("res://assets/character/creation/body/02.png"),
-	"03" : preload("res://assets/character/creation/body/03.png"),
-	"04" : preload("res://assets/character/creation/body/04.png"),
-	"05" : preload("res://assets/character/creation/body/05.png"),
 	"10" : preload("res://assets/character/creation/body/10.png"),
+	"20" : preload("res://assets/character/creation/body/20.png"),
+	"30" : preload("res://assets/character/creation/body/30.png"),
+	"40" : preload("res://assets/character/creation/body/40.png"),
+	"50" : preload("res://assets/character/creation/body/50.png"),
+	"01" : preload("res://assets/character/creation/body/01.png"),
 	"11" : preload("res://assets/character/creation/body/11.png"),
-	"12" : preload("res://assets/character/creation/body/12.png"),
-	"13" : preload("res://assets/character/creation/body/13.png"),
-	"14" : preload("res://assets/character/creation/body/14.png"),
-	"15" : preload("res://assets/character/creation/body/15.png"),
+	"21" : preload("res://assets/character/creation/body/21.png"),
+	"31" : preload("res://assets/character/creation/body/31.png"),
+	"41" : preload("res://assets/character/creation/body/41.png"),
+	"51" : preload("res://assets/character/creation/body/51.png"),
 
 }
 

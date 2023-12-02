@@ -4,10 +4,11 @@
 [ext_resource path="res://resources/background/maps/BaseLevel.jpg" type="Texture" id=2]
 [ext_resource path="res://scenes/maps/Map.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scenes/userInerface/UI.tscn" type="PackedScene" id=4]
-[ext_resource path="res://scenes/maps/000001.gd" type="Script" id=5]
+[ext_resource path="res://scenes/maps/000001/000001.gd" type="Script" id=5]
 [ext_resource path="res://scenes/npcObjects/000001/000001.tscn" type="PackedScene" id=6]
 [ext_resource path="res://scenes/mapObjects/Portal.tscn" type="PackedScene" id=8]
 [ext_resource path="res://scenes/mapObjects/Ladder.tscn" type="PackedScene" id=10]
+
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 112.5, 43.5 )

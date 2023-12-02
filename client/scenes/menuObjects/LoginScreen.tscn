@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://scenes/userInerface/LoginScreen.gd" type="Script" id=1]
+[ext_resource path="res://scenes/menuObjects/LoginScreen.gd" type="Script" id=1]
 [ext_resource path="res://resources/background/login_screen/login_screen.jpg" type="Texture" id=2]
 
 [node name="LogIn" type="Control"]

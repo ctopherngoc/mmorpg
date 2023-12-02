@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://scenes/userInerface/UserProfile.gd" type="Script" id=1]
-[ext_resource path="res://scenes/userInerface/Character.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/menuObjects/UserProfile.gd" type="Script" id=1]
+[ext_resource path="res://scenes/menuObjects/Character.tscn" type="PackedScene" id=2]
 [ext_resource path="res://resources/background/login_screen/login_screen.jpg" type="Texture" id=3]
 
 [node name="UserProfile" type="Control"]

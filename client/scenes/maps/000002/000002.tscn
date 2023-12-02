@@ -1,6 +1,6 @@
 [gd_scene load_steps=11 format=2]
 
-[ext_resource path="res://scenes/maps/000002.gd" type="Script" id=1]
+[ext_resource path="res://scenes/maps/000002/000002.gd" type="Script" id=1]
 [ext_resource path="res://scenes/mapObjects/Portal.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/maps/Map.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scenes/playerObjects/Player.tscn" type="PackedScene" id=4]
@@ -8,6 +8,7 @@
 [ext_resource path="res://scenes/userInerface/UI.tscn" type="PackedScene" id=6]
 [ext_resource path="res://scenes/mapObjects/Ladder.tscn" type="PackedScene" id=8]
 [ext_resource path="res://scenes/mapObjects/Teleporter.tscn" type="PackedScene" id=9]
+
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 306, 51 )

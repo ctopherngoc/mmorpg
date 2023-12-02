@@ -10,7 +10,7 @@ onready var mouth = $CompositeSprite/Mouth
 onready var outfit = $CompositeSprite/Outfit
 
 
-const composite_sprites = preload("res://scenes/userInerface/CompositeSprite.gd")
+const composite_sprites = preload("res://scenes/menuObjects/CompositeSprite.gd")
 var curr_bcolor: int = 0
 var curr_body: int = 0
 var curr_head: int = 0
@@ -72,7 +72,7 @@ func createSprite(part):
 	
 	# body head ears
 	elif part =="bcolor":
-		var key = str(curr_body) + str(curr_bcolor)
+		var key = str(curr_bcolor) + str(curr_body)
 		body.texture = composite_sprites.body_spritesheet[key]
 		
 		var key2 = str(curr_bcolor)+ str(curr_head)
