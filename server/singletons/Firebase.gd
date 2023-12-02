@@ -100,8 +100,8 @@ func firebase_dictionary_converter(database_data: Dictionary, client_data: Array
 
 	# displayname and position
 	temp_dict['displayname'] = database_data["displayname"]['stringValue']
-	temp_dict['lastmap'] = database_data["lastmap"]['stringValue']
-	temp_dict['position'] = database_data["position"]['doubleValue']
+	temp_dict['map'] = database_data["map"]['integerValue']
+	#temp_dict['position'] = database_data["position"]['doubleValue']
 
 	# stats
 	var shortcut = database_data["stats"]["mapValue"]["fields"]
@@ -109,17 +109,28 @@ func firebase_dictionary_converter(database_data: Dictionary, client_data: Array
 	temp_dict['stats'] = {}
 	for key in keys:
 		# added situation if value saved as integervalue
+		temp_dict['equipment'][key] = int(shortcut[key]['integerValue'])
+	"""
 		if shortcut[key].has('integerValue'):
-			temp_dict['equipment'][key] = int(shortcut[key]['integerValue'])
+			temp_dict['stats'][key] = int(shortcut[key]['integerValue'])
 		else:
 			temp_dict['stats'][key] = shortcut[key]['doubleValue']
+	"""
+	
+	# avatar
+	shortcut = database_data["avatar"]["mapValue"]["fields"]
+	keys = shortcut.keys()
+	temp_dict['avatar'] = {}
+	for key in keys:
+		# added situation if value saved as integervalue
+		temp_dict['avatar'][key] = int(shortcut[key]['stringValue'])
 
 	# equipment
 	shortcut = database_data["equipment"]["mapValue"]["fields"] 
 	keys = shortcut.keys()
 	temp_dict['equipment'] = {}
 	for key in keys:
-		temp_dict['equipment'][key] = shortcut[key]['doubleValue']
+		temp_dict['equipment'][key] = shortcut[key]['integerValue']
 
 	#inventory
 	shortcut = database_data["inventory"]["mapValue"]["fields"]
@@ -127,7 +138,7 @@ func firebase_dictionary_converter(database_data: Dictionary, client_data: Array
 	temp_dict['inventory'] = {}
 	for key in keys:
 		if key == "money":
-			temp_dict['inventory'][key] = shortcut[key]['doubleValue']
+			temp_dict['inventory'][key] = shortcut[key]['integerValue']
 		else:
 			pass
 	
@@ -142,22 +153,29 @@ func server_dictionary_converter(server_data: Dictionary, firebase_data: Diction
 	"""
 	# displayname and position
 	firebase_data['displayname']['stringValue'] = server_data["displayname"]
-	firebase_data['lastmap']['stringValue'] = server_data["lastmap"]
-	firebase_data['position']['doubleValue'] = server_data["position"]
+	firebase_data['map']['stringValue'] = server_data["map"]
+	#firebase_data['position']['doubleValue'] = server_data["position"]
 
 	# stats
 	var shortcut = server_data["stats"]
 	var keys = shortcut.keys()
 	var fb_shortcut = firebase_data['stats']['mapValue']['fields']
 	for key in keys:
-		fb_shortcut[key]['doubleValue'] = shortcut[key]
-		
+		fb_shortcut[key]['integerValue'] = shortcut[key]
+	
+	# avatar
+	shortcut = server_data["avatar"]
+	keys = shortcut.keys()
+	fb_shortcut = firebase_data['avatar']['mapValue']['fields']
+	for key in keys:
+		fb_shortcut[key]['stringValue'] = shortcut[key]
+	
 	# equipment
 	shortcut = server_data["equipment"]
 	keys = shortcut.keys()
 	fb_shortcut = firebase_data['equipment']['mapValue']['fields']
 	for key in keys:
-		fb_shortcut[key]['doubleValue'] = shortcut[key]
+		fb_shortcut[key]['integerValue'] = shortcut[key]
 
 	#inventory
 	shortcut = server_data["inventory"]
@@ -165,6 +183,6 @@ func server_dictionary_converter(server_data: Dictionary, firebase_data: Diction
 	fb_shortcut = firebase_data['inventory']['mapValue']['fields']
 	for key in keys:
 		if key == "money":
-			fb_shortcut[key]['doubleValue'] = shortcut[key]
+			fb_shortcut[key]['integerValue'] = shortcut[key]
 		else:
 			pass
