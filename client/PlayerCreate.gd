@@ -25,6 +25,7 @@ var curr_ear: int = 0
 var curr_mouth: int = 0
 var curr_outfit: int = 0
 
+"""
 var curr_lhand: int = 0
 var curr_hgear: int = 0
 var curr_fhair: int = 0
@@ -33,6 +34,7 @@ var curr_earring: int = 0
 var curr_glove: int = 0
 var curr_rhand: int = 0
 var bottom: int = 0
+"""
 
 func _ready():
 	body.texture = composite_sprites.body_spritesheet["00"]
@@ -43,9 +45,25 @@ func _ready():
 	eye.texture = composite_sprites.eye_spritesheet["00"]
 	ear.texture = composite_sprites.ear_spritesheet["00"]
 
+func compile_char_data():
+	var data = {
+	"bc" : curr_bcolor,
+	"b": curr_body,
+	"he": curr_head,
+	"ha": curr_hcolor,
+	"h": curr_hair,
+	"e": curr_eye,
+	"ec": curr_ecolor,
+	"m": curr_mouth,
+	"ea": curr_ear,
+	"o": curr_outfit,
+	"br": curr_brow,
+	
+	}
+
 func createSprite(part):
 	if part == "body":
-		var key = str(curr_body) + str(curr_bcolor)
+		var key = str(curr_bcolor) + str(curr_body)
 		body.texture = composite_sprites.body_spritesheet[key]
 		
 	elif part == "head":

@@ -17,7 +17,9 @@ func _on_create_pressed():
 	create_button.disabled = true
 	if username_check and username_field.text == new_username:
 		if string_validation(new_username):
-			Server.create_character(get_instance_id(), new_username)
+			var char_dict = $ColorRect/PlayerCreate.compile_char_data()
+			char_dict["un"] = new_username
+			Server.create_character(get_instance_id(), char_dict)
 	else:
 		$Create/notification/Label.text = "check username availability"
 		create_button.disabled = false
