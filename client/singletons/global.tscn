@@ -12,3 +12,4 @@ script = ExtResource( 1 )
 stream = ExtResource( 2 )
 volume_db = -5.0
 autoplay = true
+stream_paused = true
