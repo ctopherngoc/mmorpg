@@ -43,6 +43,7 @@ func get_document(path: String, http: HTTPRequest, token: String, player_contain
 				for i in result_body["fields"]['characters']['arrayValue']['values']:
 					player_container.characters.append(i["stringValue"])
 		elif "characters/" in path:
+			# container = [player_id, char_dict, player_container, requester]
 			firebase_dictionary_converter(result_body['fields'], player_container.characters_info_list)
 	# documents search
 	elif result_body.has('documents'):
