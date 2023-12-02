@@ -121,6 +121,7 @@ var player_template = {
 		"hcolor": null,
 		"body": null,
 		"bcolor": null,
+		"brow": null,
 		"ear": null,
 		"mouth": null,
 		"eye": null,
@@ -140,6 +141,12 @@ var player_template = {
 	"inventory" : {
 				"money": 0,
 			} #inventory
+}
+
+var starter_equips = {
+	0 : [500000, 500001],
+	1 : [500002, 500003],
+	2 : [500004, 500005],
 }
 
 # possible to convert map monster dictionary and spawn position
