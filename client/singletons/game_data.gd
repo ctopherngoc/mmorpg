@@ -13,9 +13,9 @@ onready var region_dict = {
 }
 
 onready var map_dict = {
-	"000001": {"name": "Grassy Road 1", "path": "res://scenes/maps/000001.tscn", "region": "Remy", "bgm": "Remy"},
-	"000002": {"name": "Grassy Road 2", "path": "res://scenes/maps/000002.tscn", "region": "Remy", "bgm": "Remy"},
-	"000003": {"name": "Grassy Road 3", "path": "res://scenes/maps/000003.tscn", "region": "Remy", "bgm": "Remy"},
+	"100001": {"name": "Grassy Road 1", "path": "res://scenes/maps/100001/100001.tscn", "region": "Remy", "bgm": "Remy"},
+	"100002": {"name": "Grassy Road 2", "path": "res://scenes/maps/100002/100002.tscn", "region": "Remy", "bgm": "Remy"},
+	"100003": {"name": "Grassy Road 3", "path": "res://scenes/maps/100003/100003.tscn", "region": "Remy", "bgm": "Remy"},
 }
 
 onready var job_dict = {
