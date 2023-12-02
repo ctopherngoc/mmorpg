@@ -127,7 +127,7 @@ margin_right = 607.0
 margin_bottom = 506.0
 rect_min_size = Vector2( 135, 24 )
 
-[node name="UsernameCheck" type="Button" parent="Create"]
+[node name="Verify" type="Button" parent="Create"]
 margin_left = 620.0
 margin_top = 483.0
 margin_right = 680.0
@@ -152,3 +152,5 @@ text = "Create New Character"
 [connection signal="pressed" from="ColorRect/EColor" to="ColorRect/PlayerCreate" method="_on_EColor_pressed"]
 [connection signal="pressed" from="ColorRect/Brow" to="ColorRect/PlayerCreate" method="_on_Brow_pressed"]
 [connection signal="pressed" from="ColorRect/Outfit" to="ColorRect/PlayerCreate" method="_on_Outfit_pressed"]
+[connection signal="pressed" from="Create/Verify" to="." method="_on_Verify_pressed"]
+[connection signal="pressed" from="Create/Create" to="." method="_on_Create_pressed"]
