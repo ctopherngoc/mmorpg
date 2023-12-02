@@ -22,3 +22,7 @@ func _fail_login() -> void:
 	login_button.disabled = false
 	print("login failed. Login button clickable")
 
+
+
+func _on_Button1_pressed():
+	SceneHandler.change_scene("create")

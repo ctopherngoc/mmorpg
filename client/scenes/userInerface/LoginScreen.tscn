@@ -89,4 +89,15 @@ margin_bottom = 112.0
 [node name="Label" type="Label" parent="VBoxContainer/notification"]
 margin_bottom = 14.0
 
+[node name="create" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 116.0
+margin_right = 222.0
+margin_bottom = 136.0
+
+[node name="Button1" type="Button" parent="VBoxContainer/create"]
+margin_right = 53.0
+margin_bottom = 20.0
+text = "Create"
+
 [connection signal="pressed" from="VBoxContainer/loginButton/Button" to="." method="_on_Button_pressed"]
+[connection signal="pressed" from="VBoxContainer/create/Button1" to="." method="_on_Button1_pressed"]
