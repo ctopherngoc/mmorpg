@@ -27,47 +27,63 @@ var test_data = {
 #firebase used to create new chracters
 var player_info = {
 	"displayname": {'stringValue': null},
-	"lastmap": {'stringValue': null},
-	"position": {'doubleValue':null},
+	"map": {'stringValue': null},
 	"stats" : { "mapValue":
 		{"fields": {
-			"maxHealth": {'doubleValue': null},
-			"health": {'doubleValue': null},
-			"maxMana": {'doubleValue': null},
-			"mana": {'doubleValue': null},
-			"level": {'doubleValue': null},
-			"experience": {'doubleValue': null},
-			"class": {'doubleValue': null},
-			"job": {'doubleValue': null},
-			"sp": {'doubleValue': null},
-			"ap": {'doubleValue': null},
-			"strength": {'doubleValue': null},
-			"wisdom": {'doubleValue': null},
-			"dexterity": {'doubleValue': null},
-			"luck": {'doubleValue': null},
-			"movementSpeed": {'doubleValue': null},
-			"jumpSpeed": {'doubleValue': null},
-			"avoidability": {'doubleValue': null},
-			"weaponDefense": {'doubleValue': null},
-			"magicDefense": {'doubleValue': null},
-			"accuracy": {'doubleValue': null},
+			"maxHealth": {'integerValue': null},
+			"health": {'integerValue': null},
+			"maxMana": {'integerValue': null},
+			"mana": {'integerValue': null},
+			"level": {'integerValue': null},
+			"experience": {'integerValue': null},
+			"class": {'integerValue': null},
+			"job": {'integerValue': null},
+			"sp": {'integerValue': null},
+			"ap": {'integerValue': null},
+			"strength": {'integerValue': null},
+			"wisdom": {'integerValue': null},
+			"dexterity": {'integerValue': null},
+			"luck": {'integerValue': null},
+			"movementSpeed": {'integerValue': null},
+			"jumpSpeed": {'integerValue': null},
+			"avoidability": {'integerValue': null},
+			"weaponDefense": {'integerValue': null},
+			"magicDefense": {'integerValue': null},
+			"accuracy": {'integerValue': null},
 		}#fields
 		}#mapvalue
-		}, #stats
+	}, #stats
+	"avatar" : { "mapValue":
+		{"fields" :{
+			"head": {'stringValue': null},
+			"hair": {'stringValue': null},
+			"hcolor": {'stringValue': null},
+			"body": {'stringValue': null},
+			"bcolor": {'stringValue': null},
+			"ear": {'stringValue': null},
+			"mouth": {'stringValue': null},
+			"eye": {'stringValue': null},
+			"ecolor": {'stringValue': null},
+		} #fields
+		} #mapvalue
+	}, # avatar
 	"equipment" : {"mapValue":
 		{"fields": 
-			{"hat": {'doubleValue': null},
-			"top": {'doubleValue': null},
-			"bottom": {'doubleValue': null},
-			"gloves": {'doubleValue': null},
-			"shoes": {'doubleValue': null},
-			"weapon": {'doubleValue': null},
+			{"head": {'integerValue': null},
+			"face": {'integerValue': null},
+			"top": {'integerValue': null},
+			"earring": {'integerValue': null},
+			"bottom": {'integerValue': null},
+			"glove": {'integerValue': null},
+			"lhand": {'integerValue': null},
+			"rhand": {'integerValue': null},
+			"pocket": {'integerValue': null},
 			}#fields
 			}#mapvalue
 			}, #equipment
 	"inventory" : {"mapValue":
 		{"fields": 
-			{"money": {'doubleValue': null},
+			{"money": {'integerValue': null},
 			}#fields
 			}#mapvalue
 			} #inventory
@@ -76,8 +92,7 @@ var player_info = {
 # used by server
 var player_template = {
 	"displayname": null,
-	"lastmap": "res://scenes/maps/BaseLevel.tscn",
-	"position": 0,
+	"map": "000001",
 	"stats" : {
 			"health": 50,
 			"mana": 50,
@@ -100,13 +115,27 @@ var player_template = {
 			"magicDefense": 0,
 			"accuracy": 10,
 		}, #stats
+	"avatar" : {
+		"head": null,
+		"hair": null,
+		"hcolor": null,
+		"body": null,
+		"bcolor": null,
+		"ear": null,
+		"mouth": null,
+		"eye": null,
+		"ecolor": null,
+	},
 	"equipment" : {
-			"hat": 0,
-			"top": 0,
-			"bottom": 0,
-			"gloves": 0,
-			"shoes": 0,
-			"weapon": 0,
+			"head": -1,
+			"face": -1,
+			"ear":-1,
+			"top": null,
+			"bottom": null,
+			"glove": -1,
+			"lhand": -1,
+			"rhand": -1,
+			"pocket": -1,
 			}, #equipment
 	"inventory" : {
 				"money": 0,
