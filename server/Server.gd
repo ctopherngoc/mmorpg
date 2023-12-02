@@ -149,21 +149,13 @@ func create_characters():
 			print("%s already taken." % character_array[1])
 			rpc_id(character_array[0], "returnfetchUsernames", character_array[3], false)
 		else:
-			#####################################################################################################################################
 			#[player_id, char_dict, player_container, requester]
-			print("%s not taken." % character_array[1])
 			character_array[2].characters.append(character_array[1]["un"])
-			print(character_array["un"])
 			
-			# update database account
-			var firebase_call2 = Firebase.update_document("users/%s" % character_array[2].db_info["id"], character_array[2].http, character_array[2].db_info["token"], character_array[2])
-			yield(firebase_call2, 'completed')
+			#fill in character and top and bottom numbers
 			var temp_player = ServerData.player_template.duplicate()
 			var new_char = character_array[1]
 			temp_player['displayname'] = new_char["un"]
-			##################################################################
-			#fill in character and top and bottom numbers
-			
 			""" 
 				"avatar" : {
 					"head": null,
@@ -208,19 +200,28 @@ func create_characters():
 				2: top: 500004, bottom: 500005
 			"""
 			var equips = temp_player["equipment"]
-			if new_char["o"] == "0":
+			print(new_char["o"])
+			if new_char["o"] == 0:
 				equips["top"] = ServerData.starter_equips[0][0]
 				equips["bottom"] = ServerData.starter_equips[0][1]
-			elif new_char["o"] == "1":
+			elif new_char["o"] == 1:
 				equips["top"] = ServerData.starter_equips[1][0]
 				equips["bottom"] = ServerData.starter_equips[1][1]
 			else:
 				equips["top"] = ServerData.starter_equips[2][0]
 				equips["bottom"] = ServerData.starter_equips[2][1]
+				
+			# possibly make this into one function
 			##################################################################
-			var firebase_call3 = Firebase.update_document("characters/%s" % character_array[1], character_array[2].http2, character_array[2].db_info["token"], temp_player)
+			print("creating character")
+			var firebase_call2 = Firebase.update_document("characters/%s" % temp_player["displayname"], character_array[2].http2, character_array[2].db_info["token"], temp_player)
+			yield(firebase_call2, 'completed')
+			
+			# update database account
+			# character_array[2] = player container
+			var firebase_call3 = Firebase.update_document("users/%s" % character_array[2].db_info["id"], character_array[2].http, character_array[2].db_info["token"], character_array[2])
 			yield(firebase_call3, 'completed')
-
+			###################################################################
 			character_array[2].characters_info_list.append(temp_player)
 
 			# update client with new character
@@ -331,14 +332,15 @@ func update_player_stats(player_container):
 # Character containers/information 
 func move_player_container(player_id, player_container, map_id, portal_position):
 	var old_parent = get_node(str(ServerData.player_location[str(player_id)]))
-	var new_parent = get_node("/root/Server/World/Maps/%s/YSort/Players" % map_id)
+	print()
+	var new_parent = get_node("/root/Server/World/Maps/%s/YSort/Players" % str(map_id))
 
 	old_parent.remove_child(player_container)
 	new_parent.add_child(player_container)
 
 	ServerData.player_location[str(player_id)] = "/root/Server/World/Maps/" + str(map_id) + "/YSort/Players"
 	var player = get_node("/root/Server/World/Maps/" + str(map_id) + "/YSort/Players/" + str(player_id))
-	var map_node = get_node("/root/Server/World/Maps/%s" % map_id)
+	var map_node = get_node("/root/Server/World/Maps/%s" % str(map_id))
 	var map_position = map_node.get_global_position()
 
 	if typeof(portal_position) == TYPE_STRING:
