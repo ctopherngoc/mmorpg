@@ -87,9 +87,9 @@ remote func return_fetch_usernames(requester, results):
 	print("server username check: %s" % str(results))
 	instance_from_id(requester).username_check_results(results)
 
-func create_character(requester, username):
-	print("attempting to create character: %s" % username)
-	rpc_id(1, "create_character", requester, username)
+func create_character(requester, char_dict):
+	print("attempting to create character: %s" % char_dict["un"])
+	rpc_id(1, "create_character", requester, char_dict)
 
 remote func return_create_characters(requester, character_array: Array):
 	print('return_create_characters')
