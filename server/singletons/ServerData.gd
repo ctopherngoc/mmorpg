@@ -64,6 +64,7 @@ var player_info = {
 			"mouth": {'stringValue': null},
 			"eye": {'stringValue': null},
 			"ecolor": {'stringValue': null},
+			"brow": {'stringValue': null},
 		} #fields
 		} #mapvalue
 	}, # avatar
@@ -92,7 +93,7 @@ var player_info = {
 # used by server
 var player_template = {
 	"displayname": null,
-	"map": "000001",
+	"map": "100001",
 	"stats" : {
 			"health": 50,
 			"mana": 50,
@@ -130,7 +131,7 @@ var player_template = {
 	"equipment" : {
 			"head": -1,
 			"face": -1,
-			"ear":-1,
+			"earring":-1,
 			"top": null,
 			"bottom": null,
 			"glove": -1,
@@ -151,10 +152,10 @@ var starter_equips = {
 
 # possible to convert map monster dictionary and spawn position
 var monsters = {
-	"000001" : {},
-	"000002" : {},
-	"000003" : {},
-	"000004" : {},
+	"100001" : {},
+	"100002" : {},
+	"100003" : {},
+	"100004" : {},
 }
 
 var experience_table = {
@@ -191,18 +192,18 @@ var experience_table = {
 }
 
 var portal_data = {
-	"000001": {
-		'P1': {'map': '000002',
+	"100001": {
+		'P1': {'map': '100002',
 					'spawn': Vector2(103, -290)},
 	},
-	'000002': {
-		'P1': {'map': '000001',
+	'100002': {
+		'P1': {'map': '100001',
 					'spawn': Vector2(833, -89)},
-		'P2': {'map': '000003',
+		'P2': {'map': '100003',
 					'spawn': Vector2(103, -290)}
 	},
-	'000003' : {
-		'P1': {'map': '000002',
+	'100003' : {
+		'P1': {'map': '100002',
 					'spawn': Vector2(904, -252)}
 	},
 }
@@ -214,3 +215,79 @@ func _ready():
 #	var skill_data_json = JSON.parse(skill_data_file.get_as_text())
 #	skill_data_file.close()
 #	skill_data = skill_data_json.result
+
+"""
+{
+	avatar:{
+		mapValue:{
+			fields:{
+				bcolor:{stringValue:0}, 
+				body:{stringValue:0}, 
+				brow:{stringValue:0}, 
+				ear:{stringValue:0}, 
+				ecolor:{stringValue:0}, 
+				eye:{stringValue:0}, 
+				hair:{stringValue:0}, 
+				hcolor:{stringValue:0}, 
+				head:{stringValue:0}, 
+				mouth:{stringValue:0}
+			}
+		}
+	}, 
+	displayname:{
+		stringValue:dumachris
+	}, 
+	equipment:{
+		mapValue:{
+			fields:{
+				bottom:{integerValue:500001}, 
+				earring:{integerValue:-1}, 
+				face:{integerValue:-1}, 
+				glove:{integerValue:-1}, 
+				head:{integerValue:-1}, 
+				lhand:{integerValue:-1}, 
+				pocket:{integerValue:-1}, 
+				rhand:{integerValue:-1}, 
+				top:{integerValue:500000}
+			}
+		}
+	}, 
+	inventory:{
+		mapValue:{
+			fields:{
+				money:{
+					integerValue:0}
+			}
+		}
+	}, 
+	map:{stringValue:000001}, 
+	stats:{
+		mapValue:{
+			fields:{
+				accuracy:{integerValue:10}, 
+				ap:{integerValue:0}, 
+				avoidability:{integerValue:4}, 
+				class:{integerValue:0}, 
+				dexterity:{integerValue:4}, 
+				experience:{integerValue:0}, 
+				health:{integerValue:50}, 
+				job:{integerValue:0}, 
+				jumpSpeed:{integerValue:200}, 
+				level:{integerValue:1}, 
+				luck:{integerValue:4}, 
+				magicDefense:{integerValue:0}, 
+				mana:{integerValue:50}, 
+				maxHealth:{integerValue:50}, 
+				maxMana:{integerValue:50}, 
+				movementSpeed:{integerValue:100}, 
+				sp:{integerValue:0}, 
+				strength:{integerValue:4}, 
+				weaponDefense:{integerValue:0}, 
+				wisdom:{integerValue:4}
+			}
+		}
+	}
+}
+	
+
+"""
