@@ -73,8 +73,8 @@ var player_info = {
 			{"head": {'integerValue': null},
 			"face": {'integerValue': null},
 			"top": {'integerValue': null},
-			"earring": {'integerValue': null},
 			"bottom": {'integerValue': null},
+			"earring": {'integerValue': null},
 			"glove": {'integerValue': null},
 			"lhand": {'integerValue': null},
 			"rhand": {'integerValue': null},
@@ -144,11 +144,11 @@ var player_template = {
 			} #inventory
 }
 
-var starter_equips = {
-	0 : [500000, 500001],
-	1 : [500002, 500003],
-	2 : [500004, 500005],
-}
+var starter_equips = [
+	[500000, 500001],
+	[500002, 500003],
+	[500004, 500005],
+]
 
 # possible to convert map monster dictionary and spawn position
 var monsters = {
@@ -215,79 +215,3 @@ func _ready():
 #	var skill_data_json = JSON.parse(skill_data_file.get_as_text())
 #	skill_data_file.close()
 #	skill_data = skill_data_json.result
-
-"""
-{
-	avatar:{
-		mapValue:{
-			fields:{
-				bcolor:{stringValue:0}, 
-				body:{stringValue:0}, 
-				brow:{stringValue:0}, 
-				ear:{stringValue:0}, 
-				ecolor:{stringValue:0}, 
-				eye:{stringValue:0}, 
-				hair:{stringValue:0}, 
-				hcolor:{stringValue:0}, 
-				head:{stringValue:0}, 
-				mouth:{stringValue:0}
-			}
-		}
-	}, 
-	displayname:{
-		stringValue:dumachris
-	}, 
-	equipment:{
-		mapValue:{
-			fields:{
-				bottom:{integerValue:500001}, 
-				earring:{integerValue:-1}, 
-				face:{integerValue:-1}, 
-				glove:{integerValue:-1}, 
-				head:{integerValue:-1}, 
-				lhand:{integerValue:-1}, 
-				pocket:{integerValue:-1}, 
-				rhand:{integerValue:-1}, 
-				top:{integerValue:500000}
-			}
-		}
-	}, 
-	inventory:{
-		mapValue:{
-			fields:{
-				money:{
-					integerValue:0}
-			}
-		}
-	}, 
-	map:{stringValue:000001}, 
-	stats:{
-		mapValue:{
-			fields:{
-				accuracy:{integerValue:10}, 
-				ap:{integerValue:0}, 
-				avoidability:{integerValue:4}, 
-				class:{integerValue:0}, 
-				dexterity:{integerValue:4}, 
-				experience:{integerValue:0}, 
-				health:{integerValue:50}, 
-				job:{integerValue:0}, 
-				jumpSpeed:{integerValue:200}, 
-				level:{integerValue:1}, 
-				luck:{integerValue:4}, 
-				magicDefense:{integerValue:0}, 
-				mana:{integerValue:50}, 
-				maxHealth:{integerValue:50}, 
-				maxMana:{integerValue:50}, 
-				movementSpeed:{integerValue:100}, 
-				sp:{integerValue:0}, 
-				strength:{integerValue:4}, 
-				weaponDefense:{integerValue:0}, 
-				wisdom:{integerValue:4}
-			}
-		}
-	}
-}
-	
-
-"""
