@@ -1,10 +1,10 @@
 [gd_scene load_steps=10 format=2]
 
-[ext_resource path="res://scenes/playerObjects/Player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scenes/playerObjects/NewPlayer.tscn" type="PackedScene" id=1]
 [ext_resource path="res://resources/background/maps/BaseLevel.jpg" type="Texture" id=2]
 [ext_resource path="res://scenes/maps/Map.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scenes/userInerface/UI.tscn" type="PackedScene" id=4]
-[ext_resource path="res://scenes/maps/100001/100001.gd" type="Script" id=5]
+[ext_resource path="res://scenes/maps/100000/100000.gd" type="Script" id=5]
 [ext_resource path="res://scenes/npcObjects/000001/000001.tscn" type="PackedScene" id=6]
 [ext_resource path="res://scenes/mapObjects/Portal.tscn" type="PackedScene" id=8]
 [ext_resource path="res://scenes/mapObjects/Ladder.tscn" type="PackedScene" id=10]
@@ -55,7 +55,7 @@ position = Vector2( 356, -409 )
 [node name="OtherPlayers" type="Node" parent="."]
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
-position = Vector2( 95, -248 )
+position = Vector2( 113, -314 )
 
 [node name="UI" parent="." instance=ExtResource( 4 )]
 layer = 2

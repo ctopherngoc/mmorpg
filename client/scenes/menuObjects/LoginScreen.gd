@@ -25,4 +25,6 @@ func _fail_login() -> void:
 
 
 func _on_Button1_pressed():
-	SceneHandler.change_scene("create")
+	Global.player = GameData.test_player
+	get_tree().change_scene("res://scenes/maps/100000/100000.tscn")
+	#SceneHandler.change_scene("res://scenes/maps/100001/100001.tscn")
