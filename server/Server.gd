@@ -50,18 +50,11 @@ func _Peer_Disconnected(player_id):
 			
 			# no reason to update all characters since you only can make changes to current character
 			# if there is an implementation where you can change characters without logging out
-			# use the script below
 			# has to update cur character before running this or else the two dictionaries won't match
-			
-			#for character in player_container.characters_info_list:
-				#var firebase = Firebase.update_document("characters/%s" % str(character['displayname']), player_container.http2, player_container.db_info["token"], character)
-				#yield(firebase, 'completed')
-				
 			# store current character to firebase
 			var cur_character = player_container.current_character
 			var firebase = Firebase.update_document("characters/%s" % str(cur_character['displayname']), player_container.http2, player_container.db_info["token"], cur_character)
 			yield(firebase, 'completed')
-		# uneeded else to confirm print
 		else:
 			print("dc in characterselect did not save")
 		ServerData.player_location.erase(str(player_id))
@@ -86,7 +79,6 @@ func return_token_verification_results(player_id, result):
 			#load character data
 			if result == true:
 				pass
-		#print(ServerData.player_location[str(player_id)])
 	else:
 		network.disconnect_peer(player_id)
 		print("playercontainer empty probably big issue")
@@ -113,7 +105,6 @@ func _on_TokenExpiration_timeout():
 remote func return_token(token, email):
 	print("return token")
 	var player_id = get_tree().get_rpc_sender_id()
-	print('token returned running verify of %s' % str(player_id))
 	player_verification_process.verify(player_id, token, email)
 
 
@@ -251,18 +242,15 @@ remote func fetch_player_stats():
 	var Maps = get_node("World/Maps")
 	for i in Maps.get_children():
 		for l in i.get_children():
-			#print(l)
 			if l.name == str(player_id):
 				print(l.player_stats)
 
 remote func fetch_usernames(requester, username):
 	print("inside fetch username. Username: %s" % username)
 	var player_id = get_tree().get_rpc_sender_id()
-	print("player id: %s" % player_id)
 	var player_container = get_node(ServerData.player_location[str(player_id)] + "/%s" % player_id)
 	var firebase_call = Firebase.get_document("characters", player_container.http, player_container.db_info["token"], player_container)
 	yield(firebase_call, 'completed')
-	print('username list')
 	print(ServerData.username_list)
 	if username in ServerData.username_list:
 		print("%s already taken." % username)
@@ -295,8 +283,6 @@ remote func fetch_characters():
 # warning-ignore:unused_variable
 	var player_id = get_tree().get_rpc_sender_id()
 	print("In fetch characters")
-	print("player location list")
-	print(ServerData.player_location)
 
 # warning-ignore:unused_argument
 remote func delete_character(requester, display_name: String):
@@ -332,7 +318,6 @@ func update_player_stats(player_container):
 # Character containers/information 
 func move_player_container(player_id, player_container, map_id, portal_position):
 	var old_parent = get_node(str(ServerData.player_location[str(player_id)]))
-	print()
 	var new_parent = get_node("/root/Server/World/Maps/%s/YSort/Players" % str(map_id))
 
 	old_parent.remove_child(player_container)
@@ -347,7 +332,6 @@ func move_player_container(player_id, player_container, map_id, portal_position)
 		var new_location = Vector2((map_position.x + map_node.spawn_position.x), (map_position.y + map_node.spawn_position.y))
 		player.position = new_location
 	else:
-		print(str(portal_position))
 		var new_location = Vector2((map_position.x + portal_position.x), (map_position.y + portal_position.y))
 		player.position = new_location
 	player_container.cur_position = player.position
@@ -374,7 +358,6 @@ remote func portal(portal_id):
 	var next_map = ServerData.portal_data[map_id][portal_id]['map']
 	# get mapname, move user container to the map
 	print("move character container to %s" % next_map)
-	print(map_id, portal_id)
 	move_player_container(player_id, player_container, next_map, ServerData.portal_data[map_id][portal_id]['spawn'])
 	print('update current character last map')
 	player_container.current_character['map'] = next_map
@@ -412,7 +395,6 @@ remote func received_player_state(player_state):
 	player_state["U"] = ServerData.username_list[str(player_id)]
 	#print(player_state["P"])
 	# update player state
-	# move to player container
 	if ServerData.player_state_collection.has(player_id):
 		if ServerData.player_state_collection[player_id]["T"] < player_state["T"]:
 			player_container.global_position = final_position
@@ -430,6 +412,5 @@ remote func attack(attack_time):
 	var player_id = get_tree().get_rpc_sender_id()
 	var player_container = get_node(ServerData.player_location[str(player_id)] + "/%s" % str(player_id))
 	player_container.attack()
-	#print(str(player_id) + " attacking")
 	rpc_id(0, "receive_attack", player_id, attack_time)
 #######################################################
