@@ -1,12 +1,12 @@
 extends Node
 """
 body pigment hex:
-Paler: F7D9ADFF
-Pale: FFC878FF
-Tan: E5B166FF
-Tanner: 8B6229FF
-Dark: 67502FFF
-Darker:45351FFF
+0 Paler: F7D9ADFF
+1 Pale: FFC878FF
+2 Tan: E5B166FF
+3 Tanner: 8B6229FF
+4 Dark: 67502FFF
+5 Darker:45351FFF
 """
 const body_spritesheet = {
 	#color-body
@@ -127,6 +127,7 @@ eye:
 1: type03
 2: girl03
 """
+# color + eye
 const eye_spritesheet = {
 	"00" : preload("res://assets/character/creation/eyes/00.png"),
 	"01" : preload("res://assets/character/creation/eyes/01.png"),
@@ -142,6 +143,10 @@ const eye_spritesheet = {
 
 """
 brow:
+0: default
+1: 11
+2: 10
+3: 1
 """
 const brow_spritesheet = {
 	"0" : preload("res://assets/character/creation/brow/0.png"),
@@ -153,7 +158,7 @@ const brow_spritesheet = {
 
 """
 outfit consists of top and bottoms:
-	0:basic armor robe
+	0: basic armor robe
 	1: leather tunic
 	2: wood cutter clothing
 """
@@ -190,7 +195,11 @@ const ear_spritesheet = {
 	"41" : preload("res://assets/character/creation/ears/41.png"),
 	"51" : preload("res://assets/character/creation/ears/51.png"),
 }
-
+"""
+0: default
+1: dot
+2: creepy smle
+"""
 const mouth_spritesheet = {
 	"0" : preload("res://assets/character/creation/mouth/0.png"),
 	"1" : preload("res://assets/character/creation/mouth/1.png"),
