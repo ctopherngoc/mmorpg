@@ -46,7 +46,7 @@ func _ready():
 func _physics_process(delta):
 	if Global.movable:
 		movement_loop(delta)
-	define_player_state()
+	#define_player_state()
 	# update_health_display()
 
 func define_player_state():
