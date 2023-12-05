@@ -305,6 +305,18 @@ tracks/22/keys = {
 "update": 1,
 "values": [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 ]
 }
+tracks/23/type = "value"
+tracks/23/path = NodePath("Rear:frame")
+tracks/23/interp = 1
+tracks/23/loop_wrap = true
+tracks/23/imported = false
+tracks/23/enabled = true
+tracks/23/keys = {
+"times": PoolRealArray(  ),
+"transitions": PoolRealArray(  ),
+"update": 1,
+"values": [  ]
+}
 
 [sub_resource type="Animation" id=3]
 resource_name = "walk"
@@ -587,6 +599,18 @@ tracks/22/keys = {
 "update": 1,
 "values": [ 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47 ]
 }
+tracks/23/type = "value"
+tracks/23/path = NodePath("Rear:frame")
+tracks/23/interp = 1
+tracks/23/loop_wrap = true
+tracks/23/imported = false
+tracks/23/enabled = true
+tracks/23/keys = {
+"times": PoolRealArray(  ),
+"transitions": PoolRealArray(  ),
+"update": 1,
+"values": [  ]
+}
 
 [node name="CompositeSprite" type="Node2D"]
 
@@ -594,145 +618,145 @@ tracks/22/keys = {
 texture = ExtResource( 4 )
 hframes = 16
 vframes = 11
-frame = 43
+frame = 32
 region_rect = Rect2( -1198.01, 369.614, 0, 0 )
 
 [node name="Rleg" type="Sprite" parent="."]
 texture = ExtResource( 8 )
 hframes = 16
 vframes = 11
-frame = 43
+frame = 32
 
 [node name="Larm" type="Sprite" parent="."]
 texture = ExtResource( 9 )
 hframes = 16
 vframes = 11
-frame = 43
+frame = 32
 
 [node name="Lhand" type="Sprite" parent="."]
 texture = ExtResource( 13 )
 hframes = 16
 vframes = 11
-frame = 43
+frame = 32
 
 [node name="LWeapon" type="Sprite" parent="."]
 texture = ExtResource( 19 )
 hframes = 16
 vframes = 11
-frame = 43
+frame = 32
 
 [node name="Lfinger" type="Sprite" parent="."]
 texture = ExtResource( 16 )
 hframes = 16
 vframes = 11
-frame = 43
+frame = 32
 
 [node name="Body" type="Sprite" parent="."]
 texture = ExtResource( 3 )
 hframes = 16
 vframes = 11
-frame = 43
+frame = 32
 
 [node name="Bottom" type="Sprite" parent="."]
 position = Vector2( 1, -12 )
 texture = ExtResource( 15 )
 hframes = 16
 vframes = 11
-frame = 43
+frame = 32
 
 [node name="LGlove" type="Sprite" parent="."]
 texture = ExtResource( 20 )
 hframes = 16
 vframes = 11
-frame = 43
+frame = 32
 
 [node name="Lear" type="Sprite" parent="."]
 position = Vector2( -1, -14 )
 texture = ExtResource( 22 )
 hframes = 16
 vframes = 10
-frame = 43
+frame = 32
 
 [node name="Ammo" type="Sprite" parent="."]
 texture = ExtResource( 18 )
 hframes = 16
 vframes = 11
-frame = 43
+frame = 32
 
 [node name="Top" type="Sprite" parent="."]
 texture = ExtResource( 7 )
 hframes = 16
 vframes = 11
-frame = 43
+frame = 32
 region_rect = Rect2( 40, -710, 150, 510 )
 
 [node name="Head" type="Sprite" parent="."]
 texture = ExtResource( 1 )
 hframes = 16
 vframes = 11
-frame = 43
+frame = 32
 
 [node name="Mouth" type="Sprite" parent="."]
 texture = ExtResource( 5 )
 hframes = 16
 vframes = 11
-frame = 43
+frame = 32
 
 [node name="Brow" type="Sprite" parent="."]
 texture = ExtResource( 2 )
 hframes = 16
 vframes = 11
-frame = 43
+frame = 32
 
 [node name="Eye" type="Sprite" parent="."]
 texture = ExtResource( 11 )
 hframes = 16
 vframes = 11
-frame = 43
+frame = 32
 
 [node name="Hair" type="Sprite" parent="."]
 texture = ExtResource( 17 )
 hframes = 16
 vframes = 11
-frame = 43
+frame = 32
 
 [node name="Rear" type="Sprite" parent="."]
-position = Vector2( 2, -12 )
+position = Vector2( 2, -9 )
 texture = ExtResource( 14 )
 hframes = 16
-vframes = 10
-frame = 43
+vframes = 11
+frame = 32
 
 [node name="Headgear" type="Sprite" parent="."]
 visible = false
 texture = ExtResource( 21 )
 hframes = 16
 vframes = 11
-frame = 43
+frame = 32
 
 [node name="Rarm" type="Sprite" parent="."]
 texture = ExtResource( 10 )
 hframes = 16
 vframes = 11
-frame = 43
+frame = 32
 
 [node name="Rweapon" type="Sprite" parent="."]
 texture = ExtResource( 6 )
 hframes = 16
 vframes = 11
-frame = 43
+frame = 32
 
 [node name="Rhand" type="Sprite" parent="."]
 texture = ExtResource( 12 )
 hframes = 16
 vframes = 11
-frame = 43
+frame = 32
 
 [node name="RGlove" type="Sprite" parent="."]
 texture = ExtResource( 23 )
 hframes = 16
 vframes = 11
-frame = 43
+frame = 32
 
 [node name="Eacc" type="Sprite" parent="."]
 visible = false
