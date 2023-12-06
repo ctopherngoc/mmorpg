@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=2]
+[gd_scene load_steps=36 format=2]
 
 [ext_resource path="res://assets/character/spritesheet/head/0.png" type="Texture" id=1]
 [ext_resource path="res://assets/character/spritesheet/brow/0.png" type="Texture" id=2]
@@ -28,6 +28,7 @@
 [ext_resource path="res://assets/character/spritesheet/eyeacc/800000.png" type="Texture" id=26]
 [ext_resource path="res://assets/character/spritesheet/earring/599998l.png" type="Texture" id=27]
 [ext_resource path="res://assets/character/spritesheet/faceacc/800001.png" type="Texture" id=28]
+[ext_resource path="res://scenes/playerObjects/CompositeSprite.gd" type="Script" id=29]
 
 [sub_resource type="Animation" id=4]
 length = 0.001
@@ -1397,7 +1398,6 @@ tracks/27/keys = {
 [sub_resource type="Animation" id=6]
 resource_name = "slash"
 length = 0.96
-loop = true
 step = 0.06
 tracks/0/type = "value"
 tracks/0/path = NodePath("CompositeSprite/Lleg:frame")
@@ -1598,10 +1598,10 @@ tracks/16/loop_wrap = true
 tracks/16/imported = false
 tracks/16/enabled = true
 tracks/16/keys = {
-"times": PoolRealArray( 0, 0.06, 0.12, 0.18, 0.24, 0.3, 0.36, 0.42, 0.48, 0.54, 0.6, 0.66, 0.72, 0.78, 0.84, 0.9 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"times": PoolRealArray( 0, 0.06, 0.12, 0.18, 0.24, 0.3, 0.36, 0.42, 0.48, 0.54, 0.6, 0.66, 0.72, 0.78, 0.84 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
 "update": 1,
-"values": [ 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79 ]
+"values": [ 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78 ]
 }
 tracks/17/type = "value"
 tracks/17/path = NodePath("CompositeSprite/Top:frame")
@@ -2079,176 +2079,179 @@ tracks/27/keys = {
 }
 
 [node name="CompositeSprite" type="Node2D"]
+script = ExtResource( 29 )
 
 [node name="Lleg" type="Sprite" parent="."]
 texture = ExtResource( 4 )
 hframes = 16
 vframes = 11
-frame = 16
+frame = 78
 region_rect = Rect2( -1198.01, 369.614, 0, 0 )
 
 [node name="Rleg" type="Sprite" parent="."]
 texture = ExtResource( 8 )
 hframes = 16
 vframes = 11
-frame = 16
+frame = 78
 
 [node name="Larm" type="Sprite" parent="."]
 texture = ExtResource( 9 )
 hframes = 16
 vframes = 11
-frame = 16
+frame = 78
 
 [node name="Lhand" type="Sprite" parent="."]
 texture = ExtResource( 13 )
 hframes = 16
 vframes = 11
-frame = 16
+frame = 78
 
 [node name="LWeapon" type="Sprite" parent="."]
 texture = ExtResource( 19 )
 hframes = 16
 vframes = 11
-frame = 16
+frame = 79
 
 [node name="Lfinger" type="Sprite" parent="."]
 texture = ExtResource( 16 )
 hframes = 16
 vframes = 11
-frame = 16
+frame = 78
 
 [node name="Body" type="Sprite" parent="."]
 texture = ExtResource( 3 )
 hframes = 16
 vframes = 11
-frame = 16
+frame = 78
 
 [node name="Bottom" type="Sprite" parent="."]
 position = Vector2( 1, -12 )
 texture = ExtResource( 15 )
 hframes = 16
 vframes = 11
-frame = 16
+frame = 78
 
 [node name="LGlove" type="Sprite" parent="."]
 texture = ExtResource( 20 )
 hframes = 16
 vframes = 11
-frame = 16
+frame = 78
 
 [node name="Lear" type="Sprite" parent="."]
 texture = ExtResource( 22 )
 hframes = 16
 vframes = 11
-frame = 16
+frame = 78
 
 [node name="Learring" type="Sprite" parent="."]
 texture = ExtResource( 27 )
 hframes = 16
 vframes = 11
+frame = 78
 
 [node name="Ammo" type="Sprite" parent="."]
 texture = ExtResource( 18 )
 hframes = 16
 vframes = 11
-frame = 16
+frame = 78
 
 [node name="Top" type="Sprite" parent="."]
 texture = ExtResource( 7 )
 hframes = 16
 vframes = 11
-frame = 16
+frame = 78
 region_rect = Rect2( 40, -710, 150, 510 )
 
 [node name="Head" type="Sprite" parent="."]
 texture = ExtResource( 1 )
 hframes = 16
 vframes = 11
-frame = 16
+frame = 78
 
 [node name="Mouth" type="Sprite" parent="."]
 texture = ExtResource( 5 )
 hframes = 16
 vframes = 11
-frame = 16
+frame = 78
 
 [node name="Brow" type="Sprite" parent="."]
 texture = ExtResource( 2 )
 hframes = 16
 vframes = 11
-frame = 16
+frame = 78
 
 [node name="Eye" type="Sprite" parent="."]
 texture = ExtResource( 11 )
 hframes = 16
 vframes = 11
-frame = 16
+frame = 78
 
 [node name="Hair" type="Sprite" parent="."]
 texture = ExtResource( 17 )
 hframes = 16
 vframes = 11
-frame = 16
+frame = 78
 
 [node name="Rear" type="Sprite" parent="."]
 texture = ExtResource( 14 )
 hframes = 16
 vframes = 11
-frame = 16
+frame = 78
 
 [node name="Rearring" type="Sprite" parent="."]
 texture = ExtResource( 24 )
 hframes = 16
 vframes = 11
+frame = 78
 
 [node name="Tattoo" type="Sprite" parent="."]
 texture = ExtResource( 25 )
 hframes = 16
 vframes = 11
-frame = 32
+frame = 78
 
 [node name="Eyeacc" type="Sprite" parent="."]
 texture = ExtResource( 26 )
 hframes = 16
 vframes = 11
-frame = 32
+frame = 78
 
 [node name="Faceacc" type="Sprite" parent="."]
 texture = ExtResource( 28 )
 hframes = 16
 vframes = 11
-frame = 33
+frame = 78
 
 [node name="Headgear" type="Sprite" parent="."]
 visible = false
 texture = ExtResource( 21 )
 hframes = 16
 vframes = 11
-frame = 16
+frame = 78
 
 [node name="Rarm" type="Sprite" parent="."]
 texture = ExtResource( 10 )
 hframes = 16
 vframes = 11
-frame = 16
+frame = 78
 
 [node name="Rweapon" type="Sprite" parent="."]
 texture = ExtResource( 6 )
 hframes = 16
 vframes = 11
-frame = 16
+frame = 78
 
 [node name="Rhand" type="Sprite" parent="."]
 texture = ExtResource( 12 )
 hframes = 16
 vframes = 11
-frame = 16
+frame = 78
 
 [node name="RGlove" type="Sprite" parent="."]
 texture = ExtResource( 23 )
 hframes = 16
 vframes = 11
-frame = 16
+frame = 78
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 root_node = NodePath("../..")
@@ -2258,3 +2261,5 @@ anims/jump = SubResource( 7 )
 anims/ready = SubResource( 5 )
 anims/slash = SubResource( 6 )
 anims/walk = SubResource( 3 )
+
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]

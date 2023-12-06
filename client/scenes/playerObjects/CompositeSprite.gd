@@ -1,30 +1,35 @@
 extends Node2D
 
-onready var body = $CompositeSprite/Body
-onready var head = $CompositeSprite/Head
-onready var hair = $CompositeSprite/Hair
-onready var eye = $CompositeSprite/Eye
-onready var brow = $CompositeSprite/Brow
-onready var ear = $CompositeSprite/Ear
-onready var mouth = $CompositeSprite/Mouth
-onready var outfit = $CompositeSprite/Outfit
-onready var lleg = $CompositeSprite/Lleg
-onready var rleg = $CompositeSprite/Rleg
-onready var larm = $CompositeSprite/Larm
-onready var lhand = $CompositeSprite/Lhand
-onready var lwep = $CompositeSprite/LWeapon
-onready var lfinger = $CompositeSprite/Lfinger
-onready var bottom = $CompositeSprite/Bottom
-onready var lglove = $CompositeSprite/Lglove
-onready var lear = $CompositeSprite/Lear
-onready var ammo = $CompositeSprite/Ammo
-onready var top = $CompositeSprite/Top
-onready var headgear  = $CompositeSprite/Headgear
-onready var rear = $CompositeSprite/Rear
-onready var rarm = $CompositeSprite/Rarm
-onready var rwep = $CompositeSprite/Rweapon
-onready var rhand = $CompositeSprite/Rhand
-onready var rglove = $CompositeSprite/Rglove
+onready var body = $Body
+onready var head = $Head
+onready var hair = $Hair
+onready var eye = $Eye
+onready var brow = $Brow
+onready var ear = $Ear
+onready var mouth = $Mouth
+onready var outfit = $Outfit
+onready var lleg = $Lleg
+onready var rleg = $Rleg
+onready var larm = $Larm
+onready var lhand = $Lhand
+onready var lwep = $LWeapon
+onready var lfinger = $Lfinger
+onready var bottom = $Bottom
+onready var lglove = $Lglove
+onready var lear = $Lear
+onready var ammo = $Ammo
+onready var top = $Top
+onready var headgear  = $Headgear
+onready var rear = $Rear
+onready var rarm = $Rarm
+onready var rwep = $Rweapon
+onready var rhand = $Rhand
+onready var rglove = $Rglove
+onready var rearring = $Rear/Earring
+onready var learring = $Lear/Earring
+onready var tattoo = $Tattoo
+onready var eyeacc = $Eyeacc
+onready var faceacc = $Faceacc
 
 var avatar = null
 var equipment = null
@@ -44,3 +49,8 @@ func avatar_check():
 	if equipment != Global.player.equipment:
 		equipment = Global.player.equipment
 		update_avatar(equipment)
+
+
+func _on_AnimationPlayer_animation_finished(anim_name):
+	if anim_name == "slash":
+		self.get_parent().attacking = false
