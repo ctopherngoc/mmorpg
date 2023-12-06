@@ -41,6 +41,10 @@ func _physics_process(delta):
 	#define_player_state()
 
 func define_player_state():
+	# for client prediction
+	# edit player state to send button press and not global position
+	# client sprite will move -> send input -> server will recreate movement and return position
+	# client will validate positioning the same or rubberband to server position
 	player_state = {"T": Server.client_clock, "P": get_global_position(), "M": Global.current_map, "A": animation}
 	Server.send_player_state(player_state)
 
@@ -92,6 +96,12 @@ func get_movement_vector():
 func get_velocity(move_vector, delta):
 	# += causes build up of speed until clamped to max speed
 	# this is where the issue is
+	"""
+	fix this first so velocity is constant and not
+	variable to maxspeed
+	input -> client preidition -> send input to server -> server validates through mirror
+	recieve server position -> server recon
+	"""
 	velocity.x += move_vector.x * horizontal_acceleration
 	# slow down movement
 	if(move_vector.x == 0):
