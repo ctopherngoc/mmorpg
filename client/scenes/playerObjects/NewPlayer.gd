@@ -86,16 +86,20 @@ func get_movement_vector():
 			moveVector.y = -1
 		else:
 			moveVector.y = 0
+	#print(moveVector.x)
 	return moveVector
 
 func get_velocity(move_vector, delta):
+	# += causes build up of speed until clamped to max speed
+	# this is where the issue is
 	velocity.x += move_vector.x * horizontal_acceleration
 	# slow down movement
 	if(move_vector.x == 0):
 		# allows forward jumping
 		if(is_on_floor()):
 			velocity.x = lerp(0, velocity.x, pow(2, -50 * delta))
-
+	
+	# allows maximum velocity
 	velocity.x = clamp(velocity.x, -max_horizontal_speed, max_horizontal_speed)
 	
 	if can_climb:
@@ -136,7 +140,7 @@ func get_velocity(move_vector, delta):
 			velocity.y += gravity * delta
 	if !can_climb:
 		is_climbing = false
-
+	#print (velocity.x)
 # attack > jump > walking > takeDamage > standing
 func update_animation():
 	var move_vector = get_movement_vector()
@@ -147,13 +151,13 @@ func update_animation():
 	# send rpc to server
 	elif(Input.is_action_pressed("attack") && !is_climbing && Global.movable):
 		attacking = true
-		#$AnimationPlayer.play("stab")
+		sprite.play("slash")
 
 	else:
 		#$AnimationPlayer.playback_speed = 1.0
 		if(!is_on_floor()):
 			pass
-			#$AnimationPlayer.play("jump")
+			sprite.play("jump")
 
 		elif(move_vector.x != 0):
 			sprite.play("walk")
@@ -206,13 +210,16 @@ func set_damage(damage_value):
 	damage = damage_value
 	print("player set damage = %s" % damage)
 
+"""
 func _on_AnimationPlayer_animation_finished(animation_name):
-	#if animation_name == "stab":
+	if animation_name == "slash":
 		attacking = false
+"""	
 		
 func _unhandled_input(event):
 	if event.is_action_pressed("attack"):
 		if Global.movable:
+			return
 			Server.send_attack()
 		else:
 			print("cannot attack")
