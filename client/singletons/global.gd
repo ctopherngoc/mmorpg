@@ -16,6 +16,7 @@ var movable = true
 var character_list = []
 var player = null
 var last_portal = null
+var last_map = null
 
 
 # loads player info
@@ -23,7 +24,7 @@ func _ready():
 	pass
 
 func update_lastmap(map):
-	player.lastmap = map
+	last_map = map
 	
 func change_background():
 	VisualServer.set_default_clear_color(Color(0.4,0.4,0.4,1.0))

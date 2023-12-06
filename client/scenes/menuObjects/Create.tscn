@@ -1,0 +1,164 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://resources/background/login_screen/login_screen.jpg" type="Texture" id=1]
+[ext_resource path="res://scenes/menuObjects/Create.gd" type="Script" id=2]
+[ext_resource path="res://scenes/menuObjects/PlayerCreate.tscn" type="PackedScene" id=3]
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="Background" type="Sprite" parent="."]
+position = Vector2( 639.778, 361 )
+scale = Vector2( 0.664815, 0.664815 )
+texture = ExtResource( 1 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+margin_left = 159.0
+margin_top = 133.0
+margin_right = 1099.0
+margin_bottom = 620.0
+rect_pivot_offset = Vector2( -224, -131 )
+color = Color( 0.447059, 0.447059, 0.447059, 1 )
+
+[node name="PlayerCreate" parent="ColorRect" instance=ExtResource( 3 )]
+position = Vector2( 208, 222 )
+
+[node name="Body" type="Button" parent="ColorRect"]
+margin_left = 306.0
+margin_top = 206.0
+margin_right = 395.0
+margin_bottom = 249.0
+text = "Body"
+
+[node name="BColor" type="Button" parent="ColorRect"]
+margin_left = 306.0
+margin_top = 146.0
+margin_right = 392.0
+margin_bottom = 189.0
+text = "Tone"
+
+[node name="Head" type="Button" parent="ColorRect"]
+margin_left = 306.0
+margin_top = 91.0
+margin_right = 392.0
+margin_bottom = 130.0
+text = "Head"
+
+[node name="Hair" type="Button" parent="ColorRect"]
+margin_left = 420.0
+margin_top = 90.0
+margin_right = 506.0
+margin_bottom = 129.0
+text = "Hair"
+
+[node name="HColor" type="Button" parent="ColorRect"]
+margin_left = 518.0
+margin_top = 88.0
+margin_right = 604.0
+margin_bottom = 127.0
+text = "Hair Color"
+
+[node name="Mouth" type="Button" parent="ColorRect"]
+margin_left = 309.0
+margin_top = 272.0
+margin_right = 395.0
+margin_bottom = 311.0
+text = "Mouth"
+
+[node name="Ears" type="Button" parent="ColorRect"]
+margin_left = 426.0
+margin_top = 269.0
+margin_right = 514.0
+margin_bottom = 308.0
+text = "Ears"
+
+[node name="Eyes" type="Button" parent="ColorRect"]
+margin_left = 418.0
+margin_top = 142.0
+margin_right = 504.0
+margin_bottom = 181.0
+text = "Eyes"
+
+[node name="EColor" type="Button" parent="ColorRect"]
+margin_left = 522.0
+margin_top = 145.0
+margin_right = 608.0
+margin_bottom = 184.0
+text = "Eye Color"
+
+[node name="Brow" type="Button" parent="ColorRect"]
+margin_left = 426.0
+margin_top = 209.0
+margin_right = 512.0
+margin_bottom = 248.0
+text = "Eye Brow"
+
+[node name="Outfit" type="Button" parent="ColorRect"]
+margin_left = 527.0
+margin_top = 211.0
+margin_right = 613.0
+margin_bottom = 250.0
+text = "Outfit"
+
+[node name="Create" type="Node" parent="."]
+
+[node name="Label" type="Label" parent="Create"]
+margin_left = 476.0
+margin_top = 464.0
+margin_right = 546.0
+margin_bottom = 478.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Username:"
+
+[node name="notification" type="HBoxContainer" parent="Create"]
+margin_left = 476.0
+margin_top = 510.0
+margin_right = 583.0
+margin_bottom = 524.0
+
+[node name="Label" type="Label" parent="Create/notification"]
+margin_bottom = 14.0
+custom_colors/font_color = Color( 1, 0, 0, 1 )
+
+[node name="usernameField" type="LineEdit" parent="Create"]
+margin_left = 472.0
+margin_top = 482.0
+margin_right = 607.0
+margin_bottom = 506.0
+rect_min_size = Vector2( 135, 24 )
+
+[node name="Verify" type="Button" parent="Create"]
+margin_left = 620.0
+margin_top = 483.0
+margin_right = 680.0
+margin_bottom = 503.0
+text = "Verify"
+
+[node name="Create" type="Button" parent="Create"]
+margin_left = 468.0
+margin_top = 530.0
+margin_right = 617.0
+margin_bottom = 550.0
+text = "Create New Character"
+
+[node name="Button" type="Button" parent="Create"]
+margin_left = 473.0
+margin_top = 562.0
+margin_right = 514.0
+margin_bottom = 582.0
+text = "back"
+
+[connection signal="pressed" from="ColorRect/Body" to="ColorRect/PlayerCreate" method="_on_Body_pressed"]
+[connection signal="pressed" from="ColorRect/BColor" to="ColorRect/PlayerCreate" method="_on_BColor_pressed"]
+[connection signal="pressed" from="ColorRect/Head" to="ColorRect/PlayerCreate" method="_on_Head_pressed"]
+[connection signal="pressed" from="ColorRect/Hair" to="ColorRect/PlayerCreate" method="_on_Hair_pressed"]
+[connection signal="pressed" from="ColorRect/HColor" to="ColorRect/PlayerCreate" method="_on_HColor_pressed"]
+[connection signal="pressed" from="ColorRect/Mouth" to="ColorRect/PlayerCreate" method="_on_Mouth_pressed"]
+[connection signal="pressed" from="ColorRect/Ears" to="ColorRect/PlayerCreate" method="_on_Ears_pressed"]
+[connection signal="pressed" from="ColorRect/Eyes" to="ColorRect/PlayerCreate" method="_on_Eyes_pressed"]
+[connection signal="pressed" from="ColorRect/EColor" to="ColorRect/PlayerCreate" method="_on_EColor_pressed"]
+[connection signal="pressed" from="ColorRect/Brow" to="ColorRect/PlayerCreate" method="_on_Brow_pressed"]
+[connection signal="pressed" from="ColorRect/Outfit" to="ColorRect/PlayerCreate" method="_on_Outfit_pressed"]
+[connection signal="pressed" from="Create/Verify" to="." method="_on_Verify_pressed"]
+[connection signal="pressed" from="Create/Create" to="." method="_on_Create_pressed"]
+[connection signal="pressed" from="Create/Button" to="." method="_on_Button_pressed"]
