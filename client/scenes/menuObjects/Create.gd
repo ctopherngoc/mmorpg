@@ -62,3 +62,7 @@ func string_validation(username):
 			return false
 	return true
 
+
+
+func _on_Button_pressed():
+	SceneHandler.change_scene("characterSelect")

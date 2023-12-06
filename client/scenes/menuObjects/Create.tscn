@@ -141,6 +141,13 @@ margin_right = 617.0
 margin_bottom = 550.0
 text = "Create New Character"
 
+[node name="Button" type="Button" parent="Create"]
+margin_left = 473.0
+margin_top = 562.0
+margin_right = 514.0
+margin_bottom = 582.0
+text = "back"
+
 [connection signal="pressed" from="ColorRect/Body" to="ColorRect/PlayerCreate" method="_on_Body_pressed"]
 [connection signal="pressed" from="ColorRect/BColor" to="ColorRect/PlayerCreate" method="_on_BColor_pressed"]
 [connection signal="pressed" from="ColorRect/Head" to="ColorRect/PlayerCreate" method="_on_Head_pressed"]
@@ -154,3 +161,4 @@ text = "Create New Character"
 [connection signal="pressed" from="ColorRect/Outfit" to="ColorRect/PlayerCreate" method="_on_Outfit_pressed"]
 [connection signal="pressed" from="Create/Verify" to="." method="_on_Verify_pressed"]
 [connection signal="pressed" from="Create/Create" to="." method="_on_Create_pressed"]
+[connection signal="pressed" from="Create/Button" to="." method="_on_Button_pressed"]
