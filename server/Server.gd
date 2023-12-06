@@ -380,13 +380,21 @@ remote func received_player_state(player_state):
 	#print(player_state["P"])
 	var player_id = get_tree().get_rpc_sender_id()
 	var player_container = get_node(ServerData.player_location[str(player_id)] + "/%s" % str(player_id))
-
+	
+	"""
+	change attack script from packet
+	"""
 	# change damage box left and right
 	if player_state["A"]["d"] == 1:
 		get_node(ServerData.player_location[str(player_id)] + "/%s" % str(player_id) + "/do_damage").scale.x = 1
 	elif player_state["A"]["d"] == 0:
 		get_node(ServerData.player_location[str(player_id)] + "/%s" % str(player_id) + "/do_damage").scale.x = -1
-
+	
+	
+	""" 
+	this is where to validate position
+	get input 
+	"""
 	var map_node = get_node(ServerData.player_location[str(player_id)])
 	var server_position = map_node.get_global_position()
 	var client_position = player_state["P"]
