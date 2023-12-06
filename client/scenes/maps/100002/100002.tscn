@@ -2,7 +2,7 @@
 
 [ext_resource path="res://scenes/maps/100002/100002.gd" type="Script" id=1]
 [ext_resource path="res://scenes/mapObjects/Portal.tscn" type="PackedScene" id=2]
-[ext_resource path="res://scenes/maps/Map.tscn" type="PackedScene" id=3]
+[ext_resource path="res://assets/tiles/0001/tile.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scenes/playerObjects/Player.tscn" type="PackedScene" id=4]
 [ext_resource path="res://resources/background/maps/BaseLevel.jpg" type="Texture" id=5]
 [ext_resource path="res://scenes/userInerface/UI.tscn" type="PackedScene" id=6]
