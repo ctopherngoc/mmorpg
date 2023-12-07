@@ -17,6 +17,7 @@ var character_list = []
 var player = null
 var last_portal = null
 var last_map = null
+var player_position = null
 
 
 # loads player info
@@ -49,7 +50,7 @@ func _physics_process(_delta):
 					continue
 				if world_state_buffer[1]["P"][player_state]["M"] == Global.current_map:
 					if get_node("/root/currentScene/OtherPlayers").has_node(str(player_state)):
-						#print(world_state_buffer[2]["P"][player_state]["P"])
+						#print(world_state_buffer[2]["P"][player_state]["P"] - Global.player_position)
 						var new_position = lerp(world_state_buffer[1]["P"][player_state]["P"], world_state_buffer[2]["P"][player_state]["P"], interpolation_factor)
 						var animation = world_state_buffer[2]["P"][player_state]["A"]
 						get_node("/root/currentScene/OtherPlayers/" + str(player_state)).move_player(new_position, animation)
@@ -89,7 +90,7 @@ func _physics_process(_delta):
 			var extrapolation_factor = float(render_time - world_state_buffer[0]["T"]) / float(world_state_buffer[1]["T"] - world_state_buffer[0]["T"]) - 1.00
 			for player_state in world_state_buffer[1]["P"].keys():
 				if player_state == get_tree().get_network_unique_id():
-					print(world_state_buffer[1]["P"][player_state]["P"])
+					print(world_state_buffer[1]["P"][player_state]["P"], " ", Global.player_position)
 					continue
 				if not world_state_buffer[0]["P"].has(player_state):
 					continue
