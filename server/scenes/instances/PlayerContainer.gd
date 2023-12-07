@@ -35,14 +35,13 @@ var player_stats
 var hittable = true
 var current_character
 var newUserBool
-
 func _physics_process(delta):
+	
 	if "Map" in str(self.get_path()):
 		movement_loop(delta)
-		
+
 func attack():
 	$AnimationPlayer.play("attack")
-
 func overlapping_bodies():
 	if $do_damage.get_overlapping_areas().size() > 0:
 		var closest = null
@@ -98,17 +97,16 @@ func experience(experience):
 	print("Level: %s" % current_character["stats"]["level"])
 	print("EXP: %s" % current_character["stats"]["experience"])
 	get_node("/root/Server").update_player_stats(self)
-
-func simulate_move(move):
-	pass
 ####################################################################
 func movement_loop(delta):
-	change_direction()
+	#change_direction()
 	var move_vector = get_movement_vector()
 	
 	# change get velocity
+	# this is the issue
 	get_velocity(move_vector, delta)
 	# warning-ignore:return_value_discarded
+	print(velocity)
 	move_and_slide(velocity, Vector2.UP)
 	
 	if is_on_floor() or !is_climbing:
@@ -119,10 +117,10 @@ func movement_loop(delta):
 	
 func get_movement_vector():
 	var moveVector = Vector2.ZERO
-	if input_queue.empty() == false:
-		input = input[0]
-		input_queue.erase(0)
-	
+	if !input_queue.empty():
+		input = input_queue.pop_front()
+	else:
+		input = [0,0,0,0,0]
 	# calculating x vector, allow x-axis jump off ropes or idle on floor
 	if (!attacking && is_on_floor()) or (input[1] == 1 or input[3] == 1) and input[4] == 1:
 		moveVector.x = (input[3] - input[1]) * velocity_multiplier
@@ -152,7 +150,6 @@ func get_velocity(move_vector, delta):
 
 	# allows maximum velocity
 	velocity.x = clamp(velocity.x, -max_horizontal_speed, max_horizontal_speed)
-	
 	if can_climb:
 		if is_climbing:
 			velocity.y = 0
@@ -218,13 +215,14 @@ func _on_DamageTimer_timeout():
 	hittable = true
 	$DamageTimer.stop()
 
+"""
 func start_idle_timer():
 	$idle_timer.start(1.0)
 	print("idle timer start")
-	
+
+
 # regen 5hp every 5 seconds if idle
 func _on_idle_timer_timeout():
-	#print(cur_position, self.position)
 	if self.position != cur_position:
 		cur_position = self.position
 		idle_counter = 0
@@ -246,3 +244,4 @@ func _on_idle_timer_timeout():
 				idle_counter = 0
 		else:
 			idle_counter = 0
+"""
