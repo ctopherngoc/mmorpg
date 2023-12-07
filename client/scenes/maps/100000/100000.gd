@@ -23,7 +23,7 @@ var monster_list = {
 
 func _ready():
 	self.name = "currentScene"
-	if Global.player.map != int(get_filename()):
+	if Global.player.map != get_filename():
 		Global.update_lastmap(get_filename())
 	spawn_location = Vector2(248,-2000)
 	$Player/Camera2D.limit_left = map_bound["left"]
@@ -50,16 +50,3 @@ func create_player():
 	main_player = player_instance
 
 ############################################
-"""
-	return
-	if body.is_in_group("player"):
-		body.set_collision_layer_bit(0, false)
-		body.set_collision_mask_bit(0, false)
-
-func _on_noCol_body_exited(body):
-	return
-	print("out of area")
-	if body.is_in_group("player"):
-		body.set_collision_layer_bit(0, true)
-		body.set_collision_mask_bit(0, true)
-"""
