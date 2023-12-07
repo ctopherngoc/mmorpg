@@ -89,6 +89,7 @@ func _physics_process(_delta):
 			var extrapolation_factor = float(render_time - world_state_buffer[0]["T"]) / float(world_state_buffer[1]["T"] - world_state_buffer[0]["T"]) - 1.00
 			for player_state in world_state_buffer[1]["P"].keys():
 				if player_state == get_tree().get_network_unique_id():
+					print(world_state_buffer[1]["P"][player_state]["P"])
 					continue
 				if not world_state_buffer[0]["P"].has(player_state):
 					continue
