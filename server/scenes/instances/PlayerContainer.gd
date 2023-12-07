@@ -14,20 +14,32 @@ var characters = []
 var characters_info_list = []
 var damage = 10
 var idle_counter = 0
+onready var input_queue = []
 
-# contains player data
-########
-#dud list
+var velocity = Vector2.ZERO
+var is_climbing = false
+var can_climb = false
+var attacking = false
+var velocity_multiplier = 1
+var attack_speed = 1.5
+var max_horizontal_speed = 100
+var jump_speed = 100
+var gravity = 800
+# 0 = right, 1 = left
+var direction = 0
+var input = [0,0,0,0,0]
 
 #takes int/dex/luck/str values from serverdata.gd
 var player_stats
-# var player_info
-######
 
 var hittable = true
 var current_character
 var newUserBool
 
+func _physics_process(delta):
+	if "Map" in str(self.get_path()):
+		movement_loop(delta)
+		
 func attack():
 	$AnimationPlayer.play("attack")
 
@@ -87,6 +99,113 @@ func experience(experience):
 	print("EXP: %s" % current_character["stats"]["experience"])
 	get_node("/root/Server").update_player_stats(self)
 
+func simulate_move(move):
+	pass
+####################################################################
+func movement_loop(delta):
+	change_direction()
+	var move_vector = get_movement_vector()
+	
+	# change get velocity
+	get_velocity(move_vector, delta)
+	# warning-ignore:return_value_discarded
+	move_and_slide(velocity, Vector2.UP)
+	
+	if is_on_floor() or !is_climbing:
+		velocity = move_and_slide(velocity, Vector2.UP)
+	if is_climbing:
+		velocity.x = 0
+	return self.global_position
+	
+func get_movement_vector():
+	var moveVector = Vector2.ZERO
+	if input_queue.empty() == false:
+		input = input[0]
+		input_queue.erase(0)
+	
+	# calculating x vector, allow x-axis jump off ropes or idle on floor
+	if (!attacking && is_on_floor()) or (input[1] == 1 or input[3] == 1) and input[4] == 1:
+		moveVector.x = (input[3] - input[1]) * velocity_multiplier
+	else:
+		moveVector.x = 0	
+	# calculating y vector, allow jump off ropes
+	if is_climbing:
+		if (input[1] == 1 or input[3] == 1) and input[4] == 1:
+			moveVector.y = -1
+		else:
+			moveVector.y = 0
+	else:
+		if input[4] == 1 && !attacking:
+			moveVector.y = -1
+		else:
+			moveVector.y = 0
+	return moveVector
+
+func get_velocity(move_vector, delta):
+	velocity.x += move_vector.x * max_horizontal_speed
+	# slow down movement
+	if(move_vector.x == 0):
+		# allows forward jumping
+		if(is_on_floor()):
+			# instant stop
+			velocity.x = 0
+
+	# allows maximum velocity
+	velocity.x = clamp(velocity.x, -max_horizontal_speed, max_horizontal_speed)
+	
+	if can_climb:
+		if is_climbing:
+			velocity.y = 0
+			# up press
+			if input[0] == 1:
+				velocity.y = -100
+			# down press
+			elif input[2] == 1 :
+				velocity.y = 100
+				if is_on_floor():
+					is_climbing = false
+			# jump off rope
+			elif input[4] == 1 && (input[1] == 1 or input[3] == 1):
+				is_climbing = false
+				velocity.y = move_vector.y * jump_speed * .8
+				velocity.x = move_vector.x * 200
+		# can climb but not climbing
+		else:
+			#if moving
+			if (move_vector.y < 0 && is_on_floor()):
+					velocity.y = move_vector.y * jump_speed
+			# press up on ladder initiates climbing
+			elif (!is_on_floor() && input[0] == 1 ) or (is_on_floor() && input[2] == 1):
+					is_climbing = true
+					velocity.y = 0
+					velocity.x = 0
+			# over lapping ladder pressing nothing allows gravity
+			else:
+				velocity.y += gravity * delta
+	# not climbable state
+	else:
+		# normal movement
+		if (move_vector.y < 0 && is_on_floor()):
+			velocity.y = move_vector.y * jump_speed
+		else:
+			velocity.y += gravity * delta
+	if !can_climb:
+		is_climbing = false
+	
+################################
+# edit so direction can be sent through world_state
+func change_direction():
+	if !input.empty():
+		if input[3] == 1 && !attacking:
+			if velocity.x < 0 && is_on_floor():
+				velocity.x = 0
+			direction = 0
+		elif input[1] == 1 && !attacking:
+			if velocity.x > 0 && is_on_floor():
+				velocity.x  = 0
+			direction = 1
+	
+	
 #####################################################################################################
 ## not implemented server knockback
 ##func recieve_knockback(damage_source_pos: Vector2):
