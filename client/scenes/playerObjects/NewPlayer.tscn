@@ -33,8 +33,6 @@ margin_right = 35.0
 margin_bottom = -57.0
 align = 1
 
-[node name="Timer" type="Timer" parent="."]
-
 [node name="CompositeSprite" parent="." instance=ExtResource( 1 )]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -49,5 +47,3 @@ collision_mask = 1280
 [node name="noCol" type="CollisionShape2D" parent="Area2D"]
 position = Vector2( -8, 2.5 )
 shape = SubResource( 21 )
-
-[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
