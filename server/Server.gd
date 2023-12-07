@@ -334,8 +334,8 @@ func move_player_container(player_id, player_container, map_id, portal_position)
 	else:
 		var new_location = Vector2((map_position.x + portal_position.x), (map_position.y + portal_position.y))
 		player.position = new_location
-	player_container.cur_position = player.position
-	player_container.start_idle_timer()
+	#player_container.cur_position = player.position
+	#player_container.start_idle_timer()
 
 func get_player_data(player_id):
 	var player_container = get_node(ServerData.player_location[str(player_id)] + "/%s" % str(player_id))
@@ -380,35 +380,18 @@ remote func received_player_state(player_state):
 	#print(player_state["P"])
 	var player_id = get_tree().get_rpc_sender_id()
 	var player_container = get_node(ServerData.player_location[str(player_id)] + "/%s" % str(player_id))
-	print(player_state["P"])
-	player_container.simulate_move(player_state["P"])
-	"""
-	change attack script from packet
-	"""
-	# change damage box left and right
+	if (player_state["P"]) != [0,0,0,0,0]:
+		player_container.input_queue.append(player_state["P"])
 	
-	"""
-	if player_state["A"]["d"] == 1:
-		get_node(ServerData.player_location[str(player_id)] + "/%s" % str(player_id) + "/do_damage").scale.x = 1
-	elif player_state["A"]["d"] == 0:
-		get_node(ServerData.player_location[str(player_id)] + "/%s" % str(player_id) + "/do_damage").scale.x = -1
-	"""
-	
-	""" 
-	this is where to validate position
-	get input 
-	"""
 	var map_node = get_node(ServerData.player_location[str(player_id)])
 	var server_position = map_node.get_global_position()
-	var client_position = player_state["P"]
 	
 	# calculate local position -> send back to clients
-	var final_position = Vector2((server_position.x - player_container.position.x), (server_position.y - player_container.position.y))
+	var final_position = Vector2((player_container.position.x - server_position.x), (player_container.position.y - server_position.y))
 	#var final_position = Vector2((server_position.x + client_position.x), (server_position.y + client_position.y))
 
 	player_state["U"] = ServerData.username_list[str(player_id)]
 	player_state["P"] = final_position 
-	#print(player_state["P"])
 	if ServerData.player_state_collection.has(player_id):
 		if ServerData.player_state_collection[player_id]["T"] < player_state["T"]:
 			player_container.global_position = final_position
