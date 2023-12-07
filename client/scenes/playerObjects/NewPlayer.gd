@@ -9,34 +9,28 @@ onready var velocity = Vector2.ZERO
 var attack_speed = 1.5
 
 # static player varaibles
-onready var horizontal_acceleration = 3
 onready var gravity = 800
 
 # player states
 export var can_climb = false
 export var is_climbing = false
-#onready var direction = "RIGHT"
 onready var attacking = false
 onready var player_state
-
+var held_down = false
 onready var sprite = $CompositeSprite/AnimationPlayer
-onready var animation = {
-	"f": 1,
-	"d": 1
-}
 
 func _ready():
 	$Label.text = Global.player.displayname
 	max_horizontal_speed = (Global.player.stats.movementSpeed)
-# warning-ignore:return_value_discarded
+	# warning-ignore:return_value_discarded
 	Signals.connect("dialog_closed", self, "movable_switch")
-	
 	jump_speed = (Global.player.stats.jumpSpeed)
 
 func _physics_process(delta):
 	if Global.movable:
+		get_input()
 		movement_loop(delta)
-	#define_player_state()
+	define_player_state()
 
 func define_player_state():
 	# for client prediction
@@ -48,22 +42,25 @@ func define_player_state():
 	#player_state = {"T": Server.client_clock, "P": get_global_position(), "M": Global.current_map, "A": animation}
 	Server.send_player_state(player_state)
 
-	
 func get_input():
+	var input = [0,0,0,0,0]
 	if Input.is_action_pressed("ui_up"):
-		print("up ", velocity.y)
-		return[1,0,0,0]
+		#print("up ", velocity.y)
+		input[0] = 1
 	elif Input.is_action_pressed("ui_left"):
-		print("left ", velocity.x)
-		return[0,1,0,0]
+		#print("left ", velocity.x)
+		input[1] = 1
+	#elif Input.is_action_pressed("jump") and Input.get_action_strength("ui_down"):
+		#print("fall jump")
 	elif Input.is_action_pressed("ui_down"):
-		print("down ", velocity.y)
-		return[0,0,1,0]
+		#print("down ", velocity.y)
+		input[2] = 1
 	elif Input.is_action_pressed("ui_right"):
-		print("right ", velocity.x)
-		return[0,0,0,1]
-	else:
-		return[0,0,0,0]
+		#print("right ", velocity.x)
+		input[3] = 1
+	if Input.get_action_strength("jump"):
+		input [4] = 1
+	return input
 
 func movement_loop(delta):
 	change_direction()
@@ -74,20 +71,10 @@ func movement_loop(delta):
 	# warning-ignore:return_value_discarded
 	move_and_slide(velocity, Vector2.UP)
 	
-	# can be determined by server?
-	# player state if jumping
-	"""
-	if is_on_floor():
-		animation["f"] = 1
-	else:
-		animation["f"] = 0
-	"""
-	
 	if is_on_floor() or !is_climbing:
 		velocity = move_and_slide(velocity, Vector2.UP)
 	if is_climbing:
 		velocity.x = 0
-
 	update_animation()
 
 func get_movement_vector():
@@ -125,7 +112,7 @@ func get_velocity(move_vector, delta):
 		if(is_on_floor()):
 			# instant stop
 			velocity.x = 0
-	
+
 	# allows maximum velocity
 	velocity.x = clamp(velocity.x, -max_horizontal_speed, max_horizontal_speed)
 	if can_climb:
@@ -170,7 +157,7 @@ func update_animation():
 	var move_vector = get_movement_vector()
 	if(attacking):
 		pass
-	
+
 	# send rpc to server
 	elif(Input.is_action_pressed("attack") && !is_climbing && Global.movable):
 		attacking = true
@@ -200,21 +187,20 @@ func flip_sprite(d):
 
 func change_direction():
 	if Input.is_action_pressed("move_right") && !attacking && !Input.is_action_pressed("move_left"):
-		#direction = "RIGHT"
 		if velocity.x < 0 && is_on_floor():
 			velocity.x = 0
 		flip_sprite(false)
-		#animation["d"] = 1
 	elif Input.is_action_pressed("move_left") && !attacking && !Input.is_action_pressed("move_right"):
-		#direction = "LEFT"
 		if velocity.x > 0 && is_on_floor():
 			velocity.x  = 0
 		flip_sprite(true)
-		#animation["d"] = 0
-
 
 func _unhandled_input(event):
-	if event.is_action_pressed("attack"):
+	if event.is_action_pressed("ui_down"):
+		held_down = true
+	elif event.is_action_released("ui_down"):
+		held_down = false
+	elif event.is_action_pressed("attack"):
 		if Global.movable:
 			return
 		else:
