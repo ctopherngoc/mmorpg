@@ -325,7 +325,7 @@ func move_player_container(player_id, player_container, map_id, position):
 
 	old_parent.remove_child(player_container)
 	new_parent.add_child(player_container)
-	print(map_id)
+	#print(map_id)
 
 	ServerData.player_location[str(player_id)] = "/root/Server/World/Maps/" + str(map_id) + "/YSort/Players"
 	var player = get_node("/root/Server/World/Maps/" + str(map_id) + "/YSort/Players/" + str(player_id))
@@ -399,7 +399,6 @@ remote func received_player_state(player_state):
 
 	# takes client tick time and sends it with final position
 	var return_input = {'T': player_state['T'], 'P': final_position}
-	#if input != [0,0,0,0,0]:
 	return_player_input(player_id, return_input)
 
 	if ServerData.player_state_collection.has(player_id):
@@ -408,7 +407,6 @@ remote func received_player_state(player_state):
 			ServerData.player_state_collection[player_id] = player_state
 
 	# just logged in add player state
-	# need to spawn
 	else:
 		 ServerData.player_state_collection[player_id] = player_state
 
@@ -426,3 +424,8 @@ remote func attack(attack_time):
 	player_container.attack()
 	rpc_id(0, "receive_attack", player_id, attack_time)
 #######################################################
+# 0 = no climb
+# 1 = can climb
+
+func send_climb_data(player_id, climb_data):
+	rpc_id(int(player_id), "receive_climb_data", climb_data)
