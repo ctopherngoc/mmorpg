@@ -20,11 +20,12 @@ autostart = true
 wait_time = 10.0
 autostart = true
 
-[node name="World" type="Node" parent="."]
+[node name="World" type="Node2D" parent="."]
 
-[node name="CharacterSelect" type="Node" parent="World"]
+[node name="CharacterSelect" type="Node2D" parent="World"]
+position = Vector2( -292, 1 )
 
-[node name="Maps" type="Node" parent="World"]
+[node name="Maps" type="Node2D" parent="World"]
 
 [node name="100001" parent="World/Maps" instance=ExtResource( 5 )]
 

@@ -27,7 +27,6 @@ GameData="*res://singletons/gamedata.gd"
 
 window/size/width=1280
 window/size/height=720
-window/size/resizable=false
 window/per_pixel_transparency/allowed=true
 window/per_pixel_transparency/enabled=true
 window/stretch/aspect="keep_height"
@@ -90,6 +89,11 @@ jump_left={
 stats={
 "deadzone": 0.5,
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":83,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+ ]
+}
+fall={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":true,"meta":true,"command":true,"pressed":false,"scancode":0,"physical_scancode":16777234,"unicode":0,"echo":false,"script":null)
  ]
 }
 

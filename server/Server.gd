@@ -107,11 +107,10 @@ remote func return_token(token, email):
 	var player_id = get_tree().get_rpc_sender_id()
 	player_verification_process.verify(player_id, token, email)
 
-
 func already_logged_in(player_id, _email):
 	rpc_id(player_id, "already_logged_in")
 	network.disconnect_peer(player_id)
-	
+
 #######################################################
 # client/server time sync
 remote func fetch_server_time(client_time):
@@ -131,18 +130,18 @@ func create_characters():
 		#player_id, username, playerContainer, requester
 		var character_array = character_creation_queue[0]
 		character_creation_queue.remove(0)
-		
+
 		# firebase call to see if characer name is taken
 		var firebase_call = Firebase.get_document("characters", character_array[2].http, character_array[2].db_info["token"], character_array)
 		yield(firebase_call, 'completed')
-		
+
 		if character_array[1]["un"] in ServerData.username_list:
 			print("%s already taken." % character_array[1])
 			rpc_id(character_array[0], "returnfetchUsernames", character_array[3], false)
 		else:
 			#[player_id, char_dict, player_container, requester]
 			character_array[2].characters.append(character_array[1]["un"])
-			
+
 			#fill in character and top and bottom numbers
 			var temp_player = ServerData.player_template.duplicate()
 			var new_char = character_array[1]
@@ -183,7 +182,7 @@ func create_characters():
 			sprite["mouth"] = new_char["m"]
 			sprite["ear"] = new_char["ea"]
 			sprite["brow"] = new_char["br"]
-			
+
 			"""
 				outfit:
 				0: top: 500000, bottom: 500001
@@ -201,13 +200,13 @@ func create_characters():
 			else:
 				equips["top"] = ServerData.starter_equips[2][0]
 				equips["bottom"] = ServerData.starter_equips[2][1]
-				
+
 			# possibly make this into one function
 			##################################################################
 			print("creating character")
 			var firebase_call2 = Firebase.update_document("characters/%s" % temp_player["displayname"], character_array[2].http2, character_array[2].db_info["token"], temp_player)
 			yield(firebase_call2, 'completed')
-			
+
 			# update database account
 			# character_array[2] = player container
 			var firebase_call3 = Firebase.update_document("users/%s" % character_array[2].db_info["id"], character_array[2].http, character_array[2].db_info["token"], character_array[2])
@@ -224,17 +223,21 @@ remote func choose_character(requester, display_name: String):
 	for character_dict in player_container.characters_info_list:
 		if  display_name == character_dict['displayname']:
 			player_container.current_character = character_dict
-			##########
+
 			"""Issue here fresh account no players
 			invalid set index '234234324' (on base:array) with value type string
 			"""
 			ServerData.username_list[str(player_id)] = display_name
 			break
 	var map = player_container.current_character['map']
-	map = map.replace("res://scenes/maps/", "")
-	map = map.replace(".tscn", "")
+	#############################################
+	#map = map.replace("res://scenes/maps/", "")
+	#map = map.replace(".tscn", "")
+	############################################
+	
 	# move user container to the map
 	move_player_container(player_id, player_container, map, 'spawn')
+	player_container.load_player_stats()
 	rpc_id(player_id, "return_choose_character", requester)
 
 remote func fetch_player_stats():
@@ -266,7 +269,7 @@ remote func create_character(requester, char_dict):
 	print("create_character: Username: %s" % char_dict["un"])
 	var player_id = get_tree().get_rpc_sender_id()
 	var player_container = get_node(ServerData.player_location[str(player_id)] + "/%s" % player_id)
-	
+
 	"""
 	not in dict
 	var curr_lhand: int = 0
@@ -291,15 +294,15 @@ remote func delete_character(requester, display_name: String):
 		var characters_info_list = []
 	"""
 	print("atempting to delete %s" % display_name)
-	
+
 	var player_id = get_tree().get_rpc_sender_id()
 	var player_container = get_node(ServerData.player_location[str(player_id)] + "/%s" % player_id)
-	
+
 	# find index from character array delete index in characters and charaters info list
 	var index = player_container.characters.find(display_name)
 	player_container.characters.remove(index)
 	player_container.characters_info_list.remove(index)
-	
+
 	var firebase_call = Firebase.update_document("users/%s" % player_container.db_info["id"], player_container.http, player_container.db_info["token"], player_container)
 	yield(firebase_call, "completed")
 	firebase_call = Firebase.delete_document("characters/%s" % display_name, player_container.http2, player_container.db_info["token"])
@@ -316,26 +319,27 @@ func update_player_stats(player_container):
 
 #######################################################
 # Character containers/information 
-func move_player_container(player_id, player_container, map_id, portal_position):
+func move_player_container(player_id, player_container, map_id, position):
 	var old_parent = get_node(str(ServerData.player_location[str(player_id)]))
 	var new_parent = get_node("/root/Server/World/Maps/%s/YSort/Players" % str(map_id))
 
 	old_parent.remove_child(player_container)
 	new_parent.add_child(player_container)
+	#print(map_id)
 
 	ServerData.player_location[str(player_id)] = "/root/Server/World/Maps/" + str(map_id) + "/YSort/Players"
 	var player = get_node("/root/Server/World/Maps/" + str(map_id) + "/YSort/Players/" + str(player_id))
 	var map_node = get_node("/root/Server/World/Maps/%s" % str(map_id))
 	var map_position = map_node.get_global_position()
 
-	if typeof(portal_position) == TYPE_STRING:
-		var new_location = Vector2((map_position.x + map_node.spawn_position.x), (map_position.y + map_node.spawn_position.y))
-		player.position = new_location
-	else:
-		var new_location = Vector2((map_position.x + portal_position.x), (map_position.y + portal_position.y))
-		player.position = new_location
-	player_container.cur_position = player.position
-	player_container.start_idle_timer()
+	if typeof(position) == TYPE_STRING:
+		position = Vector2((map_position.x + map_node.spawn_position.x), (map_position.y + map_node.spawn_position.y))
+
+	var new_location = Vector2((map_position.x + position.x), (map_position.y + position.y))
+	player.position = new_location
+	print("player cur position = ", player.global_position)
+	#player_container.cur_position = player.position
+	#player_container.start_idle_timer()
 
 func get_player_data(player_id):
 	var player_container = get_node(ServerData.player_location[str(player_id)] + "/%s" % str(player_id))
@@ -380,28 +384,34 @@ remote func received_player_state(player_state):
 	#print(player_state["P"])
 	var player_id = get_tree().get_rpc_sender_id()
 	var player_container = get_node(ServerData.player_location[str(player_id)] + "/%s" % str(player_id))
-
-	# change damage box left and right
-	if player_state["A"]["d"] == 1:
-		get_node(ServerData.player_location[str(player_id)] + "/%s" % str(player_id) + "/do_damage").scale.x = 1
-	elif player_state["A"]["d"] == 0:
-		get_node(ServerData.player_location[str(player_id)] + "/%s" % str(player_id) + "/do_damage").scale.x = -1
+	var input = player_state["P"]
+	if  input != [0,0,0,0,0]:
+		player_container.input_queue.append(player_state["P"])
 
 	var map_node = get_node(ServerData.player_location[str(player_id)])
-	var server_position = map_node.get_global_position()
-	var client_position = player_state["P"]
-	var final_position = Vector2((server_position.x + client_position.x), (server_position.y + client_position.y))
+	var server_position_offset = map_node.get_global_position()
+
+	# calculate local position -> send back to clients
+	var final_position = Vector2((player_container.position.x - server_position_offset.x), (player_container.position.y - server_position_offset.y))
 
 	player_state["U"] = ServerData.username_list[str(player_id)]
-	#print(player_state["P"])
-	# update player state
+	player_state["P"] = final_position
+
+	# takes client tick time and sends it with final position
+	var return_input = {'T': player_state['T'], 'P': final_position}
+	return_player_input(player_id, return_input)
+
 	if ServerData.player_state_collection.has(player_id):
 		if ServerData.player_state_collection[player_id]["T"] < player_state["T"]:
 			player_container.global_position = final_position
 			ServerData.player_state_collection[player_id] = player_state
+
 	# just logged in add player state
 	else:
 		 ServerData.player_state_collection[player_id] = player_state
+
+func return_player_input(player_id, sever_input_data):
+	rpc_id(player_id, "return_player_input", sever_input_data)
 
 func send_world_state(world_state):
 	rpc_unreliable_id(0, "receive_world_state", world_state)
@@ -414,3 +424,8 @@ remote func attack(attack_time):
 	player_container.attack()
 	rpc_id(0, "receive_attack", player_id, attack_time)
 #######################################################
+# 0 = no climb
+# 1 = can climb
+
+func send_climb_data(player_id, climb_data):
+	rpc_id(int(player_id), "receive_climb_data", climb_data)

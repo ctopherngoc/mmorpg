@@ -1,7 +1,9 @@
 extends Node
+var server = null
 
 func _ready():
 	pass
+	server = get_node("/root/Server")
 
 func store_character_data(player_id, display_name):
 	var player_container = get_node(ServerData.player_location[str(player_id)] + "/%s" % str(player_id))
@@ -40,3 +42,6 @@ func _on_Timer_timeout():
 			print("Stored %s data to firebase db" % ServerData.username_list[player_id])
 	else:
 		print("no players no need to save db")
+
+func send_climb_data(player_id, climb_data):
+	server.send_climb_data(player_id, climb_data)

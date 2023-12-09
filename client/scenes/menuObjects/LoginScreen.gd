@@ -26,5 +26,6 @@ func _fail_login() -> void:
 
 func _on_Button1_pressed():
 	Global.player = GameData.test_player
+# warning-ignore:return_value_discarded
 	get_tree().change_scene("res://scenes/maps/100000/100000.tscn")
 	#SceneHandler.change_scene("res://scenes/maps/100001/100001.tscn")

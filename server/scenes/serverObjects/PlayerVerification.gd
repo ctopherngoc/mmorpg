@@ -2,7 +2,8 @@ extends Node
 
 
 onready var main_interface = get_parent()
-onready var player_container_scene = preload("res://scenes/instances/PlayerContainer.tscn")
+#onready var player_container_scene = preload("res://scenes/instances/PlayerContainer.tscn")
+onready var player_container_scene = preload("res://scenes/instances/NewServerPlayer.tscn")
 
 var awaiting_verification = {}
 

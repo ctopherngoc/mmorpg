@@ -1,48 +1,61 @@
 extends KinematicBody2D
 
+onready var velocity_multiplier = 1
 # dynamic player variables
-#onready var player = Global.player
 onready var jump_speed
-onready var health
 onready var max_horizontal_speed
 onready var velocity = Vector2.ZERO
-onready var damage
+var attack_speed = 1.5
 
 # static player varaibles
-onready var horizontal_acceleration = 3
-onready var knockback_modifier = 0.2
 onready var gravity = 800
 
 # player states
 export var can_climb = false
 export var is_climbing = false
-export var no_collision_zone = false
-onready var direction = "RIGHT"
 onready var attacking = false
 onready var player_state
-
+var held_down = false
 onready var sprite = $CompositeSprite/AnimationPlayer
-onready var animation = {
-	"f": 1,
-	"d": 1
-}
 
 func _ready():
 	$Label.text = Global.player.displayname
 	max_horizontal_speed = (Global.player.stats.movementSpeed)
-# warning-ignore:return_value_discarded
+	# warning-ignore:return_value_discarded
 	Signals.connect("dialog_closed", self, "movable_switch")
-	
 	jump_speed = (Global.player.stats.jumpSpeed)
 
 func _physics_process(delta):
 	if Global.movable:
-		movement_loop(delta)
-	#define_player_state()
+		get_input()
+	movement_loop(delta)
+	define_player_state()
+	Global.player_position = self.global_position
 
 func define_player_state():
-	player_state = {"T": Server.client_clock, "P": get_global_position(), "M": Global.current_map, "A": animation}
+	player_state = {"T": Server.client_clock, "P": get_input()}
+
+	# if not afk, add input and position to tick key
+	var input_dictionary = {
+		"T" : player_state["T"],
+		"P": self.global_position,
+		}
+	Global.input_queue.append(input_dictionary)
 	Server.send_player_state(player_state)
+
+func get_input():
+	var input = [0,0,0,0,0]
+	if Input.is_action_pressed("ui_up"):
+		input[0] = 1
+	if Input.is_action_pressed("ui_left"):
+		input[1] = 1
+	if Input.is_action_pressed("ui_down"):
+		input[2] = 1
+	if Input.is_action_pressed("ui_right"):
+		input[3] = 1
+	if Input.get_action_strength("jump"):
+		input [4] = 1
+	return input
 
 func movement_loop(delta):
 	change_direction()
@@ -53,18 +66,10 @@ func movement_loop(delta):
 	# warning-ignore:return_value_discarded
 	move_and_slide(velocity, Vector2.UP)
 	
-	# can be determined by server?
-	# player state if jumping
-	if is_on_floor():
-		animation["f"] = 1
-	else:
-		animation["f"] = 0
-	
 	if is_on_floor() or !is_climbing:
 		velocity = move_and_slide(velocity, Vector2.UP)
 	if is_climbing:
 		velocity.x = 0
-
 	update_animation()
 
 func get_movement_vector():
@@ -72,7 +77,7 @@ func get_movement_vector():
 	
 	# calculating x vector, allow x-axis jump off ropes or idle on floor
 	if (!attacking && is_on_floor()) or (Input.is_action_pressed("move_right") or Input.is_action_pressed("move_left")) and Input.get_action_strength("jump"):
-		moveVector.x = (Input.get_action_strength("move_right") - Input.get_action_strength("move_left")) * .8
+		moveVector.x = (Input.get_action_strength("move_right") - Input.get_action_strength("move_left")) * velocity_multiplier
 	else:
 		moveVector.x = 0	
 	# calculating y vector, allow jump off ropes
@@ -86,22 +91,19 @@ func get_movement_vector():
 			moveVector.y = -1
 		else:
 			moveVector.y = 0
-	#print(moveVector.x)
 	return moveVector
 
 func get_velocity(move_vector, delta):
-	# += causes build up of speed until clamped to max speed
-	# this is where the issue is
-	velocity.x += move_vector.x * horizontal_acceleration
+	velocity.x += move_vector.x * max_horizontal_speed
 	# slow down movement
 	if(move_vector.x == 0):
 		# allows forward jumping
 		if(is_on_floor()):
-			velocity.x = lerp(0, velocity.x, pow(2, -50 * delta))
-	
+			# instant stop
+			velocity.x = 0
+
 	# allows maximum velocity
 	velocity.x = clamp(velocity.x, -max_horizontal_speed, max_horizontal_speed)
-	
 	if can_climb:
 		if is_climbing:
 			velocity.y = 0
@@ -122,10 +124,8 @@ func get_velocity(move_vector, delta):
 			if (move_vector.y < 0 && is_on_floor()):
 					velocity.y = move_vector.y * jump_speed
 			# press up on ladder initiates climbing
-			elif (!is_on_floor() && Input.is_action_pressed("ui_up")) or (is_on_floor() && Input.is_action_pressed("ui_down")):
+			elif Input.is_action_pressed("ui_up"):
 					is_climbing = true
-					self.set_collision_layer_bit(0, false)
-					self.set_collision_mask_bit(0, false)
 					velocity.y = 0
 					velocity.x = 0
 			# over lapping ladder pressing nothing allows gravity
@@ -140,21 +140,17 @@ func get_velocity(move_vector, delta):
 			velocity.y += gravity * delta
 	if !can_climb:
 		is_climbing = false
-	#print (velocity.x)
 # attack > jump > walking > takeDamage > standing
 func update_animation():
 	var move_vector = get_movement_vector()
-	
 	if(attacking):
 		pass
-	
+
 	# send rpc to server
 	elif(Input.is_action_pressed("attack") && !is_climbing && Global.movable):
 		attacking = true
-		sprite.play("slash")
-
+		sprite.play("slash",-1, attack_speed)
 	else:
-		#$AnimationPlayer.playback_speed = 1.0
 		if(!is_on_floor()):
 			pass
 			sprite.play("jump")
@@ -179,48 +175,22 @@ func flip_sprite(d):
 
 func change_direction():
 	if Input.is_action_pressed("move_right") && !attacking && !Input.is_action_pressed("move_left"):
-		direction = "RIGHT"
 		if velocity.x < 0 && is_on_floor():
 			velocity.x = 0
 		flip_sprite(false)
-		animation["d"] = 1
 	elif Input.is_action_pressed("move_left") && !attacking && !Input.is_action_pressed("move_right"):
-		direction = "LEFT"
 		if velocity.x > 0 && is_on_floor():
 			velocity.x  = 0
 		flip_sprite(true)
-		animation["d"] = 0
 
-#########################################################################################
-# floor collision while in air
-func _on_Area2D_area_entered(_area):
-	no_collision_zone = true
-	self.set_collision_layer_bit(0, false)
-	self.set_collision_mask_bit(0, false)
-	print("no col")
-
-func _on_Area2D_area_exited(_area):
-	no_collision_zone = false
-	self.set_collision_layer_bit(0, true)
-	self.set_collision_mask_bit(0, true)
-	print("col")
-##########################################################################################
-# attacking functions
-func set_damage(damage_value):
-	damage = damage_value
-	print("player set damage = %s" % damage)
-
-"""
-func _on_AnimationPlayer_animation_finished(animation_name):
-	if animation_name == "slash":
-		attacking = false
-"""	
-		
 func _unhandled_input(event):
-	if event.is_action_pressed("attack"):
+	if event.is_action_pressed("ui_down"):
+		held_down = true
+	elif event.is_action_released("ui_down"):
+		held_down = false
+	elif event.is_action_pressed("attack"):
 		if Global.movable:
 			return
-			Server.send_attack()
 		else:
 			print("cannot attack")
 
@@ -228,4 +198,3 @@ func overlappingBodies():
 	print("area ovlapping: " + str($do_damage.get_overlapping_areas().size()))
 	for body in $do_damage.get_overlapping_areas():
 		print('player overlapping with: ', body)
-
