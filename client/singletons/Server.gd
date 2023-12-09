@@ -231,3 +231,18 @@ remote func change_map(map, position):
 # takes dictionary { 'T': client tick world state, 'P': server.position}
 remote func return_player_input(server_input_results):
 	Global.server_reconciliation(server_input_results)
+
+remote func receive_climb_data(climb_data):
+	var player = get_node("/root/currentScene/Player")
+	if climb_data == 2:
+		print("server: is climbing")
+		player.can_climb = true
+		player.is_climbing = true
+	elif climb_data == 1:
+		print("server: can climb")
+		player.is_climbing = false
+		player.can_climb = true
+	else:
+		player.can_climb = false
+		player.is_climbing = false
+	
