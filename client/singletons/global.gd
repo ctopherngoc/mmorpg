@@ -124,18 +124,16 @@ func spawn_monster(monster_id, monster_dict):
 	get_node("/root/currentScene/Monsters").add_child(monster, true)
 
 func server_reconciliation(server_input_data):
-	"""
-	#print(input_queue[server_input_data['T']]['P'], " ", server_input_data['P'])
-	if input_queue[server_input_data['T']]['P']!= server_input_data['P'] or input_queue[server_input_data['T']]['P']!= player_position:  #to some degree
-		#print("not same, ", input_queue[server_input_data['T']]['P'], " ", server_input_data['P'])
-		get_node("/root/currentScene/Player").set_position(server_input_data['P'])
-		pass
-	input_queue.erase(server_input_data['T'])
-	"""
 	for i in range(input_queue.size()):
 		if server_input_data["T"] == input_queue[i]["T"]:
 			if server_input_data["P"] != input_queue[i]["P"]:
-				print("server: ", server_input_data["P"], " client: ",input_queue[i]["P"])
-				get_node("/root/currentScene/Player").set_position(server_input_data['P'])
+				var serverx = stepify(server_input_data["P"].x, 0.00001)
+				var servery = stepify(server_input_data["P"].y, 0.00001)
+				var clientx = stepify(input_queue[i]["P"].x, 0.00001)
+				var clienty = stepify(input_queue[i]["P"].y, 0.00001)
+				if serverx != clientx and servery != clienty:
+					#print("recon")
+				#print("server: ", server_input_data["P"], " client: ",input_queue[i]["P"])
+					get_node("/root/currentScene/Player").set_position(server_input_data['P'])
 			input_queue = input_queue.slice(i+1, input_queue.size(), 1, true)
 			return
