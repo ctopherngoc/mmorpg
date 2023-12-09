@@ -38,7 +38,6 @@ var current_character
 func _physics_process(delta):
 	
 	if "Map" in str(self.get_path()):
-		print(self.position)
 		movement_loop(delta)
 		#return self.global_position
 		
@@ -116,7 +115,6 @@ func movement_loop(delta):
 		velocity = move_and_slide(velocity, Vector2.UP)
 	if is_climbing:
 		velocity.x = 0
-	#print(self.global_position, " ", self.position)
 	return self.global_position
 
 func get_movement_vector():
@@ -165,9 +163,11 @@ func get_velocity(move_vector, delta):
 				velocity.y = 100
 				if is_on_floor():
 					is_climbing = false
+					Global.send_climb_data(self.name, 1)
 			# jump off rope
 			elif input[4] == 1 && (input[1] == 1 or input[3] == 1):
 				is_climbing = false
+				Global.send_climb_data(self.name, 1)
 				velocity.y = move_vector.y * jump_speed * .8
 				velocity.x = move_vector.x * 200
 		# can climb but not climbing
@@ -178,6 +178,7 @@ func get_velocity(move_vector, delta):
 			# press up on ladder initiates climbing
 			elif input[0] == 1:
 					is_climbing = true
+					Global.send_climb_data(self.name, 2)
 					velocity.y = 0
 					velocity.x = 0
 			# over lapping ladder pressing nothing allows gravity
@@ -192,6 +193,7 @@ func get_velocity(move_vector, delta):
 			velocity.y += gravity * delta
 	if !can_climb:
 		is_climbing = false
+		Global.send_climb_data(self.name, 0)
 
 ################################
 # edit so direction can be sent through world_state
