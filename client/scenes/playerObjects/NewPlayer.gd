@@ -33,14 +33,9 @@ func _physics_process(delta):
 	Global.player_position = self.global_position
 
 func define_player_state():
-	# client will validate positioning the same or rubberband to server position
-	# probably can remove animation for floor nnot on floor because server will calculate
 	player_state = {"T": Server.client_clock, "P": get_input()}
-	#player_state = {"T": Server.client_clock, "P": get_global_position(), "M": Global.current_map, "A": animation}
-	# not same, (113, -269.000458) (121.886017, -269.000458)
 
 	# if not afk, add input and position to tick key
-	#if player_state["P"] != [0,0,0,0,0]:
 	var input_dictionary = {
 		"T" : player_state["T"],
 		"P": self.global_position,
@@ -52,11 +47,11 @@ func get_input():
 	var input = [0,0,0,0,0]
 	if Input.is_action_pressed("ui_up"):
 		input[0] = 1
-	elif Input.is_action_pressed("ui_left"):
+	if Input.is_action_pressed("ui_left"):
 		input[1] = 1
-	elif Input.is_action_pressed("ui_down"):
+	if Input.is_action_pressed("ui_down"):
 		input[2] = 1
-	elif Input.is_action_pressed("ui_right"):
+	if Input.is_action_pressed("ui_right"):
 		input[3] = 1
 	if Input.get_action_strength("jump"):
 		input [4] = 1
@@ -142,7 +137,6 @@ func get_velocity(move_vector, delta):
 		if (move_vector.y < 0 && is_on_floor()):
 			velocity.y = move_vector.y * jump_speed
 		else:
-			# print("???")
 			velocity.y += gravity * delta
 	if !can_climb:
 		is_climbing = false
