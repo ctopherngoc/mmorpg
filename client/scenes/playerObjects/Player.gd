@@ -113,11 +113,11 @@ func get_velocity(move_vector, delta):
 				velocity.y = -100
 			elif Input.is_action_pressed("ui_down"):
 				velocity.y = 100
-				if is_on_floor():
-					is_climbing = false
+				#if is_on_floor():
+					#is_climbing = false
 			# jump off rope
 			elif Input.is_action_pressed("jump") && (Input.is_action_pressed("move_left") or Input.is_action_pressed("move_right")):
-				is_climbing = false
+				#is_climbing = false
 				velocity.y = move_vector.y * jump_speed * .8
 				velocity.x = move_vector.x * 200
 		# can climb but not climbing
@@ -127,7 +127,7 @@ func get_velocity(move_vector, delta):
 					velocity.y = move_vector.y * jump_speed
 			# press up on ladder initiates climbing
 			elif (!is_on_floor() && Input.is_action_pressed("ui_up")) or (is_on_floor() && Input.is_action_pressed("ui_down")):
-					is_climbing = true
+					#is_climbing = true
 					self.set_collision_layer_bit(0, false)
 					self.set_collision_mask_bit(0, false)
 					velocity.y = 0
@@ -142,8 +142,9 @@ func get_velocity(move_vector, delta):
 			velocity.y = move_vector.y * jump_speed
 		else:
 			velocity.y += gravity * delta
-	if !can_climb:
-		is_climbing = false
+	
+	#if !can_climb:
+		#is_climbing = false
 
 # attack > jump > walking > takeDamage > standing
 func update_animation():
