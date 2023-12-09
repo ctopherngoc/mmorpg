@@ -23,7 +23,7 @@ func _ready():
 	self.name = "currentScene"
 	if Global.player.map != get_filename():
 		Global.update_lastmap(get_filename())
-	spawn_location = Vector2(248,-2000)
+	spawn_location = Vector2(113,-275)
 	$Player/Camera2D.limit_left = map_bound["left"]
 	$Player/Camera2D.limit_right = map_bound["right"]
 	$Player/Camera2D.limit_bottom = map_bound["bottom"]

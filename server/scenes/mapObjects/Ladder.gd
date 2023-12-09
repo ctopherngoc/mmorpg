@@ -1,18 +1,17 @@
 extends Area2D
 
-func _on_Ladder_body_entered(body):
-	if body.is_in_group("climber"):
-		if body.climbing == false:
-			body.climbing = true
-			print(body.climbing)
-	pass
-	
-func _on_Ladder_body_exited(body):
-	if !body.noColZone:
-		body.set_collision_layer_bit(0, true)
-		body.set_collision_mask_bit(0, true)
-	if body.is_in_group("climber"):
-		if body.climbing == true:
-			body.climbing = false
-			print(body.climbing)
-	pass
+func _on_Ladder_area_entered(area):
+	print("over rope")
+	if area.is_in_group("climber"):
+		var parent = area.get_parent()
+		if parent.can_climb == false:
+			parent.can_climb = true
+			print(parent.can_climb)
+
+
+func _on_Ladder_area_exited(area):
+	if area.is_in_group("climber"):
+		var parent = area.get_parent()
+		if parent.can_climb == true:
+			parent.can_climb = false
+			print(parent.can_climb)

@@ -109,9 +109,11 @@ remote func return_delete_character(player_array, requester):
 func choose_character(requester, player_name):
 	rpc_id(1, "choose_character", requester, player_name)
 
+# warning-ignore:unused_argument
 remote func return_choose_character(requester):
 	print("server.gd: return_choose_character")
-	instance_from_id(requester).load_world()
+	SceneHandler.change_scene(Global.player['map']) 
+	#instance_from_id(requester).load_world()
 
 func fetch_player_stats():
 	rpc_id(1, "fetch_player_stats")
@@ -225,3 +227,7 @@ remote func return_portal(player_id):
 remote func change_map(map, position):
 	Global.last_portal = position
 	SceneHandler.change_scene(str(map)) 
+
+# takes dictionary { 'T': client tick world state, 'P': server.position}
+remote func return_player_input(server_input_results):
+	Global.server_reconciliation(server_input_results)

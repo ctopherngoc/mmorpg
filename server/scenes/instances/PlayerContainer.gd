@@ -20,10 +20,11 @@ var velocity = Vector2.ZERO
 var is_climbing = false
 var can_climb = false
 var attacking = false
+
 var velocity_multiplier = 1
 var attack_speed = 1.5
-var max_horizontal_speed = 100
-var jump_speed = 100
+var max_horizontal_speed = null
+var jump_speed = null
 var gravity = 800
 # 0 = right, 1 = left
 var direction = 0
@@ -34,12 +35,17 @@ var player_stats
 
 var hittable = true
 var current_character
-var newUserBool
 func _physics_process(delta):
 	
 	if "Map" in str(self.get_path()):
+		print(self.position)
 		movement_loop(delta)
-
+		#return self.global_position
+		
+func load_player_stats():
+	max_horizontal_speed = current_character.stats.movementSpeed
+	jump_speed = current_character.stats.jumpSpeed
+	
 func attack():
 	$AnimationPlayer.play("attack")
 func overlapping_bodies():
@@ -53,10 +59,10 @@ func overlapping_bodies():
 					closest = body
 				else:
 					pass
-
 		closest.get_parent().npc_hit(damage, self.name)
 	else:
 		pass
+
 func take_damage(take_damage):
 	if hittable:
 		hittable = false
@@ -73,48 +79,46 @@ func take_damage(take_damage):
 		$DamageTimer.start()
 	else:
 		pass
-		#print("Player I-Frame")
-		
+
 func experience(experience):
 	print(self.name + " gain %s exp" % str(experience))
 	var current_exp = current_character["stats"]["experience"]
 	var exp_limit = ServerData.experience_table[str(current_character["stats"]["level"])]
 	current_exp += experience
-	
+
 	# if level up
 	if current_exp >= exp_limit:
 		current_exp -= exp_limit
 		current_character["stats"]["level"] += 1
 		current_character["stats"]["sp"] += 5
 		print("%s Level Up" % current_character["displayname"])
-		
+
 		# add ability point skill points
 		if current_character["stats"]["class"] != 0:
 			current_character["stats"]["ap"] += 3
-	
+
 	current_character["stats"]["experience"] = current_exp
 	Global.store_character_data(self.name, current_character["displayname"])
 	print("Level: %s" % current_character["stats"]["level"])
 	print("EXP: %s" % current_character["stats"]["experience"])
 	get_node("/root/Server").update_player_stats(self)
-####################################################################
+
 func movement_loop(delta):
 	#change_direction()
 	var move_vector = get_movement_vector()
-	
+
 	# change get velocity
-	# this is the issue
 	get_velocity(move_vector, delta)
 	# warning-ignore:return_value_discarded
-	print(velocity)
 	move_and_slide(velocity, Vector2.UP)
-	
+
 	if is_on_floor() or !is_climbing:
 		velocity = move_and_slide(velocity, Vector2.UP)
 	if is_climbing:
 		velocity.x = 0
+	#print(self.global_position, " ", self.position)
 	return self.global_position
-	
+
 func get_movement_vector():
 	var moveVector = Vector2.ZERO
 	if !input_queue.empty():
@@ -172,7 +176,7 @@ func get_velocity(move_vector, delta):
 			if (move_vector.y < 0 && is_on_floor()):
 					velocity.y = move_vector.y * jump_speed
 			# press up on ladder initiates climbing
-			elif (!is_on_floor() && input[0] == 1 ) or (is_on_floor() && input[2] == 1):
+			elif input[0] == 1:
 					is_climbing = true
 					velocity.y = 0
 					velocity.x = 0
@@ -188,7 +192,7 @@ func get_velocity(move_vector, delta):
 			velocity.y += gravity * delta
 	if !can_climb:
 		is_climbing = false
-	
+
 ################################
 # edit so direction can be sent through world_state
 func change_direction():
@@ -201,8 +205,7 @@ func change_direction():
 			if velocity.x > 0 && is_on_floor():
 				velocity.x  = 0
 			direction = 1
-	
-	
+
 #####################################################################################################
 ## not implemented server knockback
 ##func recieve_knockback(damage_source_pos: Vector2):

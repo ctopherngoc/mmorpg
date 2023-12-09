@@ -28,7 +28,7 @@ func _ready():
 func _physics_process(delta):
 	if Global.movable:
 		get_input()
-		movement_loop(delta)
+	movement_loop(delta)
 	define_player_state()
 	Global.player_position = self.global_position
 
@@ -37,6 +37,15 @@ func define_player_state():
 	# probably can remove animation for floor nnot on floor because server will calculate
 	player_state = {"T": Server.client_clock, "P": get_input()}
 	#player_state = {"T": Server.client_clock, "P": get_global_position(), "M": Global.current_map, "A": animation}
+	# not same, (113, -269.000458) (121.886017, -269.000458)
+
+	# if not afk, add input and position to tick key
+	#if player_state["P"] != [0,0,0,0,0]:
+	var input_dictionary = {
+		"T" : player_state["T"],
+		"P": self.global_position,
+		}
+	Global.input_queue.append(input_dictionary)
 	Server.send_player_state(player_state)
 
 func get_input():
@@ -90,12 +99,6 @@ func get_movement_vector():
 	return moveVector
 
 func get_velocity(move_vector, delta):
-	"""
-	fix this first so velocity is constant and not
-	variable to maxspeed
-	input -> client preidition -> send input to server -> server validates through mirror
-	recieve server position -> server recon
-	"""
 	velocity.x += move_vector.x * max_horizontal_speed
 	# slow down movement
 	if(move_vector.x == 0):
@@ -126,7 +129,7 @@ func get_velocity(move_vector, delta):
 			if (move_vector.y < 0 && is_on_floor()):
 					velocity.y = move_vector.y * jump_speed
 			# press up on ladder initiates climbing
-			elif (!is_on_floor() && Input.is_action_pressed("ui_up")) or (is_on_floor() && Input.is_action_pressed("ui_down")):
+			elif Input.is_action_pressed("ui_up"):
 					is_climbing = true
 					velocity.y = 0
 					velocity.x = 0
@@ -139,6 +142,7 @@ func get_velocity(move_vector, delta):
 		if (move_vector.y < 0 && is_on_floor()):
 			velocity.y = move_vector.y * jump_speed
 		else:
+			# print("???")
 			velocity.y += gravity * delta
 	if !can_climb:
 		is_climbing = false

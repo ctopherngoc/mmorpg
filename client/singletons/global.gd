@@ -2,8 +2,8 @@ extends Node
 
 onready var ip = "127.0.0.1"
 
+onready var input_queue = []
 const interpolation_offset = 100
-onready var mosnter_spawn
 onready var current_map = ""
 onready var bgm = $bgm
 
@@ -45,23 +45,21 @@ func _physics_process(_delta):
 			var interpolation_factor = float(render_time - world_state_buffer[1]["T"]) / float(world_state_buffer[2]["T"] - world_state_buffer[0]["T"])
 			for player_state in world_state_buffer[2]["P"].keys():
 				if player_state == get_tree().get_network_unique_id():
+					#server_reconciliation(world_state_buffer[2]["P"][player_state]["P"])
 					continue
 				if not world_state_buffer[1]["P"].has(player_state):
 					continue
 				if world_state_buffer[1]["P"][player_state]["M"] == Global.current_map:
 					if get_node("/root/currentScene/OtherPlayers").has_node(str(player_state)):
-						#print(world_state_buffer[2]["P"][player_state]["P"] - Global.player_position)
 						var new_position = lerp(world_state_buffer[1]["P"][player_state]["P"], world_state_buffer[2]["P"][player_state]["P"], interpolation_factor)
 						var animation = world_state_buffer[2]["P"][player_state]["A"]
 						get_node("/root/currentScene/OtherPlayers/" + str(player_state)).move_player(new_position, animation)
-					
 					# check if character map == client map
 					else:
 						print("Spawning Player")
 						spawn_new_player(player_state, world_state_buffer[2]["P"][player_state])
 				else:
 					despawn_player(player_state)
-					
 			# map keys can be empty
 			if world_state_buffer[2]["E"][current_map].size() > 0:
 				#spawn monsters function
@@ -85,12 +83,11 @@ func _physics_process(_delta):
 						if world_state_buffer[2]["E"][current_map][monster]['time_out'] != 0 && world_state_buffer[2]["E"][current_map][monster]['EnemyState'] != "Dead":
 							spawn_monster(monster, world_state_buffer[2]["E"][current_map][monster])
 
-			# we have no future world_state
+		# we have no future world_state
 		elif render_time > world_state_buffer[1].T:
 			var extrapolation_factor = float(render_time - world_state_buffer[0]["T"]) / float(world_state_buffer[1]["T"] - world_state_buffer[0]["T"]) - 1.00
 			for player_state in world_state_buffer[1]["P"].keys():
 				if player_state == get_tree().get_network_unique_id():
-					print(world_state_buffer[1]["P"][player_state]["P"], " ", Global.player_position)
 					continue
 				if not world_state_buffer[0]["P"].has(player_state):
 					continue
@@ -125,3 +122,20 @@ func spawn_monster(monster_id, monster_dict):
 	monster.state = monster_dict["EnemyState"]
 	monster.name = str(monster_id)
 	get_node("/root/currentScene/Monsters").add_child(monster, true)
+
+func server_reconciliation(server_input_data):
+	"""
+	#print(input_queue[server_input_data['T']]['P'], " ", server_input_data['P'])
+	if input_queue[server_input_data['T']]['P']!= server_input_data['P'] or input_queue[server_input_data['T']]['P']!= player_position:  #to some degree
+		#print("not same, ", input_queue[server_input_data['T']]['P'], " ", server_input_data['P'])
+		get_node("/root/currentScene/Player").set_position(server_input_data['P'])
+		pass
+	input_queue.erase(server_input_data['T'])
+	"""
+	for i in range(input_queue.size()):
+		if server_input_data["T"] == input_queue[i]["T"]:
+			if server_input_data["P"] != input_queue[i]["P"]:
+				print("server: ", server_input_data["P"], " client: ",input_queue[i]["P"])
+				get_node("/root/currentScene/Player").set_position(server_input_data['P'])
+			input_queue = input_queue.slice(i+1, input_queue.size(), 1, true)
+			return

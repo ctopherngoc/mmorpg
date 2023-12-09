@@ -4,7 +4,7 @@ var map_name = "Grassy Road 1"
 
 var enemy_id_counter = 0
 var enemy_maximum = 2
-var spawn_position = Vector2(113, -247)
+var spawn_position = Vector2(113, -275)
 
 var green_guy = preload("res://scenes/monsterObjects/000001/000001.tscn")
 var enemy_types = [green_guy, green_guy]

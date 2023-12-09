@@ -1,7 +1,7 @@
 extends Node
 
 onready var httprequest
-const API_KEY := ""
+const API_KEY := "AIzaSyC2PkBqVa6lm9zG7gfy7MLZvNpRytA8klU"
 const PROJECT_ID := "godotproject-ef224"
 const DATABASE_URL := "https://firestore.googleapis.com/v1/projects/%s/databases/(default)/documents/" % PROJECT_ID 
 
@@ -70,8 +70,6 @@ func update_document(path: String, http: HTTPRequest, token: String, player_cont
 		var document := {"fields": temp_dict}
 		var body := to_json(document)
 		var url := DATABASE_URL + path
-		print(url)
-		print(body)
 		# warning-ignore:return_value_discarded
 		http.request(url, _get_request_headers(token), false, HTTPClient.METHOD_PATCH, body)
 		yield(http, "request_completed")
@@ -82,8 +80,6 @@ func update_document(path: String, http: HTTPRequest, token: String, player_cont
 		var document := {"fields": fb_data}
 		var body := to_json(document)
 		var url := DATABASE_URL + path
-		print(url)
-		print(body)
 		# warning-ignore:return_value_discarded
 		http.request(url, _get_request_headers(token), false, HTTPClient.METHOD_PATCH, body)
 		yield(http, "request_completed")
