@@ -193,8 +193,3 @@ func _unhandled_input(event):
 			return
 		else:
 			print("cannot attack")
-
-func overlappingBodies():
-	print("area ovlapping: " + str($do_damage.get_overlapping_areas().size()))
-	for body in $do_damage.get_overlapping_areas():
-		print('player overlapping with: ', body)
