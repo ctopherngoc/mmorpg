@@ -132,8 +132,8 @@ func server_reconciliation(server_input_data):
 				var clientx = stepify(input_queue[i]["P"].x, 0.00001)
 				var clienty = stepify(input_queue[i]["P"].y, 0.00001)
 				if serverx != clientx and servery != clienty:
-					#print("recon")
-				#print("server: ", server_input_data["P"], " client: ",input_queue[i]["P"])
+					print("recon")
+					print("server: ", server_input_data["P"], " client: ",input_queue[i]["P"])
 					get_node("/root/currentScene/Player").set_position(server_input_data['P'])
 			input_queue = input_queue.slice(i+1, input_queue.size(), 1, true)
 			return
