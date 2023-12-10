@@ -355,7 +355,6 @@ remote func portal(portal_id):
 	# get portal node
 	get_node(portal).over_lapping_bodies(player_id)
 	rpc_id(player_id, "return_portal", player_id)
-	# move player container
 
 	#get nextmap name
 	var map_id = get_node(ServerData.player_location[str(player_id)].replace("YSort/Players", "")).map_id
