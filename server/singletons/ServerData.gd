@@ -70,15 +70,18 @@ var player_info = {
 	}, # avatar
 	"equipment" : {"mapValue":
 		{"fields": 
-			{"head": {'integerValue': null},
-			"face": {'integerValue': null},
+			{"ammo": {'integerValue': null},
+			"headgear": {'integerValue': null},
+			"faceacc": {'integerValue': null},
+			"eyeacc": {'integerValue': null},
 			"top": {'integerValue': null},
 			"bottom": {'integerValue': null},
 			"earring": {'integerValue': null},
 			"glove": {'integerValue': null},
-			"lhand": {'integerValue': null},
-			"rhand": {'integerValue': null},
 			"pocket": {'integerValue': null},
+			"lweapon": {'integerValue': null},
+			"rweapon": {'integerValue': null},
+			"tattoo": {'integerValue': null},
 			}#fields
 			}#mapvalue
 			}, #equipment
@@ -129,15 +132,18 @@ var player_template = {
 		"ecolor": null,
 	},
 	"equipment" : {
-			"head": -1,
-			"face": -1,
+			"ammo": -1,
+			"headgear": -1,
+			"faceacc": -1,
+			"eyeacc": -1,
 			"earring":-1,
 			"top": null,
 			"bottom": null,
 			"glove": -1,
-			"lhand": -1,
-			"rhand": -1,
+			"weapon": -1,
+			"rweapon": -1,
 			"pocket": -1,
+			"tattoo": -1,
 			}, #equipment
 	"inventory" : {
 				"money": 0,
@@ -198,7 +204,7 @@ var portal_data = {
 	},
 	'100002': {
 		'P1': {'map': '100001',
-					'spawn': Vector2(833, -89)},
+					'spawn': Vector2(103, -89)},
 		'P2': {'map': '100003',
 					'spawn': Vector2(103, -290)}
 	},
