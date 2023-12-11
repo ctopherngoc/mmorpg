@@ -8,6 +8,8 @@ var max_players = 100
 var expected_tokens = []
 onready var player_verification_process = get_node("PlayerVerification")
 onready var character_creation_queue = []
+const username = "server@server.com"
+const password = "server123"
 #######################################################
 
 #server start 
@@ -15,9 +17,8 @@ func _ready():
 	
 	# not used
 	Firebase.httprequest = $HTTPRequest
-	#
-	
 	start_server()
+	Firebase.get_data(username, password)
 
 func start_server():
 	network.create_server(port, max_players)
