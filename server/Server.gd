@@ -337,7 +337,6 @@ func move_player_container(player_id, player_container, map_id, position):
 
 	old_parent.remove_child(player_container)
 	new_parent.add_child(player_container)
-	#print(map_id)
 
 	ServerData.player_location[str(player_id)] = "/root/Server/World/Maps/" + str(map_id) + "/YSort/Players"
 	var player = get_node("/root/Server/World/Maps/" + str(map_id) + "/YSort/Players/" + str(player_id))
