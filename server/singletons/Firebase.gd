@@ -3,13 +3,18 @@ extends Node
 const API_KEY := "AIzaSyC2PkBqVa6lm9zG7gfy7MLZvNpRytA8klU"
 const PROJECT_ID := "godotproject-ef224"
 const DATABASE_URL := "https://firestore.googleapis.com/v1/projects/%s/databases/(default)/documents/" % PROJECT_ID 
-
+const LOGIN_URL := "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=%s" % API_KEY
 var user_info := {}
+var httprequest = null
+var server_token = ""
 
-func _get_request_headers(token: String) -> PoolStringArray:
+func _ready():
+	pass
+
+func _get_request_headers(token_id: String) -> PoolStringArray:
 	return PoolStringArray([
 		"Content-Type: application/json",
-		"Authorization: Bearer %s" % token
+		"Authorization: Bearer %s" % token_id
 	])
 
 # only when creating an account
@@ -53,38 +58,92 @@ func get_document(path: String, http: HTTPRequest, token: String, player_contain
 		#ServerData.username_list = character_list.duplicate()
 		
 ###############################################################################
-func new_get_request_headers() -> PoolStringArray:
-	return PoolStringArray([
-		"Content-Type: application/json",
-		"Authorization: Bearer Server"
-	])
+func _get_user_info(result: Array) -> Dictionary:
+	var result_body := JSON.parse(result[3].get_string_from_ascii()).result as Dictionary
+	#return result_body.idToken
+	return {
+		"token" : result_body.idToken,
+		"id" : result_body.localId,
+		"timestamp" : OS.get_unix_time(),
+	}
+
+func login(email: String, password: String, http: HTTPRequest, results: Array):
+	var body := {
+		'email': email,
+		'password': password,
+		'returnSecureToken': true
+	}
+	http.request(LOGIN_URL, [], false, HTTPClient.METHOD_POST, to_json(body))
+	var result := yield(http, "request_completed") as Array
+
+	if result[1] == 200:
+		"""
+		return something here for AuthenticatePlayer to confirm 
+		response code 200 = successful
+		
+		results = [_get_user_info(result), response code ]
+		"""
+		results.append(result[1])
+		results.append(_get_user_info(result))
 	
+	else:
+		results.append(result[1])
+
+func get_data(username, password):
+	var results = []
+	var firebaseStatus = login(username, password, httprequest, results)
+	yield(firebaseStatus, "completed")
+	if results[0] != 200:
+		print("Server Signin Unsuccessful")
+	else:
+		print("Server Signin Successful")
+		server_token = results[1]['token']
+		var data1 = new_get_document("users/", httprequest)
+		yield(data1, 'completed')
+		var data2 = new_get_document("characters/", httprequest)
+		yield(data2, 'completed')
+		
 func new_get_document(path: String, http: HTTPRequest)-> void:
 	var url := DATABASE_URL + path
 # warning-ignore:return_value_discarded
-	http.request(url, new_get_request_headers(), false, HTTPClient.METHOD_GET)
+	http.request(url, _get_request_headers(server_token), false, HTTPClient.METHOD_GET)
 	var result := yield(http, "request_completed") as Array
 	var result_body := JSON.parse(result[3].get_string_from_ascii()).result as Dictionary
 	##########################################################################################
-	if result_body.has('fields'):
-		# current specific account
-		if "users/" in path:
-			if result_body["fields"]['characters']['arrayValue'].size() > 0:
-				for i in result_body["fields"]['characters']['arrayValue']['values']:
-					player_container.characters.append(i["stringValue"])
-		# currently specific character
-		elif "characters/" in path:
-			# container = [player_id, char_dict, player_container, requester]
-			firebase_dictionary_converter(result_body['fields'], player_container.characters_info_list)
-	# documents search
+	if "users" in path:
+		print("in users")
+		var document_list = result_body["documents"]
+		for document in document_list:
+			var doc_id = document["name"].replace("projects/godotproject-ef224/databases/(default)/documents/users/", "")
+			var character_list = []
+			if document["fields"]['characters']['arrayValue'].size() > 0:
+				for character in document["fields"]['characters']['arrayValue']['values']:
+					character_list.append(character["stringValue"])
+				ServerData.user_characters[doc_id] = character_list
+			else:
+				ServerData.user_characters[doc_id] = []
+		print(ServerData.user_characters)
+			
+	# currently specific character
+	elif "characters" in path:
+		print("in characters")
+		var document_list = result_body["documents"]
+		for document in document_list:
+			var character = document["name"].replace("projects/godotproject-ef224/databases/(default)/documents/characters/", "")
+			ServerData.characters_data[character] = new_firebase_dictionary_converter(document["fields"])
+		print(ServerData.characters_data)
+		#firebase_dictionary_converter(result_body['fields'], player_container.characters_info_list)
+"""
 	elif result_body.has('documents'):
+		print("in documents")
 		# all created characters in database
 		var document_list = result_body["documents"]
 		var character_list = []
-		for character in document_list:
-			character_list.append(character['fields']['displayname']['stringValue'])
-		"""Server Crash issue #9"""
+		for document in document_list:
+			print(document)
+			#character_list.append(character['fields']['displayname']['stringValue'])
 		#ServerData.username_list = character_list.duplicate()
+"""
 ################################################################################
 
 # saving characters/updating information
@@ -93,7 +152,6 @@ func new_update_document(path: String, http: HTTPRequest, array) -> void:
 	"""
 	path: user: playerContainer = array
 	path: character: playerContainer = dictionary
-	"""
 	if 'users/' in path:
 		# convert
 		var character_array = []
@@ -116,6 +174,7 @@ func new_update_document(path: String, http: HTTPRequest, array) -> void:
 		# warning-ignore:return_value_discarded
 		http.request(url, _get_request_headers(token), false, HTTPClient.METHOD_PATCH, body)
 		yield(http, "request_completed")
+	"""
 ###############################################################################
 
 # saving characters/updating information
@@ -148,6 +207,51 @@ func update_document(path: String, http: HTTPRequest, token: String, player_cont
 		http.request(url, _get_request_headers(token), false, HTTPClient.METHOD_PATCH, body)
 		yield(http, "request_completed")
 
+func new_firebase_dictionary_converter(database_data: Dictionary):
+	"""
+	takes firebase json dictionary converts to normal dictionary and appends to an array
+	"""
+	var temp_dict = {}
+
+	# displayname and position
+	temp_dict['displayname'] = database_data["displayname"]['stringValue']
+	temp_dict['map'] = database_data["map"]['integerValue']
+	#temp_dict['position'] = database_data["position"]['doubleValue']
+
+	# stats
+	var shortcut = database_data["stats"]["mapValue"]["fields"]
+	var keys = shortcut.keys()
+	temp_dict['stats'] = {}
+	for key in keys:
+		# added situation if value saved as integervalue
+		temp_dict['stats'][key] = int(shortcut[key]['integerValue'])
+
+	# avatar
+	shortcut = database_data["avatar"]["mapValue"]["fields"]
+	keys = shortcut.keys()
+	temp_dict['avatar'] = {}
+	for key in keys:
+		# added situation if value saved as integervalue
+		temp_dict['avatar'][key] = shortcut[key]['stringValue']
+
+	# equipment
+	shortcut = database_data["equipment"]["mapValue"]["fields"] 
+	keys = shortcut.keys()
+	temp_dict['equipment'] = {}
+	for key in keys:
+		temp_dict['equipment'][key] = shortcut[key]['integerValue']
+
+	#inventory
+	shortcut = database_data["inventory"]["mapValue"]["fields"]
+	keys = shortcut.keys()
+	temp_dict['inventory'] = {}
+	for key in keys:
+		if key == "money":
+			temp_dict['inventory'][key] = shortcut[key]['integerValue']
+		else:
+			pass
+	return temp_dict
+
 # deleting a document will only occur if we are deleting a whole user account	
 # or deleting a character in /charaters
 func delete_document(path: String, http: HTTPRequest, token: String) -> void:
@@ -155,6 +259,7 @@ func delete_document(path: String, http: HTTPRequest, token: String) -> void:
 # warning-ignore:return_value_discarded
 	http.request(url, _get_request_headers(token), false, HTTPClient.METHOD_DELETE)
 	yield(http, "request_completed")
+	
 	
 func firebase_dictionary_converter(database_data: Dictionary, client_data: Array):
 	"""
