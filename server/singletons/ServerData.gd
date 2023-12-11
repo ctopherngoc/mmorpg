@@ -13,6 +13,11 @@ var multiLogIn = []
 
 var skill_data
 
+##################################################
+var user_characters = {}
+
+var characters_data = {}
+##################################################
 # temp data for stat menu on client, should be converted to character info
 var test_data = {
 	"Stats" : {
