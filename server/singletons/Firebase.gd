@@ -73,6 +73,7 @@ func login(email: String, password: String, http: HTTPRequest, results: Array):
 		'password': password,
 		'returnSecureToken': true
 	}
+# warning-ignore:return_value_discarded
 	http.request(LOGIN_URL, [], false, HTTPClient.METHOD_POST, to_json(body))
 	var result := yield(http, "request_completed") as Array
 
@@ -98,12 +99,12 @@ func get_data(username, password):
 	else:
 		print("Server Signin Successful")
 		server_token = results[1]['token']
-		var accounts_call = new_get_document("users/", httprequest)
+		var accounts_call = _server_get_document("users/", httprequest)
 		yield(accounts_call, 'completed')
-		var characters_call = new_get_document("characters/", httprequest)
+		var characters_call = _server_get_document("characters/", httprequest)
 		yield(characters_call, 'completed')
 		
-func new_get_document(path: String, http: HTTPRequest)-> void:
+func _server_get_document(path: String, http: HTTPRequest)-> void:
 	var url := DATABASE_URL + path
 # warning-ignore:return_value_discarded
 	http.request(url, _get_request_headers(server_token), false, HTTPClient.METHOD_GET)
@@ -112,6 +113,7 @@ func new_get_document(path: String, http: HTTPRequest)-> void:
 	##########################################################################################
 	if "users" in path:
 		print("in users")
+		print(result_body)
 		var document_list = result_body["documents"]
 		for document in document_list:
 			var doc_id = document["name"].replace("projects/godotproject-ef224/databases/(default)/documents/users/", "")
@@ -136,33 +138,37 @@ func new_get_document(path: String, http: HTTPRequest)-> void:
 
 # saving characters/updating information
 # creating new characters in /users
-func new_update_document(path: String, http: HTTPRequest, array) -> void:
-	"""
-	path: user: playerContainer = array
-	path: character: playerContainer = dictionary
-	if 'users/' in path:
+# warning-ignore:unused_argument
+func _server_update_document(http: HTTPRequest, array, action: String) -> void:
+
+	#path: user: playerContainer = array
+	#path: character: playerContainer = dictionary
+	if action == "server_user":
+	#if 'users/' in path:
 		# convert
-		var character_array = []
-		for character in player_container.characters:
-			character_array.append({'stringValue':str(character)})
-		var temp_dict = {'characters':{'arrayValue':{'values': character_array}}}
-		var document := {"fields": temp_dict}
-		var body := to_json(document)
-		var url := DATABASE_URL + path
+		var user_dict = {}
+		for user in ServerData.user_characters.keys():
+			var character_array = []
+			for character in ServerData.user_characters[user]:
+				character_array.append({'stringValue':str(character)})
+			user_dict[str(user)] = {"document": {"fields": {'characters':{'arrayValue':{'values': character_array}}}}}
+		var body := to_json(user_dict)
+		var url := DATABASE_URL + "/users"
 		# warning-ignore:return_value_discarded
-		http.request(url, _get_request_headers(token), false, HTTPClient.METHOD_PATCH, body)
+		http.request(url, _get_request_headers(server_token), false, HTTPClient.METHOD_PATCH, body)
 		yield(http, "request_completed")
 	else:
-		# update /character
-		var fb_data = ServerData.player_info.duplicate()
-		server_dictionary_converter(player_container, fb_data)
-		var document := {"fields": fb_data}
-		var body := to_json(document)
-		var url := DATABASE_URL + path
-		# warning-ignore:return_value_discarded
-		http.request(url, _get_request_headers(token), false, HTTPClient.METHOD_PATCH, body)
-		yield(http, "request_completed")
-	"""
+		for character in ServerData.username_list.keys():
+			var fb_data = ServerData.player_info.duplicate()
+			var ign: String = str(ServerData.username_list[character])
+			server_dictionary_converter(Global.characters_data[ign], fb_data)
+			var document := {"fields": fb_data}
+			var body := to_json(document)
+			var url := DATABASE_URL + "/characters/" + ign
+			# warning-ignore:return_value_discarded
+			http.request(url, _get_request_headers(server_token), false, HTTPClient.METHOD_PATCH, body)
+			yield(http, "request_completed")
+
 ###############################################################################
 
 # saving characters/updating information
@@ -311,7 +317,6 @@ func server_dictionary_converter(server_data: Dictionary, firebase_data: Diction
 	# displayname and position
 	firebase_data['displayname']['stringValue'] = str(server_data["displayname"])
 	firebase_data['map']['integerValue'] = int(server_data["map"])
-	#firebase_data['position']['doubleValue'] = server_data["position"]
 
 	# stats
 	var shortcut = server_data["stats"]
