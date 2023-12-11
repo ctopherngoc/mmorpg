@@ -200,11 +200,11 @@ var experience_table = {
 var portal_data = {
 	"100001": {
 		'P1': {'map': '100002',
-					'spawn': Vector2(103, -290)},
+					'spawn': Vector2(110, -275)},
 	},
 	'100002': {
 		'P1': {'map': '100001',
-					'spawn': Vector2(103, -89)},
+					'spawn': Vector2(837, -108)},
 		'P2': {'map': '100003',
 					'spawn': Vector2(103, -290)}
 	},
