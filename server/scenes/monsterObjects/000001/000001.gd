@@ -4,9 +4,6 @@ extends KinematicBody2D
 # old variables
 # no jump, not used
 var jump_speed = 500
-
-#onready var damage = 10
-#onready var take_damage = false
 ##########################################################
 #currrent new variables
 var id = "000001"
@@ -38,10 +35,9 @@ func _ready():
 	
 func _process(delta):
 	touch_damage()
-	
+
 	# eventually incorperate take damage set aggro
 	# skip rng movement algo
-	
 	# no jump mechanic yet
 	if is_on_floor():
 		var _my_random_number = rng.randi_range(1, 100)
