@@ -11,8 +11,8 @@ var attack_speed = 1.5
 onready var gravity = 800
 
 # player states
-export var can_climb = false
-export var is_climbing = false
+onready var can_climb = false
+onready var is_climbing = false
 onready var attacking = false
 onready var player_state
 var held_down = false
@@ -193,8 +193,3 @@ func _unhandled_input(event):
 			return
 		else:
 			print("cannot attack")
-
-func overlappingBodies():
-	print("area ovlapping: " + str($do_damage.get_overlapping_areas().size()))
-	for body in $do_damage.get_overlapping_areas():
-		print('player overlapping with: ', body)

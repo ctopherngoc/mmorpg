@@ -4,7 +4,7 @@ var map_name = "Grassy Road 2"
 
 var enemy_id_counter = 0
 var enemy_maximum = 2
-var spawn_position = Vector2(234, -437)
+var spawn_position = Vector2(110, -275)
 
 var green_guy = preload("res://scenes/monsterObjects/000001/000001.tscn")
 var blue_guy = preload("res://scenes/monsterObjects/000002/000002.tscn")
@@ -37,15 +37,12 @@ func _process(_delta):
 
 # after timer function called
 func SpawnEnemy():
-	# only calculate/spawn monsters when at least 1 player is actively in the map
-	# for testing set to spawn on load
 	if get_node("YSort/Players").get_child_count() == 0:
 		pass
 	elif enemy_list.size() >= enemy_maximum:
 		pass
 	else:
 		for i in open_locations:
-			print(str(i))
 			if i in occupied_locations:
 				pass
 			else:

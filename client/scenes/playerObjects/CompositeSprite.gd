@@ -1,48 +1,134 @@
 extends Node2D
-
-onready var body = $Body
-onready var head = $Head
-onready var hair = $Hair
-onready var eye = $Eye
-onready var brow = $Brow
-#onready var ear = $Ear
-onready var mouth = $Mouth
-#onready var outfit = $Outfit
-onready var lleg = $Lleg
-onready var rleg = $Rleg
-onready var larm = $Larm
-onready var lhand = $Lhand
-onready var lwep = $LWeapon
-onready var lfinger = $Lfinger
-onready var bottom = $Bottom
-onready var lglove = $LGlove
-onready var lear = $Lear
 onready var ammo = $Ammo
-onready var top = $Top
-onready var headgear  = $Headgear
-onready var rear = $Rear
-onready var rarm = $Rarm
-onready var rwep = $Rweapon
-onready var rhand = $Rhand
-onready var rglove = $RGlove
-onready var rearring = $Rearring
-onready var learring = $Learring
-onready var tattoo = $Tattoo
+onready var body = $Body
+onready var bottom = $Bottom
+onready var brow = $Brow
+onready var eye = $Eye
 onready var eyeacc = $Eyeacc
 onready var faceacc = $Faceacc
+onready var hair = $Hair
+onready var head = $Head
+onready var headgear  = $Headgear
+onready var larm = $Larm
+onready var lear = $Lear
+onready var learring = $Learring
+onready var lfinger = $Lfinger
+onready var lglove = $LGlove
+onready var lhand = $Lhand
+onready var lleg = $Lleg
+onready var lwep = $LWeapon
+onready var mouth = $Mouth
+onready var rarm = $Rarm
+onready var rear = $Rear
+onready var rearring = $Rearring
+onready var rglove = $RGlove
+onready var rhand = $Rhand
+onready var rleg = $Rleg
+onready var rwep = $Rweapon
+onready var top = $Top
+onready var tattoo = $Tattoo
+onready var pocket = $Pocket
+
+onready var sprite_dict = {
+	"ammo" : ammo,
+	"body" : body,
+	"bottom": bottom,
+	"brow" : brow,
+	"eye": eye,
+	"eyeacc": eyeacc,
+	"faceacc": faceacc,
+	"headgear": headgear,
+	"learring": learring,
+	"lglove:": lglove,
+	"lleg": lleg,
+	"lweapon": lwep,
+	"pocket": pocket,
+	"rearring": rearring,
+	"rglove": rglove,
+	"rleg": rleg,
+	"rweapon": rwep,
+	"top": top,
+	"tattoo": tattoo,
+}
+
 
 var avatar = null
 var equipment = null
 func _ready():
-	avatar_check()
+	#avatar = GameData.test_player.avatar
+	#equipment = GameData.test_player.equipment
+	avatar = Global.player.avatar
+	equipment = Global.player.equipment
+	update_avatar("avatar")
+	update_avatar("equipment")
 
 # warning-ignore:unused_argument
 func _physics_process(delta):
-	avatar_check()
+	#update_avatar("equipment")
+	pass
+	#avatar_check()
 	
 # warning-ignore:unused_argument
 func update_avatar(data):
-	pass
+	if data == "avatar":
+		#body
+		var sprite = load(GameData.avatar_sprite.body + avatar['bcolor'] + avatar['body'] + ".png")
+		body.set_texture(sprite)
+		#brow
+		sprite = load(GameData.avatar_sprite.brow + avatar['brow'] + ".png")
+		brow.set_texture(sprite)
+		#ear
+		sprite = load(GameData.avatar_sprite.rear + avatar['bcolor'] + avatar['ear'] + ".png")
+		rear.set_texture(sprite)
+		sprite = load(GameData.avatar_sprite.lear + avatar['bcolor'] + avatar['ear'] + ".png")
+		lear.set_texture(sprite)
+		#eye
+		sprite = load(GameData.avatar_sprite.eye + avatar['ecolor'] + avatar['eye'] + ".png")
+		eye.set_texture(sprite)
+		#hair
+		sprite = load(GameData.avatar_sprite.hair + avatar['hcolor'] + avatar['hair'] + ".png")
+		hair.set_texture(sprite)
+		#head
+		sprite = load(GameData.avatar_sprite.head + avatar['head'] + ".png")
+		head.set_texture(sprite)
+		#mouth
+		sprite = load(GameData.avatar_sprite.mouth + avatar['mouth'] + ".png")
+		mouth.set_texture(sprite)
+		
+	if data == "equipment":
+		for key in equipment.keys():
+			if equipment[key] == "-1":
+				var sprite = load(GameData.equipment_sprite.default + "empty_16_11_spritesheet.png")
+				if key == "earring":
+					rearring.set_texture(sprite)
+					learring.set_texture(sprite)
+					
+				elif key == "glove":
+					lglove.set_texture(sprite)
+					rglove.set_texture(sprite)
+				else:
+					print(key)
+					print(sprite_dict[key])
+					print(sprite)
+					sprite_dict[key].set_texture(sprite)
+
+			else:
+				print(key)
+				if key == "earring":
+					var sprite = load(GameData.equipment_sprite[rearring] + str(equipment[key])+".png")
+					rleg.set_texture(sprite)
+					sprite = load(GameData.equipment_sprite[learring] + str(equipment[key])+".png")
+					lleg.set_texture(sprite)
+
+				elif key == "glove":
+					var sprite = load(GameData.equipment_sprite[rglove] + str(equipment[key])+".png")
+					rleg.set_texture(sprite)
+					sprite = load(GameData.equipment_sprite[lglove] + str(equipment[key])+".png")
+					lleg.set_texture(sprite)
+
+				else:
+					var sprite = load(GameData.equipment_sprite[key] + str(equipment[key])+".png")
+					sprite_dict[key].set_texture(sprite)
 
 func avatar_check():
 	if avatar != Global.player.avatar:
@@ -51,6 +137,10 @@ func avatar_check():
 	if equipment != Global.player.equipment:
 		equipment = Global.player.equipment
 		update_avatar(equipment)
+
+# warning-ignore:unused_argument
+func change_equipment(equipment_slot, item_id):
+	pass
 
 func _on_AnimationPlayer_animation_finished(anim_name):
 	if anim_name == "slash":

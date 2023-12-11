@@ -26,6 +26,39 @@ onready var job_dict = {
 	"4": "Thief",
 }
 
+onready var avatar_sprite = {
+	"body": "res://assets/character/spritesheet/body/",
+	"brow" : "res://assets/character/spritesheet/brow/",
+	"earc" : "res://assets/character/spritesheet/earc/",
+	"eye" : "res://assets/character/spritesheet/eye/",
+	"hair": "res://assets/character/spritesheet/hair/",
+	"head" : "res://assets/character/spritesheet/head/",
+	"larm" : "res://assets/character/spritesheet/larm/",
+	"lear" : "res://assets/character/spritesheet/lear/",
+	"lfinger" : "res://assets/character/spritesheet/lfinger/",
+	"lhand" : "res://assets/character/spritesheet/lhand/",
+	"lleg" : "res://assets/character/spritesheet/lleg/",
+	"mouth" : "res://assets/character/spritesheet/mouth/",
+	"rarm" : "res://assets/character/spritesheet/rarm/",
+	"rear" : "res://assets/character/spritesheet/rear/",
+	"rhand" : "res://assets/character/spritesheet/rhand/",
+	"rleg" : "res://assets/character/spritesheet/rleg/",
+	}
+	
+onready var equipment_sprite = {
+	"headgear" : "res://assets/character/spritesheet/headgear/",
+	"bottom" : "res://assets/character/spritesheet/bottom/",
+	"default" : "res://assets/character/spritesheet/default/",
+	"earring" : "res://assets/character/spritesheet/earring/",
+	"eyeacc" : "res://assets/character/spritesheet/eyeacc/",
+	"faceacc" : "res://assets/character/spritesheet/faceacc/",
+	"glove" : "res://assets/character/spritesheet/glove/",
+	"lweapon" : "res://assets/character/spritesheet/lweapon/",
+	"rweapon" : "res://assets/character/spritesheet/rweapon/",
+	"tattoo" : "res://assets/character/spritesheet/tattoo/",
+	"top" : "res://assets/character/spritesheet/top/",
+}
+
 onready var string_validation = [
 	"4r5e",
 	"5h1t",
