@@ -1,10 +1,8 @@
 extends Node
 
-onready var httprequest
 const API_KEY := "AIzaSyC2PkBqVa6lm9zG7gfy7MLZvNpRytA8klU"
 const PROJECT_ID := "godotproject-ef224"
 const DATABASE_URL := "https://firestore.googleapis.com/v1/projects/%s/databases/(default)/documents/" % PROJECT_ID 
-
 
 var user_info := {}
 
@@ -53,6 +51,72 @@ func get_document(path: String, http: HTTPRequest, token: String, player_contain
 			character_list.append(character['fields']['displayname']['stringValue'])
 		"""Server Crash issue #9"""
 		#ServerData.username_list = character_list.duplicate()
+		
+###############################################################################
+func new_get_request_headers() -> PoolStringArray:
+	return PoolStringArray([
+		"Content-Type: application/json",
+		"Authorization: Bearer Server"
+	])
+	
+func new_get_document(path: String, http: HTTPRequest)-> void:
+	var url := DATABASE_URL + path
+# warning-ignore:return_value_discarded
+	http.request(url, new_get_request_headers(), false, HTTPClient.METHOD_GET)
+	var result := yield(http, "request_completed") as Array
+	var result_body := JSON.parse(result[3].get_string_from_ascii()).result as Dictionary
+	##########################################################################################
+	if result_body.has('fields'):
+		# current specific account
+		if "users/" in path:
+			if result_body["fields"]['characters']['arrayValue'].size() > 0:
+				for i in result_body["fields"]['characters']['arrayValue']['values']:
+					player_container.characters.append(i["stringValue"])
+		# currently specific character
+		elif "characters/" in path:
+			# container = [player_id, char_dict, player_container, requester]
+			firebase_dictionary_converter(result_body['fields'], player_container.characters_info_list)
+	# documents search
+	elif result_body.has('documents'):
+		# all created characters in database
+		var document_list = result_body["documents"]
+		var character_list = []
+		for character in document_list:
+			character_list.append(character['fields']['displayname']['stringValue'])
+		"""Server Crash issue #9"""
+		#ServerData.username_list = character_list.duplicate()
+################################################################################
+
+# saving characters/updating information
+# creating new characters in /users
+func new_update_document(path: String, http: HTTPRequest, array) -> void:
+	"""
+	path: user: playerContainer = array
+	path: character: playerContainer = dictionary
+	"""
+	if 'users/' in path:
+		# convert
+		var character_array = []
+		for character in player_container.characters:
+			character_array.append({'stringValue':str(character)})
+		var temp_dict = {'characters':{'arrayValue':{'values': character_array}}}
+		var document := {"fields": temp_dict}
+		var body := to_json(document)
+		var url := DATABASE_URL + path
+		# warning-ignore:return_value_discarded
+		http.request(url, _get_request_headers(token), false, HTTPClient.METHOD_PATCH, body)
+		yield(http, "request_completed")
+	else:
+		# update /character
+		var fb_data = ServerData.player_info.duplicate()
+		server_dictionary_converter(player_container, fb_data)
+		var document := {"fields": fb_data}
+		var body := to_json(document)
+		var url := DATABASE_URL + path
+		# warning-ignore:return_value_discarded
+		http.request(url, _get_request_headers(token), false, HTTPClient.METHOD_PATCH, body)
+		yield(http, "request_completed")
+###############################################################################
 
 # saving characters/updating information
 # creating new characters in /users
