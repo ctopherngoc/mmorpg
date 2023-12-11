@@ -98,10 +98,10 @@ func get_data(username, password):
 	else:
 		print("Server Signin Successful")
 		server_token = results[1]['token']
-		var data1 = new_get_document("users/", httprequest)
-		yield(data1, 'completed')
-		var data2 = new_get_document("characters/", httprequest)
-		yield(data2, 'completed')
+		var accounts_call = new_get_document("users/", httprequest)
+		yield(accounts_call, 'completed')
+		var characters_call = new_get_document("characters/", httprequest)
+		yield(characters_call, 'completed')
 		
 func new_get_document(path: String, http: HTTPRequest)-> void:
 	var url := DATABASE_URL + path
@@ -132,18 +132,6 @@ func new_get_document(path: String, http: HTTPRequest)-> void:
 			var character = document["name"].replace("projects/godotproject-ef224/databases/(default)/documents/characters/", "")
 			ServerData.characters_data[character] = new_firebase_dictionary_converter(document["fields"])
 		print(ServerData.characters_data)
-		#firebase_dictionary_converter(result_body['fields'], player_container.characters_info_list)
-"""
-	elif result_body.has('documents'):
-		print("in documents")
-		# all created characters in database
-		var document_list = result_body["documents"]
-		var character_list = []
-		for document in document_list:
-			print(document)
-			#character_list.append(character['fields']['displayname']['stringValue'])
-		#ServerData.username_list = character_list.duplicate()
-"""
 ################################################################################
 
 # saving characters/updating information
