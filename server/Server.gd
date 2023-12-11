@@ -131,12 +131,11 @@ func create_characters():
 		#player_id, username, playerContainer, requester
 		var character_array = character_creation_queue[0]
 		character_creation_queue.remove(0)
-
 		# firebase call to see if characer name is taken
-		var firebase_call = Firebase.get_document("characters", character_array[2].http, character_array[2].db_info["token"], character_array)
-		yield(firebase_call, 'completed')
-
-		if character_array[1]["un"] in ServerData.username_list:
+		#var firebase_call = Firebase.get_document("characters", character_array[2].http, character_array[2].db_info["token"], character_array)
+		#yield(firebase_call, 'completed')
+		
+		if character_array[1]["un"] in ServerData.characters_data.keys():
 			print("%s already taken." % character_array[1])
 			rpc_id(character_array[0], "returnfetchUsernames", character_array[3], false)
 		else:
@@ -205,11 +204,19 @@ func create_characters():
 			# possibly make this into one function
 			##################################################################
 			print("creating character")
+			
+			#update characters document
+			"""
+			 ServerData.characters_data[temp_player["displayname"] = temp_player
+			"""
 			var firebase_call2 = Firebase.update_document("characters/%s" % temp_player["displayname"], character_array[2].http2, character_array[2].db_info["token"], temp_player)
 			yield(firebase_call2, 'completed')
 
 			# update database account
-			# character_array[2] = player container
+			# get token or document id
+			"""
+			ServerData.user_characters[""].append(temp_player["displayname"])
+			"""
 			var firebase_call3 = Firebase.update_document("users/%s" % character_array[2].db_info["id"], character_array[2].http, character_array[2].db_info["token"], character_array[2])
 			yield(firebase_call3, 'completed')
 			###################################################################
@@ -252,11 +259,15 @@ remote func fetch_player_stats():
 remote func fetch_usernames(requester, username):
 	print("inside fetch username. Username: %s" % username)
 	var player_id = get_tree().get_rpc_sender_id()
+	
+	"""
 	var player_container = get_node(ServerData.player_location[str(player_id)] + "/%s" % player_id)
 	var firebase_call = Firebase.get_document("characters", player_container.http, player_container.db_info["token"], player_container)
 	yield(firebase_call, 'completed')
 	print(ServerData.username_list)
 	if username in ServerData.username_list:
+	"""
+	if username in ServerData.user_characters.keys():
 		print("%s already taken." % username)
 		rpc_id(player_id, "return_fetch_usernames", requester, false)
 	else:
@@ -386,8 +397,8 @@ remote func received_player_state(player_state):
 	if  input != [0,0,0,0,0]:
 		player_container.input_queue.append(player_state["P"])
 
-	var map_node = get_node(ServerData.player_location[str(player_id)])
-	var server_position_offset = map_node.get_global_position()
+	#var map_node = get_node(ServerData.player_location[str(player_id)])
+	#var server_position_offset = map_node.get_global_position()
 
 	# calculate local position -> send back to clients
 	#var final_position = Vector2((player_container.position.x - server_position_offset.x), (player_container.position.y - server_position_offset.y))
