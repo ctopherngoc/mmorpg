@@ -22,13 +22,8 @@ position = Vector2( -0.5, -1.5 )
 shape = SubResource( 2 )
 
 [node name="ColorRect" type="ColorRect" parent="CollisionShape2D"]
-visible = false
 margin_left = -24.0
 margin_top = -40.0
 margin_right = 24.0
 margin_bottom = 39.0
 color = Color( 0.290196, 0, 1, 1 )
-
-[connection signal="input_event" from="." to="." method="_on_Area2D_input_event"]
-[connection signal="mouse_entered" from="." to="." method="_on_Area2D_mouse_entered"]
-[connection signal="mouse_exited" from="." to="." method="_on_Area2D_mouse_exited"]
