@@ -331,15 +331,14 @@ func move_player_container(player_id, player_container, map_id, position):
 	var player = get_node("/root/Server/World/Maps/" + str(map_id) + "/YSort/Players/" + str(player_id))
 	var map_node = get_node("/root/Server/World/Maps/%s" % str(map_id))
 	var map_position = map_node.get_global_position()
+	var new_location = Vector2.ZERO
+	print("move: ", str(map_position))
 
 	if typeof(position) == TYPE_STRING:
-		position = Vector2((map_position.x + map_node.spawn_position.x), (map_position.y + map_node.spawn_position.y))
-
-	var new_location = Vector2((map_position.x + position.x), (map_position.y + position.y))
-	player.position = new_location
-	print("player cur position = ", player.global_position)
-	#player_container.cur_position = player.position
-	#player_container.start_idle_timer()
+		position = Vector2(map_node.spawn_position.x, map_node.spawn_position.y)
+	print("new location: ", new_location)
+	player.position = position
+	print("player cur position = ", player.position, " ", player.global_position)
 
 func get_player_data(player_id):
 	var player_container = get_node(ServerData.player_location[str(player_id)] + "/%s" % str(player_id))
@@ -380,7 +379,6 @@ remote func portal(portal_id):
 
 #world states
 remote func received_player_state(player_state):
-	#print(player_state["P"])
 	var player_id = get_tree().get_rpc_sender_id()
 	var player_container = get_node(ServerData.player_location[str(player_id)] + "/%s" % str(player_id))
 	var input = player_state["P"]
@@ -389,20 +387,19 @@ remote func received_player_state(player_state):
 
 	var map_node = get_node(ServerData.player_location[str(player_id)])
 	var server_position_offset = map_node.get_global_position()
+	#print("cur: ", player_container.position)
 
 	# calculate local position -> send back to clients
 	var final_position = Vector2((player_container.position.x - server_position_offset.x), (player_container.position.y - server_position_offset.y))
 
 	player_state["U"] = ServerData.username_list[str(player_id)]
-	player_state["P"] = final_position
-
+	player_state["P"] = player_container.position
 	# takes client tick time and sends it with final position
-	var return_input = {'T': player_state['T'], 'P': final_position}
+	var return_input = {'T': player_state['T'], 'P': player_container.position}
 	return_player_input(player_id, return_input)
 
 	if ServerData.player_state_collection.has(player_id):
 		if ServerData.player_state_collection[player_id]["T"] < player_state["T"]:
-			player_container.global_position = final_position
 			ServerData.player_state_collection[player_id] = player_state
 
 	# just logged in add player state
