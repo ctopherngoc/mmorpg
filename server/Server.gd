@@ -215,6 +215,7 @@ func create_characters():
 			# update database account
 			# get token or document id
 			"""
+			character_array[2].append()
 			ServerData.user_characters[""].append(temp_player["displayname"])
 			"""
 			var firebase_call3 = Firebase.update_document("users/%s" % character_array[2].db_info["id"], character_array[2].http, character_array[2].db_info["token"], character_array[2])
