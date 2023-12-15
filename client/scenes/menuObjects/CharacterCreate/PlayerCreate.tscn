@@ -1,6 +1,6 @@
 [gd_scene load_steps=10 format=2]
 
-[ext_resource path="res://scenes/menuObjects/PlayerCreate.gd" type="Script" id=1]
+[ext_resource path="res://scenes/menuObjects/CharacterCreate/PlayerCreate.gd" type="Script" id=1]
 [ext_resource path="res://assets/character/creation/outfit/0.png" type="Texture" id=2]
 [ext_resource path="res://assets/character/creation/body/00.png" type="Texture" id=3]
 [ext_resource path="res://assets/character/creation/head/00.png" type="Texture" id=4]
