@@ -107,13 +107,9 @@ func update_avatar(data):
 					lglove.set_texture(sprite)
 					rglove.set_texture(sprite)
 				else:
-					print(key)
-					print(sprite_dict[key])
-					print(sprite)
 					sprite_dict[key].set_texture(sprite)
 
 			else:
-				print(key)
 				if key == "earring":
 					var sprite = load(GameData.equipment_sprite[rearring] + str(equipment[key])+".png")
 					rleg.set_texture(sprite)
