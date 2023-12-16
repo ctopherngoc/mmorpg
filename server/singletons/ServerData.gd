@@ -2,28 +2,36 @@ extends Node
 var player_location = {}
 var username_list = {}
 var player_state_collection = {}
+var monsters = {
+	"100001" : {},
+	"100002" : {},
+	"100003" : {},
+	"100004" : {},
+}
 
 # current emails logged in
 var logged_emails = []
-
-# dictionary player_id: email
-# maybe not needed
 var player_id_emails = {}
-var multiLogIn = []
 
-var skill_data
-
-# temp data for stat menu on client, should be converted to character info
-var test_data = {
-	"Stats" : {
-		"Strength" : 42,
-		"Vitality" : 68,
-		"Dexterity" : 37,
-		"Intelligence" : 24,
-	}
+var class_dict = {
+	0: {"job": "Beginner", "Weapon": [], "Range": 0},
+	1: {"job": "Warrior", "Weapon": ["sword", "hammer", "axe"], "Range": 0},
+	2: {"job": "Rouge", "Weapon" : ["dagger"], "Range": 0},
+	3: {"job": "Archer", "Weapon" : ["bow"], "Range": 1},
+	4: {"job": "Magician", "Weapon" : [], "Range": 0},
+	5: {"job": "Gunner", "Weapon" : ["gun"], "Range": 1},
 }
-#var user_template = {'characters':{'arrayValue':{'values': null }}}
 
+var class_skills = {
+	0: [],
+	1: [],
+	2: [],
+	3: [],
+	4: [],
+	5: [],
+}
+
+#var user_template = {'characters':{'arrayValue':{'values': null }}}
 #firebase used to create new chracters
 var player_info = {
 	"displayname": {'stringValue': null},
@@ -155,14 +163,6 @@ var starter_equips = [
 	[500002, 500003],
 	[500004, 500005],
 ]
-
-# possible to convert map monster dictionary and spawn position
-var monsters = {
-	"100001" : {},
-	"100002" : {},
-	"100003" : {},
-	"100004" : {},
-}
 
 var experience_table = {
 	'1': 20,
