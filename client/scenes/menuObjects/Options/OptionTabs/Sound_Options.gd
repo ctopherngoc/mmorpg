@@ -25,6 +25,3 @@ func _on_MasterSlider_value_changed(value):
 	pass
 	#SoundManager.ChangeVolume(SoundManager.MASTER_BUS, linear2db(value))
 
-func focus_entered():
-	pass
-	#SoundManager.PlayMouseEffect()
