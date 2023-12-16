@@ -200,6 +200,7 @@ custom_constants/separation = 24
 custom_styles/separator = SubResource( 2 )
 
 [node name="Options" parent="." instance=ExtResource( 4 )]
+visible = false
 modulate = Color( 1, 1, 1, 0.498039 )
 
 [node name="Label" parent="Options/PanelContainer" index="0"]
