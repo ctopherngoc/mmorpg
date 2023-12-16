@@ -134,12 +134,7 @@ size_flags_horizontal = 3
 custom_styles/separator = SubResource( 3 )
 
 [connection signal="item_selected" from="VideoOptions/RESO/ResolutionOptionButton" to="." method="_on_ResolutionOptionButton_item_selected"]
-[connection signal="mouse_entered" from="VideoOptions/RESO/ResolutionOptionButton" to="." method="focus_entered"]
-[connection signal="mouse_entered" from="VideoOptions/Windowed/ResoToggle" to="." method="focus_entered"]
 [connection signal="toggled" from="VideoOptions/Windowed/ResoToggle" to="." method="_on_ResoToggle_toggled"]
-[connection signal="mouse_entered" from="VideoOptions/VSYNC/VsyncToggle" to="." method="focus_entered"]
 [connection signal="toggled" from="VideoOptions/VSYNC/VsyncToggle" to="." method="_on_VsyncToggle_toggled"]
-[connection signal="mouse_entered" from="VideoOptions/FXAA/FxaaToggle" to="." method="focus_entered"]
 [connection signal="toggled" from="VideoOptions/FXAA/FxaaToggle" to="." method="_on_FxaaToggle_toggled"]
-[connection signal="mouse_entered" from="VideoOptions/MSAA/MSAASLIDER" to="." method="focus_entered"]
 [connection signal="value_changed" from="VideoOptions/MSAA/MSAASLIDER" to="." method="_on_HSlider_value_changed"]
