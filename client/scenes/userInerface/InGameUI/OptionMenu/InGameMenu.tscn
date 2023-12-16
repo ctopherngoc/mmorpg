@@ -131,6 +131,7 @@ anchor_bottom = 1.0
 color = Color( 0.694118, 0.901961, 0.937255, 0.741176 )
 
 [node name="menu" type="HBoxContainer" parent="."]
+modulate = Color( 1, 1, 1, 0.490196 )
 anchor_left = 0.5
 anchor_right = 0.5
 anchor_bottom = 1.0
@@ -199,19 +200,63 @@ custom_constants/separation = 24
 custom_styles/separator = SubResource( 2 )
 
 [node name="Options" parent="." instance=ExtResource( 4 )]
-visible = false
+modulate = Color( 1, 1, 1, 0.498039 )
 
 [node name="Label" parent="Options/PanelContainer" index="0"]
-margin_right = 1720.0
+margin_right = 1080.0
 
 [node name="TabContainer" parent="Options/PanelContainer" index="1"]
-margin_right = 1720.0
-margin_bottom = 880.0
+margin_right = 1080.0
+margin_bottom = 520.0
+
+[node name="VSeparator2" parent="Options/PanelContainer/TabContainer/Sound" index="0"]
+margin_right = 357.0
+margin_bottom = 481.0
+
+[node name="Sliders" parent="Options/PanelContainer/TabContainer/Sound" index="1"]
+margin_left = 361.0
+margin_right = 718.0
+margin_bottom = 481.0
+
+[node name="Label4" parent="Options/PanelContainer/TabContainer/Sound/Sliders" index="0"]
+margin_top = 172.0
+margin_right = 357.0
+margin_bottom = 195.0
+
+[node name="MasterSlider" parent="Options/PanelContainer/TabContainer/Sound/Sliders" index="1"]
+margin_top = 199.0
+margin_right = 357.0
+margin_bottom = 215.0
+
+[node name="Label2" parent="Options/PanelContainer/TabContainer/Sound/Sliders" index="2"]
+margin_top = 219.0
+margin_right = 357.0
+margin_bottom = 242.0
+
+[node name="SoundSlider" parent="Options/PanelContainer/TabContainer/Sound/Sliders" index="3"]
+margin_top = 246.0
+margin_right = 357.0
+margin_bottom = 262.0
+
+[node name="Label3" parent="Options/PanelContainer/TabContainer/Sound/Sliders" index="4"]
+margin_top = 266.0
+margin_right = 357.0
+margin_bottom = 289.0
+
+[node name="EffectsSlider" parent="Options/PanelContainer/TabContainer/Sound/Sliders" index="5"]
+margin_top = 293.0
+margin_right = 357.0
+margin_bottom = 309.0
+
+[node name="VSeparator" parent="Options/PanelContainer/TabContainer/Sound" index="2"]
+margin_left = 722.0
+margin_right = 1080.0
+margin_bottom = 481.0
 
 [node name="back" parent="Options/PanelContainer" index="2"]
-margin_top = 849.0
-margin_right = 1720.0
-margin_bottom = 880.0
+margin_top = 489.0
+margin_right = 1080.0
+margin_bottom = 520.0
 
 [node name="QuitConfirm" type="ConfirmationDialog" parent="."]
 anchor_left = 0.5
@@ -271,16 +316,12 @@ autoplay = "loading"
 anims/RESET = SubResource( 6 )
 anims/loading = SubResource( 7 )
 
-[connection signal="focus_entered" from="menu/VBoxContainer/resume" to="." method="focus_entered"]
-[connection signal="mouse_entered" from="menu/VBoxContainer/resume" to="." method="focus_entered"]
 [connection signal="pressed" from="menu/VBoxContainer/resume" to="." method="_on_resume_pressed"]
 [connection signal="button_down" from="menu/VBoxContainer/Options" to="." method="_on_Options_button_down"]
-[connection signal="focus_entered" from="menu/VBoxContainer/Options" to="." method="focus_entered"]
-[connection signal="mouse_entered" from="menu/VBoxContainer/Options" to="." method="focus_entered"]
 [connection signal="button_down" from="menu/VBoxContainer/End" to="." method="_on_End_button_down"]
-[connection signal="focus_entered" from="menu/VBoxContainer/End" to="." method="focus_entered"]
-[connection signal="mouse_entered" from="menu/VBoxContainer/End" to="." method="focus_entered"]
 [connection signal="pressed" from="Options/PanelContainer/back" to="." method="_on_back_pressed"]
 [connection signal="confirmed" from="QuitConfirm" to="." method="_on_AcceptDialog_confirmed"]
 
 [editable path="Options"]
+[editable path="Options/PanelContainer/TabContainer/Sound"]
+[editable path="Options/PanelContainer/TabContainer/Video"]
