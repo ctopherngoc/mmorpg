@@ -46,6 +46,3 @@ margin_bottom = 720.0
 size_flags_vertical = 8
 theme = ExtResource( 2 )
 text = "Back"
-
-[connection signal="tab_changed" from="PanelContainer/TabContainer" to="." method="focus_entered"]
-[connection signal="mouse_entered" from="PanelContainer/back" to="." method="focus_entered"]
