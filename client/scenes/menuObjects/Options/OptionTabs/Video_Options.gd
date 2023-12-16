@@ -62,10 +62,6 @@ func _on_ResoToggle_toggled(button_pressed):
 		OS.center_window()
 
 	OS.set_window_resizable(button_pressed)# Disable for linux(buggy)/Enable for Windows
-		
-func focus_entered():
-	pass
-	#SoundManager.PlayMouseEffect()
 
 func _on_VsyncToggle_toggled(button_pressed):
 	OS.set_use_vsync(button_pressed)
