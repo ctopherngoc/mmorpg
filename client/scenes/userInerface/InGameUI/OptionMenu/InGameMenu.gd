@@ -6,9 +6,6 @@ onready var AnimPlayer = $AnimationPlayer
 onready var OptionMenu = $Options
 onready var MenuMenu = $menu
 
-export(String, FILE, "*.tscn") var NextScene
-var Paused
-
 func _ready():
 	pass
 	#Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -41,6 +38,7 @@ func _on_End_button_down():
 	#SoundManager.PlayFX(SoundManager.ErrorSound)
 
 	QuitConfirm.popup_centered_ratio(.2)
+# warning-ignore:unused_variable
 	var OkayButton = QuitConfirm.get_ok()
 	#OkayButton.grab_focus()
 	
