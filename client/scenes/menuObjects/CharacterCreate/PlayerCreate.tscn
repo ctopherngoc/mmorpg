@@ -1,0 +1,48 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://scenes/menuObjects/CharacterCreate/PlayerCreate.gd" type="Script" id=1]
+[ext_resource path="res://assets/character/creation/outfit/0.png" type="Texture" id=2]
+[ext_resource path="res://assets/character/creation/body/00.png" type="Texture" id=3]
+[ext_resource path="res://assets/character/creation/head/00.png" type="Texture" id=4]
+[ext_resource path="res://assets/character/creation/mouth/0.png" type="Texture" id=5]
+[ext_resource path="res://assets/character/creation/brow/0.png" type="Texture" id=6]
+[ext_resource path="res://assets/character/creation/hair/00.png" type="Texture" id=7]
+[ext_resource path="res://assets/character/creation/eyes/00.png" type="Texture" id=8]
+[ext_resource path="res://assets/character/creation/ears/00.png" type="Texture" id=9]
+
+[node name="PlayerCreate" type="Node2D"]
+script = ExtResource( 1 )
+
+[node name="CompositeSprite" type="Node2D" parent="."]
+
+[node name="Body" type="Sprite" parent="CompositeSprite"]
+texture = ExtResource( 3 )
+hframes = 8
+
+[node name="Ear" type="Sprite" parent="CompositeSprite"]
+texture = ExtResource( 9 )
+hframes = 8
+
+[node name="Outfit" type="Sprite" parent="CompositeSprite"]
+texture = ExtResource( 2 )
+hframes = 8
+
+[node name="Head" type="Sprite" parent="CompositeSprite"]
+texture = ExtResource( 4 )
+hframes = 8
+
+[node name="Brow" type="Sprite" parent="CompositeSprite"]
+texture = ExtResource( 6 )
+hframes = 8
+
+[node name="Eye" type="Sprite" parent="CompositeSprite"]
+texture = ExtResource( 8 )
+hframes = 8
+
+[node name="Hair" type="Sprite" parent="CompositeSprite"]
+texture = ExtResource( 7 )
+hframes = 8
+
+[node name="Mouth" type="Sprite" parent="CompositeSprite"]
+texture = ExtResource( 5 )
+hframes = 8
