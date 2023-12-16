@@ -13,21 +13,11 @@ script = ExtResource( 2 )
 visible = false
 NextScene = null
 
-[node name="Label" parent="InGameMenu/Options/PanelContainer" index="0"]
-margin_right = 1080.0
-
-[node name="TabContainer" parent="InGameMenu/Options/PanelContainer" index="1"]
-margin_right = 1080.0
-margin_bottom = 520.0
-
-[node name="back" parent="InGameMenu/Options/PanelContainer" index="2"]
-margin_top = 489.0
-margin_right = 1080.0
-margin_bottom = 520.0
-
 [connection signal="focus_entered" from="InGameMenu/menu/VBoxContainer/resume" to="InGameMenu" method="focus_entered"]
 [connection signal="focus_entered" from="InGameMenu/menu/VBoxContainer/Options" to="InGameMenu" method="focus_entered"]
 [connection signal="focus_entered" from="InGameMenu/menu/VBoxContainer/End" to="InGameMenu" method="focus_entered"]
 
 [editable path="InGameMenu"]
 [editable path="InGameMenu/Options"]
+[editable path="InGameMenu/Options/PanelContainer/TabContainer/Sound"]
+[editable path="InGameMenu/Options/PanelContainer/TabContainer/Video"]
