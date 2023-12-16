@@ -15,6 +15,9 @@ func _ready():
 
 func _input(_event):
 	if Input.is_action_just_pressed("ui_cancel"):
+		if OptionMenu.visible:
+			MenuMenu.set_visible(false)
+			OptionMenu.set_visible(false)
 		if !self.visible:
 			#get_tree().set_pause(true)
 			MenuMenu.set_visible(true)
@@ -23,12 +26,7 @@ func _input(_event):
 			#get_tree().set_pause(false)
 			MenuMenu.set_visible(false)
 			#Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-		
-	
-func focus_entered():
-	pass
-	#SoundManager.PlayMouseEffect()
-	
+
 func _on_Start_button_down():
 	#SoundManager.PlayButtonPressUp()
 	AnimPlayer.play("loading")
@@ -44,12 +42,16 @@ func _on_End_button_down():
 
 	QuitConfirm.popup_centered_ratio(.2)
 	var OkayButton = QuitConfirm.get_ok()
-	OkayButton.grab_focus()
+	#OkayButton.grab_focus()
 	
 func _on_AcceptDialog_confirmed():
 	QuitConfirm.hide()
 	_on_resume_pressed()
 	#SceneManager.ChangeScene("res://Menu/MainMenu/MainMenu2.tscn")
+	Global.logging_out = true
+	Global.world_state_buffer.clear()
+	Server.logout()
+	#SceneHandler.change_scene("login")
 
 func LoadNextScene():
 	pass
