@@ -60,3 +60,7 @@ shape = SubResource( 22 )
 [node name="Timer" type="Timer" parent="Timers"]
 
 [node name="DamageTimer" type="Timer" parent="Timers"]
+
+[connection signal="timeout" from="Timers/idle_timer" to="." method="_on_idle_timer_timeout"]
+[connection signal="timeout" from="Timers/Timer" to="." method="_on_Timer_timeout"]
+[connection signal="timeout" from="Timers/DamageTimer" to="." method="_on_DamageTimer_timeout"]
