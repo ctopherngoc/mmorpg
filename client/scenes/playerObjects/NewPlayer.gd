@@ -24,6 +24,7 @@ func _ready():
 	# warning-ignore:return_value_discarded
 	Signals.connect("dialog_closed", self, "movable_switch")
 	jump_speed = (Global.player.stats.jumpSpeed)
+	Global.in_game = true
 
 func _physics_process(delta):
 	if Global.movable:
