@@ -30,7 +30,6 @@ func _on_Button1_pressed():
 	get_tree().change_scene("res://scenes/maps/100000/100000.tscn")
 	#SceneHandler.change_scene("res://scenes/maps/100001/100001.tscn")
 
-
 func _on_Button2_pressed():
 	MainMenu.hide()
 	OptionMenu.show()
