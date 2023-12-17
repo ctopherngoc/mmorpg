@@ -11,7 +11,6 @@ script = ExtResource( 2 )
 
 [node name="InGameMenu" parent="." instance=ExtResource( 3 )]
 visible = false
-NextScene = null
 
 [connection signal="focus_entered" from="InGameMenu/menu/VBoxContainer/resume" to="InGameMenu" method="focus_entered"]
 [connection signal="focus_entered" from="InGameMenu/menu/VBoxContainer/Options" to="InGameMenu" method="focus_entered"]
