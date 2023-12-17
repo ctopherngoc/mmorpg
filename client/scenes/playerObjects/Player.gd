@@ -230,7 +230,7 @@ func _on_AnimationPlayer_animation_finished(animation_name):
 func _unhandled_input(event):
 	if event.is_action_pressed("attack"):
 		if Global.movable:
-			Server.send_attack()
+			Server.send_attack(1)
 		else:
 			print("cannot attack")
 
