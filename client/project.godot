@@ -19,9 +19,9 @@ config/icon="res://icon.png"
 Global="*res://singletons/global.tscn"
 Server="*res://singletons/Server.gd"
 Gateway="*res://singletons/Gateway.gd"
-SceneHandler="*res://singletons/SceneHandler.gd"
 Signals="*res://singletons/Signals.gd"
 GameData="*res://singletons/gamedata.gd"
+SceneHandler="*res://singletons/SceneHandler.tscn"
 
 [display]
 
