@@ -31,6 +31,7 @@ func connect_to_server(_username, _password):
 	set_custom_multiplayer(gateway_api)
 	custom_multiplayer.set_root_node(self)
 	custom_multiplayer.set_network_peer(network)
+	# start timer to time out login
 
 func _on_connection_failed():
 	print("Failed to conect to login server")
@@ -63,5 +64,9 @@ remote func return_login_request(results):
 		Server.connect_to_server()
 	else:
 		print("Please provide correct username and pasword")
-	network.disconnect("connection_failed", self, "_on_connection_failed")
-	network.disconnect("connection_succeeded", self, "_on_connection_succeeded") 
+		Signals.emit_signal("fail_login")
+	network.close_connection()
+
+# timer_signal:
+# Signals.emit_signal("failed_login")
+# network.close_connection()
