@@ -386,11 +386,8 @@ remote func received_player_state(player_state):
 		player_container.input_queue.append(player_state["P"])
 
 	var map_node = get_node(ServerData.player_location[str(player_id)])
+# warning-ignore:unused_variable
 	var server_position_offset = map_node.get_global_position()
-	#print("cur: ", player_container.position)
-
-	# calculate local position -> send back to clients
-	var final_position = Vector2((player_container.position.x - server_position_offset.x), (player_container.position.y - server_position_offset.y))
 
 	player_state["U"] = ServerData.username_list[str(player_id)]
 	player_state["P"] = player_container.position
@@ -414,15 +411,13 @@ func send_world_state(world_state):
 
 ###############################################################################
 # server combat functions
-remote func attack(move_id, attack_time):
+remote func attack(move_id):
 	var player_id = get_tree().get_rpc_sender_id()
 	var player_container = get_node(ServerData.player_location[str(player_id)] + "/%s" % str(player_id))
-	#attack validation
 	# basic attack
 	if move_id == 0:
 		player_container.attack(0)
 	#uses skill
-	
 	else:
 		if move_id in ServerData.class_skills[player_container.current_character.stats.class]:
 			if player_container.current_character.equipment.rweapon in ServerData.class_dict[player_container.current_character.stats.class]["Weapon"]:
@@ -440,7 +435,6 @@ remote func attack(move_id, attack_time):
 							player_container.attack(move_id)
 				else:
 					print("not enough mana")
-			
 			else:
 				print("wrong weapon")
 		else:
@@ -454,4 +448,5 @@ remote func attack(move_id, attack_time):
 # 1 = can climb
 
 func send_climb_data(player_id, climb_data):
-	rpc_id(int(player_id), "receive_climb_data", climb_data)
+	if Global.in_game:
+		rpc_id(int(player_id), "receive_climb_data", climb_data)
