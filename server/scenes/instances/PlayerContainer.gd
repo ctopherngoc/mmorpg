@@ -1,18 +1,17 @@
 extends KinematicBody2D
 
-onready var http = $HTTPRequest
-onready var http2 = $HTTPRequest2
-onready var timer =$Timer
-onready var idle_timer =$idle_timer
+onready var http = $HTTP/HTTPRequest
+onready var http2 = $HTTP/HTTPRequest2
+onready var timer =$Timers/Timer
+onready var idle_timer =$Timers/idle_timer
+onready var damage_timer = $Timers/DamageTimer
 #contains token and id
 var db_info = {}
-var cur_position = Vector2.ZERO
 
 # post firestore convert
 var email = ""
 var characters = []
 var characters_info_list = []
-var damage = 10
 var idle_counter = 0
 onready var input_queue = []
 
@@ -30,23 +29,37 @@ var gravity = 800
 var direction = 0
 var input = [0,0,0,0,0]
 
-#takes int/dex/luck/str values from serverdata.gd
-var player_stats
-
 var hittable = true
 var current_character
 func _physics_process(delta):
 	
 	if "Map" in str(self.get_path()):
 		movement_loop(delta)
-		#return self.global_position
-		
+
 func load_player_stats():
 	max_horizontal_speed = current_character.stats.movementSpeed
 	jump_speed = current_character.stats.jumpSpeed
-	
-func attack():
-	$AnimationPlayer.play("attack")
+
+func attack(move_id):
+	attacking = true
+	#basic attack
+	if move_id == 0:
+		pass
+	"""
+		# if char.weapon == xxx: 1 hand
+			play swing.speed()
+		
+		# elif char.weapon = xxx: large
+			play swing.speed ()
+		
+		# else ranged weapon:
+			if has ammo
+				play.shoot()
+			else:
+				return no ammo
+		
+	"""
+	#$AnimationPlayer.play("attack")
 func overlapping_bodies():
 	if $do_damage.get_overlapping_areas().size() > 0:
 		var closest = null
@@ -58,7 +71,10 @@ func overlapping_bodies():
 					closest = body
 				else:
 					pass
-		closest.get_parent().npc_hit(damage, self.name)
+		####################################################			
+		do_damage()
+		#closest.get_parent().npc_hit(damage, self.name)
+		#####################################################
 	else:
 		pass
 
@@ -75,7 +91,7 @@ func take_damage(take_damage):
 			Global.player_death(self.name)
 
 		get_node("/root/Server").update_player_stats(self)
-		$DamageTimer.start()
+		damage_timer.start()
 	else:
 		pass
 
@@ -218,7 +234,7 @@ func change_direction():
 
 func _on_DamageTimer_timeout():
 	hittable = true
-	$DamageTimer.stop()
+	damage_timer.stop()
 
 """
 func start_idle_timer():
@@ -250,3 +266,5 @@ func _on_idle_timer_timeout():
 		else:
 			idle_counter = 0
 """
+func do_damage():
+	print("mob hit")
