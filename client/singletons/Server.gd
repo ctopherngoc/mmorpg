@@ -3,6 +3,7 @@ var port = 2733
 var token
 var email
 var network = null
+var testing = false
 
 var login_status = 0
 
@@ -118,7 +119,8 @@ remote func return_choose_character(requester):
 	#instance_from_id(requester).load_world()
 
 func fetch_player_stats():
-	rpc_id(1, "fetch_player_stats")
+	if !testing:
+		rpc_id(1, "fetch_player_stats")
 
 ##############################################################################
 # Authentication
@@ -159,7 +161,8 @@ remote func despawn_player(player_id):
 			player.queue_free()
 
 func send_player_state(player_state):
-	rpc_unreliable_id(1, "received_player_state", player_state)
+	if !testing:
+		rpc_unreliable_id(1, "received_player_state", player_state)
 
 remote func receive_world_state(world_state):
 	if Global.current_map == "":
