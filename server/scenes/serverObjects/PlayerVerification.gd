@@ -90,8 +90,4 @@ func fill_player_container(player_container):
 	for character in player_container.characters:
 		var firebase_call = Firebase.get_document("characters/%s" % character, player_container.http, player_container.db_info["token"], player_container)
 		yield(firebase_call, "completed")
-		
 	print("fill_player_container completed")
-		
-	# temp player stats
-	#player_container.player_stats = ServerData.test_data.Stats
