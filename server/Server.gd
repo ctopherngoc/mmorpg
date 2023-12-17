@@ -414,11 +414,41 @@ func send_world_state(world_state):
 
 ###############################################################################
 # server combat functions
-remote func attack(attack_time):
+remote func attack(move_id, attack_time):
 	var player_id = get_tree().get_rpc_sender_id()
 	var player_container = get_node(ServerData.player_location[str(player_id)] + "/%s" % str(player_id))
-	player_container.attack()
-	rpc_id(0, "receive_attack", player_id, attack_time)
+	#attack validation
+	# basic attack
+	if move_id == 0:
+		player_container.attack(0)
+	#uses skill
+	
+	else:
+		if move_id in ServerData.class_skills[player_container.current_character.stats.class]:
+			if player_container.current_character.equipment.rweapon in ServerData.class_dict[player_container.current_character.stats.class]["Weapon"]:
+				if player_container.skill_id_cd:
+					print("skill on cd")
+				if player_container.current_character.stats.mana > 0:
+					if move_id.type == "buff":
+						print("playey use buff ", move_id)
+						#player_container.buff(move_id)
+					# move == attack
+					else:
+						if ServerData.class_dict[player_container.current_character.stats.class]["Range"] == 1 && ServerData.class_dict[player_container.current_character.equipment.ammo["quantity"]] == 0:
+							return "no ammo"
+						else:
+							player_container.attack(move_id)
+				else:
+					print("not enough mana")
+			
+			else:
+				print("wrong weapon")
+		else:
+			print("ya cheating banned")
+	"""
+	#player_container.attack()
+	#rpc_id(0, "receive_attack", player_id, attack_time)
+	"""
 #######################################################
 # 0 = no climb
 # 1 = can climb
