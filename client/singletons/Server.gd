@@ -56,6 +56,7 @@ func _on_server_disconnect():
 	if login_status == 1:
 		SceneHandler.change_scene("login")
 		login_status = 0
+	get_tree().set_network_peer(null)
 
 func determine_latency():
 	rpc_id(1, "determine_latency", OS.get_system_time_msecs())
@@ -144,6 +145,7 @@ remote func already_logged_in():
 	login_scene.login_button.disabled = false
 	login_scene.notification.text = "Account already logged in"
 	timer.stop()
+	get_tree().set_network_peer(null)
 
 #################################################################################
 # Player functions
@@ -168,9 +170,9 @@ remote func receive_world_state(world_state):
 remote func receive_despawn_player(player_id):
 	Global.despawn_player(player_id)
 	
-func send_attack():
+func send_attack(skill_id):
 	print("server.gd: send_attack")
-	rpc_id(1, "attack", Server.client_clock)
+	rpc_id(1, "attack", skill_id)
 	
 remote func receive_attack(player_id, attack_time):
 	print("server.gd: recieve_attack")
@@ -184,9 +186,6 @@ remote func receive_attack(player_id, attack_time):
 		pass
 
 remote func update_player_stats(player_stats):
-	#print('server.gd: remote update_player_stats')
-	#print(player_stats)
-
 	for character in Global.character_list:
 		if character["displayname"] == player_stats["displayname"]:
 			character = player_stats
@@ -234,20 +233,23 @@ remote func return_player_input(server_input_results):
 	Global.server_reconciliation(server_input_results)
 
 remote func receive_climb_data(climb_data):
-	var player = get_node("/root/currentScene/Player")
-	if climb_data == 2:
-		print("server: is climbing")
-		player.can_climb = true
-		player.is_climbing = true
-	elif climb_data == 1:
-		print("server: can climb")
-		player.is_climbing = false
-		player.can_climb = true
-	else:
-		player.can_climb = false
-		player.is_climbing = false
+	if Global.in_game:
+		var player = get_node("/root/currentScene/Player")
+		if climb_data == 2:
+			print("server: is climbing")
+			player.can_climb = true
+			player.is_climbing = true
+		elif climb_data == 1:
+			print("server: can climb")
+			player.is_climbing = false
+			player.can_climb = true
+		else:
+			player.can_climb = false
+			player.is_climbing = false
 
 func logout():
 	timer.stop()
+	#get_tree().set_network_peer(null)
 	network.close_connection()
+	Global.in_game = false
 	SceneHandler.change_scene("login")
