@@ -11,12 +11,3 @@ script = ExtResource( 2 )
 
 [node name="InGameMenu" parent="." instance=ExtResource( 3 )]
 visible = false
-
-[connection signal="focus_entered" from="InGameMenu/menu/VBoxContainer/resume" to="InGameMenu" method="focus_entered"]
-[connection signal="focus_entered" from="InGameMenu/menu/VBoxContainer/Options" to="InGameMenu" method="focus_entered"]
-[connection signal="focus_entered" from="InGameMenu/menu/VBoxContainer/End" to="InGameMenu" method="focus_entered"]
-
-[editable path="InGameMenu"]
-[editable path="InGameMenu/Options"]
-[editable path="InGameMenu/Options/PanelContainer/TabContainer/Sound"]
-[editable path="InGameMenu/Options/PanelContainer/TabContainer/Video"]
