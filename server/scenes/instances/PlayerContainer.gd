@@ -268,3 +268,11 @@ func _on_idle_timer_timeout():
 """
 func do_damage():
 	print("mob hit")
+
+
+func _on_idle_timer_timeout():
+	pass # Replace with function body.
+
+
+func _on_Timer_timeout():
+	pass # Replace with function body.
