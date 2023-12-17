@@ -7,6 +7,7 @@ const interpolation_offset = 100
 onready var current_map = ""
 onready var bgm = $bgm
 onready var logging_out = false
+onready var in_game = false
 
 var other_player = preload("res://scenes/playerObjects/PlayerTemplate.tscn")
 var last_world_state = 0
