@@ -14,6 +14,7 @@ var characters = []
 var characters_info_list = []
 var idle_counter = 0
 onready var input_queue = []
+var cur_position = null
 
 var velocity = Vector2.ZERO
 var is_climbing = false
@@ -244,9 +245,8 @@ func _on_DamageTimer_timeout():
 	hittable = true
 	damage_timer.stop()
 
-"""
 func start_idle_timer():
-	$idle_timer.start(1.0)
+	idle_timer.start(1.0)
 	print("idle timer start")
 
 
@@ -273,14 +273,14 @@ func _on_idle_timer_timeout():
 				idle_counter = 0
 		else:
 			idle_counter = 0
-"""
+			
 func do_damage():
 	print("mob hit")
 
-
-func _on_idle_timer_timeout():
-	pass # Replace with function body.
-
-
 func _on_Timer_timeout():
 	pass # Replace with function body.
+
+func overlappingBodies():
+	print("area ovlapping: " + str($do_damage.get_overlapping_areas().size()))
+	for body in $do_damage.get_overlapping_areas():
+		print('player overlapping with: ', body)
