@@ -162,7 +162,8 @@ remote func despawn_player(player_id):
 
 func send_player_state(player_state):
 	if !testing:
-		rpc_unreliable_id(1, "received_player_state", player_state)
+		if Global.in_game:
+			rpc_unreliable_id(1, "received_player_state", player_state)
 
 remote func receive_world_state(world_state):
 	if Global.current_map == "":
@@ -252,7 +253,7 @@ remote func receive_climb_data(climb_data):
 
 func logout():
 	timer.stop()
-	#get_tree().set_network_peer(null)
+	rpc_id(1, "logout")
 	network.close_connection()
 	Global.in_game = false
 	SceneHandler.change_scene("login")
