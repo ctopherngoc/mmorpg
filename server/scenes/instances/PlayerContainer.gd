@@ -48,6 +48,14 @@ func attack(move_id):
 	"""
 		# if char.weapon == xxx: 1 hand
 			play swing.speed()
+			overlapping bodies
+			get list of overlapping bodies
+			get closest one
+			body.do_damage
+				return damage
+			send server damage
+			rpc call all clients to show damage?
+			return attack call
 		
 		# elif char.weapon = xxx: large
 			play swing.speed ()
