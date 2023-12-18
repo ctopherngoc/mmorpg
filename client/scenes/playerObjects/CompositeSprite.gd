@@ -97,7 +97,7 @@ func update_avatar(data):
 		
 	if data == "equipment":
 		for key in equipment.keys():
-			if equipment[key] == -1:
+			if str(equipment[key]) == "-1":
 				var sprite = load(GameData.equipment_sprite.default + "empty_16_11_spritesheet.png")
 				if key == "earring":
 					rearring.set_texture(sprite)
