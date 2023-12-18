@@ -9,8 +9,6 @@ var username
 var password
 
 func _ready():
-	network = NetworkedMultiplayerENet.new()
-	gateway_api = MultiplayerAPI.new()
 	network.set_dtls_enabled(true)
 	network.set_dtls_verify_enabled(false)
 	network.set_dtls_certificate(cert)
