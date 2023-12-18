@@ -97,6 +97,8 @@ shape = SubResource( 22 )
 [node name="AttackRange" type="Node" parent="."]
 
 [node name="1h_sword" type="Area2D" parent="AttackRange"]
+collision_layer = 0
+collision_mask = 32
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AttackRange/1h_sword"]
 position = Vector2( 16.5, -2.5 )
