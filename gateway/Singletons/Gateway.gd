@@ -30,12 +30,13 @@ func start_server():
 	
 func _Peer_Connected(player_id):
 	print("User " + str(player_id) + " Connected")
-
+	
 func _Peer_Disconnected(player_id):
 	print("User " + str(player_id) + " Disconnected")
 	
 remote func login_request(username, password):
 	print("login request recieved")
+	
 	var player_id = custom_multiplayer.get_rpc_sender_id()
 	Authenticate.authenticate_player(username, password, player_id)
 
