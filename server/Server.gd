@@ -448,5 +448,10 @@ remote func attack(move_id):
 # 1 = can climb
 
 func send_climb_data(player_id, climb_data):
-	if Global.in_game:
-		rpc_id(int(player_id), "receive_climb_data", climb_data)
+	rpc_id(int(player_id), "receive_climb_data", climb_data)
+
+remote func logout():
+	var player_id = get_tree().get_rpc_sender_id()
+# warning-ignore:unused_variable
+	var player_container = get_node(ServerData.player_location[str(player_id)] + "/%s" % str(player_id))
+	network.disconnect_peer(player_id)
