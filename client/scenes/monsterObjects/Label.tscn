@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://scenes/menuObjects/Options/godot-simpleTheme-master/simpleTheme.tres" type="Theme" id=1]
+
+[node name="Label" type="Label"]
+margin_left = -27.0
+margin_top = 19.0
+margin_right = 35.0
+margin_bottom = 33.0
+theme = ExtResource( 1 )
+text = "green guy"
