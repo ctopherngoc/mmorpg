@@ -19,7 +19,6 @@ var held_down = false
 onready var sprite = $CompositeSprite/AnimationPlayer
 
 func _ready():
-	$Label.text = Global.player.displayname
 	max_horizontal_speed = (Global.player.stats.movementSpeed)
 	# warning-ignore:return_value_discarded
 	Signals.connect("dialog_closed", self, "movable_switch")
