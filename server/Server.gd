@@ -456,3 +456,7 @@ remote func logout():
 # warning-ignore:unused_variable
 	var player_container = get_node(ServerData.player_location[str(player_id)] + "/%s" % str(player_id))
 	network.disconnect_peer(player_id)
+
+
+func _on_Button_pressed():
+	Global.damage_formula(1, ServerData.test_pstats, ServerData.test_mstats)
