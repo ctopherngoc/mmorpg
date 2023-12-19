@@ -58,6 +58,9 @@ var player_info = {
 			"weaponDefense": {'integerValue': null},
 			"magicDefense": {'integerValue': null},
 			"accuracy": {'integerValue': null},
+			"bossPercent": {'integerValue': null},
+			"dmgPercent": {'integerValue': null},
+			"critRate": {'integerValue': null},
 		}#fields
 		}#mapvalue
 	}, #stats
@@ -126,6 +129,9 @@ var player_template = {
 			"weaponDefense": 0,
 			"magicDefense": 0,
 			"accuracy": 10,
+			"bossPercent": 1,
+			"dmgPercent": 1,
+			"critRate": 5,
 		}, #stats
 	"avatar" : {
 		"head": null,
@@ -221,3 +227,43 @@ func _ready():
 #	var skill_data_json = JSON.parse(skill_data_file.get_as_text())
 #	skill_data_file.close()
 #	skill_data = skill_data_json.result
+
+var test_pstats = {
+			"health": 50,
+			"mana": 50,
+			"maxHealth": 50,
+			"maxMana": 50,
+			"level": 1,
+			"experience": 0,
+			"class": 0,
+			"job": 0,
+			"sp": 0,
+			"ap": 0,
+			"strength": 4,
+			"wisdom": 4,
+			"dexterity": 4,
+			"luck": 4,
+			"movementSpeed": 100,
+			"jumpSpeed": 200,
+			"avoidability": 4,
+			"weaponDefense": 0,
+			"magicDefense": 0,
+			"accuracy": 10,
+			"bossPercent": 1,
+			"damagePercent": 1,
+			"critRate": 5,
+		}
+var test_mstats = {
+			"health": 50,
+			"mana": 50,
+			"maxHealth": 50,
+			"maxMana": 50,
+			"level": 1,
+			"movementSpeed": 100,
+			"jumpSpeed": 200,
+			"avoidability": 4,
+			"physicalDefense": 16,
+			"magicDefense": 1,
+			"accuracy": 10,
+			"boss": 0
+}
