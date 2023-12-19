@@ -1,5 +1,6 @@
 extends Node
 var server = null
+var rng = RandomNumberGenerator.new()
 
 func _ready():
 	pass
@@ -45,3 +46,47 @@ func _on_Timer_timeout():
 
 func send_climb_data(player_id, climb_data):
 	server.send_climb_data(player_id, climb_data)
+
+# attack is not calculated yet
+func damage_formula(type: bool, player_stats: Dictionary, target_stats: Dictionary):
+	if player_stats["accuracy"] >= target_stats["avoidability"]:
+		print("Acc >= Avoid")
+		var crit_ratio = calculate_crit(player_stats["critRate"])
+		var damage
+		if type:
+			print("phyiscal")
+			var attack = calculate_attack(type, player_stats)
+			damage = float(attack * attack / target_stats["physicalDefense"])
+			print("damage %s" % damage)
+		#magic damage
+		else:
+			var magic_attack = calculate_attack(type, player_stats)
+			damage = float(magic_attack * magic_attack / target_stats["magicDefense"])
+		damage = damage * ((float(player_stats["damagePercent"]) * 0.1) + 1.0)
+		print("after dmg_percent: %s" % damage)
+		if target_stats["boss"] == 1:
+			damage = damage * ((float(player_stats["bossPercent"]) * 0.1) + 1.0)
+			print("After boss percent: %s" % damage)
+		var final_damage = int(damage * crit_ratio)
+		print("final damage: %s" % final_damage)
+		return final_damage 
+	else:
+		print("miss")
+
+func calculate_crit(crit_rate):
+	var crit_number = rng.randi_range(1,100)
+	if crit_number <= crit_rate:
+		print("crit")
+		return 1.3
+	else:
+		print("no crit")
+		return 1.0
+
+func calculate_attack(type, player_stats):
+	if type:
+		if player_stats["job"] == 0:
+			var attack = (player_stats["strength"] + player_stats["wisdom"] + player_stats["dexterity"] + player_stats["luck"]) * 2
+			print(attack)
+			return attack
+	else:
+		pass
