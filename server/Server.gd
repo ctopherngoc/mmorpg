@@ -460,3 +460,7 @@ remote func logout():
 
 func _on_Button_pressed():
 	Global.damage_formula(1, ServerData.test_pstats, ServerData.test_mstats)
+
+
+func _on_Button2_pressed():
+	Global.calculate_stats(ServerData.test_pstats)
