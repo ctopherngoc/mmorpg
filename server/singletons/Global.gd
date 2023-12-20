@@ -47,25 +47,23 @@ func _on_Timer_timeout():
 func send_climb_data(player_id, climb_data):
 	server.send_climb_data(player_id, climb_data)
 
-# attack is not calculated yet
-func damage_formula(type: bool, player_stats: Dictionary, target_stats: Dictionary):
-	if player_stats["accuracy"] >= target_stats["avoidability"]:
+func damage_formula(type: bool, player_dict: Dictionary, target_stats: Dictionary):
+	var stats = player_dict.stats
+	if stats["accuracy"] >= target_stats["avoidability"]:
 		print("Acc >= Avoid")
-		var crit_ratio = calculate_crit(player_stats["critRate"])
+		var crit_ratio = calculate_crit(stats["critRate"])
 		var damage
 		if type:
 			print("phyiscal")
-			var attack = calculate_attack(type, player_stats)
-			damage = float(attack * attack / target_stats["physicalDefense"])
+			damage = float(stats.attack * stats.attack / target_stats["physicalDefense"])
 			print("damage %s" % damage)
 		#magic damage
 		else:
-			var magic_attack = calculate_attack(type, player_stats)
-			damage = float(magic_attack * magic_attack / target_stats["magicDefense"])
-		damage = damage * ((float(player_stats["damagePercent"]) * 0.1) + 1.0)
+			damage = float(stats.magic * stats.magic / target_stats["magicDefense"])
+		damage = damage * ((float(stats["damagePercent"]) * 0.1) + 1.0)
 		print("after dmg_percent: %s" % damage)
 		if target_stats["boss"] == 1:
-			damage = damage * ((float(player_stats["bossPercent"]) * 0.1) + 1.0)
+			damage = damage * ((float(stats["bossPercent"]) * 0.1) + 1.0)
 			print("After boss percent: %s" % damage)
 		var final_damage = int(damage * crit_ratio)
 		print("final damage: %s" % final_damage)
@@ -82,11 +80,33 @@ func calculate_crit(crit_rate):
 		print("no crit")
 		return 1.0
 
-func calculate_attack(type, player_stats):
-	if type:
-		if player_stats["job"] == 0:
-			var attack = (player_stats["strength"] + player_stats["wisdom"] + player_stats["dexterity"] + player_stats["luck"]) * 2
-			print(attack)
-			return attack
+"""
+currently this is called in the damage formula but ideally it would be another character statistic calculated and hard saved
+so you can reference the min/max damage range from data instead of recalcualting it everytime when collision occurs
+"""
+func calculate_stats(player_stats):
+	var equipment = player_stats.equipment
+	var stats = player_stats.stats
+	var equipment_stats = ServerData.equipment_stats_template
+	# for every item in equipment dict
+	for item in equipment.keys():
+		# for every stat in equipment.stats dict
+		for stat in equipment[item].stats.keys():
+			# add stat value to each stat in temp equipment dict
+			print("%s before: " % stat, equipment_stats[stat])
+			equipment_stats[stat] += equipment[item].stats[stat]
+			print("%s after: " % stat, equipment_stats[stat])
+	# update equipment stats of player_dict
+	stats.equipment = equipment_stats
+	
+	# calculate attack based on characer job
+	var base = stats.base
+	var equip = stats.equipment
+	
+	# beginner class
+	# (base stats: int + total equip stats: int) + int(float(total equipment attack: int) * weapon ratio: float)
+	if base.job == 0:
+		base.maxRange = (base.strength + base.wisdom + base.dexterity + base.luck + equip.strength + equip.wisdom + equip.dexterity + equip.luck) + int((float(equip.attack) * ServerData.weapon_ratio[equipment.rweapon.type]))
+		print(base.maxRange)
 	else:
 		pass
