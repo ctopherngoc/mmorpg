@@ -164,6 +164,13 @@ var player_template = {
 			} #inventory
 }
 
+var weapon_ratio = {
+	"1h_sword": 1.2,
+	"2h_sword": 1.5,
+	"staff": 0.8,
+	
+}
+
 var starter_equips = [
 	[500000, 500001],
 	[500002, 500003],
@@ -228,7 +235,44 @@ func _ready():
 #	skill_data_file.close()
 #	skill_data = skill_data_json.result
 
+# figure out how to distinguish stats from equips and base stats
+# seperate then display total
+# how to deal with % stat up
 var test_pstats = {
+	"equipment": {
+		"rweapon": {
+			"id": 100000,
+			"unique_id":14333321,
+			"type": "1h_sword",
+			"name": "temp sword",
+			"atk_speed": 5,
+			"slots": 7,
+			"stats": {
+				"attack": 15,
+				"magic": 0,
+				"maxHealth": 0,
+				"maxMana": 0,
+				"strength": 5,
+				"wisdom": 5,
+				"dexterity": 5,
+				"luck": 5,
+				"movementSpeed": 0,
+				"jumpSpeed": 0,
+				"avoidability": 0,
+				"weaponDefense": 0,
+				"magicDefense": 0,
+				"accuracy": 0,
+				"bossPercent": 0,
+				"damagePercent": 0,
+				"critRate": 0,
+			},
+		},
+		#"lweapon": null,
+	},
+	"stats": 
+	{
+		"base": {
+			"maxRange": 50,
 			"health": 50,
 			"mana": 50,
 			"maxHealth": 50,
@@ -252,18 +296,60 @@ var test_pstats = {
 			"bossPercent": 1,
 			"damagePercent": 1,
 			"critRate": 5,
-		}
+		},
+		"equipment": {
+			"attack": 0,
+			"magic": 0,
+			"maxHealth": 0,
+			"maxMana": 0,
+			"strength": 0,
+			"wisdom": 0,
+			"dexterity": 0,
+			"luck": 0,
+			"movementSpeed": 0,
+			"jumpSpeed": 0,
+			"avoidability": 0,
+			"weaponDefense": 0,
+			"magicDefense": 0,
+			"accuracy": 0,
+			"bossPercent": 0,
+			"damagePercent": 0,
+			"critRate": 0,
+		},
+	}
+}
+
 var test_mstats = {
-			"health": 50,
-			"mana": 50,
-			"maxHealth": 50,
-			"maxMana": 50,
-			"level": 1,
-			"movementSpeed": 100,
-			"jumpSpeed": 200,
-			"avoidability": 4,
-			"physicalDefense": 16,
-			"magicDefense": 1,
-			"accuracy": 10,
-			"boss": 0
+	"health": 50,
+	"mana": 50,
+	"maxHealth": 50,
+	"maxMana": 50,
+	"level": 1,
+	"movementSpeed": 100,
+	"jumpSpeed": 200,
+	"avoidability": 4,
+	"physicalDefense": 16,
+	"magicDefense": 1,
+	"accuracy": 10,
+	"boss": 0
+}
+
+var equipment_stats_template = {
+	"attack": 0,
+	"magic": 0,
+	"maxHealth": 0,
+	"maxMana": 0,
+	"strength": 0,
+	"wisdom": 0,
+	"dexterity": 0,
+	"luck": 0,
+	"movementSpeed": 0,
+	"jumpSpeed": 0,
+	"avoidability": 0,
+	"weaponDefense": 0,
+	"magicDefense": 0,
+	"accuracy": 0,
+	"bossPercent": 0,
+	"damagePercent": 0,
+	"critRate": 0,
 }
