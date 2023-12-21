@@ -17,11 +17,11 @@ func npc_attack(player, monster_stats):
 	# calculate basic hit mechanic and damage formula
 	
 	# hit mechanic
-	if monster_stats["Accuracy"] >= player_stats["dexterity"] * 1.2:
+	if monster_stats["accuracy"] >= player_stats["dexterity"] * 1.2:
 		#print("Monster Hit: %s" % player.name)
 		
 		# some random damage formula, since theres no player defense use strength as defense
-		var calculation = monster_stats["Attack"] - player_stats["strength"]
+		var calculation = monster_stats["attack"] - player_stats["strength"]
 		if calculation > 1:
 			player.take_damage(calculation)
 		else:
