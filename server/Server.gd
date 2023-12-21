@@ -8,6 +8,8 @@ var max_players = 100
 var expected_tokens = []
 onready var player_verification_process = get_node("PlayerVerification")
 onready var character_creation_queue = []
+const username = "server@server.com"
+const password = "server123"
 #######################################################
 
 #server start 
@@ -15,9 +17,8 @@ func _ready():
 	
 	# not used
 	Firebase.httprequest = $HTTPRequest
-	#
-	
 	start_server()
+	Firebase.get_data(username, password)
 
 func start_server():
 	network.create_server(port, max_players)
@@ -130,12 +131,11 @@ func create_characters():
 		#player_id, username, playerContainer, requester
 		var character_array = character_creation_queue[0]
 		character_creation_queue.remove(0)
-
 		# firebase call to see if characer name is taken
-		var firebase_call = Firebase.get_document("characters", character_array[2].http, character_array[2].db_info["token"], character_array)
-		yield(firebase_call, 'completed')
-
-		if character_array[1]["un"] in ServerData.username_list:
+		#var firebase_call = Firebase.get_document("characters", character_array[2].http, character_array[2].db_info["token"], character_array)
+		#yield(firebase_call, 'completed')
+		
+		if character_array[1]["un"] in ServerData.characters_data.keys():
 			print("%s already taken." % character_array[1])
 			rpc_id(character_array[0], "returnfetchUsernames", character_array[3], false)
 		else:
@@ -204,11 +204,20 @@ func create_characters():
 			# possibly make this into one function
 			##################################################################
 			print("creating character")
+			
+			#update characters document
+			"""
+			 ServerData.characters_data[temp_player["displayname"] = temp_player
+			"""
 			var firebase_call2 = Firebase.update_document("characters/%s" % temp_player["displayname"], character_array[2].http2, character_array[2].db_info["token"], temp_player)
 			yield(firebase_call2, 'completed')
 
 			# update database account
-			# character_array[2] = player container
+			# get token or document id
+			"""
+			character_array[2].append()
+			ServerData.user_characters[""].append(temp_player["displayname"])
+			"""
 			var firebase_call3 = Firebase.update_document("users/%s" % character_array[2].db_info["id"], character_array[2].http, character_array[2].db_info["token"], character_array[2])
 			yield(firebase_call3, 'completed')
 			###################################################################
@@ -251,11 +260,15 @@ remote func fetch_player_stats():
 remote func fetch_usernames(requester, username):
 	print("inside fetch username. Username: %s" % username)
 	var player_id = get_tree().get_rpc_sender_id()
+	
+	"""
 	var player_container = get_node(ServerData.player_location[str(player_id)] + "/%s" % player_id)
 	var firebase_call = Firebase.get_document("characters", player_container.http, player_container.db_info["token"], player_container)
 	yield(firebase_call, 'completed')
 	print(ServerData.username_list)
 	if username in ServerData.username_list:
+	"""
+	if username in ServerData.user_characters.keys():
 		print("%s already taken." % username)
 		rpc_id(player_id, "return_fetch_usernames", requester, false)
 	else:
@@ -325,7 +338,6 @@ func move_player_container(player_id, player_container, map_id, position):
 
 	old_parent.remove_child(player_container)
 	new_parent.add_child(player_container)
-	#print(map_id)
 
 	ServerData.player_location[str(player_id)] = "/root/Server/World/Maps/" + str(map_id) + "/YSort/Players"
 	var player = get_node("/root/Server/World/Maps/" + str(map_id) + "/YSort/Players/" + str(player_id))
@@ -385,12 +397,11 @@ remote func received_player_state(player_state):
 	if  input != [0,0,0,0,0]:
 		player_container.input_queue.append(player_state["P"])
 
-	var map_node = get_node(ServerData.player_location[str(player_id)])
-	var server_position_offset = map_node.get_global_position()
-	#print("cur: ", player_container.position)
+	#var map_node = get_node(ServerData.player_location[str(player_id)])
+	#var server_position_offset = map_node.get_global_position()
 
 	# calculate local position -> send back to clients
-	var final_position = Vector2((player_container.position.x - server_position_offset.x), (player_container.position.y - server_position_offset.y))
+	#var final_position = Vector2((player_container.position.x - server_position_offset.x), (player_container.position.y - server_position_offset.y))
 
 	player_state["U"] = ServerData.username_list[str(player_id)]
 	player_state["P"] = player_container.position
