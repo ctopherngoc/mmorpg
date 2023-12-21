@@ -2,6 +2,9 @@ extends Node
 var player_location = {}
 var username_list = {}
 var player_state_collection = {}
+var user_characters = {}
+var characters_data = {}
+
 var monsters = {
 	"100001" : {},
 	"100002" : {},
@@ -38,62 +41,58 @@ var player_info = {
 	"map": {'stringValue': null},
 	"stats" : { "mapValue":
 		{"fields": 
-			{"mapValue":
-				{"fields":
-					{"base":
-						{"mapValue": 
-							{"fields":
-								{"maxRange": {'integerValue': null},
-								"minRange": {'integerValue': null},
-								"maxHealth": {'integerValue': null},
-								"health": {'integerValue': null},
-								"maxMana": {'integerValue': null},
-								"mana": {'integerValue': null},
-								"level": {'integerValue': null},
-								"experience": {'integerValue': null},
-								"class": {'integerValue': null},
-								"job": {'integerValue': null},
-								"sp": {'integerValue': null},
-								"ap": {'integerValue': null},
-								"strength": {'integerValue': null},
-								"wisdom": {'integerValue': null},
-								"dexterity": {'integerValue': null},
-								"luck": {'integerValue': null},
-								"movementSpeed": {'integerValue': null},
-								"jumpSpeed": {'integerValue': null},
-								"avoidability": {'integerValue': null},
-								"defense": {'integerValue': null},
-								"magicDefense": {'integerValue': null},
-								"accuracy": {'integerValue': null},
-								"bossPercent": {'integerValue': null},
-								"dmgPercent": {'integerValue': null},
-								"critRate": {'integerValue': null},
-							}, #fields
-						}, #mapvalue
-					}, #base
-					"equipment":
-						{"mapValue":
-							{"fields":
-								{"maxHealth": {'integerValue': null},
-								"maxMana": {'integerValue': null},
-								"strength": {'integerValue': null},
-								"wisdom": {'integerValue': null},
-								"dexterity": {'integerValue': null},
-								"luck": {'integerValue': null},
-								"movementSpeed": {'integerValue': null},
-								"jumpSpeed": {'integerValue': null},
-								"avoidability": {'integerValue': null},
-								"defense": {'integerValue': null},
-								"magicDefense": {'integerValue': null},
-								"accuracy": {'integerValue': null},
-								"bossPercent": {'integerValue': null},
-								"dmgPercent": {'integerValue': null},
-								"critRate": {'integerValue': null},
-							}, #fields
-						}, # mapvalue
-					}, #equipment
-				}, #fields
-			},#mapvalue
+			{"base":
+				{"mapValue": 
+					{"fields":
+						{"maxRange": {'integerValue': null},
+						"minRange": {'integerValue': null},
+						"maxHealth": {'integerValue': null},
+						"health": {'integerValue': null},
+						"maxMana": {'integerValue': null},
+						"mana": {'integerValue': null},
+						"level": {'integerValue': null},
+						"experience": {'integerValue': null},
+						"class": {'integerValue': null},
+						"job": {'integerValue': null},
+						"sp": {'integerValue': null},
+						"ap": {'integerValue': null},
+						"strength": {'integerValue': null},
+						"wisdom": {'integerValue': null},
+						"dexterity": {'integerValue': null},
+						"luck": {'integerValue': null},
+						"movementSpeed": {'integerValue': null},
+						"jumpSpeed": {'integerValue': null},
+						"avoidability": {'integerValue': null},
+						"defense": {'integerValue': null},
+						"magicDefense": {'integerValue': null},
+						"accuracy": {'integerValue': null},
+						"bossPercent": {'integerValue': null},
+						"dmgPercent": {'integerValue': null},
+						"critRate": {'integerValue': null},
+					}, #fields
+				}, #mapvalue
+			}, #base
+			"equipment":
+				{"mapValue":
+					{"fields":
+						{"maxHealth": {'integerValue': null},
+						"maxMana": {'integerValue': null},
+						"strength": {'integerValue': null},
+						"wisdom": {'integerValue': null},
+						"dexterity": {'integerValue': null},
+						"luck": {'integerValue': null},
+						"movementSpeed": {'integerValue': null},
+						"jumpSpeed": {'integerValue': null},
+						"avoidability": {'integerValue': null},
+						"defense": {'integerValue': null},
+						"magicDefense": {'integerValue': null},
+						"accuracy": {'integerValue': null},
+						"bossPercent": {'integerValue': null},
+						"dmgPercent": {'integerValue': null},
+						"critRate": {'integerValue': null},
+					}, #fields
+				}, # mapvalue
+			}, #equipment
 		}, #fields
 		}, #mapvalue
 	}, #stats
@@ -185,7 +184,7 @@ var player_template = {
 			"bossPercent": 0,
 			"dmgPercent": 0,
 			"critRate": 0,
-	}
+	},
 	}, #stats
 	"avatar" : {
 		"head": null,
