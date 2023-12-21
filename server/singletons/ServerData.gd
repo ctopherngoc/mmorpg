@@ -230,7 +230,7 @@ var weapon_speed = {
 	1 : null,
 	2 : null,
 	3 : null,
-	4 : null,
+	4 : 2,
 	5: null,
 	6 : null,
 }
@@ -306,7 +306,7 @@ var test_pstats = {
 			"unique_id":14333321,
 			"type": "1h_sword",
 			"name": "temp sword",
-			"atk_speed": 5,
+			"speed": 5,
 			"slots": 7,
 			"stats": {
 				"attack": 15,
