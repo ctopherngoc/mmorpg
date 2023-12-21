@@ -49,39 +49,42 @@ func send_climb_data(player_id, climb_data):
 
 func damage_formula(type: bool, player_dict: Dictionary, target_stats: Dictionary):
 	var stats = player_dict.stats
-	if stats.base.accuracy + stats.equipment.accuracy >= target_stats.avoidability:
-		print("Acc >= Avoid")
-		var crit_rate = stats.base.critRate + stats.equipment.critRate
-		var crit_ratio = calculate_crit(crit_rate)
-		var damage = rng.randi_range(stats.base.minRange, stats.base.maxRange)
-		print("damage before: ", damage)
-		if type:
-			print("phyiscal")
-			if stats.base.maxRange >= target_stats["physicalDefense"]:
-				damage = float( damage * 2 - target_stats["physicalDefense"])
-			else:
-				damage = float( damage * damage / target_stats["physicalDefense"])
-			print("damage after %s" % damage)
-		#magic damage
+	if stats.base.accuracy + stats.equipment.accuracy < target_stats.avoidability:
+		var acc_diff = target_stats.avoidability - (stats.base.accuracy + stats.equipment.accuracy)
+		acc_diff = acc_diff / 10
+		if rng.randi_range(1,10) < acc_diff:
+			print("miss")
+			return -1
+	print("Acc >= Avoid")
+	var damage = rng.randi_range(stats.base.minRange, stats.base.maxRange)
+	print("damage before: ", damage)
+	if type:
+		print("phyiscal")
+		if stats.base.maxRange >= target_stats["defense"]:
+			damage = float( damage * 2 - target_stats["defense"])
 		else:
-			
-			damage = float(stats.base.magic * stats.equipment.magic / target_stats["magicDefense"])
-		damage = damage * ((float(stats.base["damagePercent"] + stats.equipment.damagePercent) * 0.1) + 1.0)
-		print("after dmg_percent: %s" % damage)
-		
-		#######################
-		# mastery calculation for mindmg
-		# mindmg = maxRange * mastery
-		# var damage = rng.randi_range(minRange,maxRange)
-		#######################
-		if target_stats["boss"] == 1:
-			damage = damage * ((float(stats.base["bossPercent"] + stats.equipment.bossPercent) * 0.1) + 1.0)
-			print("After boss percent: %s" % damage)
-		var final_damage = int(damage * crit_ratio)
-		print("final damage: %s" % final_damage)
-		return final_damage 
+			damage = float( damage * damage / target_stats["defense"])
+		print("damage after %s" % damage)
+	#magic damage
 	else:
-		print("miss")
+		# update later
+		#####################################################################
+		print("magic")
+		if stats.base.magic >= target_stats["magicDefense"]:
+			damage = float(stats.base.magic * stats.equipment.magic / target_stats["magicDefense"])
+		else:
+			pass
+		#######################################################################
+	damage = damage * ((float(stats.base["damagePercent"] + stats.equipment.damagePercent) * 0.1) + 1.0)
+	print("after dmg_percent: %s" % damage)
+	if target_stats["boss"] == 1:
+		damage = damage * ((float(stats.base["bossPercent"] + stats.equipment.bossPercent) * 0.1) + 1.0)
+		print("After boss percent: %s" % damage)
+	var crit_rate = stats.base.critRate + stats.equipment.critRate
+	var crit_ratio = calculate_crit(crit_rate)
+	var final_damage = int(damage * crit_ratio)
+	print("final damage: %s" % final_damage)
+	return final_damage 
 
 func calculate_crit(crit_rate):
 	var crit_number = rng.randi_range(1,100)
@@ -92,23 +95,20 @@ func calculate_crit(crit_rate):
 		print("no crit")
 		return 1.0
 
-"""
-currently this is called in the damage formula but ideally it would be another character statistic calculated and hard saved
-so you can reference the min/max damage range from data instead of recalcualting it everytime when collision occurs
-"""
 func calculate_stats(player_stats):
 	var equipment = player_stats.equipment
 	var stats = player_stats.stats
 	var equipment_stats = ServerData.equipment_stats_template.duplicate(true)
 	# for every item in equipment dict
 	for item in equipment.keys():
-		# for every stat in equipment.stats dict
-		for stat in equipment[item].stats.keys():
-			# add stat value to each stat in temp equipment dict
-			print("%s before: " % stat, equipment_stats[stat])
-			equipment_stats[stat] += equipment[item].stats[stat]
-			print("%s after: " % stat, equipment_stats[stat])
-	# update equipment stats of player_dict
+		# for every stat in equipment.stats dict ( no null or -1)
+		if equipment[item] and equipment[item] != -1:
+			for stat in equipment[item].stats.keys():
+				# add stat value to each stat in temp equipment dict
+				print("%s before: " % stat, equipment_stats[stat])
+				equipment_stats[stat] += equipment[item].stats[stat]
+				print("%s after: " % stat, equipment_stats[stat])
+		# update equipment stats of player_dict
 	stats.equipment = equipment_stats
 	
 	# calculate attack based on characer job
