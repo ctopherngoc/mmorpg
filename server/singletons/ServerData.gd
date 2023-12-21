@@ -185,7 +185,6 @@ var player_template = {
 			"bossPercent": 0,
 			"dmgPercent": 0,
 			"critRate": 0,
-		
 	}
 	}, #stats
 	"avatar" : {
@@ -230,8 +229,8 @@ var weapon_speed = {
 	1 : null,
 	2 : null,
 	3 : null,
-	4 : 2,
-	5: null,
+	4 : 2.0,
+	5: 2.2,
 	6 : null,
 }
 
