@@ -28,7 +28,7 @@ var attackers = {}
 func _ready():
 	pass
 	
-func _process(delta):
+func _process(_delta):
 	touch_damage()
 	
 	# eventually incorperate take damage set aggro
