@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://scenes/instances/PlayerContainer.gd" type="Script" id=1]
 
@@ -12,7 +12,7 @@ extents = Vector2( 2.25, 55 )
 extents = Vector2( 25, 53.5 )
 
 [sub_resource type="RectangleShape2D" id=23]
-extents = Vector2( 28.5, 27.5 )
+extents = Vector2( 47.5, 27.5 )
 
 [sub_resource type="Animation" id=24]
 resource_name = "1h_sword"
@@ -31,6 +31,23 @@ tracks/0/keys = {
 "values": [ false, true ]
 }
 
+[sub_resource type="Animation" id=26]
+resource_name = "2h_sword "
+length = 0.96
+step = 0.06
+tracks/0/type = "value"
+tracks/0/path = NodePath("attack_range/2h_sword:disabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0.48, 0.96 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
+}
+
 [sub_resource type="Animation" id=25]
 resource_name = "RESET"
 tracks/0/type = "value"
@@ -44,6 +61,47 @@ tracks/0/keys = {
 "transitions": PoolRealArray( 1 ),
 "update": 1,
 "values": [ true ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("attack_range/2h_sword:disabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ true ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("attack_range/bow:disabled")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+
+[sub_resource type="Animation" id=27]
+resource_name = "bow"
+length = 0.96
+step = 0.06
+tracks/0/type = "value"
+tracks/0/path = NodePath("attack_range/bow:disabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray(  ),
+"transitions": PoolRealArray(  ),
+"update": 1,
+"values": [  ]
 }
 
 [node name="PlayerContainer" type="KinematicBody2D" groups=["player"]]
@@ -100,13 +158,27 @@ collision_layer = 0
 collision_mask = 32
 
 [node name="1h_sword" type="CollisionShape2D" parent="attack_range"]
+visible = false
 position = Vector2( 16.5, -2.5 )
+shape = SubResource( 23 )
+disabled = true
+
+[node name="bow" type="CollisionShape2D" parent="attack_range"]
+visible = false
+position = Vector2( 16.5, -2.5 )
+shape = SubResource( 23 )
+disabled = true
+
+[node name="2h_sword" type="CollisionShape2D" parent="attack_range"]
+position = Vector2( 35.5, -2.5 )
 shape = SubResource( 23 )
 disabled = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/1h_sword = SubResource( 24 )
+"anims/2h_sword " = SubResource( 26 )
 anims/RESET = SubResource( 25 )
+anims/bow = SubResource( 27 )
 
 [connection signal="timeout" from="Timers/idle_timer" to="." method="_on_idle_timer_timeout"]
 [connection signal="timeout" from="Timers/Timer" to="." method="_on_Timer_timeout"]
