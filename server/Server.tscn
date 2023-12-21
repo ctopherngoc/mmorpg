@@ -44,21 +44,8 @@ position = Vector2( 512, -301 )
 current = true
 script = ExtResource( 6 )
 
-[node name="Button" type="Button" parent="."]
-margin_left = 266.0
-margin_top = -148.0
-margin_right = 306.0
-margin_bottom = -128.0
-text = "Calc Damage"
-
-[node name="Button2" type="Button" parent="."]
-margin_left = 266.0
-margin_top = -119.0
-margin_right = 306.0
-margin_bottom = -99.0
-text = "Calc Attack"
-
 [node name="Test" type="Node2D" parent="."]
+visible = false
 position = Vector2( 497, -249 )
 
 [node name="PlayerContainer" parent="Test" instance=ExtResource( 8 )]
@@ -66,7 +53,21 @@ position = Vector2( 497, -249 )
 [node name="Monster" parent="Test" instance=ExtResource( 7 )]
 position = Vector2( 45, 6 )
 
+[node name="Button" type="Button" parent="Test"]
+margin_left = -231.0
+margin_top = 101.0
+margin_right = -137.0
+margin_bottom = 121.0
+text = "Calc Damage"
+
+[node name="Button2" type="Button" parent="Test"]
+margin_left = -231.0
+margin_top = 130.0
+margin_right = -149.0
+margin_bottom = 150.0
+text = "Calc Attack"
+
 [connection signal="timeout" from="PlayerVerification/VerificationExpiration" to="PlayerVerification" method="_on_VerificationExpiration_timeout"]
 [connection signal="timeout" from="TokenExpiration" to="." method="_on_TokenExpiration_timeout"]
-[connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]
-[connection signal="pressed" from="Button2" to="." method="_on_Button2_pressed"]
+[connection signal="pressed" from="Test/Button" to="." method="_on_Button_pressed"]
+[connection signal="pressed" from="Test/Button2" to="." method="_on_Button2_pressed"]
