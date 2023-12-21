@@ -249,7 +249,6 @@ func start_idle_timer():
 	idle_timer.start(1.0)
 	print("idle timer start")
 
-
 # regen 5hp every 5 seconds if idle
 func _on_idle_timer_timeout():
 	if self.position != cur_position:
