@@ -62,7 +62,7 @@ var player_info = {
 								"movementSpeed": {'integerValue': null},
 								"jumpSpeed": {'integerValue': null},
 								"avoidability": {'integerValue': null},
-								"weaponDefense": {'integerValue': null},
+								"defense": {'integerValue': null},
 								"magicDefense": {'integerValue': null},
 								"accuracy": {'integerValue': null},
 								"bossPercent": {'integerValue': null},
@@ -83,7 +83,7 @@ var player_info = {
 								"movementSpeed": {'integerValue': null},
 								"jumpSpeed": {'integerValue': null},
 								"avoidability": {'integerValue': null},
-								"weaponDefense": {'integerValue': null},
+								"defense": {'integerValue': null},
 								"magicDefense": {'integerValue': null},
 								"accuracy": {'integerValue': null},
 								"bossPercent": {'integerValue': null},
@@ -162,7 +162,7 @@ var player_template = {
 			"movementSpeed": 100,
 			"jumpSpeed": 200,
 			"avoidability": 4,
-			"weaponDefense": 0,
+			"defense": 0,
 			"magicDefense": 0,
 			"accuracy": 10,
 			"bossPercent": 1,
@@ -179,7 +179,7 @@ var player_template = {
 			"movementSpeed": 0,
 			"jumpSpeed": 0,
 			"avoidability": 0,
-			"weaponDefense": 0,
+			"defense": 0,
 			"magicDefense": 0,
 			"accuracy": 0,
 			"bossPercent": 0,
@@ -224,6 +224,15 @@ var weapon_ratio = {
 	"2h_sword": 1.5,
 	"staff": 0.8,
 	
+}
+
+var weapon_speed = {
+	1 : null,
+	2 : null,
+	3 : null,
+	4 : null,
+	5: null,
+	6 : null,
 }
 
 var starter_equips = [
@@ -290,9 +299,6 @@ func _ready():
 #	skill_data_file.close()
 #	skill_data = skill_data_json.result
 
-# figure out how to distinguish stats from equips and base stats
-# seperate then display total
-# how to deal with % stat up
 var test_pstats = {
 	"equipment": {
 		"rweapon": {
@@ -314,16 +320,16 @@ var test_pstats = {
 				"movementSpeed": 0,
 				"jumpSpeed": 0,
 				"avoidability": 0,
-				"weaponDefense": 0,
+				"defense": 0,
 				"magicDefense": 0,
 				"accuracy": 0,
 				"bossPercent": 0,
 				"damagePercent": 0,
 				"critRate": 0,
-			},
-		},
+			}, #stats
+		},# rwep
 		#"lweapon": null,
-	},
+	},#equip
 	"stats": 
 	{
 		"base": {
@@ -346,7 +352,7 @@ var test_pstats = {
 			"movementSpeed": 100,
 			"jumpSpeed": 200,
 			"avoidability": 4,
-			"weaponDefense": 0,
+			"defense": 0,
 			"magicDefense": 0,
 			"accuracy": 10,
 			"bossPercent": 1,
@@ -365,7 +371,7 @@ var test_pstats = {
 			"movementSpeed": 0,
 			"jumpSpeed": 0,
 			"avoidability": 0,
-			"weaponDefense": 0,
+			"defense": 0,
 			"magicDefense": 0,
 			"accuracy": 0,
 			"bossPercent": 0,
@@ -384,7 +390,7 @@ var test_mstats = {
 	"movementSpeed": 100,
 	"jumpSpeed": 200,
 	"avoidability": 4,
-	"physicalDefense": 16,
+	"defense": 16,
 	"magicDefense": 1,
 	"accuracy": 10,
 	"boss": 0
@@ -402,7 +408,7 @@ var equipment_stats_template = {
 	"movementSpeed": 0,
 	"jumpSpeed": 0,
 	"avoidability": 0,
-	"weaponDefense": 0,
+	"defense": 0,
 	"magicDefense": 0,
 	"accuracy": 0,
 	"bossPercent": 0,
