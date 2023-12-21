@@ -101,8 +101,8 @@ func calculate_stats(player_stats):
 	var equipment_stats = ServerData.equipment_stats_template.duplicate(true)
 	# for every item in equipment dict
 	for item in equipment.keys():
-		# for every stat in equipment.stats dict ( no null or -1)
-		if equipment[item] and equipment[item] != -1:
+		# for every stat in equipment.stats dict ( not null)
+		if equipment[item]:
 			for stat in equipment[item].stats.keys():
 				# add stat value to each stat in temp equipment dict
 				print("%s before: " % stat, equipment_stats[stat])
