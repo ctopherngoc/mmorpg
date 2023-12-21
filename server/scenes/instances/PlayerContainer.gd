@@ -62,23 +62,27 @@ func attack(move_id):
 		# no mobs overlap
 		if mob_list.size() == 0:
 			print("no mobs hit")
-		
 		# there are mobs overlap
 		else:
+			# physical mobbing auto attack class
 			if current_character.stats.base.class == "placeholder":
 				if mob_list.size() < 6:
 					for mob in mob_list:
 						var mob_parent = mob.get_parent()
-						damage_formula(current_character, 
+						var damage = Global.damage_formula(1, current_character, mob_parent.stats)
 						get_parent().npc_hit(damage, self.name)
-				
-			var closest = null
-			for monster in mob_list:
-				if closest == null:
-					closest = monster
-				else:
-					if pow((monster.position.x - self.position.x), 2) > pow((monster.position.x - self.position.x ), 2):
+			# singe mob physical basic attack
+			else:
+				var closest = null
+				for monster in mob_list:
+					if closest == null:
 						closest = monster
+					else:
+						if pow((monster.position.x - self.position.x), 2) > pow((monster.position.x - self.position.x ), 2):
+							closest = monster
+				var mob_parent = closest.get_parent()
+				var damage = Global.damage_formula(1, current_character, mob_parent.stats)
+				get_parent().npc_hit(damage, self.name)
 
 func overlapping_bodies():
 	#if $attack_range.get_overlapping_areas().size() > 0:
@@ -87,16 +91,6 @@ func overlapping_bodies():
 	for body in $attack_range.get_overlapping_areas():
 		mobs.append(body)
 	return mobs
-	"""	
-		if closest == null:
-			closest = body
-		else:
-			if pow((closest.position.x - self.position.x), 2) > pow((body.position.x - self.position.x ), 2):
-				closest = body
-	"""
-		#do_damage()
-		#closest.get_parent().npc_hit(damage, self.name)
-		#####################################################
 
 func take_damage(take_damage):
 	if hittable:
