@@ -1,6 +1,6 @@
 extends Node
 
-onready var current_scene_container = preload("res://scenes/menuObjects/LoginScreen.tscn")
+onready var current_scene_container = preload("res://scenes/menuObjects/LoginScreen/LoginScreen.tscn")
 onready var current_scene = "menu"
 onready var current_bgm = "menu"
 
@@ -8,14 +8,14 @@ onready var current_bgm = "menu"
 onready var menu_scenes = {
 	"mainMenu" : "res://scenes/menuObjects/mainMenu.tscn",
 	"register" : "res://scenes/menuObjects/RegisterScreen.tscn",
-	"login" : "res://scenes/menuObjects/LoginScreen.tscn",
-	"characterSelect" : "res://scenes/menuObjects/UserProfile.tscn",
-	"create": "res://scenes/menuObjects/Create.tscn",
+	"login" : "res://scenes/menuObjects/LoginScreen/LoginScreen.tscn",
+	"characterSelect" : "res://scenes/menuObjects/CharacterSelect/UserProfile.tscn",
+	"create": "res://scenes/menuObjects/CharacterCreate/Create.tscn",
 }
 
 func _ready():
 # warning-ignore:return_value_discarded
-	get_tree().change_scene("res://scenes/menuObjects/LoginScreen.tscn")
+	get_tree().change_scene("res://scenes/menuObjects/LoginScreen/LoginScreen.tscn")
 
 func _process(_delta):
 	# turn on music

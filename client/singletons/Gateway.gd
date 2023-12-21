@@ -37,10 +37,8 @@ func _on_connection_failed():
 	print("Pop-up server offline")
 	Server.email = null
 	Signals.emit_signal("fail_login")
-	
 	network.close_connection()
-	custom_multiplayer.set_network_peer(null)
-	custom_multiplayer.set_network_peer(null)
+	#custom_multiplayer.set_network_peer(null)
 
 
 func _on_connection_succeeded():
@@ -66,5 +64,4 @@ remote func return_login_request(results):
 	else:
 		print("Please provide correct username and pasword")
 	network.disconnect("connection_failed", self, "_on_connection_failed")
-	network.disconnect("connection_succeeded", self, "_on_connection_succeeded")
-
+	network.disconnect("connection_succeeded", self, "_on_connection_succeeded") 

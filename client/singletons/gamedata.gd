@@ -59,6 +59,63 @@ onready var equipment_sprite = {
 	"top" : "res://assets/character/spritesheet/top/",
 }
 
+"""
+{
+	avatar:{
+		bcolor:0, 
+		body:0, 
+		brow:1, 
+		ear:0, 
+		ecolor:2, 
+		eye:1, 
+		hair:2, 
+		hcolor:1, 
+		head:0, 
+		mouth:0
+	}, 
+	displayname:duma123, 
+	equipment:{
+		ammo:-1, 
+		bottom:500005, 
+		earring:-1, 
+		eyeacc:-1, 
+		faceacc:-1, 
+		glove:-1, 
+		headgear:-1, 
+		lweapon:200001, 
+		pocket:-1, 
+		rweapon:200000, 
+		tattoo:-1, 
+		top:500004
+	}, 
+	inventory:{
+		money:0
+	}, 
+	map:100002, 
+	stats:{
+		accuracy:10, 
+		ap:0, 
+		avoidability:4, 
+		class:0, 
+		dexterity:4, 
+		experience:0, 
+		health:-213, 
+		job:0, 
+		jumpSpeed:200, 
+		level:1, 
+		luck:4, 
+		magicDefense:0, 
+		mana:50, 
+		maxHealth:50, 
+		maxMana:50, 
+		movementSpeed:100, 
+		sp:0, 
+		strength:4, 
+		weaponDefense:0, 
+		wisdom:4}}
+
+
+"""
 onready var string_validation = [
 	"4r5e",
 	"5h1t",
@@ -523,27 +580,27 @@ onready var experience_table = {
 
 onready var test_player = {
 	"avatar": 
-		{"bcolor":0, 
-		"body":0, 
-		"brow":1, 
-		"ear":0, 
-		"ecolor":2, 
-		"eye":1, 
-		"hair":2, 
-		"hcolor":1, 
-		"head":0, 
-		"mouth":0}, 
+		{"bcolor":"0", 
+		"body":"0", 
+		"brow":"1", 
+		"ear":"0", 
+		"ecolor":"2", 
+		"eye":"1", 
+		"hair":"2", 
+		"hcolor":"1", 
+		"head":"0", 
+		"mouth":"0"}, 
 	"displayname":"testing", 
 	"equipment":{
-		"bottom":500005, 
-		"earring":-1, 
-		"face":-1, 
-		"glove":-1, 
-		"head":-1, 
-		"lhand":-1, 
-		"pocket":-1, 
-		"rhand":-1, 
-		"top":500004}, 
+		"bottom":"500005", 
+		"earring":"-1", 
+		"face":"-1", 
+		"glove":"-1", 
+		"head":"-1", 
+		"lhand":"-1", 
+		"pocket":"-1", 
+		"rhand":"-1", 
+		"top":"500004"}, 
 	"inventory":{
 		"money":0},
 		"map":100000, 

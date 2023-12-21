@@ -2,6 +2,7 @@ extends Node
 var port = 2733
 var token
 var email
+var network = null
 
 var login_status = 0
 
@@ -29,7 +30,7 @@ func _physics_process(delta):
 ######################################################################
 # Server connection/latency functions
 func connect_to_server():
-	var network = NetworkedMultiplayerENet.new()
+	network = NetworkedMultiplayerENet.new()
 	network.create_client(Global.ip, port)
 	get_tree().set_network_peer(network)
 
@@ -245,4 +246,8 @@ remote func receive_climb_data(climb_data):
 	else:
 		player.can_climb = false
 		player.is_climbing = false
-	
+
+func logout():
+	timer.stop()
+	network.close_connection()
+	SceneHandler.change_scene("login")

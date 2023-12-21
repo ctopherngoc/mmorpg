@@ -1,0 +1,328 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://resources/Fonts/Alegreya/alegreya-sans.medium.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://scenes/menuObjects/Options/godot-simpleTheme-master/simpleTheme.tres" type="Theme" id=2]
+[ext_resource path="res://scenes/userInerface/InGameUI/OptionMenu/InGameMenu.gd" type="Script" id=3]
+[ext_resource path="res://scenes/menuObjects/Options/Options.tscn" type="PackedScene" id=4]
+
+[sub_resource type="StyleBoxEmpty" id=2]
+
+[sub_resource type="StyleBoxFlat" id=1]
+
+[sub_resource type="Animation" id=3]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("loading:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("loading:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ false ]
+}
+
+[sub_resource type="Animation" id=4]
+resource_name = "loading"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("loading:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("loading:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
+}
+tracks/2/type = "method"
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 2 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "LoadNextScene"
+} ]
+}
+
+[sub_resource type="DynamicFont" id=5]
+size = 24
+use_filter = true
+font_data = ExtResource( 1 )
+
+[sub_resource type="Animation" id=6]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("CenterContainer/Label:percent_visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.75 ]
+}
+
+[sub_resource type="Animation" id=7]
+resource_name = "loading"
+length = 3.0
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("CenterContainer/Label:percent_visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0.4, 1.5, 2.4 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ 1.0, 0.75, 1.0 ]
+}
+
+[node name="InGameMenu" type="Control"]
+pause_mode = 2
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 100.0
+margin_top = 100.0
+margin_right = -100.0
+margin_bottom = -100.0
+script = ExtResource( 3 )
+
+[node name="BackGround" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0.694118, 0.901961, 0.937255, 0.741176 )
+
+[node name="menu" type="HBoxContainer" parent="."]
+modulate = Color( 1, 1, 1, 0.490196 )
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -67.5
+margin_right = 67.5
+alignment = 1
+
+[node name="VSeparator" type="VSeparator" parent="menu"]
+margin_left = 6.0
+margin_right = 30.0
+margin_bottom = 520.0
+custom_constants/separation = 24
+custom_styles/separator = SubResource( 2 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="menu"]
+margin_left = 34.0
+margin_right = 101.0
+margin_bottom = 520.0
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Title" type="Label" parent="menu/VBoxContainer"]
+margin_top = 169.0
+margin_right = 67.0
+margin_bottom = 192.0
+theme = ExtResource( 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Menu"
+align = 1
+
+[node name="spacer" type="HSeparator" parent="menu/VBoxContainer"]
+margin_top = 196.0
+margin_right = 67.0
+margin_bottom = 246.0
+custom_constants/separation = 50
+custom_styles/separator = SubResource( 1 )
+
+[node name="resume" type="Button" parent="menu/VBoxContainer"]
+margin_top = 250.0
+margin_right = 67.0
+margin_bottom = 281.0
+theme = ExtResource( 2 )
+text = "Resume"
+
+[node name="Options" type="Button" parent="menu/VBoxContainer"]
+margin_top = 285.0
+margin_right = 67.0
+margin_bottom = 316.0
+theme = ExtResource( 2 )
+text = "Options"
+
+[node name="End" type="Button" parent="menu/VBoxContainer"]
+margin_top = 320.0
+margin_right = 67.0
+margin_bottom = 351.0
+theme = ExtResource( 2 )
+text = "Main Menu"
+
+[node name="VSeparator2" type="VSeparator" parent="menu"]
+margin_left = 105.0
+margin_right = 129.0
+margin_bottom = 520.0
+custom_constants/separation = 24
+custom_styles/separator = SubResource( 2 )
+
+[node name="Options" parent="." instance=ExtResource( 4 )]
+visible = false
+modulate = Color( 1, 1, 1, 0.498039 )
+
+[node name="Label" parent="Options/PanelContainer" index="0"]
+margin_right = 1080.0
+
+[node name="TabContainer" parent="Options/PanelContainer" index="1"]
+margin_right = 1080.0
+margin_bottom = 520.0
+
+[node name="VSeparator2" parent="Options/PanelContainer/TabContainer/Sound" index="0"]
+margin_right = 357.0
+margin_bottom = 481.0
+
+[node name="Sliders" parent="Options/PanelContainer/TabContainer/Sound" index="1"]
+margin_left = 361.0
+margin_right = 718.0
+margin_bottom = 481.0
+
+[node name="Label4" parent="Options/PanelContainer/TabContainer/Sound/Sliders" index="0"]
+margin_top = 172.0
+margin_right = 357.0
+margin_bottom = 195.0
+
+[node name="MasterSlider" parent="Options/PanelContainer/TabContainer/Sound/Sliders" index="1"]
+margin_top = 199.0
+margin_right = 357.0
+margin_bottom = 215.0
+
+[node name="Label2" parent="Options/PanelContainer/TabContainer/Sound/Sliders" index="2"]
+margin_top = 219.0
+margin_right = 357.0
+margin_bottom = 242.0
+
+[node name="SoundSlider" parent="Options/PanelContainer/TabContainer/Sound/Sliders" index="3"]
+margin_top = 246.0
+margin_right = 357.0
+margin_bottom = 262.0
+
+[node name="Label3" parent="Options/PanelContainer/TabContainer/Sound/Sliders" index="4"]
+margin_top = 266.0
+margin_right = 357.0
+margin_bottom = 289.0
+
+[node name="EffectsSlider" parent="Options/PanelContainer/TabContainer/Sound/Sliders" index="5"]
+margin_top = 293.0
+margin_right = 357.0
+margin_bottom = 309.0
+
+[node name="VSeparator" parent="Options/PanelContainer/TabContainer/Sound" index="2"]
+margin_left = 722.0
+margin_right = 1080.0
+margin_bottom = 481.0
+
+[node name="back" parent="Options/PanelContainer" index="2"]
+margin_top = 489.0
+margin_right = 1080.0
+margin_bottom = 520.0
+
+[node name="QuitConfirm" type="ConfirmationDialog" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -78.0
+margin_top = -29.0
+margin_right = 122.0
+margin_bottom = 142.0
+rect_min_size = Vector2( 400, 140 )
+theme = ExtResource( 2 )
+window_title = "Alert"
+resizable = true
+dialog_text = "Do You Want to Leave this Level and Go back to the Main Menu?"
+dialog_hide_on_ok = false
+dialog_autowrap = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/RESET = SubResource( 3 )
+anims/loading = SubResource( 4 )
+
+[node name="loading" type="Control" parent="."]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="overlay" type="ColorRect" parent="loading"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0.929412, 0.913725, 0.870588, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CenterContainer" type="CenterContainer" parent="loading"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Label" type="Label" parent="loading/CenterContainer"]
+margin_left = 493.0
+margin_top = 245.0
+margin_right = 586.0
+margin_bottom = 275.0
+theme = ExtResource( 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 5 )
+text = "Loading..."
+percent_visible = 0.75
+
+[node name="loading" type="AnimationPlayer" parent="loading"]
+autoplay = "loading"
+anims/RESET = SubResource( 6 )
+anims/loading = SubResource( 7 )
+
+[connection signal="pressed" from="menu/VBoxContainer/resume" to="." method="_on_resume_pressed"]
+[connection signal="button_down" from="menu/VBoxContainer/Options" to="." method="_on_Options_button_down"]
+[connection signal="button_down" from="menu/VBoxContainer/End" to="." method="_on_End_button_down"]
+[connection signal="pressed" from="Options/PanelContainer/back" to="." method="_on_back_pressed"]
+[connection signal="confirmed" from="QuitConfirm" to="." method="_on_AcceptDialog_confirmed"]
+
+[editable path="Options"]
+[editable path="Options/PanelContainer/TabContainer/Sound"]
+[editable path="Options/PanelContainer/TabContainer/Video"]

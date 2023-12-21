@@ -53,3 +53,11 @@ position = Vector2( 104, -272 )
 
 [node name="UI" parent="." instance=ExtResource( 4 )]
 layer = 2
+
+[connection signal="focus_entered" from="UI/InGameMenu/menu/VBoxContainer/resume" to="UI/InGameMenu" method="focus_entered"]
+[connection signal="focus_entered" from="UI/InGameMenu/menu/VBoxContainer/Options" to="UI/InGameMenu" method="focus_entered"]
+[connection signal="focus_entered" from="UI/InGameMenu/menu/VBoxContainer/End" to="UI/InGameMenu" method="focus_entered"]
+
+[editable path="UI"]
+[editable path="UI/InGameMenu"]
+[editable path="UI/InGameMenu/Options"]

@@ -94,4 +94,4 @@ func fill_player_container(player_container):
 	print("fill_player_container completed")
 		
 	# temp player stats
-	player_container.player_stats = ServerData.test_data.Stats
+	#player_container.player_stats = ServerData.test_data.Stats
