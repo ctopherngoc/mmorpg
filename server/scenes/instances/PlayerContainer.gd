@@ -5,6 +5,7 @@ onready var http2 = $HTTP/HTTPRequest2
 onready var timer =$Timers/Timer
 onready var idle_timer =$Timers/idle_timer
 onready var damage_timer = $Timers/DamageTimer
+onready var animation = $Animationplayer
 #contains token and id
 var db_info = {}
 
@@ -45,47 +46,38 @@ func attack(move_id):
 	attacking = true
 	#basic attack
 	if move_id == 0:
-		pass
-	"""
-		# if char.weapon == xxx: 1 hand
-			play swing.speed()
-			overlapping bodies
-			get list of overlapping bodies
-			get closest one
-			body.do_damage
-				return damage
-			send server damage
-			rpc call all clients to show damage?
-			return attack call
-		
-		# elif char.weapon = xxx: large
-			play swing.speed ()
-		
+		var equipment = current_character.equipment
+		if equipment.rweapon.type == "1h_sword":
+			animation.play("1h_sword",-1, ServerData.weapon_speed[equipment.rweapon.speed])
+		elif equipment.rweapon.type == "2h_sword":
+			pass
+		elif equipment.weapon.type == "bow":
 		# else ranged weapon:
-			if has ammo
-				play.shoot()
+			if equipment.ammo.amount > 0:
+				animation.play("bow",-1, ServerData.weapon_speed[equipment.rweapon.speed])
 			else:
-				return no ammo
+				return "not enough ammo"
+		overlapping_bodies()
 		
-	"""
-	#$AnimationPlayer.play("attack")
 func overlapping_bodies():
-	if $do_damage.get_overlapping_areas().size() > 0:
+	if $attack_range.get_overlapping_areas().size() > 0:
 		var closest = null
-		for body in $do_damage.get_overlapping_areas():
-			if closest == null:
-				closest = body
-			else:
-				if pow((closest.position.x - self.position.x), 2) > pow((body.position.x - self.position.x ), 2):
+		# multi hit based on class currently
+		if current_character.stats.base.class != "placeholder":
+			for body in $attack_range.get_overlapping_areas():
+				if closest == null:
 					closest = body
 				else:
-					pass
+					if pow((closest.position.x - self.position.x), 2) > pow((body.position.x - self.position.x ), 2):
+						closest = body
+		# for classes that hit multiple monsters with basic/skill attacks
+		else:
+			pass
+		# figure out of container does dmg or monster detects damage is better
 		####################################################			
 		do_damage()
 		#closest.get_parent().npc_hit(damage, self.name)
 		#####################################################
-	else:
-		pass
 
 func take_damage(take_damage):
 	if hittable:
