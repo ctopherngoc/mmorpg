@@ -459,8 +459,10 @@ remote func logout():
 
 
 func _on_Button_pressed():
-	Global.damage_formula(1, ServerData.test_pstats, ServerData.test_mstats)
+	$Test/PlayerContainer.attack(0)
+	#Global.damage_formula(1, ServerData.test_pstats, ServerData.test_mstats)
 
 
+# function takes current_character
 func _on_Button2_pressed():
-	Global.calculate_stats(ServerData.test_pstats)
+	Global.calculate_stats($Test/PlayerContainer.current_character)
