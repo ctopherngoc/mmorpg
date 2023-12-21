@@ -57,25 +57,44 @@ func attack(move_id):
 				animation.play("bow",-1, ServerData.weapon_speed[equipment.rweapon.speed])
 			else:
 				return "not enough ammo"
-		overlapping_bodies()
+		var mob_list = overlapping_bodies()
 		
-func overlapping_bodies():
-	if $attack_range.get_overlapping_areas().size() > 0:
-		var closest = null
-		# multi hit based on class currently
-		if current_character.stats.base.class != "placeholder":
-			for body in $attack_range.get_overlapping_areas():
-				if closest == null:
-					closest = body
-				else:
-					if pow((closest.position.x - self.position.x), 2) > pow((body.position.x - self.position.x ), 2):
-						closest = body
-		# for classes that hit multiple monsters with basic/skill attacks
+		# no mobs overlap
+		if mob_list.size() == 0:
+			print("no mobs hit")
+		
+		# there are mobs overlap
 		else:
-			pass
-		# figure out of container does dmg or monster detects damage is better
-		####################################################			
-		do_damage()
+			if current_character.stats.base.class == "placeholder":
+				if mob_list.size() < 6:
+					for mob in mob_list:
+						var mob_parent = mob.get_parent()
+						damage_formula(current_character, 
+						get_parent().npc_hit(damage, self.name)
+				
+			var closest = null
+			for monster in mob_list:
+				if closest == null:
+					closest = monster
+				else:
+					if pow((monster.position.x - self.position.x), 2) > pow((monster.position.x - self.position.x ), 2):
+						closest = monster
+
+func overlapping_bodies():
+	#if $attack_range.get_overlapping_areas().size() > 0:
+	var mobs = []
+	# multi hit based on class currently
+	for body in $attack_range.get_overlapping_areas():
+		mobs.append(body)
+	return mobs
+	"""	
+		if closest == null:
+			closest = body
+		else:
+			if pow((closest.position.x - self.position.x), 2) > pow((body.position.x - self.position.x ), 2):
+				closest = body
+	"""
+		#do_damage()
 		#closest.get_parent().npc_hit(damage, self.name)
 		#####################################################
 
