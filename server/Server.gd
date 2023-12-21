@@ -398,17 +398,9 @@ remote func received_player_state(player_state):
 	if  input != [0,0,0,0,0]:
 		player_container.input_queue.append(player_state["P"])
 
-<<<<<<< HEAD
 	var map_node = get_node(ServerData.player_location[str(player_id)])
 # warning-ignore:unused_variable
 	var server_position_offset = map_node.get_global_position()
-=======
-	#var map_node = get_node(ServerData.player_location[str(player_id)])
-	#var server_position_offset = map_node.get_global_position()
-
-	# calculate local position -> send back to clients
-	#var final_position = Vector2((player_container.position.x - server_position_offset.x), (player_container.position.y - server_position_offset.y))
->>>>>>> main
 
 	player_state["U"] = ServerData.username_list[str(player_id)]
 	player_state["P"] = player_container.position
