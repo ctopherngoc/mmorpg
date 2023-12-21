@@ -37,32 +37,65 @@ var player_info = {
 	"displayname": {'stringValue': null},
 	"map": {'stringValue': null},
 	"stats" : { "mapValue":
-		{"fields": {
-			"maxHealth": {'integerValue': null},
-			"health": {'integerValue': null},
-			"maxMana": {'integerValue': null},
-			"mana": {'integerValue': null},
-			"level": {'integerValue': null},
-			"experience": {'integerValue': null},
-			"class": {'integerValue': null},
-			"job": {'integerValue': null},
-			"sp": {'integerValue': null},
-			"ap": {'integerValue': null},
-			"strength": {'integerValue': null},
-			"wisdom": {'integerValue': null},
-			"dexterity": {'integerValue': null},
-			"luck": {'integerValue': null},
-			"movementSpeed": {'integerValue': null},
-			"jumpSpeed": {'integerValue': null},
-			"avoidability": {'integerValue': null},
-			"weaponDefense": {'integerValue': null},
-			"magicDefense": {'integerValue': null},
-			"accuracy": {'integerValue': null},
-			"bossPercent": {'integerValue': null},
-			"dmgPercent": {'integerValue': null},
-			"critRate": {'integerValue': null},
-		}#fields
-		}#mapvalue
+		{"fields": 
+			{"mapValue":
+				{"fields":
+					{"base":
+						{"mapValue": 
+							{"fields":
+								{"maxRange": {'integerValue': null},
+								"minRange": {'integerValue': null},
+								"maxHealth": {'integerValue': null},
+								"health": {'integerValue': null},
+								"maxMana": {'integerValue': null},
+								"mana": {'integerValue': null},
+								"level": {'integerValue': null},
+								"experience": {'integerValue': null},
+								"class": {'integerValue': null},
+								"job": {'integerValue': null},
+								"sp": {'integerValue': null},
+								"ap": {'integerValue': null},
+								"strength": {'integerValue': null},
+								"wisdom": {'integerValue': null},
+								"dexterity": {'integerValue': null},
+								"luck": {'integerValue': null},
+								"movementSpeed": {'integerValue': null},
+								"jumpSpeed": {'integerValue': null},
+								"avoidability": {'integerValue': null},
+								"weaponDefense": {'integerValue': null},
+								"magicDefense": {'integerValue': null},
+								"accuracy": {'integerValue': null},
+								"bossPercent": {'integerValue': null},
+								"dmgPercent": {'integerValue': null},
+								"critRate": {'integerValue': null},
+							}, #fields
+						}, #mapvalue
+					}, #base
+					"equipment":
+						{"mapValue":
+							{"fields":
+								{"maxHealth": {'integerValue': null},
+								"maxMana": {'integerValue': null},
+								"strength": {'integerValue': null},
+								"wisdom": {'integerValue': null},
+								"dexterity": {'integerValue': null},
+								"luck": {'integerValue': null},
+								"movementSpeed": {'integerValue': null},
+								"jumpSpeed": {'integerValue': null},
+								"avoidability": {'integerValue': null},
+								"weaponDefense": {'integerValue': null},
+								"magicDefense": {'integerValue': null},
+								"accuracy": {'integerValue': null},
+								"bossPercent": {'integerValue': null},
+								"dmgPercent": {'integerValue': null},
+								"critRate": {'integerValue': null},
+							}, #fields
+						}, # mapvalue
+					}, #equipment
+				}, #fields
+			},#mapvalue
+		}, #fields
+		}, #mapvalue
 	}, #stats
 	"avatar" : { "mapValue":
 		{"fields" :{
@@ -94,14 +127,14 @@ var player_info = {
 			"rweapon": {'integerValue': null},
 			"tattoo": {'integerValue': null},
 			}#fields
-			}#mapvalue
-			}, #equipment
+		}#mapvalue
+	}, #equipment
 	"inventory" : {"mapValue":
 		{"fields": 
 			{"money": {'integerValue': null},
 			}#fields
-			}#mapvalue
-			} #inventory
+		}#mapvalue
+	}, #inventory
 }
 
 # used by server
@@ -109,6 +142,9 @@ var player_template = {
 	"displayname": null,
 	"map": "100001",
 	"stats" : {
+		"base": {
+			"maxRange": 0,
+			"minRange": 0,
 			"health": 50,
 			"mana": 50,
 			"maxHealth": 50,
@@ -132,7 +168,26 @@ var player_template = {
 			"bossPercent": 1,
 			"dmgPercent": 1,
 			"critRate": 5,
-		}, #stats
+		},
+	"equipment": {
+			"maxHealth": 0,
+			"maxMana": 0,
+			"strength": 0,
+			"wisdom": 0,
+			"dexterity": 0,
+			"luck": 0,
+			"movementSpeed": 0,
+			"jumpSpeed": 0,
+			"avoidability": 0,
+			"weaponDefense": 0,
+			"magicDefense": 0,
+			"accuracy": 0,
+			"bossPercent": 0,
+			"dmgPercent": 0,
+			"critRate": 0,
+		
+	}
+	}, #stats
 	"avatar" : {
 		"head": null,
 		"hair": null,
@@ -273,6 +328,7 @@ var test_pstats = {
 	{
 		"base": {
 			"maxRange": 50,
+			"minRange": 0,
 			"health": 50,
 			"mana": 50,
 			"maxHealth": 50,
