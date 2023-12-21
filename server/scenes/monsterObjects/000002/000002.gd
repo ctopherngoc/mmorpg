@@ -16,11 +16,11 @@ var current_hp = 50
 var max_hp = 50
 var state = "idle"
 var stats = {
-	"Attack" : 15,
-	"Defense" : 20,
-	"Magic Defense" : 10,
-	"Accuracy" : 15,
-	"Avoidability" : 10,
+	"attack" : 15,
+	"defense" : 20,
+	"magicDefense" : 10,
+	"accuracy" : 15,
+	"avoidability" : 10,
 }
 var rng = RandomNumberGenerator.new()
 var max_speed = 100
