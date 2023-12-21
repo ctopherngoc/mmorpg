@@ -49,21 +49,33 @@ func send_climb_data(player_id, climb_data):
 
 func damage_formula(type: bool, player_dict: Dictionary, target_stats: Dictionary):
 	var stats = player_dict.stats
-	if stats["accuracy"] >= target_stats["avoidability"]:
+	if stats.base.accuracy + stats.equipment.accuracy >= target_stats.avoidability:
 		print("Acc >= Avoid")
-		var crit_ratio = calculate_crit(stats["critRate"])
-		var damage
+		var crit_rate = stats.base.critRate + stats.equipment.critRate
+		var crit_ratio = calculate_crit(crit_rate)
+		var damage = rng.randi_range(stats.base.minRange, stats.base.maxRange)
+		print("damage before: ", damage)
 		if type:
 			print("phyiscal")
-			damage = float(stats.attack * stats.attack / target_stats["physicalDefense"])
-			print("damage %s" % damage)
+			if stats.base.maxRange >= target_stats["physicalDefense"]:
+				damage = float( damage * 2 - target_stats["physicalDefense"])
+			else:
+				damage = float( damage * damage / target_stats["physicalDefense"])
+			print("damage after %s" % damage)
 		#magic damage
 		else:
-			damage = float(stats.magic * stats.magic / target_stats["magicDefense"])
-		damage = damage * ((float(stats["damagePercent"]) * 0.1) + 1.0)
+			
+			damage = float(stats.base.magic * stats.equipment.magic / target_stats["magicDefense"])
+		damage = damage * ((float(stats.base["damagePercent"] + stats.equipment.damagePercent) * 0.1) + 1.0)
 		print("after dmg_percent: %s" % damage)
+		
+		#######################
+		# mastery calculation for mindmg
+		# mindmg = maxRange * mastery
+		# var damage = rng.randi_range(minRange,maxRange)
+		#######################
 		if target_stats["boss"] == 1:
-			damage = damage * ((float(stats["bossPercent"]) * 0.1) + 1.0)
+			damage = damage * ((float(stats.base["bossPercent"] + stats.equipment.bossPercent) * 0.1) + 1.0)
 			print("After boss percent: %s" % damage)
 		var final_damage = int(damage * crit_ratio)
 		print("final damage: %s" % final_damage)
@@ -87,7 +99,7 @@ so you can reference the min/max damage range from data instead of recalcualting
 func calculate_stats(player_stats):
 	var equipment = player_stats.equipment
 	var stats = player_stats.stats
-	var equipment_stats = ServerData.equipment_stats_template
+	var equipment_stats = ServerData.equipment_stats_template.duplicate(true)
 	# for every item in equipment dict
 	for item in equipment.keys():
 		# for every stat in equipment.stats dict
@@ -103,10 +115,11 @@ func calculate_stats(player_stats):
 	var base = stats.base
 	var equip = stats.equipment
 	
-	# beginner class
+	# beginner class 
 	# (base stats: int + total equip stats: int) + int(float(total equipment attack: int) * weapon ratio: float)
 	if base.job == 0:
 		base.maxRange = (base.strength + base.wisdom + base.dexterity + base.luck + equip.strength + equip.wisdom + equip.dexterity + equip.luck) + int((float(equip.attack) * ServerData.weapon_ratio[equipment.rweapon.type]))
+		base.minRange = int(float(base.maxRange) * 0.2)
 		print(base.maxRange)
 	else:
 		pass
