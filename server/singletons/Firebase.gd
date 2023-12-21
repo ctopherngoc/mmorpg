@@ -3,10 +3,7 @@ extends Node
 const API_KEY := "AIzaSyC2PkBqVa6lm9zG7gfy7MLZvNpRytA8klU"
 const PROJECT_ID := "godotproject-ef224"
 const DATABASE_URL := "https://firestore.googleapis.com/v1/projects/%s/databases/(default)/documents/" % PROJECT_ID 
-<<<<<<< HEAD
-=======
 const LOGIN_URL := "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=%s" % API_KEY
->>>>>>> main
 var user_info := {}
 var httprequest = null
 var server_token = ""
@@ -159,6 +156,7 @@ func _server_get_document(path: String, http: HTTPRequest)-> void:
 		var document_list = result_body["documents"]
 		for document in document_list:
 			var character = document["name"].replace("projects/godotproject-ef224/databases/(default)/documents/characters/", "")
+			#print(document["fields"])
 			ServerData.characters_data[character] = new_firebase_dictionary_converter(document["fields"])
 
 # warning-ignore:unused_argument
