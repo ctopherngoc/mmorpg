@@ -207,7 +207,7 @@ var player_template = {
 			"top": null,
 			"bottom": null,
 			"glove": -1,
-			"weapon": -1,
+			"lweapon": -1,
 			"rweapon": -1,
 			"pocket": -1,
 			"tattoo": -1,
