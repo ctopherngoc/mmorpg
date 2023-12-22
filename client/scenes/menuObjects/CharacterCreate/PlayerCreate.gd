@@ -10,7 +10,7 @@ onready var mouth = $CompositeSprite/Mouth
 onready var outfit = $CompositeSprite/Outfit
 
 
-const composite_sprites = preload("res://scenes/menuObjects/CompositeSprite.gd")
+const composite_sprites = preload("res://scenes/menuObjects/CharacterCreate/CompositeSprite.gd")
 var curr_bcolor: int = 0
 var curr_body: int = 0
 var curr_head: int = 0
