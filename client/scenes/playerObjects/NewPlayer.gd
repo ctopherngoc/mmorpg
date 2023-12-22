@@ -19,10 +19,10 @@ var held_down = false
 onready var sprite = $CompositeSprite/AnimationPlayer
 
 func _ready():
-	max_horizontal_speed = (Global.player.stats.movementSpeed)
+	max_horizontal_speed = (Global.player.stats.base.movementSpeed)
 	# warning-ignore:return_value_discarded
 	Signals.connect("dialog_closed", self, "movable_switch")
-	jump_speed = (Global.player.stats.jumpSpeed)
+	jump_speed = (Global.player.stats.base.jumpSpeed)
 	Global.in_game = true
 
 func _physics_process(delta):
