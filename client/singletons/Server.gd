@@ -195,28 +195,28 @@ remote func update_player_stats(player_stats):
 			character = player_stats
 
 			# change in health
-			if player_stats["stats"]["health"] != Global.player["stats"]["health"]:
+			if player_stats["stats"]["base"]["health"] != Global.player["stats"]["base"]["health"]:
 
 				# lose health
-				if player_stats["stats"]["health"] < Global.player["stats"]["health"]:
-					print("Player took %s damage." % str(character["stats"]["health"] - player_stats["stats"]["health"]))
+				if player_stats["stats"]["base"]["health"] < Global.player["stats"]["base"]["health"]:
+					print("Player took %s damage." % str(character["stats"]["base"]["health"] - player_stats["stats"]["base"]["health"]))
 				# gained health
 				else:
-					print("Player healed %s health." % str(abs(character["stats"]["health"] - player_stats["stats"]["health"])))
-				Global.player["stats"]["health"] = player_stats["stats"]["health"]
+					print("Player healed %s health." % str(abs(character["stats"]["base"]["health"] - player_stats["stats"]["base"]["health"])))
+				Global.player["stats"]["base"]["health"] = player_stats["stats"]["base"]["health"]
 				Signals.emit_signal("update_health")
 				
 			# level check -> exp check
-			if player_stats["stats"]["level"] > Global.player["stats"]["level"]:
+			if player_stats["stats"]["base"]["level"] > Global.player["stats"]["base"]["level"]:
 				print("Level up")
-				Global.player["stats"]["experience"] = player_stats["stats"]["experience"]
-				Global.player["stats"]["level"] = player_stats["stats"]["level"]
+				Global.player["stats"]["base"]["experience"] = player_stats["stats"]["base"]["experience"]
+				Global.player["stats"]["base"]["level"] = player_stats["stats"]["base"]["level"]
 				Signals.emit_signal("update_level")
 				Signals.emit_signal("update_exp")
 
-			elif player_stats["stats"]["experience"] > Global.player["stats"]["experience"]:
-					print("Player gained %s exp." % str(player_stats["stats"]["experience"] - Global.player["stats"]["experience"]))
-					Global.player["stats"]["experience"] = player_stats["stats"]["experience"]
+			elif player_stats["stats"]["base"]["experience"] > Global.player["stats"]["base"]["experience"]:
+					print("Player gained %s exp." % str(player_stats["stats"]["base"]["experience"] - Global.player["stats"]["base"]["experience"]))
+					Global.player["stats"]["base"]["experience"] = player_stats["stats"]["base"]["experience"]
 					Signals.emit_signal("update_exp")
 			break
 
