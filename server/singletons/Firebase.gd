@@ -153,12 +153,13 @@ func _server_get_document(path: String, http: HTTPRequest)-> void:
 	# currently specific character
 	elif "characters" in path:
 		print("in characters")
-		var document_list = result_body["documents"]
-		for document in document_list:
-			var character = document["name"].replace("projects/godotproject-ef224/databases/(default)/documents/characters/", "")
-			#print(document["fields"])
-			ServerData.characters_data[character] = new_firebase_dictionary_converter(document["fields"])
-
+		if "documents" in result_body.keys():
+			var document_list = result_body["documents"]
+			for document in document_list:
+				var character = document["name"].replace("projects/godotproject-ef224/databases/(default)/documents/characters/", "")
+				#print(document["fields"])
+				ServerData.characters_data[character] = new_firebase_dictionary_converter(document["fields"])
+			
 # warning-ignore:unused_argument
 func _server_update_document(http: HTTPRequest, array, action: String) -> void:
 
@@ -206,10 +207,17 @@ func new_firebase_dictionary_converter(database_data: Dictionary):
 	# stats
 	var shortcut = database_data["stats"]["mapValue"]["fields"]
 	var keys = shortcut.keys()
-	temp_dict['stats'] = {}
+	temp_dict['stats'] = {
+		"base": {},
+		"equipment" : {}
+		}
 	for key in keys:
-		# added situation if value saved as integervalue
-		temp_dict['stats'][key] = int(shortcut[key]['integerValue'])
+		var shortcut2 = shortcut[key]["mapValue"]["fields"]
+		var keys2 = shortcut2.keys()
+		for key2 in keys2:
+			# added situation if value saved as integervalue
+			#print(shortcut2)
+			temp_dict['stats'][key][key2] = int(shortcut2[key2]['integerValue'])
 
 	# avatar
 	shortcut = database_data["avatar"]["mapValue"]["fields"]
@@ -297,6 +305,7 @@ func firebase_dictionary_converter(database_data: Dictionary, client_data: Array
 	client_data.append(temp_dict)
 
 func server_dictionary_converter(server_data: Dictionary, firebase_data: Dictionary):
+	print(server_data)
 	"""
 	currently takes singular character information dictionary and converts to firebase dictionary
 	must loop for whole account to be saved
@@ -311,8 +320,13 @@ func server_dictionary_converter(server_data: Dictionary, firebase_data: Diction
 	var shortcut = server_data["stats"]
 	var keys = shortcut.keys()
 	var fb_shortcut = firebase_data['stats']['mapValue']['fields']
+	# base, equipment
 	for key in keys:
-		fb_shortcut[key]['integerValue'] = int(shortcut[key])
+		var shortcut_keys2 = shortcut[key].keys()
+		# stats
+		for key2 in shortcut_keys2:
+			print(key, " ", key2)
+			fb_shortcut[key]['mapValue']['fields'][key2]['integerValue'] = int(shortcut[key][key2])
 	
 	# avatar
 	shortcut = server_data["avatar"]
