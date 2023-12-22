@@ -29,21 +29,21 @@ func populate_info():
 		character_count = size
 		if size >= 1:
 			$CharacterBox/Character1.visible = true
-			$CharacterBox/Character1/Container/CharacterName/LineEdit.text = str(Global.character_list[0]["displayname"])
-			$CharacterBox/Character1/Container/Level/LineEdit.text = str(Global.character_list[0]["stats"]["level"])
+			$CharacterBox/Character1/Container/CharacterName/LineEdit.text = str(Global.character_list[0].displayname)
+			$CharacterBox/Character1/Container/Level/LineEdit.text = str(Global.character_list[0].stats.base.level)
 			$CharacterBox/Character1.character_info = Global.character_list[0]
 
 		if size >= 2:
 			$CharacterBox/Character2.visible = true
-			$CharacterBox/Character2/Container/CharacterName/LineEdit.text = str(Global.character_list[1]["displayname"])
-			$CharacterBox/Character2/Container/Level/LineEdit.text = str(Global.character_list[1]["stats"]["level"])
+			$CharacterBox/Character2/Container/CharacterName/LineEdit.text = str(Global.character_list[1].displayname)
+			$CharacterBox/Character2/Container/Level/LineEdit.text = str(Global.character_list[1].stats.base.level)
 			$CharacterBox/Character2.character_info = Global.character_list[1]
 
 		if size == 3:
 			create_button.disabled = true
 			$CharacterBox/Character3.visible = true
-			$CharacterBox/Character3/Container/CharacterName/LineEdit.text = str(Global.character_list[2]["displayname"])
-			$CharacterBox/Character3/Container/Level/LineEdit.text = str(Global.character_list[2]["stats"]["level"])
+			$CharacterBox/Character3/Container/CharacterName/LineEdit.text = str(Global.character_list[2].displayname)
+			$CharacterBox/Character3/Container/Level/LineEdit.text = str(Global.character_list[2].stats.base.level)
 			$CharacterBox/Character3.character_info = Global.character_list[2]
 
 		notification.text = "Profile Loaded"
@@ -80,17 +80,17 @@ func _on_button3_pressed():
 func _on_select_pressed():
 	$Select.disabled = true
 	if Global.player:
-		Server.choose_character(get_instance_id(), Global.player['displayname'])
+		Server.choose_character(get_instance_id(), Global.player.displayname)
 	else:
 		$Select.disabled = false
 		
 func load_world():
-	SceneHandler.change_scene(Global.player['map']) 
+	SceneHandler.change_scene(Global.player.map) 
 
 func _on_delete_pressed():
 	print('Attempting to delete selected character')
 	$Delete.disabled = true
-	Server.delete_character(get_instance_id(), Global.player['displayname'])
+	Server.delete_character(get_instance_id(), Global.player.displayname)
 """
 func _on_create_pressed():
 	create_button.disabled = true
