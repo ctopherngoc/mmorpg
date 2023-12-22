@@ -202,7 +202,6 @@ func new_firebase_dictionary_converter(database_data: Dictionary):
 	# displayname and position
 	temp_dict['displayname'] = database_data["displayname"]['stringValue']
 	temp_dict['map'] = database_data["map"]['integerValue']
-	#temp_dict['position'] = database_data["position"]['doubleValue']
 
 	# stats
 	var shortcut = database_data["stats"]["mapValue"]["fields"]
@@ -232,7 +231,26 @@ func new_firebase_dictionary_converter(database_data: Dictionary):
 	keys = shortcut.keys()
 	temp_dict['equipment'] = {}
 	for key in keys:
-		temp_dict['equipment'][key] = shortcut[key]['integerValue']
+		if shortcut[key] == 'integerValue':
+			temp_dict['equipment'][key] = shortcut[key]['integerValue']
+		else:
+			temp_dict['equipment'][key] = {}
+			var shortcut2 = shortcut[key]["mapValue"]["fields"]
+			var keys2 = shortcut2.keys()
+			for key2 in keys2:
+				if shortcut2[key2] == 'integerValue':
+					temp_dict['equipment'][key][key2] = shortcut2[key2]['intergerValue']
+				elif shortcut2[key2] == 'stringValue':
+					temp_dict['equipment'][key][key2] = shortcut2[key2]['stringValue']
+				else:
+					var shortcut3 = shortcut2[key2]["mapValue"]["fields"]
+					var keys3 = shortcut3.keys()
+					for key3 in keys3:
+						if shortcut3[key3] == 'integerValue':
+							temp_dict['equipment'][key][key2][key3] = shortcut3[key3]['intergerValue']
+						elif shortcut3[key3] == 'stringValue':
+							temp_dict['equipment'][key][key2][key3] = shortcut3[key3]['stringValue']
+				
 
 	#inventory
 	shortcut = database_data["inventory"]["mapValue"]["fields"]
@@ -290,7 +308,25 @@ func firebase_dictionary_converter(database_data: Dictionary, client_data: Array
 	keys = shortcut.keys()
 	temp_dict['equipment'] = {}
 	for key in keys:
-		temp_dict['equipment'][key] = shortcut[key]['integerValue']
+		if shortcut[key] == 'integerValue':
+			temp_dict['equipment'][key] = shortcut[key]['integerValue']
+		else:
+			temp_dict['equipment'][key] = {}
+			var shortcut2 = shortcut[key]["mapValue"]["fields"]
+			var keys2 = shortcut2.keys()
+			for key2 in keys2:
+				if shortcut2[key2] == 'integerValue':
+					temp_dict['equipment'][key][key2] = shortcut2[key2]['intergerValue']
+				elif shortcut2[key2] == 'stringValue':
+					temp_dict['equipment'][key][key2] = shortcut2[key2]['stringValue']
+				else:
+					var shortcut3 = shortcut2[key2]["mapValue"]["fields"]
+					var keys3 = shortcut3.keys()
+					for key3 in keys3:
+						if shortcut3[key3] == 'integerValue':
+							temp_dict['equipment'][key][key2][key3] = shortcut3[key3]['intergerValue']
+						elif shortcut3[key3] == 'stringValue':
+							temp_dict['equipment'][key][key2][key3] = shortcut3[key3]['stringValue']
 
 	#inventory
 	shortcut = database_data["inventory"]["mapValue"]["fields"]
@@ -340,7 +376,36 @@ func server_dictionary_converter(server_data: Dictionary, firebase_data: Diction
 	keys = shortcut.keys()
 	fb_shortcut = firebase_data['equipment']['mapValue']['fields']
 	for key in keys:
-		fb_shortcut[key]['integerValue'] = int(shortcut[key])
+		# non implement gear are integers
+		if shortcut[key] is int:
+			fb_shortcut[key]['integerValue'] = int(shortcut[key])
+		# currently rweapon
+		else:
+			# weapon dict
+			var temp_dict = {}
+			
+			# [equipment][rweapon]
+			var shortcut2 = shortcut[key]
+			var keys2 = shortcut2.keys()
+			
+			# rweapon dict
+			for key2 in keys2:
+				if shortcut2[key2] is String:
+					temp_dict[key2]['stringValue'] = shortcut2[key2]
+				elif shortcut2[key2] is int:
+					temp_dict[key2]['integerValue'] = shortcut2[key2]
+				# rweapon[stats]
+				else:
+					#key2 == stats
+					temp_dict[key2]['mapValue']['fields'] = {}
+					var shortcut3 = shortcut2[key2]
+					var keys3 = shortcut3.keys()
+					for key3 in keys3:
+						if shortcut2[key2] is String:
+							temp_dict[key2]['mapValue']['fields'][key3]['stringValue'] = shortcut3[key3]
+						elif shortcut2[key2] is int:
+							temp_dict[key2]['mapValue']['fields'][key3]['integerValue'] = shortcut3[key3]
+			fb_shortcut[key]['mapValue']['fields'] = temp_dict
 
 	#inventory
 	shortcut = server_data["inventory"]
