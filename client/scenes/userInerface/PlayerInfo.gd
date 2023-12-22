@@ -17,27 +17,27 @@ func _ready():
 
 #have to round to whole numbers
 func update_health():
-	$health/Label.text = str(Global.player["stats"]["health"]) + "/" + str(Global.player["stats"]["maxHealth"])
-	$health/TextureProgress.value = (float(Global.player["stats"]["health"]) / float(Global.player["stats"]["maxHealth"]))* 100
+	$health/Label.text = str(Global.player.stats.base.health) + "/" + str(Global.player.stats.base.maxHealth)
+	$health/TextureProgress.value = (float(Global.player.stats.base.health) / float(Global.player.stats.base.maxHealth))* 100
 #have to round to whole numbers
 func update_mana():
-	$mana/Label.text = str(Global.player["stats"]["mana"]) + "/" + str(Global.player["stats"]["maxMana"])
-	$mana/TextureProgress.value = float((Global.player["stats"]["mana"]) / float(Global.player["stats"]["maxMana"])) * 100
+	$mana/Label.text = str(Global.player.stats.base.mana) + "/" + str(Global.player.stats.base.maxMana)
+	$mana/TextureProgress.value = float((Global.player.stats.base.mana) / float(Global.player.stats.base.maxMana)) * 100
 
 func update_level():
-	$level/Label.text = str(Global.player["stats"]["level"])
+	$level/Label.text = str(Global.player.stats.base.level)
 	#have to round to whole numbers
 # for xp to show up as percentage, maximum xp for level must be stored and transferred
 func update_exp():
-	var exp_percent = (float(Global.player["stats"]["experience"]) / float(GameData.experience_table[str(Global.player["stats"]["level"])])) * 100
-	$exp/Label.text = str(Global.player["stats"]["experience"]) + "/" + str(GameData.experience_table[str(Global.player["stats"]["level"])]) + ("%10.2f" % exp_percent) + "%"
+	var exp_percent = (float(Global.player.stats.base.experience) / float(GameData.experience_table[str(Global.player.stats.base.level)])) * 100
+	$exp/Label.text = str(Global.player.stats.base.experience) + "/" + str(GameData.experience_table[str(Global.player.stats.base.level)]) + ("%10.2f" % exp_percent) + "%"
 	$exp/TextureProgress.value = exp_percent
 
 func update_displayname():
-	$displayname/Label.text = str(Global.player["displayname"])
+	$displayname/Label.text = str(Global.player.displayname)
 	
 func update_job():
-	$job/Label.text = str(GameData.job_dict[str(Global.player["stats"]["job"])])
+	$job/Label.text = str(GameData.job_dict[str(Global.player.stats.base.job)])
 	
 func load_info():
 	update_displayname()
