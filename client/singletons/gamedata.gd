@@ -111,7 +111,7 @@ onready var test_player = {
 		"movementSpeed":100, 
 		"sp":0, 
 		"strength":4, 
-		"weaponDefense":0, 
+		"defense":0, 
 		"wisdom":4},
 	}
 		
@@ -622,5 +622,5 @@ onready var test_player2 = {
 		"movementSpeed":100, 
 		"sp":0, 
 		"strength":4, 
-		"weaponDefense":0, 
+		"defense":0, 
 		"wisdom":4}}
