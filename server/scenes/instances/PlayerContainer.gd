@@ -40,8 +40,8 @@ func _physics_process(delta):
 		movement_loop(delta)
 
 func load_player_stats():
-	max_horizontal_speed = current_character.stats.movementSpeed
-	jump_speed = current_character.stats.jumpSpeed
+	max_horizontal_speed = current_character.stats.base.movementSpeed
+	jump_speed = current_character.stats.base.jumpSpeed
 
 func attack(move_id):
 	attacking = true
@@ -125,8 +125,8 @@ func experience(experience):
 		print("%s Level Up" % current_character.displayname)
 
 		# add ability point skill points
-		if current_character.stats.base.cllass != 0:
-			current_character.stats.ap += 3
+		if current_character.stats.base.class != 0:
+			current_character.stats.base.ap += 3
 
 	current_character.stats.base.experience = current_exp
 	Global.store_character_data(self.name, current_character.displayname)
@@ -265,13 +265,13 @@ func _on_idle_timer_timeout():
 		if self.is_on_floor():
 			idle_counter += 1
 			if idle_counter == 5:
-				if current_character["stats"]["health"] < current_character["stats"]["maxHealth"]:
-					if current_character["stats"]["maxHealth"] - current_character["stats"]["health"] < 5:
-						var hp_dif = current_character["stats"]["maxHealth"] - current_character["stats"]["health"]
-						current_character["stats"]["health"] += int(hp_dif)
+				if current_character.stats.base.health < current_character.stats.base.maxHealth:
+					if current_character.stats.base.maxHealth - current_character.stats.base.health < 5:
+						var hp_dif = current_character.stats.base.maxHealth - current_character.stats.base.health
+						current_character.stats.base.health += int(hp_dif)
 					else:
 						print("heal 5 hp")
-						current_character["stats"]["health"] += 5
+						current_character.stats.base.health += 5
 					get_node("/root/Server").update_player_stats(self)
 				else:
 					pass
