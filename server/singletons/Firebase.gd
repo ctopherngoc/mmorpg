@@ -231,26 +231,26 @@ func new_firebase_dictionary_converter(database_data: Dictionary):
 	keys = shortcut.keys()
 	temp_dict['equipment'] = {}
 	for key in keys:
-		if shortcut[key] == 'integerValue':
+		if 'integerValue' in shortcut[key].keys():
 			temp_dict['equipment'][key] = shortcut[key]['integerValue']
 		else:
 			temp_dict['equipment'][key] = {}
 			var shortcut2 = shortcut[key]["mapValue"]["fields"]
 			var keys2 = shortcut2.keys()
 			for key2 in keys2:
-				if shortcut2[key2] == 'integerValue':
-					temp_dict['equipment'][key][key2] = shortcut2[key2]['intergerValue']
-				elif shortcut2[key2] == 'stringValue':
+				if 'integerValue' in shortcut2[key2]:
+					temp_dict['equipment'][key][key2] = shortcut2[key2]['integerValue']
+				elif 'stringValue' in shortcut2[key2]:
 					temp_dict['equipment'][key][key2] = shortcut2[key2]['stringValue']
 				else:
 					var shortcut3 = shortcut2[key2]["mapValue"]["fields"]
 					var keys3 = shortcut3.keys()
+					temp_dict['equipment'][key][key2] = {}
 					for key3 in keys3:
-						if shortcut3[key3] == 'integerValue':
-							temp_dict['equipment'][key][key2][key3] = shortcut3[key3]['intergerValue']
-						elif shortcut3[key3] == 'stringValue':
+						if 'integerValue'in shortcut3[key3]:
+							temp_dict['equipment'][key][key2][key3] = shortcut3[key3]['integerValue']
+						elif 'stringValue'in shortcut3[key3]:
 							temp_dict['equipment'][key][key2][key3] = shortcut3[key3]['stringValue']
-				
 
 	#inventory
 	shortcut = database_data["inventory"]["mapValue"]["fields"]
@@ -299,6 +299,8 @@ func firebase_dictionary_converter(database_data: Dictionary, client_data: Array
 	shortcut = database_data["avatar"]["mapValue"]["fields"]
 	keys = shortcut.keys()
 	temp_dict['avatar'] = {}
+	print(temp_dict)
+	print(shortcut)
 	for key in keys:
 		# added situation if value saved as integervalue
 		temp_dict['avatar'][key] = shortcut[key]['stringValue']
@@ -308,24 +310,25 @@ func firebase_dictionary_converter(database_data: Dictionary, client_data: Array
 	keys = shortcut.keys()
 	temp_dict['equipment'] = {}
 	for key in keys:
-		if shortcut[key] == 'integerValue':
+		if 'integerValue' in shortcut[key].keys():
 			temp_dict['equipment'][key] = shortcut[key]['integerValue']
 		else:
 			temp_dict['equipment'][key] = {}
 			var shortcut2 = shortcut[key]["mapValue"]["fields"]
 			var keys2 = shortcut2.keys()
 			for key2 in keys2:
-				if shortcut2[key2] == 'integerValue':
-					temp_dict['equipment'][key][key2] = shortcut2[key2]['intergerValue']
-				elif shortcut2[key2] == 'stringValue':
+				if 'integerValue' in shortcut2[key2]:
+					temp_dict['equipment'][key][key2] = shortcut2[key2]['integerValue']
+				elif 'stringValue' in shortcut2[key2]:
 					temp_dict['equipment'][key][key2] = shortcut2[key2]['stringValue']
 				else:
 					var shortcut3 = shortcut2[key2]["mapValue"]["fields"]
 					var keys3 = shortcut3.keys()
+					temp_dict['equipment'][key][key2] = {}
 					for key3 in keys3:
-						if shortcut3[key3] == 'integerValue':
-							temp_dict['equipment'][key][key2][key3] = shortcut3[key3]['intergerValue']
-						elif shortcut3[key3] == 'stringValue':
+						if 'integerValue'in shortcut3[key3]:
+							temp_dict['equipment'][key][key2][key3] = shortcut3[key3]['integerValue']
+						elif 'stringValue'in shortcut3[key3]:
 							temp_dict['equipment'][key][key2][key3] = shortcut3[key3]['stringValue']
 
 	#inventory
