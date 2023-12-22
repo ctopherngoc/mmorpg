@@ -8,7 +8,7 @@ func _ready():
 
 func store_character_data(player_id, display_name):
 	var player_container = get_node(ServerData.player_location[str(player_id)] + "/%s" % str(player_id))
-	var firebase = Firebase.update_document("characters/%s" % display_name, player_container.http, player_container.db_info["token"], player_container.current_character)
+	var firebase = Firebase.update_document("characters/%s" % display_name, player_container.http, player_container.db_info.token, player_container.current_character)
 	yield(firebase, 'completed')
 	print("%s saved data" % display_name)
 
@@ -17,11 +17,11 @@ func npc_attack(player, monster_stats):
 	# calculate basic hit mechanic and damage formula
 	
 	# hit mechanic
-	if monster_stats["accuracy"] >= player_stats["dexterity"] * 1.2:
+	if monster_stats.accuracy >= player_stats.base.avoidability + player_stats.equipment.avoidability:
 		#print("Monster Hit: %s" % player.name)
 		
 		# some random damage formula, since theres no player defense use strength as defense
-		var calculation = monster_stats["attack"] - player_stats["strength"]
+		var calculation = monster_stats.attack - player_stats.base.defense + player_stats.equipment.defense
 		if calculation > 1:
 			player.take_damage(calculation)
 		else:
@@ -60,25 +60,25 @@ func damage_formula(type: bool, player_dict: Dictionary, target_stats: Dictionar
 	print("damage before: ", damage)
 	if type:
 		print("phyiscal")
-		if stats.base.maxRange >= target_stats["defense"]:
-			damage = float( damage * 2 - target_stats["defense"])
+		if stats.base.maxRange >= target_stats.defense:
+			damage = float( damage * 2 - target_stats.defense)
 		else:
-			damage = float( damage * damage / target_stats["defense"])
+			damage = float( damage * damage / target_stats.defense)
 		print("damage after %s" % damage)
 	#magic damage
 	else:
 		# update later
 		#####################################################################
 		print("magic")
-		if stats.base.magic >= target_stats["magicDefense"]:
-			damage = float(stats.base.magic * stats.equipment.magic / target_stats["magicDefense"])
+		if stats.base.magic >= target_stats.magicDefense:
+			damage = float(stats.base.magic * stats.equipment.magic / target_stats.magicDefense)
 		else:
 			pass
 		#######################################################################
-	damage = damage * ((float(stats.base["damagePercent"] + stats.equipment.damagePercent) * 0.1) + 1.0)
+	damage = damage * ((float(stats.base.damagePercent + stats.equipment.damagePercent) * 0.1) + 1.0)
 	print("after dmg_percent: %s" % damage)
 	if target_stats["boss"] == 1:
-		damage = damage * ((float(stats.base["bossPercent"] + stats.equipment.bossPercent) * 0.1) + 1.0)
+		damage = damage * ((float(stats.base.bossPercent + stats.equipment.bossPercent) * 0.1) + 1.0)
 		print("After boss percent: %s" % damage)
 	var crit_rate = stats.base.critRate + stats.equipment.critRate
 	var crit_ratio = calculate_crit(crit_rate)
