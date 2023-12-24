@@ -47,7 +47,7 @@ func _Peer_Disconnected(player_id):
 		print(ServerData.player_location[str(player_id)])
 		var player_container = get_node(ServerData.player_location[str(player_id)] + "/%s" % str(player_id))
 		if not "CharacterSelect" in ServerData.player_location[str(player_id)]:
-			Firebase.update_document("users/%s" % player_container.db_info["id"], player_container.http, player_container.db_info["token"], player_container)
+			# Firebase.update_document("users/%s" % player_container.db_info["id"], player_container.http, player_container.db_info["token"], player_container)
 			
 			# no reason to update all characters since you only can make changes to current character
 			# if there is an implementation where you can change characters without logging out
@@ -56,6 +56,7 @@ func _Peer_Disconnected(player_id):
 			var cur_character = player_container.current_character
 			var firebase = Firebase.update_document("characters/%s" % str(cur_character['displayname']), player_container.http2, player_container.db_info["token"], cur_character)
 			yield(firebase, 'completed')
+			print("saved player")
 		else:
 			print("dc in characterselect did not save")
 		ServerData.player_location.erase(str(player_id))
@@ -231,7 +232,8 @@ remote func choose_character(requester, display_name: String):
 	var player_container = get_node(ServerData.player_location[str(player_id)] + "/%s" % str(player_id))
 	for character_dict in player_container.characters_info_list:
 		if  display_name == character_dict['displayname']:
-			player_container.current_character = character_dict
+			#player_container.current_character = character_dict
+			player_container.current_character = ServerData.characters_data[display_name]
 
 			"""Issue here fresh account no players
 			invalid set index '234234324' (on base:array) with value type string
