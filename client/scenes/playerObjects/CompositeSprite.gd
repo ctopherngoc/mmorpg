@@ -123,7 +123,11 @@ func update_avatar(data):
 					lleg.set_texture(sprite)
 
 				else:
-					var sprite = load(GameData.equipment_sprite[key] + str(equipment[key])+".png")
+					var sprite
+					if equipment[key] is Dictionary:
+						sprite = load(GameData.equipment_sprite[key] + str(equipment[key]["id"])+".png")
+					else:
+						sprite = load(GameData.equipment_sprite[key] + str(equipment[key])+".png")
 					sprite_dict[key].set_texture(sprite)
 
 func avatar_check():
