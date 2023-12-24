@@ -17,28 +17,28 @@ var logged_emails = []
 var player_id_emails = {}
 
 var class_dict = {
-	0: {"job": "Beginner", "Weapon": [], "Range": 0},
-	1: {"job": "Warrior", "Weapon": ["sword", "hammer", "axe"], "Range": 0},
-	2: {"job": "Rouge", "Weapon" : ["dagger"], "Range": 0},
-	3: {"job": "Archer", "Weapon" : ["bow"], "Range": 1},
-	4: {"job": "Magician", "Weapon" : [], "Range": 0},
-	5: {"job": "Gunner", "Weapon" : ["gun"], "Range": 1},
+	"0": {"job": "Beginner", "Weapon": [], "Range": 0},
+	"1": {"job": "Warrior", "Weapon": ["sword", "hammer", "axe"], "Range": 0},
+	"2": {"job": "Rouge", "Weapon" : ["dagger"], "Range": 0},
+	"3": {"job": "Archer", "Weapon" : ["bow"], "Range": 1},
+	"4": {"job": "Magician", "Weapon" : [], "Range": 0},
+	"5": {"job": "Gunner", "Weapon" : ["gun"], "Range": 1},
 }
 
 var class_skills = {
-	0: [],
-	1: [],
-	2: [],
-	3: [],
-	4: [],
-	5: [],
+	"0": [],
+	"1": [],
+	"2": [],
+	"3": [],
+	"4": [],
+	"5": [],
 }
 
 #var user_template = {'characters':{'arrayValue':{'values': null }}}
 #firebase used to create new chracters
 var player_info = {
 	"displayname": {'stringValue': null},
-	"map": {'stringValue': null},
+	"map": {'integerValue': null},
 	"stats" : { "mapValue":
 		{"fields": 
 			{"base":
@@ -225,12 +225,12 @@ var weapon_ratio = {
 }
 
 var weapon_speed = {
-	1 : null,
-	2 : null,
-	3 : null,
-	4 : 2.0,
-	5: 2.2,
-	6 : null,
+	"1" : null,
+	"2" : null,
+	"3" : null,
+	"4" : 2.0,
+	"5" : 2.2,
+	"6" : null,
 }
 
 var starter_equips = [
@@ -394,22 +394,30 @@ var test_mstats = {
 	"boss": 0
 }
 
-var equipment_stats_template = {
-	"attack": 0,
-	"magic": 0,
-	"maxHealth": 0,
-	"maxMana": 0,
-	"strength": 0,
-	"wisdom": 0,
-	"dexterity": 0,
-	"luck": 0,
-	"movementSpeed": 0,
-	"jumpSpeed": 0,
-	"avoidability": 0,
-	"defense": 0,
-	"magicDefense": 0,
-	"accuracy": 0,
-	"bossPercent": 0,
-	"damagePercent": 0,
-	"critRate": 0,
+var equipment_data_template = {
+	"id": 0,
+	"unique_id":0,
+	"type": "",
+	"name": "",
+	"speed": 5,
+	"slot": 7,
+	"stats": {
+		"attack": 0,
+		"magic": 0,
+		"maxHealth": 0,
+		"maxMana": 0,
+		"strength": 0,
+		"wisdom": 0,
+		"dexterity": 0,
+		"luck": 0,
+		"movementSpeed": 0,
+		"jumpSpeed": 0,
+		"avoidability": 0,
+		"defense": 0,
+		"magicDefense": 0,
+		"accuracy": 0,
+		"bossPercent": 0,
+		"damagePercent": 0,
+		"critRate": 0,
+		}
 }
