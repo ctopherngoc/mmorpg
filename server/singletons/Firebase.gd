@@ -157,9 +157,8 @@ func _server_get_document(path: String, http: HTTPRequest)-> void:
 			var document_list = result_body["documents"]
 			for document in document_list:
 				var character = document["name"].replace("projects/godotproject-ef224/databases/(default)/documents/characters/", "")
-				#print(document["fields"])
 				ServerData.characters_data[character] = new_firebase_dictionary_converter(document["fields"])
-			
+		
 # warning-ignore:unused_argument
 func _server_update_document(http: HTTPRequest, array, action: String) -> void:
 
@@ -215,7 +214,6 @@ func new_firebase_dictionary_converter(database_data: Dictionary):
 		var keys2 = shortcut2.keys()
 		for key2 in keys2:
 			# added situation if value saved as integervalue
-			#print(shortcut2)
 			temp_dict['stats'][key][key2] = int(shortcut2[key2]['integerValue'])
 
 	# avatar
@@ -224,7 +222,7 @@ func new_firebase_dictionary_converter(database_data: Dictionary):
 	temp_dict['avatar'] = {}
 	for key in keys:
 		# added situation if value saved as integervalue
-		temp_dict['avatar'][key] = shortcut[key]['stringValue']
+		temp_dict['avatar'][key] = str(shortcut[key]['stringValue'])
 
 	# equipment
 	shortcut = database_data["equipment"]["mapValue"]["fields"] 
@@ -232,25 +230,25 @@ func new_firebase_dictionary_converter(database_data: Dictionary):
 	temp_dict['equipment'] = {}
 	for key in keys:
 		if 'integerValue' in shortcut[key].keys():
-			temp_dict['equipment'][key] = shortcut[key]['integerValue']
+			temp_dict['equipment'][key] = int(shortcut[key]['integerValue'])
 		else:
 			temp_dict['equipment'][key] = {}
 			var shortcut2 = shortcut[key]["mapValue"]["fields"]
 			var keys2 = shortcut2.keys()
 			for key2 in keys2:
 				if 'integerValue' in shortcut2[key2]:
-					temp_dict['equipment'][key][key2] = shortcut2[key2]['integerValue']
+					temp_dict['equipment'][key][key2] = int(shortcut2[key2]['integerValue'])
 				elif 'stringValue' in shortcut2[key2]:
-					temp_dict['equipment'][key][key2] = shortcut2[key2]['stringValue']
+					temp_dict['equipment'][key][key2] = str(shortcut2[key2]['stringValue'])
 				else:
 					var shortcut3 = shortcut2[key2]["mapValue"]["fields"]
 					var keys3 = shortcut3.keys()
 					temp_dict['equipment'][key][key2] = {}
 					for key3 in keys3:
 						if 'integerValue'in shortcut3[key3]:
-							temp_dict['equipment'][key][key2][key3] = shortcut3[key3]['integerValue']
+							temp_dict['equipment'][key][key2][key3] = int(shortcut3[key3]['integerValue'])
 						elif 'stringValue'in shortcut3[key3]:
-							temp_dict['equipment'][key][key2][key3] = shortcut3[key3]['stringValue']
+							temp_dict['equipment'][key][key2][key3] = str(shortcut3[key3]['stringValue'])
 
 	#inventory
 	shortcut = database_data["inventory"]["mapValue"]["fields"]
@@ -258,7 +256,7 @@ func new_firebase_dictionary_converter(database_data: Dictionary):
 	temp_dict['inventory'] = {}
 	for key in keys:
 		if key == "money":
-			temp_dict['inventory'][key] = shortcut[key]['integerValue']
+			temp_dict['inventory'][key] = int(shortcut[key]['integerValue'])
 		else:
 			pass
 	return temp_dict
@@ -279,7 +277,6 @@ func firebase_dictionary_converter(database_data: Dictionary, client_data: Array
 	# displayname and position
 	temp_dict['displayname'] = database_data["displayname"]['stringValue']
 	temp_dict['map'] = database_data["map"]['integerValue']
-	#temp_dict['position'] = database_data["position"]['doubleValue']
 
 	# stats
 	var shortcut = database_data["stats"]["mapValue"]["fields"]
@@ -293,14 +290,11 @@ func firebase_dictionary_converter(database_data: Dictionary, client_data: Array
 		var keys2 = shortcut2.keys()
 		for key2 in keys2:
 			# added situation if value saved as integervalue
-			#print(shortcut2)
 			temp_dict['stats'][key][key2] = int(shortcut2[key2]['integerValue'])
 	# avatar
 	shortcut = database_data["avatar"]["mapValue"]["fields"]
 	keys = shortcut.keys()
 	temp_dict['avatar'] = {}
-	print(temp_dict)
-	print(shortcut)
 	for key in keys:
 		# added situation if value saved as integervalue
 		temp_dict['avatar'][key] = shortcut[key]['stringValue']
@@ -344,7 +338,7 @@ func firebase_dictionary_converter(database_data: Dictionary, client_data: Array
 	client_data.append(temp_dict)
 
 func server_dictionary_converter(server_data: Dictionary, firebase_data: Dictionary):
-	print(server_data)
+	#print(server_data)
 	"""
 	currently takes singular character information dictionary and converts to firebase dictionary
 	must loop for whole account to be saved
@@ -364,7 +358,6 @@ func server_dictionary_converter(server_data: Dictionary, firebase_data: Diction
 		var shortcut_keys2 = shortcut[key].keys()
 		# stats
 		for key2 in shortcut_keys2:
-			print(key, " ", key2)
 			fb_shortcut[key]['mapValue']['fields'][key2]['integerValue'] = int(shortcut[key][key2])
 	
 	# avatar
@@ -385,30 +378,26 @@ func server_dictionary_converter(server_data: Dictionary, firebase_data: Diction
 		# currently rweapon
 		else:
 			# weapon dict
-			var temp_dict = {}
-			
+			var temp_dict = ServerData.equipment_data_template.duplicate(true)
 			# [equipment][rweapon]
 			var shortcut2 = shortcut[key]
 			var keys2 = shortcut2.keys()
 			
 			# rweapon dict
 			for key2 in keys2:
-				if shortcut2[key2] is String:
-					temp_dict[key2]['stringValue'] = shortcut2[key2]
+				if key2 in ["name", "type"]:
+					temp_dict[key2] = {'stringValue' : shortcut2[key2]}
 				elif shortcut2[key2] is int:
-					temp_dict[key2]['integerValue'] = shortcut2[key2]
+					temp_dict[key2] = {'integerValue': shortcut2[key2]}
 				# rweapon[stats]
 				else:
 					#key2 == stats
-					temp_dict[key2]['mapValue']['fields'] = {}
+					temp_dict[key2] = {'mapValue' : {'fields' : {}}}
 					var shortcut3 = shortcut2[key2]
 					var keys3 = shortcut3.keys()
 					for key3 in keys3:
-						if shortcut2[key2] is String:
-							temp_dict[key2]['mapValue']['fields'][key3]['stringValue'] = shortcut3[key3]
-						elif shortcut2[key2] is int:
-							temp_dict[key2]['mapValue']['fields'][key3]['integerValue'] = shortcut3[key3]
-			fb_shortcut[key]['mapValue']['fields'] = temp_dict
+						temp_dict[key2]['mapValue']['fields'][key3] ={'integerValue' : shortcut3[key3]}
+			fb_shortcut[key] = {'mapValue':{'fields': temp_dict}}
 
 	#inventory
 	shortcut = server_data["inventory"]
