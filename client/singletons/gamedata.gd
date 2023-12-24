@@ -116,12 +116,12 @@ onready var test_player = {
 	}
 
 onready var weapon_speed = {
-	1 : null,
-	2 : null,
-	3 : null,
-	4 : 2.0,
-	5: 2.2,
-	6 : null,
+	"1" : null,
+	"2" : null,
+	"3" : null,
+	"4" : 2.0,
+	"5" : 2.2,
+	"6" : null,
 }
 
 onready var string_validation = [
