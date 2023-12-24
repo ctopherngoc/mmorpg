@@ -148,7 +148,7 @@ func update_animation():
 	# send rpc to server
 	elif(Input.is_action_pressed("attack") && !is_climbing && Global.movable):
 		attacking = true
-		sprite.play("slash",-1, GameData.weapon_speed[Global.player.equipment.rweapon.speed])
+		sprite.play("slash",-1, GameData.weapon_speed[str(Global.player.equipment.rweapon.speed)])
 		Server.send_attack(0)
 	else:
 		if(!is_on_floor()):
