@@ -47,12 +47,6 @@ func _Peer_Disconnected(player_id):
 		print(ServerData.player_location[str(player_id)])
 		var player_container = get_node(ServerData.player_location[str(player_id)] + "/%s" % str(player_id))
 		if not "CharacterSelect" in ServerData.player_location[str(player_id)]:
-			# Firebase.update_document("users/%s" % player_container.db_info["id"], player_container.http, player_container.db_info["token"], player_container)
-			
-			# no reason to update all characters since you only can make changes to current character
-			# if there is an implementation where you can change characters without logging out
-			# has to update cur character before running this or else the two dictionaries won't match
-			# store current character to firebase
 			var cur_character = player_container.current_character
 			var firebase = Firebase.update_document("characters/%s" % str(cur_character['displayname']), player_container.http2, player_container.db_info["token"], cur_character)
 			yield(firebase, 'completed')
@@ -113,7 +107,6 @@ func already_logged_in(player_id, _email):
 	rpc_id(player_id, "already_logged_in")
 	network.disconnect_peer(player_id)
 
-#######################################################
 # client/server time sync
 remote func fetch_server_time(client_time):
 	var player_id = get_tree().get_rpc_sender_id()
@@ -123,7 +116,6 @@ remote func determine_latency(client_time):
 	var player_id = get_tree().get_rpc_sender_id()
 	rpc_id(player_id, "return_latency", client_time)
 
-#######################################################
 #character account
 #create, ign checker, fetch player data, delete, spawn
 func create_characters():
@@ -132,9 +124,6 @@ func create_characters():
 		#player_id, username, playerContainer, requester
 		var character_array = character_creation_queue[0]
 		character_creation_queue.remove(0)
-		# firebase call to see if characer name is taken
-		#var firebase_call = Firebase.get_document("characters", character_array[2].http, character_array[2].db_info["token"], character_array)
-		#yield(firebase_call, 'completed')
 		
 		if character_array[1]["un"] in ServerData.characters_data.keys():
 			print("%s already taken." % character_array[1])
@@ -234,10 +223,6 @@ remote func choose_character(requester, display_name: String):
 		if  display_name == character_dict['displayname']:
 			#player_container.current_character = character_dict
 			player_container.current_character = ServerData.characters_data[display_name]
-
-			"""Issue here fresh account no players
-			invalid set index '234234324' (on base:array) with value type string
-			"""
 			ServerData.username_list[str(player_id)] = display_name
 			break
 	var map = player_container.current_character['map']
@@ -263,14 +248,6 @@ remote func fetch_player_stats():
 remote func fetch_usernames(requester, username):
 	print("inside fetch username. Username: %s" % username)
 	var player_id = get_tree().get_rpc_sender_id()
-	
-	"""
-	var player_container = get_node(ServerData.player_location[str(player_id)] + "/%s" % player_id)
-	var firebase_call = Firebase.get_document("characters", player_container.http, player_container.db_info["token"], player_container)
-	yield(firebase_call, 'completed')
-	print(ServerData.username_list)
-	if username in ServerData.username_list:
-	"""
 	if username in ServerData.user_characters.keys():
 		print("%s already taken." % username)
 		rpc_id(player_id, "return_fetch_usernames", requester, false)
