@@ -76,7 +76,7 @@ func update_document(path: String, http: HTTPRequest, token: String, player_cont
 		yield(http, "request_completed")
 	else:
 		# update /character
-		var fb_data = ServerData.player_info.duplicate()
+		var fb_data = ServerData.player_info.duplicate(true)
 		server_dictionary_converter(player_container, fb_data)
 		var document := {"fields": fb_data}
 		var body := to_json(document)
@@ -180,7 +180,7 @@ func _server_update_document(http: HTTPRequest, array, action: String) -> void:
 		yield(http, "request_completed")
 	else:
 		for character in ServerData.username_list.keys():
-			var fb_data = ServerData.player_info.duplicate()
+			var fb_data = ServerData.player_info.duplicate(true)
 			var ign: String = str(ServerData.username_list[character])
 			server_dictionary_converter(Global.characters_data[ign], fb_data)
 			var document := {"fields": fb_data}
@@ -338,7 +338,6 @@ func firebase_dictionary_converter(database_data: Dictionary, client_data: Array
 	client_data.append(temp_dict)
 
 func server_dictionary_converter(server_data: Dictionary, firebase_data: Dictionary):
-	#print(server_data)
 	"""
 	currently takes singular character information dictionary and converts to firebase dictionary
 	must loop for whole account to be saved
