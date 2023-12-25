@@ -235,6 +235,7 @@ remote func choose_character(requester, display_name: String):
 	move_player_container(player_id, player_container, map, 'spawn')
 	player_container.load_player_stats()
 	player_container.start_idle_timer()
+	Global.calculate_stats(player_container.current_character)
 	rpc_id(player_id, "return_choose_character", requester)
 
 remote func fetch_player_stats():
