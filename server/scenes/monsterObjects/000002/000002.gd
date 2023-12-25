@@ -1,14 +1,5 @@
 extends KinematicBody2D
 
-###############################################
-# old variables
-# no jump, not used
-var jump_speed = 500
-
-#onready var damage = 10
-#onready var take_damage = false
-##########################################################
-#currrent new variables
 var id = '000002'
 var title = "Blue Guy"
 var location = null
@@ -16,12 +7,18 @@ var current_hp = 50
 var max_hp = 50
 var state = "idle"
 var stats = {
+	"level": 2,
+	"boss": 0,
 	"attack" : 15,
-	"defense" : 20,
+	"defense" : 10,
 	"magicDefense" : 10,
 	"accuracy" : 15,
-	"avoidability" : 10,
+	"avoidability" : 5,
+	"experience": 30,
+	"movementSpeed": 100,
+	"jumpSpeed": 200,
 }
+
 var rng = RandomNumberGenerator.new()
 var max_speed = 100
 var velocity = Vector2.ZERO
@@ -31,18 +28,13 @@ var speed_factor = 0.5
 var experience = 25
 var move_state
 var attackers = {}
-############################################################
 
 func _ready():
 	pass
 	
 func _process(delta):
 	touch_damage()
-	
-	# eventually incorperate take damage set aggro
-	# skip rng movement algo
-	
-	# no jump mechanic yet
+
 	if is_on_floor():
 		var _my_random_number = rng.randi_range(1, 100)
 

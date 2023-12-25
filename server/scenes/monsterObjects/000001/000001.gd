@@ -13,12 +13,20 @@ var current_hp = 25
 var max_hp = 25
 var state = "idle"
 var stats = {
+	"level": 1,
+	"boss": 0,
+	#"maxHP": 25,
+	#"currentHP": 25,
 	"attack" : 10,
 	"defense" : 5,
 	"magicDefense" : 5,
 	"accuracy" : 10,
 	"avoidability" : 5,
+	"experience": 25,
+	"movementSpeed": 100,
+	"jumpSpeed": 200,
 }
+
 var rng = RandomNumberGenerator.new()
 var max_speed = 100
 var velocity = Vector2.ZERO
