@@ -1,6 +1,6 @@
 [gd_scene load_steps=10 format=2]
 
-[ext_resource path="res://scenes/instances/PlayerContainer.gd" type="Script" id=1]
+[ext_resource path="res://scenes/instances/retired/NewServerPlayer1.gd" type="Script" id=1]
 
 [sub_resource type="RectangleShape2D" id=20]
 extents = Vector2( 25, 54.5 )

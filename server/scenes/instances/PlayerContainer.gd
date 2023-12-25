@@ -1,5 +1,10 @@
 extends KinematicBody2D
-
+"""
+attacking = false not implemented. Attacking is always true after first attack
+timer for attacking should be considered
+idle_timer should consider attacking == true and hittable == false for idle healing
+turn timer to last_hit timer 
+"""
 onready var http = $HTTP/HTTPRequest
 onready var http2 = $HTTP/HTTPRequest2
 onready var timer =$Timers/Timer
@@ -59,8 +64,6 @@ func attack(move_id):
 				animation.play("bow",-1, ServerData.weapon_speed[str(equipment.rweapon.speed)])
 			else:
 				return "not enough ammo"
-		#var mob_list = overlapping_bodies()
-		
 		# no mobs overlap
 		if mobs_hit.size() == 0:
 			print("no mobs hit")
@@ -85,6 +88,7 @@ func attack(move_id):
 				var mob_parent = closest.get_parent()
 				var damage = Global.damage_formula(1, current_character, mob_parent.stats)
 				mob_parent.npc_hit(damage, self.name)
+	attacking = false
 
 func overlapping_bodies():
 	#if $attack_range.get_overlapping_areas().size() > 0:
@@ -257,7 +261,7 @@ func start_idle_timer():
 
 # regen 5hp every 5 seconds if idle
 func _on_idle_timer_timeout():
-	if self.position != cur_position:
+	if self.position != cur_position or attacking or is_climbing:
 		cur_position = self.position
 		idle_counter = 0
 	else:
