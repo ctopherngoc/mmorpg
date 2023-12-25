@@ -67,7 +67,7 @@ var player_info = {
 						"magicDefense": {'integerValue': null},
 						"accuracy": {'integerValue': null},
 						"bossPercent": {'integerValue': null},
-						"dmgPercent": {'integerValue': null},
+						"damagePercent": {'integerValue': null},
 						"critRate": {'integerValue': null},
 					}, #fields
 				}, #mapvalue
@@ -75,7 +75,9 @@ var player_info = {
 			"equipment":
 				{"mapValue":
 					{"fields":
-						{"maxHealth": {'integerValue': null},
+						{"attack": {'integerValue': null},
+						"magic": {'integerValue': null},
+						"maxHealth": {'integerValue': null},
 						"maxMana": {'integerValue': null},
 						"strength": {'integerValue': null},
 						"wisdom": {'integerValue': null},
@@ -88,7 +90,7 @@ var player_info = {
 						"magicDefense": {'integerValue': null},
 						"accuracy": {'integerValue': null},
 						"bossPercent": {'integerValue': null},
-						"dmgPercent": {'integerValue': null},
+						"damagePercent": {'integerValue': null},
 						"critRate": {'integerValue': null},
 					}, #fields
 				}, # mapvalue
@@ -165,11 +167,12 @@ var player_template = {
 			"magicDefense": 0,
 			"accuracy": 10,
 			"bossPercent": 1,
-			"dmgPercent": 1,
+			"damagePercent": 1,
 			"critRate": 5,
 		},
 	"equipment": {
 			"maxHealth": 0,
+			"magic": 0,
 			"maxMana": 0,
 			"strength": 0,
 			"wisdom": 0,
@@ -182,8 +185,9 @@ var player_template = {
 			"magicDefense": 0,
 			"accuracy": 0,
 			"bossPercent": 0,
-			"dmgPercent": 0,
+			"damagePercent": 0,
 			"critRate": 0,
+			"attack": 0,
 	},
 	}, #stats
 	"avatar" : {
@@ -420,4 +424,23 @@ var equipment_data_template = {
 		"damagePercent": 0,
 		"critRate": 0,
 		}
+}
+onready var equipment_stats_template = {
+		"attack": 0,
+		"magic": 0,
+		"maxHealth": 0,
+		"maxMana": 0,
+		"strength": 0,
+		"wisdom": 0,
+		"dexterity": 0,
+		"luck": 0,
+		"movementSpeed": 0,
+		"jumpSpeed": 0,
+		"avoidability": 0,
+		"defense": 0,
+		"magicDefense": 0,
+		"accuracy": 0,
+		"bossPercent": 0,
+		"damagePercent": 0,
+		"critRate": 0,
 }
