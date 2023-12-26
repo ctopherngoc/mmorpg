@@ -123,20 +123,24 @@ func experience(experience):
 
 	# if level up
 	if current_exp >= exp_limit:
-		current_exp -= exp_limit
-		current_character.stats.base.level += 1
-		current_character.stats.base.sp += 5
-		print("%s Level Up" % current_character.displayname)
-
-		# add ability point skill points
-		if current_character.stats.base.class != 0:
-			current_character.stats.base.ap += 3
+		# multiple levels
+		while current_exp >= exp_limit:
+			current_exp -= exp_limit
+			current_character.stats.base.level += 1
+			current_character.stats.base.sp += 5
+			print("%s Level Up" % current_character.displayname)
+			
+			# add ability point skill points
+			if current_character.stats.base.class != 0:
+				current_character.stats.base.ap += 3
+			# update exp_limit for multiple levels
+			get_node("/root/Server").update_player_stats(self)
+			exp_limit = ServerData.experience_table[str(current_character.stats.base.level)]
 
 	current_character.stats.base.experience = current_exp
 	Global.store_character_data(self.name, current_character.displayname)
 	print("Level: %s" % current_character.stats.base.level)
 	print("EXP: %s" % current_character.stats.base.experience)
-	get_node("/root/Server").update_player_stats(self)
 
 func movement_loop(delta):
 	#change_direction()
