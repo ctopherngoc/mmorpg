@@ -125,3 +125,36 @@ func calculate_stats(player_stats):
 		print(base.maxRange)
 	else:
 		pass
+
+func npc_hit(dmg, npc, player):
+	if dmg <= npc.current_hp:
+		npc.current_hp -= dmg
+		if str(player) in npc.attackers.keys():
+			npc.attackers[str(player)] += dmg
+		else:
+			npc.attackers[str(player)] = dmg
+	else:
+		if str(player) in npc.attackers.keys():
+			npc.attackers[str(player)] += npc.current_hp
+		else:
+			npc.attackers[str(player)] = npc.current_hp
+		npc.current_hp -= dmg
+	# if dead change state and make it unhittable
+	if npc.current_hp <= 0:
+		npc.state = "Dead"
+
+		for attacker in npc.attackers.keys():
+			# if atacker in map
+			if npc.map_id in ServerData.player_location[attacker]:
+				#var player_container = get_node("../../Players/%s" % attacker)
+				var player_container = get_node(ServerData.player_location[str(attacker)] + "/%s" % str(attacker))
+				# xp = rounded (dmg done / max hp) * experience
+				var damage_percent = round((npc.attackers[attacker] / npc.max_hp))
+				print(npc.attackers[attacker])
+				print("% dmg ", damage_percent)
+				if damage_percent == 1:
+					player_container.experience(npc.experience)
+				else:
+					player_container.experience(int(round(damage_percent * npc.experience)))
+		npc.die()
+	print("monster: " + npc.name + " health: " + str(npc.current_hp))
