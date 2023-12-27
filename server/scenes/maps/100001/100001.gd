@@ -50,6 +50,7 @@ func SpawnEnemy():
 				########################################### 
 				# spawns server enemy in map
 				var new_enemy = enemy_types[i].instance()
+				new_enemy.map_id = map_id
 				new_enemy.position = location
 				new_enemy.name = str(i)
 				get_node("YSort/Monsters/").add_child(new_enemy, true)
