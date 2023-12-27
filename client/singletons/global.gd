@@ -129,10 +129,10 @@ func server_reconciliation(server_input_data):
 	for i in range(input_queue.size()):
 		if server_input_data["T"] == input_queue[i]["T"]:
 			if server_input_data["P"] != input_queue[i]["P"]:
-				var serverx = stepify(server_input_data["P"].x, 0.001)
-				var servery = stepify(server_input_data["P"].y, 0.001)
-				var clientx = stepify(input_queue[i]["P"].x, 0.001)
-				var clienty = stepify(input_queue[i]["P"].y, 0.001)
+				var serverx = stepify(server_input_data["P"].x, 0.01)
+				var servery = stepify(server_input_data["P"].y, 0.01)
+				var clientx = stepify(input_queue[i]["P"].x, 0.01)
+				var clienty = stepify(input_queue[i]["P"].y, 0.01)
 				if serverx != clientx and servery != clienty:
 					print("recon")
 					print("server: ", server_input_data["P"], " client: ",input_queue[i]["P"])
