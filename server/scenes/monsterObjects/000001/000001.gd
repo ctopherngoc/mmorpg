@@ -45,8 +45,6 @@ func _process(delta):
 	touch_damage()
 
 	# eventually incorperate take damage set aggro
-	# skip rng movement algo
-	# no jump mechanic yet
 	if is_on_floor():
 		var _my_random_number = rng.randi_range(1, 100)
 
@@ -100,3 +98,7 @@ func touch_damage():
 			# call server to do damage to body
 			Global.npc_attack(player.get_parent(), stats)
 
+func knockback(damage_source_pos: Vector2):
+	var knockback_direction = damage_source_pos.direction_to(self.global_position)
+	var knockback = knockback_direction * knockback_modifier *40	
+	self.global_position += knockback
