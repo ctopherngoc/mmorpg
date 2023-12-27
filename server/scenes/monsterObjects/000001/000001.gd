@@ -26,6 +26,7 @@ var stats = {
 	"movementSpeed": 100,
 	"jumpSpeed": 200,
 }
+var map_id = null
 
 var rng = RandomNumberGenerator.new()
 var max_speed = 100
@@ -45,6 +46,8 @@ func _process(delta):
 	touch_damage()
 
 	# eventually incorperate take damage set aggro
+	# skip rng movement algo
+	# no jump mechanic yet
 	if is_on_floor():
 		var _my_random_number = rng.randi_range(1, 100)
 
@@ -65,13 +68,20 @@ func _process(delta):
 func _on_Timer_timeout():
 	move_state = floor(rand_range(0,3))
 
-
+# enemy container controlled dmg and xp
 func npc_hit(dmg, player):
-	current_hp -= dmg
-	if str(player) in attackers.keys():
-		attackers[str(player)] += dmg
+	if dmg <= current_hp:
+		current_hp -= dmg
+		if str(player) in attackers.keys():
+			attackers[str(player)] += dmg
+		else:
+			attackers[str(player)] = dmg
 	else:
-		attackers[str(player)] = dmg
+		if str(player) in attackers.keys():
+			attackers[str(player)] += current_hp
+		else:
+			attackers[str(player)] = current_hp
+		current_hp -= dmg
 	# if dead change state and make it unhittable
 	if current_hp <= 0:
 		state = "Dead"
@@ -85,9 +95,14 @@ func npc_hit(dmg, player):
 				if get_node("../../Players/%s" % attacker):
 					var player_container = get_node("../../Players/%s" % attacker)
 
-					# xp = rounded (dmg done / max hp) * experience 
-					player_container.experience(int(round((attackers[attacker] / max_hp) * experience)))
-
+					# xp = rounded (dmg done / max hp) * experience
+					var damage_percent = round((attackers[attacker] / max_hp))
+					print(attackers[attacker])
+					print("% dmg ", damage_percent)
+					if damage_percent == 1:
+						player_container.experience(experience)
+					else:
+						player_container.experience(int(round(damage_percent * experience)))
 		get_node("do_damage/CollisionShape2D").set_deferred("disabled", true)
 
 	print("monster: " + self.name + " health: " + str(current_hp))
@@ -98,7 +113,7 @@ func touch_damage():
 			# call server to do damage to body
 			Global.npc_attack(player.get_parent(), stats)
 
-func knockback(damage_source_pos: Vector2):
-	var knockback_direction = damage_source_pos.direction_to(self.global_position)
-	var knockback = knockback_direction * knockback_modifier *40	
-	self.global_position += knockback
+# call in global for univeral dmg xp
+func die():
+	get_node("do_damage/CollisionShape2D").set_deferred("disabled", true)
+

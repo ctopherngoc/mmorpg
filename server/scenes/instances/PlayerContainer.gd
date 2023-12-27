@@ -75,7 +75,7 @@ func attack(move_id):
 					for mob in mobs_hit:
 						var mob_parent = mob.get_parent()
 						var damage = Global.damage_formula(1, current_character, mob_parent.stats)
-						get_parent().npc_hit(damage, self.name)
+						mob_parent.npc_hit(damage, self.name)
 			# singe mob physical basic attack
 			else:
 				var closest = null
@@ -87,7 +87,8 @@ func attack(move_id):
 							closest = monster
 				var mob_parent = closest.get_parent()
 				var damage = Global.damage_formula(1, current_character, mob_parent.stats)
-				mob_parent.npc_hit(damage, self.name)
+				#mob_parent.npc_hit(damage, self.name)
+				Global.npc_hit(damage, mob_parent, self.name)
 	attacking = false
 
 func overlapping_bodies():
@@ -136,8 +137,8 @@ func experience(experience):
 			# update exp_limit for multiple levels
 			get_node("/root/Server").update_player_stats(self)
 			exp_limit = ServerData.experience_table[str(current_character.stats.base.level)]
-
 	current_character.stats.base.experience = current_exp
+	get_node("/root/Server").update_player_stats(self)
 	Global.store_character_data(self.name, current_character.displayname)
 	print("Level: %s" % current_character.stats.base.level)
 	print("EXP: %s" % current_character.stats.base.experience)
