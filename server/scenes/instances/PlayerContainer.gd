@@ -144,9 +144,8 @@ func experience(experience):
 	print("EXP: %s" % current_character.stats.base.experience)
 
 func movement_loop(delta):
-	change_direction()
 	var move_vector = get_movement_vector()
-
+	change_direction()
 	# change get velocity
 	get_velocity(move_vector, delta)
 	# warning-ignore:return_value_discarded
