@@ -75,7 +75,7 @@ func attack(move_id):
 					for mob in mobs_hit:
 						var mob_parent = mob.get_parent()
 						var damage = Global.damage_formula(1, current_character, mob_parent.stats)
-						mob_parent.npc_hit(damage, self.name)
+						Global.npc_hit(damage, mob_parent, self.name)
 			# singe mob physical basic attack
 			else:
 				var closest = null
@@ -144,7 +144,7 @@ func experience(experience):
 	print("EXP: %s" % current_character.stats.base.experience)
 
 func movement_loop(delta):
-	#change_direction()
+	change_direction()
 	var move_vector = get_movement_vector()
 
 	# change get velocity
@@ -244,10 +244,12 @@ func change_direction():
 			if velocity.x < 0 && is_on_floor():
 				velocity.x = 0
 			direction = 0
+			self.set_scale(Vector2(1,1))
 		elif input[1] == 1 && !attacking:
 			if velocity.x > 0 && is_on_floor():
 				velocity.x  = 0
 			direction = 1
+			self.set_scale(Vector2(-1,1))
 
 #####################################################################################################
 ## not implemented server knockback
