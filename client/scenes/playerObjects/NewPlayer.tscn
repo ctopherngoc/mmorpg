@@ -130,11 +130,12 @@ collision_mask = 1280
 position = Vector2( -8, 2.5 )
 shape = SubResource( 21 )
 
-[node name="AttackRange" type="Node" parent="."]
+[node name="attackRange" type="Area2D" parent="."]
+visible = false
+position = Vector2( 7, 29 )
 
-[node name="1h_weapon" type="Area2D" parent="AttackRange"]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackRange/1h_weapon"]
+[node name="1h_sword" type="CollisionShape2D" parent="attackRange"]
+visible = false
 position = Vector2( 17, -2.5 )
 shape = SubResource( 22 )
 disabled = true
