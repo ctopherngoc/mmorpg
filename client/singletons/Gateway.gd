@@ -9,17 +9,10 @@ var username
 var password
 
 func _ready():
-	network.set_dtls_enabled(true)
-	network.set_dtls_verify_enabled(false)
-	network.set_dtls_certificate(cert)
-	network.connect("connection_failed", self, "_on_connection_failed")
-	network.connect("connection_succeeded", self, "_on_connection_succeeded")
-	###############
-	network.create_client(Global.ip, port)
-	set_custom_multiplayer(gateway_api)
-	custom_multiplayer.set_root_node(self)
+	pass
 
 func _process(_delta):
+	
 	if get_custom_multiplayer() == null:
 		return
 	if not custom_multiplayer.has_network_peer():
@@ -27,13 +20,20 @@ func _process(_delta):
 	custom_multiplayer.poll()
 
 func connect_to_server(_username, _password):
+	print("connecting to gateway")
+	network = NetworkedMultiplayerENet.new()
+	gateway_api = MultiplayerAPI.new()
+	network.set_dtls_enabled(true)
+	network.set_dtls_verify_enabled(false)
+	network.set_dtls_certificate(cert)
+	network.connect("connection_failed", self, "_on_connection_failed")
+	network.connect("connection_succeeded", self, "_on_connection_succeeded")
+	
 	username = _username
 	password = _password
-	"""
 	network.create_client(Global.ip, port)
 	set_custom_multiplayer(gateway_api)
 	custom_multiplayer.set_root_node(self)
-	"""
 	custom_multiplayer.set_network_peer(network)
 	# start timer to time out login
 
@@ -42,9 +42,6 @@ func _on_connection_failed():
 	print("Pop-up server offline")
 	Server.email = null
 	Signals.emit_signal("fail_login")
-	custom_multiplayer.set_network_peer(null)
-	#network.close_connection()
-
 
 func _on_connection_succeeded():
 	print("Successfully connected to login server")
@@ -69,8 +66,6 @@ remote func return_login_request(results):
 	else:
 		print("Please provide correct username and pasword")
 		Signals.emit_signal("fail_login")
-	custom_multiplayer.set_network_peer(null)
-	#network.close_connection()
 
 # timer_signal:
 # Signals.emit_signal("failed_login")
