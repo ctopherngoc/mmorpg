@@ -119,7 +119,6 @@ tracks/0/keys = {
 }
 
 [node name="PlayerContainer" type="KinematicBody2D" groups=["player"]]
-position = Vector2( -7, -29 )
 collision_layer = 3776
 collision_mask = 1025
 script = ExtResource( 1 )

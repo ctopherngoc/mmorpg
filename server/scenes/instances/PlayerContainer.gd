@@ -242,13 +242,17 @@ func change_direction():
 		if input[3] == 1 && !attacking:
 			if velocity.x < 0 && is_on_floor():
 				velocity.x = 0
-			direction = 0
-			self.set_scale(Vector2(1,1))
+			if direction == 1:
+				direction = 0
+				self.set_scale(Vector2(1,1))
+				self.set_rotation(0.0)
 		elif input[1] == 1 && !attacking:
 			if velocity.x > 0 && is_on_floor():
 				velocity.x  = 0
-			direction = 1
-			self.set_scale(Vector2(-1,1))
+			if direction == 0:
+				direction = 1
+				self.set_scale(Vector2(-1,1))
+				self.set_rotation(0.0)
 
 #####################################################################################################
 ## not implemented server knockback
