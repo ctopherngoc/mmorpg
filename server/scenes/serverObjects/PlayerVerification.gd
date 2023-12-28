@@ -2,8 +2,8 @@ extends Node
 
 
 onready var main_interface = get_parent()
-#onready var player_container_scene = preload("res://scenes/instances/PlayerContainer.tscn")
-onready var player_container_scene = preload("res://scenes/instances/NewServerPlayer.tscn")
+onready var player_container_scene = preload("res://scenes/instances/PlayerContainer.tscn")
+#onready var player_container_scene = preload("res://scenes/instances/NewServerPlayer.tscn")
 
 var awaiting_verification = {}
 
@@ -27,8 +27,7 @@ func verify(player_id, token, email):
 		while OS.get_unix_time() - token["timestamp"] <= 30:
 			if main_interface.expected_tokens.has(temp_token):
 				token_verification = true
-				var player_container = create_player_container(player_id, token, email)
-				yield(player_container, "completed")
+				create_player_container(player_id, token, email)
 				awaiting_verification.erase(player_id)
 				main_interface.expected_tokens.erase(temp_token)
 				break
@@ -74,24 +73,13 @@ func create_player_container(player_id, token, email):
 	
 	player_container.db_info["token"] = token["token"]
 	player_container.db_info["id"] = token["id"]
-	
-	var firebase_call = Firebase.get_document("users/%s" % player_container.db_info["id"], player_container.http, player_container.db_info["token"], player_container)
-	yield(firebase_call, "completed")
-	
-	# if container.character_array is empty
-	if player_container.characters.empty():
-		pass
-	else:
-		var fill_player_container = fill_player_container(player_container)
-		yield(fill_player_container, "completed")
+	player_container.characters = ServerData.user_characters[player_container.db_info["id"]]
+	for character in player_container.characters:
+		player_container.characters_info_list.append(ServerData.characters_data[character])
 
 # this assumes from conditionals that there are characters	
 func fill_player_container(player_container):
 	for character in player_container.characters:
 		var firebase_call = Firebase.get_document("characters/%s" % character, player_container.http, player_container.db_info["token"], player_container)
 		yield(firebase_call, "completed")
-		
 	print("fill_player_container completed")
-		
-	# temp player stats
-	#player_container.player_stats = ServerData.test_data.Stats

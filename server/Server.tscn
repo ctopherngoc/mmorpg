@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://scenes/serverObjects/PlayerVerification.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Server.gd" type="Script" id=2]
@@ -6,6 +6,8 @@
 [ext_resource path="res://scenes/maps/100002/100002.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scenes/maps/100001/100001.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scenes/maps/Camera2D.gd" type="Script" id=6]
+[ext_resource path="res://scenes/monsterObjects/000001/test_000001.tscn" type="PackedScene" id=7]
+[ext_resource path="res://scenes/instances/retired/NewServerPlayer1.tscn" type="PackedScene" id=8]
 
 [node name="Server" type="Node"]
 script = ExtResource( 2 )
@@ -42,5 +44,30 @@ position = Vector2( 512, -301 )
 current = true
 script = ExtResource( 6 )
 
+[node name="Test" type="Node2D" parent="."]
+visible = false
+position = Vector2( 497, -249 )
+
+[node name="PlayerContainer" parent="Test" instance=ExtResource( 8 )]
+
+[node name="Monster" parent="Test" instance=ExtResource( 7 )]
+position = Vector2( 45, 6 )
+
+[node name="Button" type="Button" parent="Test"]
+margin_left = -231.0
+margin_top = 101.0
+margin_right = -137.0
+margin_bottom = 121.0
+text = "Calc Damage"
+
+[node name="Button2" type="Button" parent="Test"]
+margin_left = -231.0
+margin_top = 130.0
+margin_right = -149.0
+margin_bottom = 150.0
+text = "Calc Attack"
+
 [connection signal="timeout" from="PlayerVerification/VerificationExpiration" to="PlayerVerification" method="_on_VerificationExpiration_timeout"]
 [connection signal="timeout" from="TokenExpiration" to="." method="_on_TokenExpiration_timeout"]
+[connection signal="pressed" from="Test/Button" to="." method="_on_Button_pressed"]
+[connection signal="pressed" from="Test/Button2" to="." method="_on_Button2_pressed"]

@@ -1,20 +1,28 @@
 extends KinematicBody2D
-
-onready var http = $HTTPRequest
-onready var http2 = $HTTPRequest2
-onready var timer =$Timer
-onready var idle_timer =$idle_timer
+"""
+attacking = false not implemented. Attacking is always true after first attack
+timer for attacking should be considered
+idle_timer should consider attacking == true and hittable == false for idle healing
+turn timer to last_hit timer 
+"""
+onready var http = $HTTP/HTTPRequest
+onready var http2 = $HTTP/HTTPRequest2
+onready var timer =$Timers/Timer
+onready var idle_timer =$Timers/idle_timer
+onready var damage_timer = $Timers/DamageTimer
+onready var animation = $AnimationPlayer
 #contains token and id
 var db_info = {}
-var cur_position = Vector2.ZERO
+var mobs_hit = []
+onready var loggedin = true
 
 # post firestore convert
 var email = ""
 var characters = []
 var characters_info_list = []
-var damage = 10
 var idle_counter = 0
 onready var input_queue = []
+var cur_position = null
 
 var velocity = Vector2.ZERO
 var is_climbing = false
@@ -30,82 +38,115 @@ var gravity = 800
 var direction = 0
 var input = [0,0,0,0,0]
 
-#takes int/dex/luck/str values from serverdata.gd
-var player_stats
-
 var hittable = true
 var current_character
 func _physics_process(delta):
-	
-	if "Map" in str(self.get_path()):
-		movement_loop(delta)
-		#return self.global_position
-		
+	if loggedin:
+		if "Map" in str(self.get_path()):
+			movement_loop(delta)
+
 func load_player_stats():
-	max_horizontal_speed = current_character.stats.movementSpeed
-	jump_speed = current_character.stats.jumpSpeed
-	
-func attack():
-	$AnimationPlayer.play("attack")
-func overlapping_bodies():
-	if $do_damage.get_overlapping_areas().size() > 0:
-		var closest = null
-		for body in $do_damage.get_overlapping_areas():
-			if closest == null:
-				closest = body
+	max_horizontal_speed = current_character.stats.base.movementSpeed
+	jump_speed = current_character.stats.base.jumpSpeed
+
+func attack(move_id):
+	attacking = true
+	#basic attack
+	if move_id == 0:
+		var equipment = current_character.equipment
+		if equipment.rweapon.type == "1h_sword":
+			animation.play("1h_sword",-1, ServerData.weapon_speed[str(equipment.rweapon.speed)])
+			yield(animation, "animation_finished")
+		elif equipment.rweapon.type == "2h_sword":
+			pass
+		elif equipment.weapon.type == "bow":
+		# else ranged weapon:
+			if equipment.ammo.amount > 0:
+				animation.play("bow",-1, ServerData.weapon_speed[str(equipment.rweapon.speed)])
 			else:
-				if pow((closest.position.x - self.position.x), 2) > pow((body.position.x - self.position.x ), 2):
-					closest = body
-				else:
-					pass
-		closest.get_parent().npc_hit(damage, self.name)
-	else:
-		pass
+				return "not enough ammo"
+		# no mobs overlap
+		if mobs_hit.size() == 0:
+			print("no mobs hit")
+		# there are mobs overlap
+		else:
+			# physical mobbing auto attack class
+			if current_character.stats.base.class == 10:
+				if mobs_hit.size() < 6:
+					for mob in mobs_hit:
+						var mob_parent = mob.get_parent()
+						var damage = Global.damage_formula(1, current_character, mob_parent.stats)
+						Global.npc_hit(damage, mob_parent, self.name)
+			# singe mob physical basic attack
+			else:
+				var closest = null
+				for monster in mobs_hit:
+					if closest == null:
+						closest = monster
+					else:
+						if pow((monster.position.x - self.position.x), 2) > pow((monster.position.x - self.position.x ), 2):
+							closest = monster
+				var mob_parent = closest.get_parent()
+				var damage = Global.damage_formula(1, current_character, mob_parent.stats)
+				#mob_parent.npc_hit(damage, self.name)
+				Global.npc_hit(damage, mob_parent, self.name)
+	attacking = false
+
+func overlapping_bodies():
+	#if $attack_range.get_overlapping_areas().size() > 0:
+	mobs_hit.clear()
+	# multi hit based on class currently
+	for body in $attack_range.get_overlapping_areas():
+		print(body.get_parent())
+		mobs_hit.append(body)
 
 func take_damage(take_damage):
 	if hittable:
 		hittable = false
 		print(self.name + " takes %s damage" % str(take_damage))
-		current_character["stats"]["health"] -= take_damage
-		print("Current HP: %s" % current_character["stats"]["health"])
+		current_character.stats.base.health -= take_damage
+		print("Current HP: %s" % current_character.stats.base.health)
 		
 		# WIP 
-		if current_character["stats"]["health"] <= 0:
-			print("%s died" % current_character["displayname"])
+		if current_character.stats.base.health <= 0:
+			print("%s died" % current_character.displayname)
 			Global.player_death(self.name)
 
 		get_node("/root/Server").update_player_stats(self)
-		$DamageTimer.start()
+		damage_timer.start()
 	else:
 		pass
 
 func experience(experience):
 	print(self.name + " gain %s exp" % str(experience))
-	var current_exp = current_character["stats"]["experience"]
-	var exp_limit = ServerData.experience_table[str(current_character["stats"]["level"])]
+	var current_exp = current_character.stats.base.experience
+	var exp_limit = ServerData.experience_table[str(current_character.stats.base.level)]
 	current_exp += experience
 
 	# if level up
 	if current_exp >= exp_limit:
-		current_exp -= exp_limit
-		current_character["stats"]["level"] += 1
-		current_character["stats"]["sp"] += 5
-		print("%s Level Up" % current_character["displayname"])
-
-		# add ability point skill points
-		if current_character["stats"]["class"] != 0:
-			current_character["stats"]["ap"] += 3
-
-	current_character["stats"]["experience"] = current_exp
-	Global.store_character_data(self.name, current_character["displayname"])
-	print("Level: %s" % current_character["stats"]["level"])
-	print("EXP: %s" % current_character["stats"]["experience"])
+		# multiple levels
+		while current_exp >= exp_limit:
+			current_exp -= exp_limit
+			current_character.stats.base.level += 1
+			current_character.stats.base.sp += 5
+			print("%s Level Up" % current_character.displayname)
+			
+			# add ability point skill points
+			if current_character.stats.base.class != 0:
+				current_character.stats.base.ap += 3
+			# update exp_limit for multiple levels
+			get_node("/root/Server").update_player_stats(self)
+			exp_limit = ServerData.experience_table[str(current_character.stats.base.level)]
+	current_character.stats.base.experience = current_exp
 	get_node("/root/Server").update_player_stats(self)
+	Global.store_character_data(self.name, current_character.displayname)
+	print("Level: %s" % current_character.stats.base.level)
+	print("EXP: %s" % current_character.stats.base.experience)
 
 func movement_loop(delta):
-	#change_direction()
 	var move_vector = get_movement_vector()
-
+	change_direction()
 	# change get velocity
 	get_velocity(move_vector, delta)
 	# warning-ignore:return_value_discarded
@@ -202,11 +243,17 @@ func change_direction():
 		if input[3] == 1 && !attacking:
 			if velocity.x < 0 && is_on_floor():
 				velocity.x = 0
-			direction = 0
+			if direction == 1:
+				direction = 0
+				self.set_scale(Vector2(1,1))
+				self.set_rotation(0.0)
 		elif input[1] == 1 && !attacking:
 			if velocity.x > 0 && is_on_floor():
 				velocity.x  = 0
-			direction = 1
+			if direction == 0:
+				direction = 1
+				self.set_scale(Vector2(-1,1))
+				self.set_rotation(0.0)
 
 #####################################################################################################
 ## not implemented server knockback
@@ -215,20 +262,17 @@ func change_direction():
 ##	var knockback = knockback_direction * knockback_modifier *40	
 ##	self.global_position += knockback
 
-
 func _on_DamageTimer_timeout():
 	hittable = true
-	$DamageTimer.stop()
+	damage_timer.stop()
 
-"""
 func start_idle_timer():
-	$idle_timer.start(1.0)
+	idle_timer.start(1.0)
 	print("idle timer start")
-
 
 # regen 5hp every 5 seconds if idle
 func _on_idle_timer_timeout():
-	if self.position != cur_position:
+	if self.position != cur_position or attacking or is_climbing:
 		cur_position = self.position
 		idle_counter = 0
 	else:
@@ -236,17 +280,29 @@ func _on_idle_timer_timeout():
 		if self.is_on_floor():
 			idle_counter += 1
 			if idle_counter == 5:
-				if current_character["stats"]["health"] < current_character["stats"]["maxHealth"]:
-					if current_character["stats"]["maxHealth"] - current_character["stats"]["health"] < 5:
-						var hp_dif = current_character["stats"]["maxHealth"] - current_character["stats"]["health"]
-						current_character["stats"]["health"] += int(hp_dif)
+				if current_character.stats.base.health < current_character.stats.base.maxHealth:
+					if current_character.stats.base.maxHealth - current_character.stats.base.health < 5:
+						var hp_dif = current_character.stats.base.maxHealth - current_character.stats.base.health
+						current_character.stats.base.health += int(hp_dif)
 					else:
 						print("heal 5 hp")
-						current_character["stats"]["health"] += 5
+						current_character.stats.base.health += 5
 					get_node("/root/Server").update_player_stats(self)
 				else:
 					pass
 				idle_counter = 0
 		else:
 			idle_counter = 0
+			
+func do_damage():
+	print("mob hit")
+
+func _on_Timer_timeout():
+	pass # Replace with function body.
+
+"""
+func overlappingBodies():
+	print("area ovlapping: " + str($do_damage.get_overlapping_areas().size()))
+	for body in $do_damage.get_overlapping_areas():
+		print('player overlapping with: ', body)
 """

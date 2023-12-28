@@ -3,6 +3,7 @@ var port = 2733
 var token
 var email
 var network = null
+var testing = false
 
 var login_status = 0
 
@@ -56,6 +57,7 @@ func _on_server_disconnect():
 	if login_status == 1:
 		SceneHandler.change_scene("login")
 		login_status = 0
+	get_tree().set_network_peer(null)
 
 func determine_latency():
 	rpc_id(1, "determine_latency", OS.get_system_time_msecs())
@@ -117,7 +119,8 @@ remote func return_choose_character(requester):
 	#instance_from_id(requester).load_world()
 
 func fetch_player_stats():
-	rpc_id(1, "fetch_player_stats")
+	if !testing:
+		rpc_id(1, "fetch_player_stats")
 
 ##############################################################################
 # Authentication
@@ -144,6 +147,7 @@ remote func already_logged_in():
 	login_scene.login_button.disabled = false
 	login_scene.notification.text = "Account already logged in"
 	timer.stop()
+	get_tree().set_network_peer(null)
 
 #################################################################################
 # Player functions
@@ -157,7 +161,9 @@ remote func despawn_player(player_id):
 			player.queue_free()
 
 func send_player_state(player_state):
-	rpc_unreliable_id(1, "received_player_state", player_state)
+	if !testing:
+		if Global.in_game:
+			rpc_unreliable_id(1, "received_player_state", player_state)
 
 remote func receive_world_state(world_state):
 	if Global.current_map == "":
@@ -168,9 +174,9 @@ remote func receive_world_state(world_state):
 remote func receive_despawn_player(player_id):
 	Global.despawn_player(player_id)
 	
-func send_attack():
+func send_attack(skill_id):
 	print("server.gd: send_attack")
-	rpc_id(1, "attack", Server.client_clock)
+	rpc_id(1, "attack", skill_id)
 	
 remote func receive_attack(player_id, attack_time):
 	print("server.gd: recieve_attack")
@@ -184,36 +190,32 @@ remote func receive_attack(player_id, attack_time):
 		pass
 
 remote func update_player_stats(player_stats):
-	#print('server.gd: remote update_player_stats')
-	#print(player_stats)
-
 	for character in Global.character_list:
 		if character["displayname"] == player_stats["displayname"]:
 			character = player_stats
 
 			# change in health
-			if player_stats["stats"]["health"] != Global.player["stats"]["health"]:
+			if player_stats["stats"]["base"]["health"] != Global.player["stats"]["base"]["health"]:
 
 				# lose health
-				if player_stats["stats"]["health"] < Global.player["stats"]["health"]:
-					print("Player took %s damage." % str(character["stats"]["health"] - player_stats["stats"]["health"]))
+				if player_stats["stats"]["base"]["health"] < Global.player["stats"]["base"]["health"]:
+					print("Player took %s damage." % str(Global.player["stats"]["base"]["health"] - player_stats["stats"]["base"]["health"]))
 				# gained health
 				else:
-					print("Player healed %s health." % str(abs(character["stats"]["health"] - player_stats["stats"]["health"])))
-				Global.player["stats"]["health"] = player_stats["stats"]["health"]
+					print("Player healed %s health." % str(abs(character["stats"]["base"]["health"] - player_stats["stats"]["base"]["health"])))
+				Global.player["stats"]["base"]["health"] = player_stats["stats"]["base"]["health"]
 				Signals.emit_signal("update_health")
 				
 			# level check -> exp check
-			if player_stats["stats"]["level"] > Global.player["stats"]["level"]:
+			if player_stats["stats"]["base"]["level"] > Global.player["stats"]["base"]["level"]:
 				print("Level up")
-				Global.player["stats"]["experience"] = player_stats["stats"]["experience"]
-				Global.player["stats"]["level"] = player_stats["stats"]["level"]
+				Global.player["stats"]["base"]["experience"] = player_stats["stats"]["base"]["experience"]
+				Global.player["stats"]["base"]["level"] = player_stats["stats"]["base"]["level"]
 				Signals.emit_signal("update_level")
-				Signals.emit_signal("update_exp")
 
-			elif player_stats["stats"]["experience"] > Global.player["stats"]["experience"]:
-					print("Player gained %s exp." % str(player_stats["stats"]["experience"] - Global.player["stats"]["experience"]))
-					Global.player["stats"]["experience"] = player_stats["stats"]["experience"]
+			if player_stats["stats"]["base"]["experience"] > Global.player["stats"]["base"]["experience"]:
+					print("Player gained %s exp." % str(player_stats["stats"]["base"]["experience"] - Global.player["stats"]["base"]["experience"]))
+					Global.player["stats"]["base"]["experience"] = player_stats["stats"]["base"]["experience"]
 					Signals.emit_signal("update_exp")
 			break
 
@@ -234,20 +236,23 @@ remote func return_player_input(server_input_results):
 	Global.server_reconciliation(server_input_results)
 
 remote func receive_climb_data(climb_data):
-	var player = get_node("/root/currentScene/Player")
-	if climb_data == 2:
-		print("server: is climbing")
-		player.can_climb = true
-		player.is_climbing = true
-	elif climb_data == 1:
-		print("server: can climb")
-		player.is_climbing = false
-		player.can_climb = true
-	else:
-		player.can_climb = false
-		player.is_climbing = false
+	if Global.in_game:
+		var player = get_node("/root/currentScene/Player")
+		if climb_data == 2:
+			print("server: is climbing")
+			player.can_climb = true
+			player.is_climbing = true
+		elif climb_data == 1:
+			print("server: can climb")
+			player.is_climbing = false
+			player.can_climb = true
+		else:
+			player.can_climb = false
+			player.is_climbing = false
 
 func logout():
 	timer.stop()
+	rpc_id(1, "logout")
 	network.close_connection()
+	Global.in_game = false
 	SceneHandler.change_scene("login")

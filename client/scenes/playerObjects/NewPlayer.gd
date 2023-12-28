@@ -5,7 +5,6 @@ onready var velocity_multiplier = 1
 onready var jump_speed
 onready var max_horizontal_speed
 onready var velocity = Vector2.ZERO
-var attack_speed = 1.5
 
 # static player varaibles
 onready var gravity = 800
@@ -19,11 +18,11 @@ var held_down = false
 onready var sprite = $CompositeSprite/AnimationPlayer
 
 func _ready():
-	$Label.text = Global.player.displayname
-	max_horizontal_speed = (Global.player.stats.movementSpeed)
+	max_horizontal_speed = (Global.player.stats.base.movementSpeed)
 	# warning-ignore:return_value_discarded
 	Signals.connect("dialog_closed", self, "movable_switch")
-	jump_speed = (Global.player.stats.jumpSpeed)
+	jump_speed = (Global.player.stats.base.jumpSpeed)
+	Global.in_game = true
 
 func _physics_process(delta):
 	if Global.movable:
@@ -149,7 +148,8 @@ func update_animation():
 	# send rpc to server
 	elif(Input.is_action_pressed("attack") && !is_climbing && Global.movable):
 		attacking = true
-		sprite.play("slash",-1, attack_speed)
+		sprite.play("slash",-1, GameData.weapon_speed[str(Global.player.equipment.rweapon.speed)])
+		Server.send_attack(0)
 	else:
 		if(!is_on_floor()):
 			pass

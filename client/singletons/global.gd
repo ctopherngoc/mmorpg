@@ -7,6 +7,7 @@ const interpolation_offset = 100
 onready var current_map = ""
 onready var bgm = $bgm
 onready var logging_out = false
+onready var in_game = false
 
 var other_player = preload("res://scenes/playerObjects/PlayerTemplate.tscn")
 var last_world_state = 0
@@ -128,13 +129,16 @@ func server_reconciliation(server_input_data):
 	for i in range(input_queue.size()):
 		if server_input_data["T"] == input_queue[i]["T"]:
 			if server_input_data["P"] != input_queue[i]["P"]:
-				var serverx = stepify(server_input_data["P"].x, 0.00001)
-				var servery = stepify(server_input_data["P"].y, 0.00001)
-				var clientx = stepify(input_queue[i]["P"].x, 0.00001)
-				var clienty = stepify(input_queue[i]["P"].y, 0.00001)
+				var serverx = stepify(server_input_data["P"].x, 0.01)
+				var servery = stepify(server_input_data["P"].y, 0.01)
+				var clientx = stepify(input_queue[i]["P"].x, 0.01)
+				var clienty = stepify(input_queue[i]["P"].y, 0.01)
 				if serverx != clientx and servery != clienty:
 					print("recon")
 					print("server: ", server_input_data["P"], " client: ",input_queue[i]["P"])
+					#var new_position = lerp(Vector2(clientx, clienty), Vector2(serverx, servery), interpolation_factor)
+					#var new_position = lerp(input_queue[i]["P"], server_input_data["P"], .75)
 					get_node("/root/currentScene/Player").set_position(server_input_data['P'])
+					#get_node("/root/currentScene/Player").set_position(server_input_data['P'])
 			input_queue = input_queue.slice(i+1, input_queue.size(), 1, true)
 			return

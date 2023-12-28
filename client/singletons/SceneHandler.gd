@@ -1,9 +1,8 @@
-extends Node
+extends CanvasLayer
 
 onready var current_scene_container = preload("res://scenes/menuObjects/LoginScreen/LoginScreen.tscn")
 onready var current_scene = "menu"
 onready var current_bgm = "menu"
-
 # menu hash map
 onready var menu_scenes = {
 	"mainMenu" : "res://scenes/menuObjects/mainMenu.tscn",
@@ -16,6 +15,7 @@ onready var menu_scenes = {
 func _ready():
 # warning-ignore:return_value_discarded
 	get_tree().change_scene("res://scenes/menuObjects/LoginScreen/LoginScreen.tscn")
+	
 
 func _process(_delta):
 	# turn on music
@@ -25,6 +25,8 @@ func _process(_delta):
 func change_scene(scene: String):
 # warning-ignore:return_value_discarded
 	# if in menu
+	$AnimationPlayer.play("dissolve")
+	yield($AnimationPlayer, "animation_finished")
 	if scene in menu_scenes.keys():
 		get_tree().change_scene(menu_scenes[scene])
 		if current_bgm != "menu":
@@ -38,5 +40,6 @@ func change_scene(scene: String):
 		if GameData.map_dict[scene]["bgm"] != current_bgm:
 			current_bgm = GameData.map_dict[scene]["bgm"]
 			Global.bgm.set_stream(GameData.bgm_dict[GameData.map_dict[scene]["bgm"]])
-# warning-ignore:return_value_discarded
+		# warning-ignore:return_value_discarded
 		get_tree().change_scene(GameData.map_dict[scene]["path"])
+	$AnimationPlayer.play_backwards("dissolve")

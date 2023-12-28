@@ -15,7 +15,7 @@ margin_left = -18.0
 margin_top = 39.0
 margin_right = 22.0
 margin_bottom = 53.0
-text = "kebin"
+text = "kevin"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( -0.5, -1.5 )

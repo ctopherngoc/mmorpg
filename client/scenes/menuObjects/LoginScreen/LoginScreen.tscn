@@ -108,9 +108,9 @@ margin_right = 222.0
 margin_bottom = 160.0
 
 [node name="Button1" type="Button" parent="VBoxContainer/create"]
-margin_right = 53.0
+margin_right = 58.0
 margin_bottom = 20.0
-text = "Create"
+text = "Testing"
 
 [node name="Options" parent="." instance=ExtResource( 3 )]
 visible = false
