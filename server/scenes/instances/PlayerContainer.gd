@@ -14,6 +14,7 @@ onready var animation = $AnimationPlayer
 #contains token and id
 var db_info = {}
 var mobs_hit = []
+onready var loggedin = true
 
 # post firestore convert
 var email = ""
@@ -40,9 +41,9 @@ var input = [0,0,0,0,0]
 var hittable = true
 var current_character
 func _physics_process(delta):
-	
-	if "Map" in str(self.get_path()):
-		movement_loop(delta)
+	if loggedin:
+		if "Map" in str(self.get_path()):
+			movement_loop(delta)
 
 func load_player_stats():
 	max_horizontal_speed = current_character.stats.base.movementSpeed

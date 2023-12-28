@@ -447,6 +447,7 @@ remote func logout():
 	var player_id = get_tree().get_rpc_sender_id()
 # warning-ignore:unused_variable
 	var player_container = get_node(ServerData.player_location[str(player_id)] + "/%s" % str(player_id))
+	player_container.loggedin = false
 	network.disconnect_peer(player_id)
 
 
