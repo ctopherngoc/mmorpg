@@ -139,7 +139,6 @@ func _server_get_document(path: String, http: HTTPRequest)-> void:
 	var result := yield(http, "request_completed") as Array
 	var result_body := JSON.parse(result[3].get_string_from_ascii()).result as Dictionary
 	if "users" in path:
-		print("in users")
 		var document_list = result_body["documents"]
 		for document in document_list:
 			var doc_id = document["name"].replace("projects/godotproject-ef224/databases/(default)/documents/users/", "")
@@ -152,7 +151,6 @@ func _server_get_document(path: String, http: HTTPRequest)-> void:
 				ServerData.user_characters[doc_id] = []
 	# currently specific character
 	elif "characters" in path:
-		print("in characters")
 		if "documents" in result_body.keys():
 			var document_list = result_body["documents"]
 			for document in document_list:
