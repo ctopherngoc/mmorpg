@@ -18,9 +18,6 @@ func npc_attack(player, monster_stats):
 	
 	# hit mechanic
 	if monster_stats.accuracy >= player_stats.base.avoidability + player_stats.equipment.avoidability:
-		#print("Monster Hit: %s" % player.name)
-		
-		# some random damage formula, since theres no player defense use strength as defense
 		var calculation = monster_stats.attack - player_stats.base.defense + player_stats.equipment.defense
 		if calculation > 1:
 			player.take_damage(calculation)
