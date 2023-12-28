@@ -387,7 +387,7 @@ remote func received_player_state(player_state):
 	# takes client tick time and sends it with final position
 	var return_input = {'T': player_state['T'], 'P': player_container.position}
 	return_player_input(player_id, return_input)
-
+	player_state['A'] = player_container.get_animation()
 	if ServerData.player_state_collection.has(player_id):
 		if ServerData.player_state_collection[player_id]["T"] < player_state["T"]:
 			ServerData.player_state_collection[player_id] = player_state
