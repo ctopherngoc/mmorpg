@@ -46,9 +46,9 @@ func _on_AcceptDialog_confirmed():
 	QuitConfirm.hide()
 	_on_resume_pressed()
 	#SceneManager.ChangeScene("res://Menu/MainMenu/MainMenu2.tscn")
-	Global.logging_out = true
-	Global.in_game = false
-	Global.world_state_buffer.clear()
+	#Global.logging_out = true
+	#Global.in_game = false
+	#Global.world_state_buffer.clear()
 	Server.logout()
 	#SceneHandler.change_scene("login")
 
