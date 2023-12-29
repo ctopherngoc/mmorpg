@@ -6,7 +6,6 @@ onready var input_queue = []
 const interpolation_offset = 100
 onready var current_map = ""
 onready var bgm = $bgm
-onready var logging_out = false
 onready var in_game = false
 
 var other_player = preload("res://scenes/playerObjects/PlayerTemplate.tscn")
@@ -37,7 +36,7 @@ func update_world_state(world_state):
 		world_state_buffer.append(world_state)
 
 func _physics_process(_delta):
-	if !logging_out:
+	if !in_game:
 		var render_time = OS.get_system_time_msecs() - interpolation_offset
 		if world_state_buffer.size() > 1 && Server.server_status:
 			while world_state_buffer.size() > 2 and render_time > world_state_buffer[2].T:
