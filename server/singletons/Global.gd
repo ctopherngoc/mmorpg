@@ -102,11 +102,14 @@ func calculate_stats(player_stats):
 		if equipment[item] is int:
 			pass
 		else:
-			for stat in equipment[item].stats.keys():
-				# add stat value to each stat in temp equipment dict
-				print("%s before: " % stat, equipment_stats[stat])
-				equipment_stats[stat] += equipment[item].stats[stat]
-				print("%s after: " % stat, equipment_stats[stat])
+			for stat in equipment[item].keys():
+				if stat in ["name", "id", "unique_id", "type", "speed", "slot"]:
+					continue
+				else:
+					# add stat value to each stat in temp equipment dict
+					print("%s before: " % stat, equipment_stats[stat])
+					equipment_stats[stat] += equipment[item][stat]
+					print("%s after: " % stat, equipment_stats[stat])
 		# update equipment stats of player_dict
 	stats.equipment = equipment_stats
 	
