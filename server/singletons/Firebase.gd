@@ -237,18 +237,8 @@ func new_firebase_dictionary_converter(database_data: Dictionary):
 			for key2 in keys2:
 				if 'integerValue' in shortcut2[key2]:
 					temp_dict['equipment'][key][key2] = int(shortcut2[key2]['integerValue'])
-				#elif 'stringValue' in shortcut2[key2]:
 				else:
 					temp_dict['equipment'][key][key2] = str(shortcut2[key2]['stringValue'])
-#				else:
-#					var shortcut3 = shortcut2[key2]["mapValue"]["fields"]
-#					var keys3 = shortcut3.keys()
-#					temp_dict['equipment'][key][key2] = {}
-#					for key3 in keys3:
-#						if 'integerValue'in shortcut3[key3]:
-#							temp_dict['equipment'][key][key2][key3] = int(shortcut3[key3]['integerValue'])
-#						elif 'stringValue'in shortcut3[key3]:
-#							temp_dict['equipment'][key][key2][key3] = str(shortcut3[key3]['stringValue'])
 
 	#inventory
 	shortcut = database_data["inventory"]["mapValue"]["fields"]
@@ -313,19 +303,8 @@ func firebase_dictionary_converter(database_data: Dictionary, client_data: Array
 			for key2 in keys2:
 				if 'integerValue' in shortcut2[key2]:
 					temp_dict['equipment'][key][key2] = shortcut2[key2]['integerValue']
-				#elif 'stringValue' in shortcut2[key2]:
 				else:
 					temp_dict['equipment'][key][key2] = shortcut2[key2]['stringValue']
-#				else:
-#					var shortcut3 = shortcut2[key2]["mapValue"]["fields"]
-#					var keys3 = shortcut3.keys()
-#					temp_dict['equipment'][key][key2] = {}
-#					for key3 in keys3:
-#						if 'integerValue'in shortcut3[key3]:
-#							temp_dict['equipment'][key][key2][key3] = shortcut3[key3]['integerValue']
-#						elif 'stringValue'in shortcut3[key3]:
-#							temp_dict['equipment'][key][key2][key3] = shortcut3[key3]['stringValue']
-
 	#inventory
 	shortcut = database_data["inventory"]["mapValue"]["fields"]
 	keys = shortcut.keys()
@@ -389,16 +368,7 @@ func server_dictionary_converter(server_data: Dictionary, firebase_data: Diction
 					temp_dict[key2] = {'stringValue' : shortcut2[key2]}
 				else:
 					temp_dict[key2] = {'integerValue': shortcut2[key2]}
-				# rweapon[stats]
-#				else:
-#					#key2 == stats
-#					temp_dict[key2] = {'mapValue' : {'fields' : {}}}
-#					var shortcut3 = shortcut2[key2]
-#					var keys3 = shortcut3.keys()
-#					for key3 in keys3:
-#						temp_dict[key2]['mapValue']['fields'][key3] ={'integerValue' : shortcut3[key3]}
 			fb_shortcut[key] = {'mapValue':{'fields': temp_dict}}
-			print(fb_shortcut[key])
 
 	#inventory
 	shortcut = server_data["inventory"]
