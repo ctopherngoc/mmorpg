@@ -14,9 +14,9 @@ var map_bound = {
 	"top": -10000,
 }
 
-var greenGuy = preload("res://scenes/monsterObjects/000001/000001.tscn")
+var greenGuy = preload("res://scenes/monsterObjects/100001/100001.tscn")
 var monster_list = {
-	'000001': greenGuy,
+	'100001': greenGuy,
 }
 
 func _ready():

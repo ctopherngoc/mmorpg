@@ -14,11 +14,11 @@ var map_bound = {
 	"top": -10000,
 }
 
-var greenGuy = preload("res://scenes/monsterObjects/000001/000001.tscn")
-var blueGuy = preload("res://scenes/monsterObjects/000002/000002.tscn")
+var greenGuy = preload("res://scenes/monsterObjects/100001/100001.tscn")
+var blueGuy = preload("res://scenes/monsterObjects/100002/100002.tscn")
 var monster_list = {
-	'000001': greenGuy,
-	'000002': blueGuy,
+	'100001': greenGuy,
+	'100002': blueGuy,
 }
 
 #teleporter end locations

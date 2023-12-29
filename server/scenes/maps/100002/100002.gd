@@ -6,8 +6,8 @@ var enemy_id_counter = 0
 var enemy_maximum = 2
 var spawn_position = Vector2(110, -275)
 
-var green_guy = preload("res://scenes/monsterObjects/000001/000001.tscn")
-var blue_guy = preload("res://scenes/monsterObjects/000002/000002.tscn")
+var green_guy = preload("res://scenes/monsterObjects/100001/100001.tscn")
+var blue_guy = preload("res://scenes/monsterObjects/100002/100002.tscn")
 var enemy_types = [green_guy, green_guy, blue_guy, blue_guy]
 
 var enemy_spawn_points = [Vector2(367, -93), Vector2(631, -93), Vector2(355, -433), Vector2(631, -433)]

@@ -1,6 +1,6 @@
 extends KinematicBody2D
 
-var id = '000002'
+var id = '100002'
 var title = "Blue Guy"
 var location = null
 var current_hp = 50

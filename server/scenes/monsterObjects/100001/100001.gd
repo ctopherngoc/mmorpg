@@ -6,7 +6,7 @@ extends KinematicBody2D
 var jump_speed = 500
 ##########################################################
 #currrent new variables
-var id = "000001"
+var id = "100001"
 var title = "Green Guy"
 var location = null
 var current_hp = 25

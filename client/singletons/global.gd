@@ -47,7 +47,6 @@ func _physics_process(_delta):
 				var interpolation_factor = float(render_time - world_state_buffer[1]["T"]) / float(world_state_buffer[2]["T"] - world_state_buffer[0]["T"])
 				for player_state in world_state_buffer[2]["P"].keys():
 					if player_state == get_tree().get_network_unique_id():
-						#server_reconciliation(world_state_buffer[2]["P"][player_state]["P"])
 						continue
 					if not world_state_buffer[1]["P"].has(player_state):
 						continue
