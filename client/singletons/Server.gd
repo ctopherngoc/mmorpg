@@ -51,6 +51,7 @@ func _on_connection_succeeded():
 func _on_server_disconnect():
 	server_status = false
 	Global.world_state_buffer.clear()
+	Global.input_queue.clear()
 	timer.stop()
 	print("server disconnected")
 	
@@ -253,6 +254,6 @@ remote func receive_climb_data(climb_data):
 func logout():
 	timer.stop()
 	rpc_id(1, "logout")
-	network.close_connection()
 	Global.in_game = false
+	network.close_connection()
 	SceneHandler.change_scene("login")
