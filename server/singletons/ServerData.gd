@@ -421,33 +421,7 @@ var equipment_data_template = {
 	"damagePercent": 0,
 	"critRate": 0,
 }
-#var equipment_data_template = {
-#	"id": 0,
-#	"unique_id":0,
-#	"type": "",
-#	"name": "",
-#	"speed": 5,
-#	"slot": 7,
-#	"stats": {
-#		"attack": 0,
-#		"magic": 0,
-#		"maxHealth": 0,
-#		"maxMana": 0,
-#		"strength": 0,
-#		"wisdom": 0,
-#		"dexterity": 0,
-#		"luck": 0,
-#		"movementSpeed": 0,
-#		"jumpSpeed": 0,
-#		"avoidability": 0,
-#		"defense": 0,
-#		"magicDefense": 0,
-#		"accuracy": 0,
-#		"bossPercent": 0,
-#		"damagePercent": 0,
-#		"critRate": 0,
-#		}
-#}
+
 onready var equipment_stats_template = {
 		"attack": 0,
 		"magic": 0,
