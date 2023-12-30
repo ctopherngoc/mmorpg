@@ -1,70 +1,109 @@
 {
-  "DropTable": {
+  "MonsterTable": {
     "100001": {
-      "Item1ID": 100000,
-      "Item1Chance": 95,
-      "Item1Min": 1,
-      "Item1Max": 4,
-      "Item2ID": null,
-      "Item2Chance": null,
-      "Item2Min": null,
-      "Item2Max": null,
-      "Item3ID": null,
-      "Item3Chance": null,
-      "Item3Min": null,
-      "Item3Max": null
+      "title": "Green Guy",
+      "dropList": [
+        100000,
+        500000,
+        500001
+      ],
+      "level": 1,
+      "boss": 0,
+      "maxHP": 25,
+      "currentHP": 25,
+      "attack": 10,
+      "defense": 5,
+      "magicDefense": 5,
+      "accuracy": 10,
+      "avoidability": 5,
+      "experience": 25,
+      "movementSpeed": 100,
+      "jumpSpeed": 200
     },
     "100002": {
-      "Item1ID": 100000,
-      "Item1Chance": 95,
-      "Item1Min": 3,
-      "Item1Max": 8,
-      "Item2ID": null,
-      "Item2Chance": null,
-      "Item2Min": null,
-      "Item2Max": null,
-      "Item3ID": null,
-      "Item3Chance": null,
-      "Item3Min": null,
-      "Item3Max": null
+      "title": "Blue Guy",
+      "dropList": [
+        100000,
+        500000,
+        500001
+      ],
+      "level": 2,
+      "boss": 0,
+      "maxHP": 50,
+      "currentHP": 50,
+      "attack": 15,
+      "defense": 10,
+      "magicDefense": 10,
+      "accuracy": 15,
+      "avoidability": 5,
+      "experience": 30,
+      "movementSpeed": 100,
+      "jumpSpeed": 200
     }
   },
   "ItemTable": {
     "100000": {
       "itemName": "Gold",
-      "ItemType": "gold"
+      "itemType": "gold",
+      "dropRate": 85,
+      "stackable": 1,
+      "unique": 0
     },
     "200000": {
       "itemName": "Training Sword",
-      "ItemType": "equipment"
+      "itemType": "equipment",
+      "dropRate": 5,
+      "stackable": 0,
+      "unique": 1
     },
     "200001": {
       "itemName": "Training Dagger",
-      "ItemType": "equipment"
+      "itemType": "equipment",
+      "dropRate": 5,
+      "stackable": 0,
+      "unique": 1
     },
     "500000": {
-      "itemName": "Cloth Shrit",
-      "ItemType": "equipment"
+      "itemName": "Cloth Shirt",
+      "itemType": "equipment",
+      "dropRate": 5,
+      "stackable": 0,
+      "unique": 1
     },
     "500001": {
       "itemName": "Cloth Bottom",
-      "ItemType": "equipment"
+      "itemType": "equipment",
+      "dropRate": 5,
+      "stackable": 0,
+      "unique": 1
     },
     "500002": {
       "itemName": "Leather Shirt",
-      "ItemType": "equipment"
+      "itemType": "equipment",
+      "dropRate": 5,
+      "stackable": 0,
+      "unique": 1
     },
     "500003": {
       "itemName": "Leather Bottom",
-      "ItemType": "equipment"
+      "itemType": "equipment",
+      "dropRate": 5,
+      "stackable": 0,
+      "unique": 1
     },
     "500004": {
       "itemName": "Woodcutter Shirt",
-      "ItemType": "equipment"
+      "itemType": "equipment",
+      "dropRate": 5,
+      "stackable": 0,
+      "unique": 1
     },
     "500005": {
       "itemName": "Woodcuttern Bottom",
-      "ItemType": "equipment"
+      "itemType": "equipment",
+      "dropRate": 5,
+      "stackable": 0,
+      "unique": 1
     }
   },
   "EquipmentTable": {
@@ -87,7 +126,8 @@
       "maxMana": null,
       "movementSpeed": null,
       "strength": null,
-      "wisdom": null
+      "wisdom": null,
+      "job": null
     },
     "200001": {
       "name": "Training Dagger",
@@ -108,10 +148,11 @@
       "maxMana": null,
       "movementSpeed": null,
       "strength": null,
-      "wisdom": null
+      "wisdom": null,
+      "job": null
     },
     "500000": {
-      "name": "Cloth Shrit",
+      "name": "Cloth Shirt",
       "type": "top",
       "slot": 7,
       "accuracy": null,
@@ -129,7 +170,8 @@
       "maxMana": null,
       "movementSpeed": null,
       "strength": null,
-      "wisdom": null
+      "wisdom": null,
+      "job": null
     },
     "500001": {
       "name": "Cloth Bottom",
@@ -150,7 +192,8 @@
       "maxMana": null,
       "movementSpeed": null,
       "strength": null,
-      "wisdom": null
+      "wisdom": null,
+      "job": null
     },
     "500002": {
       "name": "Leather Shirt",
@@ -171,7 +214,8 @@
       "maxMana": null,
       "movementSpeed": null,
       "strength": null,
-      "wisdom": null
+      "wisdom": null,
+      "job": null
     },
     "500003": {
       "name": "Leather Bottom",
@@ -192,7 +236,8 @@
       "maxMana": null,
       "movementSpeed": null,
       "strength": null,
-      "wisdom": null
+      "wisdom": null,
+      "job": null
     },
     "500004": {
       "name": "Woodcutter Shirt",
@@ -213,7 +258,8 @@
       "maxMana": null,
       "movementSpeed": null,
       "strength": null,
-      "wisdom": null
+      "wisdom": null,
+      "job": null
     },
     "500005": {
       "name": "Woodcuttern Bottom",
@@ -234,7 +280,8 @@
       "maxMana": null,
       "movementSpeed": null,
       "strength": null,
-      "wisdom": null
+      "wisdom": null,
+      "job": null
     }
   }
 }
