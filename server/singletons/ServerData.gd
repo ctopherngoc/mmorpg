@@ -6,7 +6,7 @@ var player_state_collection = {}
 var user_characters = {}
 var characters_data = {}
 
-var dropTable
+var monsterTable
 var itemTable
 var equipmentTable
 
@@ -17,12 +17,12 @@ func _ready():
 	var gamedata_json = JSON.parse(data_file.get_as_text())
 	data_file.close()
 	
-	dropTable = gamedata_json.result["DropTable"]
+	monsterTable = gamedata_json.result["MonsterTable"]
 	itemTable = gamedata_json.result["ItemTable"]
 	equipmentTable = gamedata_json.result["EquipmentTable"]
 	
-	print(dropTable)
-	print(equipmentTable)
+	print(monsterTable)
+	#print(equipmentTable)
 	
 	
 #	var skill_data_file = File.new()
