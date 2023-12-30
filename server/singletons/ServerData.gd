@@ -1,9 +1,35 @@
 extends Node
+
 var player_location = {}
 var username_list = {}
 var player_state_collection = {}
 var user_characters = {}
 var characters_data = {}
+
+var dropTable
+var itemTable
+var equipmentTable
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	var data_file = File.new()
+	data_file.open("res://data/GameDataTable.json", File.READ)
+	var gamedata_json = JSON.parse(data_file.get_as_text())
+	data_file.close()
+	
+	dropTable = gamedata_json.result["DropTable"]
+	itemTable = gamedata_json.result["ItemTable"]
+	equipmentTable = gamedata_json.result["EquipmentTable"]
+	
+	print(dropTable)
+	print(equipmentTable)
+	
+	
+#	var skill_data_file = File.new()
+#	skill_data_file.open("res://Data/SkillData - Sheet1.json", File.READ)
+#	var skill_data_json = JSON.parse(skill_data_file.get_as_text())
+#	skill_data_file.close()
+#	skill_data = skill_data_json.result
 
 var monsters = {
 	"100001" : {},
@@ -292,14 +318,6 @@ var portal_data = {
 					'spawn': Vector2(904, -252)}
 	},
 }
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass
-#	var skill_data_file = File.new()
-#	skill_data_file.open("res://Data/SkillData - Sheet1.json", File.READ)
-#	var skill_data_json = JSON.parse(skill_data_file.get_as_text())
-#	skill_data_file.close()
-#	skill_data = skill_data_json.result
 
 var test_pstats = {
 	"equipment": {
