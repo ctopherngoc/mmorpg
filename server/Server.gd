@@ -10,6 +10,7 @@ onready var player_verification_process = get_node("PlayerVerification")
 onready var character_creation_queue = []
 const username = "server@server.com"
 const password = "server123"
+var random = RandomNumberGenerator.new()
 #######################################################
 
 #server start 
@@ -465,15 +466,43 @@ func _input(event):
 		dropGeneration("100001")
 
 func dropGeneration(monster_id):
-	var item_list = []
-	for key in ServerData.dropTable[monster_id].keys():
-		if "ID" in key:
-			var item_id = ServerData.dropTable[monster_id][key]
-			var item_chance
-			if dropDetermine(item_id):
-				if item_id  == "100000":
-					pass
-
+	var drop_list = ServerData.monsterTable[monster_id]["dropList"]
+	var item_list = {}
+	for item_id in drop_list:
+		item_id = str(item_id)
+		# if drop
+		if dropDetermine(item_id):
+			# gold
+			if ServerData.itemTable[item_id]["itemType"] == "gold":
+				var monster_level = ServerData.monsterTable[monster_id]["level"]
+				var item_max_value = pow((monster_level + 1),2)
+				var item_value = random.randi_range(item_max_value / 2,item_max_value)
+				item_list[item_id] = item_value
+				#print(item_id, " ", ServerData.itemTable[item_id]["itemType"], ": ", item_value)
+			# equip
+			elif ServerData.itemTable[item_id]["itemType"] == "equipment":
+				var equip_stats = ServerData.equipmentTable[item_id]
+				var keys = equip_stats.keys()
+				for key in keys:
+					if !equip_stats[key]:
+						equip_stats[key] = 0
+					elif key in ["attack", "magic", "strength", "dexterity", "wisdom", "maxHP", "maxMana", "movementSpeed", "jumpSpeed", "defense", "magicDefense"]:
+						equip_stats[key] += random.randi_range(-5,5)
+						if equip_stats[key] < 0:
+							equip_stats[key] = 0
+				equip_stats["uniqueID"] = random.randi_range(1, 1000000000)
+				# create unique id
+				item_list[item_id] = equip_stats
+				#print(equip_stats)
+			# etc, material, use
+			else:
+				pass
+	print(item_list)
 func dropDetermine(item_id):
-	pass
-	var item_chance
+	var drop_rate = ServerData.itemTable[item_id]["dropRate"]
+	var rate_roll = randi() % 100 + 1
+	if rate_roll <= drop_rate:
+		return true
+	else:
+		return false
+	
