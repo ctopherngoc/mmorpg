@@ -30,7 +30,7 @@ func _process(_delta):
 			if enemy_list[monster_id]['EnemyState'] != "Dead":
 				var monster_container = get_node("YSort/Monsters/%s" % str(monster_id))
 				enemy_list[monster_id]['EnemyLocation'] = monster_container.position
-				enemy_list[monster_id]['EnemyHealth'] = monster_container.current_hp
+				enemy_list[monster_id]['EnemyHealth'] = monster_container.stats.currentHP
 				enemy_list[monster_id]['EnemyState'] = monster_container.state
 
 # after timer function called
@@ -54,7 +54,7 @@ func SpawnEnemy():
 				new_enemy.position = location
 				new_enemy.name = str(i)
 				get_node("YSort/Monsters/").add_child(new_enemy, true)
-				enemy_list[i] = {'id': new_enemy.id,'EnemyName': new_enemy.title, 'EnemyLocation': location, 'EnemyHealth': new_enemy.current_hp, 'EnemyMaxHealth': new_enemy.max_hp, 'EnemyState': new_enemy.state, 'time_out': 1}
+				enemy_list[i] = {'id': new_enemy.id, 'EnemyLocation': location, 'EnemyHealth': new_enemy.stats.currentHP, 'EnemyState': new_enemy.state, 'time_out': 1}
 				########################################
 				enemy_id_counter += 1
 
