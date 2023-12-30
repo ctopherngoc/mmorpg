@@ -459,3 +459,21 @@ func _on_Button_pressed():
 # function takes current_character
 func _on_Button2_pressed():
 	Global.calculate_stats($Test/PlayerContainer.current_character)
+
+func _input(event):
+	if event.is_action_pressed("ui_accept"):
+		dropGeneration("100001")
+
+func dropGeneration(monster_id):
+	var item_list = []
+	for key in ServerData.dropTable[monster_id].keys():
+		if "ID" in key:
+			var item_id = ServerData.dropTable[monster_id][key]
+			var item_chance
+			if dropDetermine(item_id):
+				if item_id  == "100000":
+					pass
+
+func dropDetermine(item_id):
+	pass
+	var item_chance
