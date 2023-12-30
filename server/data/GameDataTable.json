@@ -1,0 +1,240 @@
+{
+  "DropTable": {
+    "100001": {
+      "Item1ID": 100000,
+      "Item1Chance": 95,
+      "Item1Min": 1,
+      "Item1Max": 4,
+      "Item2ID": null,
+      "Item2Chance": null,
+      "Item2Min": null,
+      "Item2Max": null,
+      "Item3ID": null,
+      "Item3Chance": null,
+      "Item3Min": null,
+      "Item3Max": null
+    },
+    "100002": {
+      "Item1ID": 100000,
+      "Item1Chance": 95,
+      "Item1Min": 3,
+      "Item1Max": 8,
+      "Item2ID": null,
+      "Item2Chance": null,
+      "Item2Min": null,
+      "Item2Max": null,
+      "Item3ID": null,
+      "Item3Chance": null,
+      "Item3Min": null,
+      "Item3Max": null
+    }
+  },
+  "ItemTable": {
+    "100000": {
+      "itemName": "Gold",
+      "ItemType": "gold"
+    },
+    "200000": {
+      "itemName": "Training Sword",
+      "ItemType": "equipment"
+    },
+    "200001": {
+      "itemName": "Training Dagger",
+      "ItemType": "equipment"
+    },
+    "500000": {
+      "itemName": "Cloth Shrit",
+      "ItemType": "equipment"
+    },
+    "500001": {
+      "itemName": "Cloth Bottom",
+      "ItemType": "equipment"
+    },
+    "500002": {
+      "itemName": "Leather Shirt",
+      "ItemType": "equipment"
+    },
+    "500003": {
+      "itemName": "Leather Bottom",
+      "ItemType": "equipment"
+    },
+    "500004": {
+      "itemName": "Woodcutter Shirt",
+      "ItemType": "equipment"
+    },
+    "500005": {
+      "itemName": "Woodcuttern Bottom",
+      "ItemType": "equipment"
+    }
+  },
+  "EquipmentTable": {
+    "200000": {
+      "name": "Training Sword",
+      "type": "1h_sword",
+      "slot": 7,
+      "accuracy": 15,
+      "attack": null,
+      "bossPercent": null,
+      "critRate": null,
+      "damagePercent": null,
+      "defense": null,
+      "dexterity": null,
+      "jumpSpeed": null,
+      "luck": null,
+      "magic": null,
+      "magicDefense": null,
+      "maxHealth": null,
+      "maxMana": null,
+      "movementSpeed": null,
+      "strength": null,
+      "wisdom": null
+    },
+    "200001": {
+      "name": "Training Dagger",
+      "type": "dagger",
+      "slot": 7,
+      "accuracy": 10,
+      "attack": null,
+      "bossPercent": null,
+      "critRate": null,
+      "damagePercent": null,
+      "defense": null,
+      "dexterity": null,
+      "jumpSpeed": null,
+      "luck": null,
+      "magic": null,
+      "magicDefense": null,
+      "maxHealth": null,
+      "maxMana": null,
+      "movementSpeed": null,
+      "strength": null,
+      "wisdom": null
+    },
+    "500000": {
+      "name": "Cloth Shrit",
+      "type": "top",
+      "slot": 7,
+      "accuracy": null,
+      "attack": null,
+      "bossPercent": null,
+      "critRate": null,
+      "damagePercent": null,
+      "defense": 5,
+      "dexterity": null,
+      "jumpSpeed": null,
+      "luck": null,
+      "magic": null,
+      "magicDefense": 5,
+      "maxHealth": null,
+      "maxMana": null,
+      "movementSpeed": null,
+      "strength": null,
+      "wisdom": null
+    },
+    "500001": {
+      "name": "Cloth Bottom",
+      "type": "bottom",
+      "slot": 7,
+      "accuracy": null,
+      "attack": null,
+      "bossPercent": null,
+      "critRate": null,
+      "damagePercent": null,
+      "defense": 5,
+      "dexterity": null,
+      "jumpSpeed": null,
+      "luck": null,
+      "magic": null,
+      "magicDefense": 5,
+      "maxHealth": null,
+      "maxMana": null,
+      "movementSpeed": null,
+      "strength": null,
+      "wisdom": null
+    },
+    "500002": {
+      "name": "Leather Shirt",
+      "type": "top",
+      "slot": 7,
+      "accuracy": null,
+      "attack": null,
+      "bossPercent": null,
+      "critRate": null,
+      "damagePercent": null,
+      "defense": 5,
+      "dexterity": null,
+      "jumpSpeed": null,
+      "luck": null,
+      "magic": null,
+      "magicDefense": 5,
+      "maxHealth": null,
+      "maxMana": null,
+      "movementSpeed": null,
+      "strength": null,
+      "wisdom": null
+    },
+    "500003": {
+      "name": "Leather Bottom",
+      "type": "bottom",
+      "slot": 7,
+      "accuracy": null,
+      "attack": null,
+      "bossPercent": null,
+      "critRate": null,
+      "damagePercent": null,
+      "defense": 5,
+      "dexterity": null,
+      "jumpSpeed": null,
+      "luck": null,
+      "magic": null,
+      "magicDefense": 5,
+      "maxHealth": null,
+      "maxMana": null,
+      "movementSpeed": null,
+      "strength": null,
+      "wisdom": null
+    },
+    "500004": {
+      "name": "Woodcutter Shirt",
+      "type": "top",
+      "slot": 7,
+      "accuracy": null,
+      "attack": null,
+      "bossPercent": null,
+      "critRate": null,
+      "damagePercent": null,
+      "defense": 5,
+      "dexterity": null,
+      "jumpSpeed": null,
+      "luck": null,
+      "magic": null,
+      "magicDefense": 5,
+      "maxHealth": null,
+      "maxMana": null,
+      "movementSpeed": null,
+      "strength": null,
+      "wisdom": null
+    },
+    "500005": {
+      "name": "Woodcuttern Bottom",
+      "type": "bottom",
+      "slot": 7,
+      "accuracy": null,
+      "attack": null,
+      "bossPercent": null,
+      "critRate": null,
+      "damagePercent": null,
+      "defense": 5,
+      "dexterity": null,
+      "jumpSpeed": null,
+      "luck": null,
+      "magic": null,
+      "magicDefense": 5,
+      "maxHealth": null,
+      "maxMana": null,
+      "movementSpeed": null,
+      "strength": null,
+      "wisdom": null
+    }
+  }
+}
