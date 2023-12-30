@@ -13,7 +13,7 @@ var move_state
 var attackers = {}
 
 func _ready():
-	stats = ServerData.monsterTable[self.id]
+	stats = ServerData.monsterTable[self.id].duplicate(true)
 	
 func _process(delta):
 	touch_damage()
