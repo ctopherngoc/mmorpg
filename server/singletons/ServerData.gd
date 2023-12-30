@@ -324,6 +324,7 @@ var test_pstats = {
 		"rweapon": {
 			"id": 100000,
 			"unique_id":14333321,
+			"job": 0,
 			"type": "1h_sword",
 			"name": "temp sword",
 			"speed": 5,
@@ -416,6 +417,7 @@ var test_mstats = {
 
 var equipment_data_template = {
 	"id": 0,
+	"job": 0,
 	"unique_id":0,
 	"type": "",
 	"name": "",
