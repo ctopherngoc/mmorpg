@@ -47,63 +47,63 @@
       "itemType": "gold",
       "dropRate": 85,
       "stackable": 1,
-      "unique": 0
+      "droppable": 1
     },
     "200000": {
       "itemName": "Training Sword",
       "itemType": "equipment",
       "dropRate": 5,
       "stackable": 0,
-      "unique": 1
+      "droppable": 1
     },
     "200001": {
       "itemName": "Training Dagger",
       "itemType": "equipment",
       "dropRate": 5,
       "stackable": 0,
-      "unique": 1
+      "droppable": 1
     },
     "500000": {
       "itemName": "Cloth Shirt",
       "itemType": "equipment",
       "dropRate": 5,
       "stackable": 0,
-      "unique": 1
+      "droppable": 1
     },
     "500001": {
       "itemName": "Cloth Bottom",
       "itemType": "equipment",
       "dropRate": 5,
       "stackable": 0,
-      "unique": 1
+      "droppable": 1
     },
     "500002": {
       "itemName": "Leather Shirt",
       "itemType": "equipment",
       "dropRate": 5,
       "stackable": 0,
-      "unique": 1
+      "droppable": 1
     },
     "500003": {
       "itemName": "Leather Bottom",
       "itemType": "equipment",
       "dropRate": 5,
       "stackable": 0,
-      "unique": 1
+      "droppable": 1
     },
     "500004": {
       "itemName": "Woodcutter Shirt",
       "itemType": "equipment",
       "dropRate": 5,
       "stackable": 0,
-      "unique": 1
+      "droppable": 1
     },
     "500005": {
       "itemName": "Woodcuttern Bottom",
       "itemType": "equipment",
       "dropRate": 5,
       "stackable": 0,
-      "unique": 1
+      "droppable": 1
     }
   },
   "EquipmentTable": {
