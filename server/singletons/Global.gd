@@ -1,7 +1,7 @@
 extends Node
 var server = null
 var rng = RandomNumberGenerator.new()
-var item = preload("res://scenes/instances/Item.tscn")
+var item_scene = preload("res://scenes/instances/Item.tscn")
 
 func _ready():
 	pass
@@ -97,6 +97,7 @@ func calculate_stats(player_stats):
 	var stats = player_stats.stats
 	var equipment_stats = ServerData.equipment_stats_template.duplicate(true)
 	# for every item in equipment dict
+# warning-ignore:shadowed_variable
 	for item in equipment.keys():
 		# for every stat in equipment.stats dict ( not null)
 		if equipment[item] is int:
@@ -225,16 +226,18 @@ func dropDetermine(item_id):
 func dropSpawn(map, location, item_list, user_id):
 	var map_path = "/root/Server/World/Maps/" + str(map) + "/YSort/Items"
 	var items = item_list.keys()
+# warning-ignore:shadowed_variable
 	for item in items:
-		var new_item = item.instance()
+		var new_item = item_scene.instance()
 		new_item.position = location
 		new_item.player_owner = user_id
 		new_item.id = item
 #		if ServerData.itemTable[item] == "gold":
 #			new_item.amount = item_list.item
-		if ServerData.itemTable[item] == "equipment":
+		if ServerData.itemTable[item]["itemType"] == "equipment":
 			new_item.stats = item_list.item
 		else:
-			new_item.amount = item_list.item
+			print(item)
+			new_item.amount = item_list[item]
 		get_node(map_path).add_child(new_item, true)
 		
