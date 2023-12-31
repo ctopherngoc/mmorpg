@@ -1,25 +1,17 @@
-extends Node2D
+extends KinematicBody2D
 var id
 var stats
 var player_owner
+var amount
+var gravity = 800
+var velocity = Vector2(0, 0)
 
 func _ready():
 	pass
-## warning-ignore:return_value_discarded
-#	$Area2D.connect("area_entered", self, "on_area_entered")
-## warning-ignore:return_value_discarded
-#	$Area2D.connect("area_exited", self, "on_area_exited")
-	
-#func on_area_entered(_area2d):
-#	player = true
-#
-#func on_area_exited(_area2d):
-#	player = false
-#
-#func _process(_delta):
-#	if player == true:
-#		if (Input.is_action_pressed("loot")):
-#			$AnimationPlayer.play("pickup")
+
+func _process(delta):
+	velocity.y += gravity * delta
+	velocity = move_and_slide(velocity, Vector2.UP)
 
 func _on_Area2D_body_entered(body):
 	if player_owner:
