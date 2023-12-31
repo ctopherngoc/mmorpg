@@ -462,4 +462,4 @@ func _on_Button2_pressed():
 
 func _input(event):
 	if event.is_action_pressed("ui_accept"):
-		Global.dropGeneration("100001")
+		Global.dropSpawn("100001", Vector2(414, -69), {"100000": 5}, 100000)
