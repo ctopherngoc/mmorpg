@@ -1,6 +1,7 @@
 extends Node
 var server = null
 var rng = RandomNumberGenerator.new()
+var item = preload("res://scenes/instances/Item.tscn")
 
 func _ready():
 	pass
@@ -15,7 +16,6 @@ func store_character_data(player_id, display_name):
 func npc_attack(player, monster_stats):
 	var player_stats = player.current_character.stats
 	# calculate basic hit mechanic and damage formula
-	
 	# hit mechanic
 	if monster_stats.accuracy >= player_stats.base.avoidability + player_stats.equipment.avoidability:
 		var calculation = monster_stats.attack - player_stats.base.defense + player_stats.equipment.defense
@@ -144,22 +144,37 @@ func npc_hit(dmg, npc, player):
 		npc.state = "Dead"
 
 		for attacker in npc.attackers.keys():
+			var highest_attacker = null
+			var  damage = null
 			# if atacker in map
 			if npc.map_id in ServerData.player_location[attacker]:
 				#var player_container = get_node("../../Players/%s" % attacker)
 				var player_container = get_node(ServerData.player_location[str(attacker)] + "/%s" % str(attacker))
 				# xp = rounded (dmg done / max hp) * experience
 				var damage_percent = round((npc.attackers[attacker] / npc.stats.maxHP))
-				print(npc.attackers[attacker])
-				print("% dmg ", damage_percent)
+				if !highest_attacker:
+					highest_attacker = attacker
+					damage = damage_percent
+				# highest daamge atacker saved
+				else:
+					if damage_percent > damage:
+						highest_attacker = attacker
+						damage = damage_percent
 				if damage_percent == 1:
 					player_container.experience(npc.experience)
 				else:
 					player_container.experience(int(round(damage_percent * npc.stats.experience)))
+				var drop_list = dropGeneration(npc.id)
+				dropSpawn(npc.map_id, npc.location, drop_list, highest_attacker)
+		# drop items from npc location
 		npc.die()
 	print("monster: " + npc.name + " health: " + str(npc.stats.currentHP))
 
 func dropGeneration(monster_id):
+	"""
+	takes monster_id and calls dropDetemination. If true calculate gold amount, item randoization, item amount
+	returns dictionary with item_key : item_details
+	"""
 	var drop_list = ServerData.monsterTable[monster_id]["dropList"]
 	var item_list = {}
 	for item_id in drop_list:
@@ -180,7 +195,8 @@ func dropGeneration(monster_id):
 				for key in keys:
 					if !equip_stats[key]:
 						equip_stats[key] = 0
-					elif key in ["attack", "magic", "strength", "dexterity", "wisdom", "maxHP", "maxMana", "movementSpeed", "jumpSpeed", "defense", "magicDefense"]:
+					elif key in ["attack", "magic", "strength","dexterity", "wisdom", "maxHP",
+								"maxMana", "movementSpeed", "jumpSpeed", "defense", "magicDefense"]:
 						equip_stats[key] += rng.randi_range(-5,5)
 						if equip_stats[key] < 0:
 							equip_stats[key] = 0
@@ -192,12 +208,33 @@ func dropGeneration(monster_id):
 			else:
 				pass
 	print(item_list)
+	return item_list
 	
 func dropDetermine(item_id):
+	"""
+	function takes drop drate from ServerData itemtable and calculates drop outcome
+	returns true/false
+	"""
 	var drop_rate = ServerData.itemTable[item_id]["dropRate"]
 	var rate_roll = randi() % 100 + 1
 	if rate_roll <= drop_rate:
 		return true
 	else:
 		return false
-	
+
+func dropSpawn(map, location, item_list, user_id):
+	var map_path = "/root/Server/World/Maps/" + str(map) + "/YSort/Items"
+	var items = item_list.keys()
+	for item in items:
+		var new_item = item.instance()
+		new_item.position = location
+		new_item.player_owner = user_id
+		new_item.id = item
+#		if ServerData.itemTable[item] == "gold":
+#			new_item.amount = item_list.item
+		if ServerData.itemTable[item] == "equipment":
+			new_item.stats = item_list.item
+		else:
+			new_item.amount = item_list.item
+		get_node(map_path).add_child(new_item, true)
+		
