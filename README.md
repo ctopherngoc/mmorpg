@@ -10,8 +10,10 @@ the monsters.
 Install Godot 3.5 on the running machine
 
 ### Installing/Executing
-
-Download the current release (v1.1.0) .zip from the release section.
+Current release is client authoritative. Server authoritative model with server reconciliation and client prediction has been implemented but not released.<br />
+<br />
+For client-authoritvative Instal: <br />
+Download the current release (v1.1.0) .zip from the release section.<br />
 Unzip the executable.<br />
 <br />
 Run the client executable.<br />
