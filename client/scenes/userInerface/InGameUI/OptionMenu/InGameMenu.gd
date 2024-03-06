@@ -1,6 +1,5 @@
 extends Control
 
-
 onready var QuitConfirm = $QuitConfirm
 onready var AnimPlayer = $AnimationPlayer
 onready var OptionMenu = $Options
