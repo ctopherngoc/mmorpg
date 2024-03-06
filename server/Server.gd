@@ -414,8 +414,8 @@ remote func received_player_state(player_state):
 	else:
 		 ServerData.player_state_collection[player_id] = player_state
 
-func return_player_input(player_id, sever_input_data):
-	rpc_id(player_id, "return_player_input", sever_input_data)
+func return_player_input(player_id, server_input_data):
+	rpc_id(player_id, "return_player_input", server_input_data)
 
 func send_world_state(world_state):
 	rpc_unreliable_id(0, "receive_world_state", world_state)
