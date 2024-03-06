@@ -140,12 +140,16 @@ func server_reconciliation(server_input_data):
 				var servery = stepify(server_input_data["P"].y, 0.01)
 				var clientx = stepify(input_queue[i]["P"].x, 0.01)
 				var clienty = stepify(input_queue[i]["P"].y, 0.01)
-				if serverx != clientx and servery != clienty:
+				if abs(serverx - clientx) > 5.0 or abs(servery - clienty) > 5.0:
 					print("recon")
 					print("server: ", server_input_data["P"], " client: ",input_queue[i]["P"])
+					var recon_position = lerp(input_queue[i]["P"],server_input_data["P"], 0.8)
 					#var new_position = lerp(Vector2(clientx, clienty), Vector2(serverx, servery), interpolation_factor)
 					#var new_position = lerp(input_queue[i]["P"], server_input_data["P"], .75)
-					get_node("/root/currentScene/Player").set_position(server_input_data['P'])
+					get_node("/root/currentScene/Player").set_position(recon_position)
 					#get_node("/root/currentScene/Player").set_position(server_input_data['P'])
 			input_queue = input_queue.slice(i+1, input_queue.size(), 1, true)
 			return
+
+func test_movement():
+	pass
