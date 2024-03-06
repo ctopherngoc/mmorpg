@@ -283,5 +283,97 @@
       "wisdom": null,
       "job": null
     }
+  },
+  "ExperienceTable": {
+    "1": {
+      "experience": 20
+    },
+    "2": {
+      "experience": 38
+    },
+    "3": {
+      "experience": 72
+    },
+    "4": {
+      "experience": 137
+    },
+    "5": {
+      "experience": 260
+    },
+    "6": {
+      "experience": 364
+    },
+    "7": {
+      "experience": 510
+    },
+    "8": {
+      "experience": 714
+    },
+    "9": {
+      "experience": 1000
+    },
+    "10": {
+      "experience": 1400
+    },
+    "11": {
+      "experience": 1820
+    },
+    "12": {
+      "experience": 2366
+    },
+    "13": {
+      "experience": 3076
+    },
+    "14": {
+      "experience": 3999
+    },
+    "15": {
+      "experience": 5199
+    },
+    "16": {
+      "experience": 6759
+    },
+    "17": {
+      "experience": 8787
+    },
+    "18": {
+      "experience": 11323
+    },
+    "19": {
+      "experience": 14850
+    },
+    "20": {
+      "experience": 17820
+    },
+    "21": {
+      "experience": 21384
+    },
+    "22": {
+      "experience": 25661
+    },
+    "23": {
+      "experience": 30793
+    },
+    "24": {
+      "experience": 36952
+    },
+    "25": {
+      "experience": 40647
+    },
+    "26": {
+      "experience": 44712
+    },
+    "27": {
+      "experience": 49183
+    },
+    "28": {
+      "experience": 54101
+    },
+    "29": {
+      "experience": 59511
+    },
+    "30": {
+      "experience": 65462
+    }
   }
 }
