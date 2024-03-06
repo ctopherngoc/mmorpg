@@ -1,3 +1,10 @@
+######################################################################
+# Client Global Singleton that controls the backend of the client system.
+# Takes server state from Server Singleton to update client world
+# controls spawning monsters, players, server reconsiliation
+# contains data for: current map, in_game, last/current map/portal, player position, player container
+######################################################################
+
 extends Node
 
 onready var ip = "127.0.0.1"

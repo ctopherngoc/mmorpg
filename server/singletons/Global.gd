@@ -1,3 +1,7 @@
+######################################################################
+# Server-backend Global Singleton. Calculates player movements and combat, item generation and item drop.
+# communicates back to client through Server.gd
+######################################################################
 extends Node
 var server = null
 var rng = RandomNumberGenerator.new()
