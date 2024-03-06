@@ -66,7 +66,6 @@ remote func return_login_request(results):
 		Server.token = results[1]
 		# pass email to below
 		Server.connect_to_server()
-		Global.in_game = true
 	else:
 		print("Please provide correct username and pasword")
 		Signals.emit_signal("fail_login")
