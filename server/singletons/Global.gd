@@ -108,7 +108,7 @@ func calculate_stats(player_stats):
 			pass
 		else:
 			for stat in equipment[item].keys():
-				if stat in ["name", "id", "unique_id", "type", "speed", "slot"]:
+				if stat in ["name", "id", "uniqueID", "type", "speed", "slot", "job"]:
 					continue
 				else:
 					# add stat value to each stat in temp equipment dict
