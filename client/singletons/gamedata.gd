@@ -1,8 +1,20 @@
 extends Node
 
+var monsterTable
+var itemTable
+var equipmentTable
+
+# Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	var data_file = File.new()
+	data_file.open("res://data/GameDataTable.json", File.READ)
+	var gamedata_json = JSON.parse(data_file.get_as_text())
+	data_file.close()
 	
+	monsterTable = gamedata_json.result["MonsterTable"]
+	itemTable = gamedata_json.result["ItemTable"]
+	equipmentTable = gamedata_json.result["EquipmentTable"]
+
 onready var bgm_dict = {
 	'menu': preload("res://scenes/bgm/menu_bgm.mp3"),
 	'Remy': preload("res://scenes/bgm/game_bgm.mp3"),
@@ -551,7 +563,6 @@ onready var string_validation = [
 	"whoar",
 	"whore",
   ]
-
 
 onready var experience_table = {
 	'1': 20,
