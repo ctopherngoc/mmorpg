@@ -72,7 +72,7 @@ func movement_loop(delta, input_arr):
 		velocity = move_and_slide(velocity, Vector2.UP)
 	if is_climbing:
 		velocity.x = 0
-	update_animation(input_arr)
+	update_animation(move_vector)
 	
 func get_movement_vector(input):
 	var moveVector = Vector2.ZERO
