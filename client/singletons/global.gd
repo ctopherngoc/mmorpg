@@ -43,7 +43,9 @@ func update_world_state(world_state):
 		world_state_buffer.append(world_state)
 
 func _physics_process(_delta):
-	if !in_game:
+	# Current turn off client process of other characters and enemy because
+	# working on item drop, data load from json/spreadsheet etc
+	if in_game:
 		var render_time = OS.get_system_time_msecs() - interpolation_offset
 		if world_state_buffer.size() > 1 && Server.server_status:
 			while world_state_buffer.size() > 2 and render_time > world_state_buffer[2].T:
@@ -124,7 +126,7 @@ func despawn_player(player_id):
 func spawn_monster(monster_id, monster_dict):
 	var monster = get_node("/root/currentScene").monster_list[monster_dict['id']].instance()
 	monster.position = monster_dict["EnemyLocation"]
-	monster.max_hp = monster_dict["EnemyMaxHealth"]
+	#monster.max_hp = GameData.monsterTable["MaxHP"]
 	monster.current_hp = monster_dict["EnemyHealth"]
 	monster.state = monster_dict["EnemyState"]
 	monster.name = str(monster_id)
