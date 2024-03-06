@@ -25,14 +25,17 @@ func _ready():
 	Global.in_game = true
 
 func _physics_process(delta):
+	""""
 	if Global.movable:
 		get_input()
-	movement_loop(delta)
-	define_player_state()
+	"""
+	var input = get_input()
+	movement_loop(delta, input)
+	define_player_state(input)
 	Global.player_position = self.global_position
 
-func define_player_state():
-	player_state = {"T": Server.client_clock, "P": get_input()}
+func define_player_state(input_array):
+	player_state = {"T": Server.client_clock, "P": input_array}
 
 	# if not afk, add input and position to tick key
 	var input_dictionary = {
@@ -56,12 +59,12 @@ func get_input():
 		input [4] = 1
 	return input
 
-func movement_loop(delta):
+func movement_loop(delta, input_arr):
 	change_direction()
-	var move_vector = get_movement_vector()
+	var move_vector = get_movement_vector(input_arr)
 	
 	# change get velocity
-	get_velocity(move_vector, delta)
+	get_velocity(move_vector, input_arr, delta)
 	# warning-ignore:return_value_discarded
 	move_and_slide(velocity, Vector2.UP)
 	
@@ -69,8 +72,83 @@ func movement_loop(delta):
 		velocity = move_and_slide(velocity, Vector2.UP)
 	if is_climbing:
 		velocity.x = 0
-	update_animation()
+	update_animation(input_arr)
+	
+func get_movement_vector(input):
+	var moveVector = Vector2.ZERO
+	# calculating x vector, allow x-axis jump off ropes or idle on floor
+	if (!attacking && is_on_floor()) or (input[1] == 1 or input[3] == 1) and input[4] == 1:
+		moveVector.x = (input[3] - input[1]) * velocity_multiplier
+	else:
+		moveVector.x = 0	
+	# calculating y vector, allow jump off ropes
+	if is_climbing:
+		if (input[1] == 1 or input[3] == 1) and input[4] == 1:
+			moveVector.y = -1
+		else:
+			moveVector.y = 0
+	else:
+		if input[4] == 1 && !attacking:
+			moveVector.y = -1
+		else:
+			moveVector.y = 0
+	return moveVector
 
+func get_velocity(move_vector, input, delta):
+	velocity.x += move_vector.x * max_horizontal_speed
+	# slow down movement
+	if(move_vector.x == 0):
+		# allows forward jumping
+		if(is_on_floor()):
+			# instant stop
+			velocity.x = 0
+
+	# allows maximum velocity
+	velocity.x = clamp(velocity.x, -max_horizontal_speed, max_horizontal_speed)
+	if can_climb:
+		if is_climbing:
+			velocity.y = 0
+			# up press
+			if input[0] == 1:
+				velocity.y = -100
+			# down press
+			elif input[2] == 1 :
+				velocity.y = 100
+				if is_on_floor():
+					is_climbing = false
+					Global.send_climb_data(self.name, 1)
+			# jump off rope
+			elif input[4] == 1 && (input[1] == 1 or input[3] == 1):
+				is_climbing = false
+				Global.send_climb_data(self.name, 1)
+				velocity.y = move_vector.y * jump_speed * .8
+				velocity.x = move_vector.x * 200
+		# can climb but not climbing
+		else:
+			#if moving
+			if (move_vector.y < 0 && is_on_floor()):
+					velocity.y = move_vector.y * jump_speed
+			# press up on ladder initiates climbing
+			elif input[0] == 1:
+					is_climbing = true
+					velocity.y = 0
+					velocity.x = 0
+			# over lapping ladder pressing nothing allows gravity
+			else:
+				velocity.y += gravity * delta
+	# not climbable state
+	else:
+		# normal movement
+		if (move_vector.y < 0 && is_on_floor()):
+			velocity.y = move_vector.y * jump_speed
+		else:
+			velocity.y += gravity * delta
+	if !can_climb:
+		is_climbing = false
+		
+#######################################
+# old input based movement
+"""
 func get_movement_vector():
 	var moveVector = Vector2.ZERO
 	
@@ -91,6 +169,7 @@ func get_movement_vector():
 		else:
 			moveVector.y = 0
 	return moveVector
+
 
 func get_velocity(move_vector, delta):
 	velocity.x += move_vector.x * max_horizontal_speed
@@ -140,8 +219,11 @@ func get_velocity(move_vector, delta):
 	if !can_climb:
 		is_climbing = false
 # attack > jump > walking > takeDamage > standing
-func update_animation():
-	var move_vector = get_movement_vector()
+
+"""
+
+func update_animation(move_vector):
+	#var move_vector = get_movement_vector()
 	if(attacking):
 		pass
 
