@@ -116,11 +116,11 @@ func get_velocity(move_vector, input, delta):
 				velocity.y = 100
 				if is_on_floor():
 					is_climbing = false
-					Global.send_climb_data(self.name, 1)
+					#Global.send_climb_data(self.name, 1)
 			# jump off rope
 			elif input[4] == 1 && (input[1] == 1 or input[3] == 1):
 				is_climbing = false
-				Global.send_climb_data(self.name, 1)
+				#Global.send_climb_data(self.name, 1)
 				velocity.y = move_vector.y * jump_speed * .8
 				velocity.x = move_vector.x * 200
 		# can climb but not climbing
