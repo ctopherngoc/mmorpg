@@ -50,6 +50,17 @@ onready var animation_state = {
 	"d": 1,
 }
 
+########
+#temp
+onready var recon_arr = {
+	"input_arr": [],
+	"velocity": Vector2(0,0),
+	"mns": null,
+	"end_pos": Vector2(0,0),
+	"m_vector": null,
+}
+########
+
 func _physics_process(delta):
 	if loggedin:
 		if "Map" in str(self.get_path()):
@@ -164,16 +175,23 @@ func experience(experience):
 
 func movement_loop(delta):
 	var move_vector = get_movement_vector()
+	recon_arr["m_vector"] = move_vector
 	change_direction()
 	# change get velocity
 	get_velocity(move_vector, delta)
+	recon_arr["velocity"] = velocity
 	# warning-ignore:return_value_discarded
+	recon_arr["start_pos"] = self.global_position
 	move_and_slide(velocity, Vector2.UP)
+	recon_arr["mns"] = move_and_slide(velocity, Vector2.UP)
+	recon_arr["end_pos"] = self.global_position
 
 	if is_on_floor() or !is_climbing:
 		velocity = move_and_slide(velocity, Vector2.UP)
 	if is_climbing:
 		velocity.x = 0
+	#if recon_arr["input_arr"] != [0,0,0,0,0] and recon_arr["input_arr"] != []:
+		#print(recon_arr)
 	return self.global_position
 
 func get_movement_vector():
@@ -182,8 +200,7 @@ func get_movement_vector():
 		input = input_queue.pop_front()
 	else:
 		input = [0,0,0,0,0]
-	if input != [0,0,0,0,0]:
-		print(input)
+	recon_arr["input_arr"] = input
 	# calculating x vector, allow x-axis jump off ropes or idle on floor
 	if (!attacking && is_on_floor()) or (input[1] == 1 or input[3] == 1) and input[4] == 1:
 		moveVector.x = (input[3] - input[1]) * velocity_multiplier
