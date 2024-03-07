@@ -8,7 +8,7 @@ onready var velocity = Vector2.ZERO
 
 # static player varaibles
 onready var gravity = 800
-
+onready var temp_delta
 # player states
 onready var can_climb = false
 onready var is_climbing = false
@@ -25,6 +25,7 @@ func _ready():
 	Global.in_game = true
 
 func _physics_process(delta):
+	temp_delta = delta
 	""""
 	if Global.movable:
 		get_input()
@@ -275,3 +276,19 @@ func _unhandled_input(event):
 			return
 		else:
 			print("cannot attack")
+
+
+func _on_Button_pressed():
+	var temp_pos = self.position
+	var temp_input = [0,0,0,1,0]
+	movement_loop(temp_delta, temp_input)
+	define_player_state(temp_input)
+	print(temp_pos, " ", self.position)
+
+
+func _on_Button2_pressed():
+	var temp_pos = self.position
+	var temp_input = [0,1,0,0,0]
+	movement_loop(temp_delta, temp_input)
+	define_player_state(temp_input)
+	print(temp_pos, " ", self.position)
