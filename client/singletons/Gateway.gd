@@ -1,6 +1,3 @@
-######################################################################
-# Client-Gateway Singleton interface. Netcode to connect client to gateway server to login
-######################################################################
 extends Node
 
 var network = NetworkedMultiplayerENet.new()

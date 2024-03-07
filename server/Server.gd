@@ -1,9 +1,3 @@
-######################################################################
-# Game Server frontend to client : This is not a singleton. No other scripts should have
-# direct influences on server calls except for global singleton.
-# Responsible for communicating and interpreting all Client RPC Calls and convert to server
-# responses
-######################################################################
 extends Node
 
 var network = NetworkedMultiplayerENet.new()
@@ -16,11 +10,11 @@ onready var player_verification_process = get_node("PlayerVerification")
 onready var character_creation_queue = []
 const username = "server@server.com"
 const password = "server123"
-
 #######################################################
-# server netcode
+
 #server start 
 func _ready():
+	
 	# not used
 	Firebase.httprequest = $HTTPRequest
 	start_server()
@@ -37,6 +31,7 @@ func start_server():
 func _process(_delta):
 	create_characters()
 
+#######################################################
 # Player connect
 func _Peer_Connected(player_id):
 	print("User " + str(player_id) + " Connected")
@@ -120,9 +115,6 @@ remote func fetch_server_time(client_time):
 remote func determine_latency(client_time):
 	var player_id = get_tree().get_rpc_sender_id()
 	rpc_id(player_id, "return_latency", client_time)
-
-######################################################################
-# pre-spawn server functions
 
 #character account
 #create, ign checker, fetch player data, delete, spawn
@@ -311,16 +303,6 @@ remote func delete_character(requester, display_name: String):
 	yield(firebase_call, "completed")
 	rpc_id(player_id, "return_delete_character", player_container.characters_info_list, requester)
 
-remote func logout():
-	var player_id = get_tree().get_rpc_sender_id()
-# warning-ignore:unused_variable
-	var player_container = get_node(ServerData.player_location[str(player_id)] + "/%s" % str(player_id))
-	player_container.loggedin = false
-	network.disconnect_peer(player_id)
-
-######################################################################
-# ingame functions account/character container 
-
 func despawnPlayer(player_id):
 	rpc_unreliable_id(0, "receive_despawn_player", player_id)
 
@@ -329,6 +311,7 @@ func update_player_stats(player_container):
 	print('updating player stats for client')
 	rpc_id(int(player_container.name), "update_player_stats", player_container.current_character)
 
+#######################################################
 # Character containers/information 
 func move_player_container(player_id, player_container, map_id, position):
 	var old_parent = get_node(str(ServerData.player_location[str(player_id)]))
@@ -386,7 +369,6 @@ remote func portal(portal_id):
 	rpc_id(player_id, "change_map", next_map, ServerData.portal_data[map_id][portal_id]['spawn'])
 	# put some where if world state != current map ignore
 #######################################################
-# ingame world functions 
 
 #world states
 remote func received_player_state(player_state):
@@ -405,7 +387,7 @@ remote func received_player_state(player_state):
 	# takes client tick time and sends it with final position
 	var return_input = {'T': player_state['T'], 'P': player_container.position}
 	return_player_input(player_id, return_input)
-	player_state['A'] = player_container.get_animation()
+
 	if ServerData.player_state_collection.has(player_id):
 		if ServerData.player_state_collection[player_id]["T"] < player_state["T"]:
 			ServerData.player_state_collection[player_id] = player_state
@@ -414,8 +396,8 @@ remote func received_player_state(player_state):
 	else:
 		 ServerData.player_state_collection[player_id] = player_state
 
-func return_player_input(player_id, server_input_data):
-	rpc_id(player_id, "return_player_input", server_input_data)
+func return_player_input(player_id, sever_input_data):
+	rpc_id(player_id, "return_player_input", sever_input_data)
 
 func send_world_state(world_state):
 	rpc_unreliable_id(0, "receive_world_state", world_state)
@@ -454,14 +436,21 @@ remote func attack(move_id):
 	#player_container.attack()
 	#rpc_id(0, "receive_attack", player_id, attack_time)
 	"""
+#######################################################
 # 0 = no climb
 # 1 = can climb
 
 func send_climb_data(player_id, climb_data):
 	rpc_id(int(player_id), "receive_climb_data", climb_data)
 
-######################################################################
-# Server combat test functions
+remote func logout():
+	var player_id = get_tree().get_rpc_sender_id()
+# warning-ignore:unused_variable
+	var player_container = get_node(ServerData.player_location[str(player_id)] + "/%s" % str(player_id))
+	player_container.loggedin = false
+	network.disconnect_peer(player_id)
+
+
 func _on_Button_pressed():
 	$Test/PlayerContainer.attack(0)
 	#Global.damage_formula(1, ServerData.test_pstats, ServerData.test_mstats)
@@ -470,8 +459,3 @@ func _on_Button_pressed():
 # function takes current_character
 func _on_Button2_pressed():
 	Global.calculate_stats($Test/PlayerContainer.current_character)
-
-func _input(event):
-	if event.is_action_pressed("ui_accept"):
-		Global.dropSpawn("100001", Vector2(414, -69), {"100000": 5}, 100000)
-######################################################################

@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://scenes/monsterObjects/100001/100001.gd" type="Script" id=1]
+[ext_resource path="res://scenes/monsterObjects/000001/000001.gd" type="Script" id=1]
 
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 16.75, 17.5 )

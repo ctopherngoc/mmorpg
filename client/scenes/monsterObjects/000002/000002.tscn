@@ -1,8 +1,8 @@
 [gd_scene load_steps=11 format=2]
 
-[ext_resource path="res://scenes/monsterObjects/100002/idle.png" type="Texture" id=1]
-[ext_resource path="res://scenes/monsterObjects/100002/100002.gd" type="Script" id=2]
-[ext_resource path="res://scenes/monsterObjects/100002/walk.png" type="Texture" id=3]
+[ext_resource path="res://scenes/monsterObjects/000002/character_0002.png" type="Texture" id=1]
+[ext_resource path="res://scenes/monsterObjects/000002/000002.gd" type="Script" id=2]
+[ext_resource path="res://scenes/monsterObjects/000002/character_0003.png" type="Texture" id=3]
 [ext_resource path="res://scenes/menuObjects/Options/godot-simpleTheme-master/simpleTheme.tres" type="Theme" id=4]
 
 [sub_resource type="RectangleShape2D" id=2]
