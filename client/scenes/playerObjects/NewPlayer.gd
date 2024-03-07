@@ -17,6 +17,17 @@ onready var player_state
 var held_down = false
 onready var sprite = $CompositeSprite/AnimationPlayer
 
+#########
+#Temp
+onready var recon_arr = {
+	"input_arr": [],
+	"velocity": Vector2(0,0),
+	"mns": null,
+	"end_pos": Vector2(0,0),
+	"m_vector": null,
+}
+########
+
 func _ready():
 	max_horizontal_speed = (Global.player.stats.base.movementSpeed)
 	# warning-ignore:return_value_discarded
@@ -58,22 +69,29 @@ func get_input():
 		input[3] = 1
 	if Input.is_action_pressed("jump"):
 		input [4] = 1
+	recon_arr["input_arr"] = input
 	return input
 
 func movement_loop(delta, input_arr):
 	change_direction()
 	var move_vector = get_movement_vector(input_arr)
-	
+	recon_arr["m_vector"] = move_vector
 	# change get velocity
 	get_velocity(move_vector, input_arr, delta)
+	recon_arr["velocity"] = velocity
 	# warning-ignore:return_value_discarded
+	recon_arr["start_pos"] = self.global_position
 	move_and_slide(velocity, Vector2.UP)
+	recon_arr["mns"] = move_and_slide(velocity, Vector2.UP)
+	recon_arr["end_pos"] = self.global_position
 	
 	if is_on_floor() or !is_climbing:
 		velocity = move_and_slide(velocity, Vector2.UP)
 	if is_climbing:
 		velocity.x = 0
 	update_animation(move_vector)
+	#if recon_arr["input_arr"] != [0,0,0,0,0] and recon_arr["input_arr"] != []:
+		#print(recon_arr)
 	
 func get_movement_vector(input):
 	var moveVector = Vector2.ZERO
@@ -281,14 +299,16 @@ func _unhandled_input(event):
 func _on_Button_pressed():
 	var temp_pos = self.position
 	var temp_input = [0,0,0,1,0]
+	recon_arr["input_arr"] = temp_input
 	movement_loop(temp_delta, temp_input)
 	define_player_state(temp_input)
-	print(temp_pos, " ", self.position)
+	#print(temp_pos, " ", self.position)
 
 
 func _on_Button2_pressed():
 	var temp_pos = self.position
 	var temp_input = [0,1,0,0,0]
+	recon_arr["input_arr"] = temp_input
 	movement_loop(temp_delta, temp_input)
 	define_player_state(temp_input)
-	print(temp_pos, " ", self.position)
+	#print(temp_pos, " ", self.position)
