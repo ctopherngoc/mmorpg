@@ -1,3 +1,8 @@
+######################################################################
+# Singleton that establishes connection with game server
+# Communicates client with current Server information
+######################################################################
+
 extends Node
 var port = 2733
 var token
@@ -51,6 +56,7 @@ func _on_connection_succeeded():
 func _on_server_disconnect():
 	server_status = false
 	Global.world_state_buffer.clear()
+	Global.input_queue.clear()
 	timer.stop()
 	print("server disconnected")
 	
@@ -59,9 +65,15 @@ func _on_server_disconnect():
 		login_status = 0
 	get_tree().set_network_peer(null)
 
+######################################################################
+# client ping calculations 
+
+# ping calulation. Should be used when lag compensation is implemented 
+# with server reconciliation
 func determine_latency():
 	rpc_id(1, "determine_latency", OS.get_system_time_msecs())
 
+# sync client clock with server clock
 remote func return_server_time(server_time, client_time):
 	latency = (OS.get_system_time_msecs() - client_time) / 2
 	client_clock = server_time + latency
@@ -80,9 +92,10 @@ remote func return_latency(client_time):
 		delta_latency = (total_latency / latency_array.size() - latency)
 		latency = total_latency / latency_array.size()
 		latency_array.clear()
+
+
 #################################################################
 # Character functions
-
 func check_usernames(requester, username):
 	rpc_id(1, "fetch_usernames", requester, username)
 
@@ -253,6 +266,6 @@ remote func receive_climb_data(climb_data):
 func logout():
 	timer.stop()
 	rpc_id(1, "logout")
-	network.close_connection()
 	Global.in_game = false
+	network.close_connection()
 	SceneHandler.change_scene("login")

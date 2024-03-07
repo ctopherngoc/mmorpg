@@ -1,9 +1,10 @@
 extends KinematicBody2D
 
 ##########################################################
+var monster_id = "100001"
 var title = "Green Guy"
 var current_hp = null
-var max_hp = null
+var max_hp = GameData.monsterTable[monster_id].maxHP
 var state = null
 var xScale = 1.583
 var despawn = 1

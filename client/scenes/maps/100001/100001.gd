@@ -3,7 +3,7 @@ var map_id = "100001"
 var map_name = "Grassy Road 1"
 
 var other_player_template = preload("res://scenes/playerObjects/PlayerTemplate.tscn")
-var main_player_template = preload("res://scenes/playerObjects/Player.tscn")
+#var main_player_template = preload("res://scenes/playerObjects/Player.tscn")
 var spawn_location = Vector2.ZERO
 var main_player = null
 
@@ -14,9 +14,9 @@ var map_bound = {
 	"top": -10000,
 }
 
-var greenGuy = preload("res://scenes/monsterObjects/000001/000001.tscn")
+var greenGuy = preload("res://scenes/monsterObjects/100001/100001.tscn")
 var monster_list = {
-	'000001': greenGuy,
+	'100001': greenGuy,
 }
 
 func _ready():
@@ -37,9 +37,10 @@ func register_player(player):
 		main_player = player
 		main_player.connect("died", self, "on_player_died", [], CONNECT_DEFERRED)
 """
-
+"""
 func create_player():
 	var player_instance = main_player_template.instance()
 	add_child_below_node(main_player, player_instance)
 	player_instance.global_position = spawn_location
 	main_player = player_instance
+"""

@@ -1,3 +1,10 @@
+######################################################################
+# Client Global Singleton that controls the backend of the client system.
+# Takes server state from Server Singleton to update client world
+# controls spawning monsters, players, server reconsiliation
+# contains data for: current map, in_game, last/current map/portal, player position, player container
+######################################################################
+
 extends Node
 
 onready var ip = "127.0.0.1"
@@ -6,7 +13,6 @@ onready var input_queue = []
 const interpolation_offset = 100
 onready var current_map = ""
 onready var bgm = $bgm
-onready var logging_out = false
 onready var in_game = false
 
 var other_player = preload("res://scenes/playerObjects/PlayerTemplate.tscn")
@@ -37,7 +43,9 @@ func update_world_state(world_state):
 		world_state_buffer.append(world_state)
 
 func _physics_process(_delta):
-	if !logging_out:
+	# Current turn off client process of other characters and enemy because
+	# working on item drop, data load from json/spreadsheet etc
+	if in_game:
 		var render_time = OS.get_system_time_msecs() - interpolation_offset
 		if world_state_buffer.size() > 1 && Server.server_status:
 			while world_state_buffer.size() > 2 and render_time > world_state_buffer[2].T:
@@ -47,7 +55,6 @@ func _physics_process(_delta):
 				var interpolation_factor = float(render_time - world_state_buffer[1]["T"]) / float(world_state_buffer[2]["T"] - world_state_buffer[0]["T"])
 				for player_state in world_state_buffer[2]["P"].keys():
 					if player_state == get_tree().get_network_unique_id():
-						#server_reconciliation(world_state_buffer[2]["P"][player_state]["P"])
 						continue
 					if not world_state_buffer[1]["P"].has(player_state):
 						continue
@@ -119,7 +126,7 @@ func despawn_player(player_id):
 func spawn_monster(monster_id, monster_dict):
 	var monster = get_node("/root/currentScene").monster_list[monster_dict['id']].instance()
 	monster.position = monster_dict["EnemyLocation"]
-	monster.max_hp = monster_dict["EnemyMaxHealth"]
+	#monster.max_hp = GameData.monsterTable["MaxHP"]
 	monster.current_hp = monster_dict["EnemyHealth"]
 	monster.state = monster_dict["EnemyState"]
 	monster.name = str(monster_id)
@@ -129,16 +136,21 @@ func server_reconciliation(server_input_data):
 	for i in range(input_queue.size()):
 		if server_input_data["T"] == input_queue[i]["T"]:
 			if server_input_data["P"] != input_queue[i]["P"]:
-				var serverx = stepify(server_input_data["P"].x, 0.01)
-				var servery = stepify(server_input_data["P"].y, 0.01)
-				var clientx = stepify(input_queue[i]["P"].x, 0.01)
-				var clienty = stepify(input_queue[i]["P"].y, 0.01)
-				if serverx != clientx and servery != clienty:
-					print("recon")
-					print("server: ", server_input_data["P"], " client: ",input_queue[i]["P"])
+				var serverx = stepify(server_input_data["P"].x, 1)
+				var servery = stepify(server_input_data["P"].y, 1)
+				var clientx = stepify(input_queue[i]["P"].x, 1)
+				var clienty = stepify(input_queue[i]["P"].y, 1)
+				#print(serverx, servery, " ",clientx, clienty)
+				if abs(serverx - clientx) > 1 or abs(servery - clienty) > 1:
+					#print("recon")
+					#print("server: ", server_input_data["P"], " client: ",input_queue[i]["P"])
+					var recon_position = lerp(input_queue[i]["P"],server_input_data["P"], 0.5)
 					#var new_position = lerp(Vector2(clientx, clienty), Vector2(serverx, servery), interpolation_factor)
 					#var new_position = lerp(input_queue[i]["P"], server_input_data["P"], .75)
-					get_node("/root/currentScene/Player").set_position(server_input_data['P'])
+					get_node("/root/currentScene/Player").set_position(recon_position)
 					#get_node("/root/currentScene/Player").set_position(server_input_data['P'])
 			input_queue = input_queue.slice(i+1, input_queue.size(), 1, true)
 			return
+
+func test_movement():
+	pass

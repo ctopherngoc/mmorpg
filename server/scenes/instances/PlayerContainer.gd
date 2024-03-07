@@ -1,10 +1,5 @@
 extends KinematicBody2D
-"""
-attacking = false not implemented. Attacking is always true after first attack
-timer for attacking should be considered
-idle_timer should consider attacking == true and hittable == false for idle healing
-turn timer to last_hit timer 
-"""
+
 onready var http = $HTTP/HTTPRequest
 onready var http2 = $HTTP/HTTPRequest2
 onready var timer =$Timers/Timer
@@ -13,37 +8,71 @@ onready var damage_timer = $Timers/DamageTimer
 onready var animation = $AnimationPlayer
 #contains token and id
 var db_info = {}
-var mobs_hit = []
 onready var loggedin = true
 
 # post firestore convert
+# possible hashmap or references
+###############
 var email = ""
 var characters = []
 var characters_info_list = []
+var current_character
+#################
+
+var mobs_hit = []
 var idle_counter = 0
 onready var input_queue = []
 var cur_position = null
-
 var velocity = Vector2.ZERO
+
+# change to one variable
 var is_climbing = false
 var can_climb = false
-var attacking = false
 
 var velocity_multiplier = 1
-var attack_speed = 1.5
 var max_horizontal_speed = null
 var jump_speed = null
 var gravity = 800
+
 # 0 = right, 1 = left
 var direction = 0
 var input = [0,0,0,0,0]
-
+var attacking = false
 var hittable = true
-var current_character
+
+#implement animation again
+"""
+f: is on floor: 0:no 1: yes
+d: direction 0:L 1:R
+"""
+onready var animation_state = {
+	"f": 1,
+	"d": 1,
+}
+
+########
+#temp
+onready var recon_arr = {
+	"input_arr": [],
+	"velocity": Vector2(0,0),
+	"mns": null,
+	"end_pos": Vector2(0,0),
+	"m_vector": null,
+}
+########
+
 func _physics_process(delta):
 	if loggedin:
 		if "Map" in str(self.get_path()):
 			movement_loop(delta)
+
+func get_animation():
+	if self.is_on_floor():
+		animation_state.f = 1
+	else:
+		animation_state.f = 0
+	animation_state.d = direction
+	return animation_state
 
 func load_player_stats():
 	max_horizontal_speed = current_character.stats.base.movementSpeed
@@ -146,16 +175,23 @@ func experience(experience):
 
 func movement_loop(delta):
 	var move_vector = get_movement_vector()
+	recon_arr["m_vector"] = move_vector
 	change_direction()
 	# change get velocity
 	get_velocity(move_vector, delta)
+	recon_arr["velocity"] = velocity
 	# warning-ignore:return_value_discarded
+	recon_arr["start_pos"] = self.global_position
 	move_and_slide(velocity, Vector2.UP)
+	recon_arr["mns"] = move_and_slide(velocity, Vector2.UP)
+	recon_arr["end_pos"] = self.global_position
 
 	if is_on_floor() or !is_climbing:
 		velocity = move_and_slide(velocity, Vector2.UP)
 	if is_climbing:
 		velocity.x = 0
+	#if recon_arr["input_arr"] != [0,0,0,0,0] and recon_arr["input_arr"] != []:
+		#print(recon_arr)
 	return self.global_position
 
 func get_movement_vector():
@@ -164,6 +200,7 @@ func get_movement_vector():
 		input = input_queue.pop_front()
 	else:
 		input = [0,0,0,0,0]
+	recon_arr["input_arr"] = input
 	# calculating x vector, allow x-axis jump off ropes or idle on floor
 	if (!attacking && is_on_floor()) or (input[1] == 1 or input[3] == 1) and input[4] == 1:
 		moveVector.x = (input[3] - input[1]) * velocity_multiplier
@@ -299,10 +336,3 @@ func do_damage():
 
 func _on_Timer_timeout():
 	pass # Replace with function body.
-
-"""
-func overlappingBodies():
-	print("area ovlapping: " + str($do_damage.get_overlapping_areas().size()))
-	for body in $do_damage.get_overlapping_areas():
-		print('player overlapping with: ', body)
-"""

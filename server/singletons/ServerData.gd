@@ -1,9 +1,35 @@
 extends Node
+
 var player_location = {}
 var username_list = {}
 var player_state_collection = {}
 var user_characters = {}
 var characters_data = {}
+
+var monsterTable
+var itemTable
+var equipmentTable
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	var data_file = File.new()
+	data_file.open("res://data/GameDataTable.json", File.READ)
+	var gamedata_json = JSON.parse(data_file.get_as_text())
+	data_file.close()
+	
+	monsterTable = gamedata_json.result["MonsterTable"]
+	itemTable = gamedata_json.result["ItemTable"]
+	equipmentTable = gamedata_json.result["EquipmentTable"]
+	
+	print(monsterTable)
+	#print(equipmentTable)
+	
+	
+#	var skill_data_file = File.new()
+#	skill_data_file.open("res://Data/SkillData - Sheet1.json", File.READ)
+#	var skill_data_json = JSON.parse(skill_data_file.get_as_text())
+#	skill_data_file.close()
+#	skill_data = skill_data_json.result
 
 var monsters = {
 	"100001" : {},
@@ -132,7 +158,7 @@ var player_info = {
 	}, #equipment
 	"inventory" : {"mapValue":
 		{"fields": 
-			{"money": {'integerValue': null},
+			{"gold": {'integerValue': null},
 			}#fields
 		}#mapvalue
 	}, #inventory
@@ -217,7 +243,7 @@ var player_template = {
 			"tattoo": -1,
 			}, #equipment
 	"inventory" : {
-				"money": 0,
+				"gold": 0,
 			} #inventory
 }
 
@@ -292,44 +318,35 @@ var portal_data = {
 					'spawn': Vector2(904, -252)}
 	},
 }
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass
-#	var skill_data_file = File.new()
-#	skill_data_file.open("res://Data/SkillData - Sheet1.json", File.READ)
-#	var skill_data_json = JSON.parse(skill_data_file.get_as_text())
-#	skill_data_file.close()
-#	skill_data = skill_data_json.result
 
 var test_pstats = {
 	"equipment": {
 		"rweapon": {
 			"id": 100000,
 			"unique_id":14333321,
+			"job": 0,
 			"type": "1h_sword",
 			"name": "temp sword",
 			"speed": 5,
 			"slots": 7,
-			"stats": {
-				"attack": 15,
-				"magic": 0,
-				"maxHealth": 0,
-				"maxMana": 0,
-				"strength": 5,
-				"wisdom": 5,
-				"dexterity": 5,
-				"luck": 5,
-				"movementSpeed": 0,
-				"jumpSpeed": 0,
-				"avoidability": 0,
-				"defense": 0,
-				"magicDefense": 0,
-				"accuracy": 0,
-				"bossPercent": 0,
-				"damagePercent": 0,
-				"critRate": 0,
-			}, #stats
-		},# rwep
+			"attack": 15,
+			"magic": 0,
+			"maxHealth": 0,
+			"maxMana": 0,
+			"strength": 5,
+			"wisdom": 5,
+			"dexterity": 5,
+			"luck": 5,
+			"movementSpeed": 0,
+			"jumpSpeed": 0,
+			"avoidability": 0,
+			"defense": 0,
+			"magicDefense": 0,
+			"accuracy": 0,
+			"bossPercent": 0,
+			"damagePercent": 0,
+			"critRate": 0,
+			},# rwep
 		#"lweapon": null,
 	},#equip
 	"stats": 
@@ -400,31 +417,31 @@ var test_mstats = {
 
 var equipment_data_template = {
 	"id": 0,
+	"job": 0,
 	"unique_id":0,
 	"type": "",
 	"name": "",
 	"speed": 5,
 	"slot": 7,
-	"stats": {
-		"attack": 0,
-		"magic": 0,
-		"maxHealth": 0,
-		"maxMana": 0,
-		"strength": 0,
-		"wisdom": 0,
-		"dexterity": 0,
-		"luck": 0,
-		"movementSpeed": 0,
-		"jumpSpeed": 0,
-		"avoidability": 0,
-		"defense": 0,
-		"magicDefense": 0,
-		"accuracy": 0,
-		"bossPercent": 0,
-		"damagePercent": 0,
-		"critRate": 0,
-		}
+	"attack": 0,
+	"magic": 0,
+	"maxHealth": 0,
+	"maxMana": 0,
+	"strength": 0,
+	"wisdom": 0,
+	"dexterity": 0,
+	"luck": 0,
+	"movementSpeed": 0,
+	"jumpSpeed": 0,
+	"avoidability": 0,
+	"defense": 0,
+	"magicDefense": 0,
+	"accuracy": 0,
+	"bossPercent": 0,
+	"damagePercent": 0,
+	"critRate": 0,
 }
+
 onready var equipment_stats_template = {
 		"attack": 0,
 		"magic": 0,
