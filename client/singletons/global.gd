@@ -142,8 +142,8 @@ func server_reconciliation(server_input_data):
 				var clienty = stepify(input_queue[i]["P"].y, 1)
 				#print(serverx, servery, " ",clientx, clienty)
 				if abs(serverx - clientx) > 1 or abs(servery - clienty) > 1:
-					print("recon")
-					print("server: ", server_input_data["P"], " client: ",input_queue[i]["P"])
+					#print("recon")
+					#print("server: ", server_input_data["P"], " client: ",input_queue[i]["P"])
 					var recon_position = lerp(input_queue[i]["P"],server_input_data["P"], 0.5)
 					#var new_position = lerp(Vector2(clientx, clienty), Vector2(serverx, servery), interpolation_factor)
 					#var new_position = lerp(input_queue[i]["P"], server_input_data["P"], .75)
