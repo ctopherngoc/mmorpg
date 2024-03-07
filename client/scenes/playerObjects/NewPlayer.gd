@@ -55,7 +55,7 @@ func get_input():
 		input[2] = 1
 	if Input.is_action_pressed("ui_right"):
 		input[3] = 1
-	if Input.get_action_strength("jump"):
+	if Input.is_action_pressed("jump"):
 		input [4] = 1
 	return input
 
