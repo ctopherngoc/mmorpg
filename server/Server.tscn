@@ -45,8 +45,7 @@ current = true
 script = ExtResource( 6 )
 
 [node name="Test" type="Node2D" parent="."]
-visible = false
-position = Vector2( 497, -249 )
+position = Vector2( 518, 221 )
 
 [node name="PlayerContainer" parent="Test" instance=ExtResource( 8 )]
 
