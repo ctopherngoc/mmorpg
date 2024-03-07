@@ -136,14 +136,15 @@ func server_reconciliation(server_input_data):
 	for i in range(input_queue.size()):
 		if server_input_data["T"] == input_queue[i]["T"]:
 			if server_input_data["P"] != input_queue[i]["P"]:
-				var serverx = stepify(server_input_data["P"].x, 0.01)
-				var servery = stepify(server_input_data["P"].y, 0.01)
-				var clientx = stepify(input_queue[i]["P"].x, 0.01)
-				var clienty = stepify(input_queue[i]["P"].y, 0.01)
-				if abs(serverx - clientx) > 5.0 or abs(servery - clienty) > 5.0:
+				var serverx = stepify(server_input_data["P"].x, 1)
+				var servery = stepify(server_input_data["P"].y, 1)
+				var clientx = stepify(input_queue[i]["P"].x, 1)
+				var clienty = stepify(input_queue[i]["P"].y, 1)
+				#print(serverx, servery, " ",clientx, clienty)
+				if abs(serverx - clientx) > 15 or abs(servery - clienty) > 50:
 					print("recon")
 					print("server: ", server_input_data["P"], " client: ",input_queue[i]["P"])
-					var recon_position = lerp(input_queue[i]["P"],server_input_data["P"], 0.8)
+					var recon_position = lerp(input_queue[i]["P"],server_input_data["P"], 0.5)
 					#var new_position = lerp(Vector2(clientx, clienty), Vector2(serverx, servery), interpolation_factor)
 					#var new_position = lerp(input_queue[i]["P"], server_input_data["P"], .75)
 					get_node("/root/currentScene/Player").set_position(recon_position)
