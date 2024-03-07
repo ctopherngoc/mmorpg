@@ -182,6 +182,8 @@ func get_movement_vector():
 		input = input_queue.pop_front()
 	else:
 		input = [0,0,0,0,0]
+	if input != [0,0,0,0,0]:
+		print(input)
 	# calculating x vector, allow x-axis jump off ropes or idle on floor
 	if (!attacking && is_on_floor()) or (input[1] == 1 or input[3] == 1) and input[4] == 1:
 		moveVector.x = (input[3] - input[1]) * velocity_multiplier
