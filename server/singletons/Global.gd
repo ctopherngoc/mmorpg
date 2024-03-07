@@ -166,6 +166,8 @@ func npc_hit(dmg, npc, player):
 						highest_attacker = attacker
 						damage = damage_percent
 				if damage_percent == 1:
+					# should be
+					# player_container.experience(ServerData.monsterTable[npc.id].experience)
 					player_container.experience(npc.experience)
 				else:
 					player_container.experience(int(round(damage_percent * npc.stats.experience)))
