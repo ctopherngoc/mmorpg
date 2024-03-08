@@ -15,7 +15,7 @@ func store_character_data(player_id, display_name):
 	var player_container = get_node(ServerData.player_location[str(player_id)] + "/%s" % str(player_id))
 	var firebase = Firebase.update_document("characters/%s" % display_name, player_container.http, player_container.db_info.token, player_container.current_character)
 	yield(firebase, 'completed')
-	print("%s saved data" % display_name)
+	#print("%s saved data" % display_name)
 
 func npc_attack(player, monster_stats):
 	var player_stats = player.current_character.stats
@@ -41,9 +41,9 @@ func _on_Timer_timeout():
 		var player_id_arr = Array(ServerData.username_list.keys())
 		for player_id in player_id_arr:
 			store_character_data(player_id, ServerData.username_list[player_id])
-			print("Stored %s data to firebase db" % ServerData.username_list[player_id])
-	else:
-		print("no players no need to save db")
+			#print("Stored %s data to firebase db" % ServerData.username_list[player_id])
+	#else:
+		#print("no players no need to save db")
 
 func send_climb_data(player_id, climb_data):
 	server.send_climb_data(player_id, climb_data)
@@ -168,11 +168,11 @@ func npc_hit(dmg, npc, player):
 				if damage_percent == 1:
 					# should be
 					# player_container.experience(ServerData.monsterTable[npc.id].experience)
-					player_container.experience(npc.experience)
+					player_container.experience(npc.stats.experience)
 				else:
 					player_container.experience(int(round(damage_percent * npc.stats.experience)))
 				var drop_list = dropGeneration(npc.id)
-				dropSpawn(npc.map_id, npc.location, drop_list, highest_attacker)
+				dropSpawn(npc.map_id, npc.global_position, drop_list, highest_attacker)
 		# drop items from npc location
 		npc.die()
 	print("monster: " + npc.name + " health: " + str(npc.stats.currentHP))
@@ -236,6 +236,7 @@ func dropSpawn(map, location, item_list, user_id):
 	for item in items:
 		var new_item = item_scene.instance()
 		new_item.position = location
+		new_item.position.y = new_item.position.y - 50
 		new_item.player_owner = user_id
 		new_item.id = item
 #		if ServerData.itemTable[item] == "gold":
@@ -243,7 +244,8 @@ func dropSpawn(map, location, item_list, user_id):
 		if ServerData.itemTable[item]["itemType"] == "equipment":
 			new_item.stats = item_list.item
 		else:
-			print(item)
 			new_item.amount = item_list[item]
+		print(item)
+		print(new_item)
 		get_node(map_path).add_child(new_item, true)
 		
