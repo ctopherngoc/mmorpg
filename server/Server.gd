@@ -326,7 +326,7 @@ func despawnPlayer(player_id):
 
 # arugment is a player container
 func update_player_stats(player_container):
-	print('updating player stats for client')
+	#print('updating player stats for client')
 	rpc_id(int(player_container.name), "update_player_stats", player_container.current_character)
 
 # Character containers/information 
