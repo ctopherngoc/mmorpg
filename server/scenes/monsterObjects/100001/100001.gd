@@ -39,45 +39,6 @@ func _process(delta):
 func _on_Timer_timeout():
 	move_state = floor(rand_range(0,3))
 
-## enemy container controlled dmg and xp
-#func npc_hit(dmg, player):
-#	if dmg <= current_hp:
-#		current_hp -= dmg
-#		if str(player) in attackers.keys():
-#			attackers[str(player)] += dmg
-#		else:
-#			attackers[str(player)] = dmg
-#	else:
-#		if str(player) in attackers.keys():
-#			attackers[str(player)] += current_hp
-#		else:
-#			attackers[str(player)] = current_hp
-#		current_hp -= dmg
-#	# if dead change state and make it unhittable
-#	if current_hp <= 0:
-#		state = "Dead"
-#
-#		for attacker in attackers.keys():
-#			# if atacker logged in
-#			if attacker in ServerData.player_location.keys():
-#				print(str(attacker) + " killed monster")
-#
-#				# if attacker in map
-#				if get_node("../../Players/%s" % attacker):
-#					var player_container = get_node("../../Players/%s" % attacker)
-#
-#					# xp = rounded (dmg done / max hp) * experience
-#					var damage_percent = round((attackers[attacker] / max_hp))
-#					print(attackers[attacker])
-#					print("% dmg ", damage_percent)
-#					if damage_percent == 1:
-#						player_container.experience(experience)
-#					else:
-#						player_container.experience(int(round(damage_percent * experience)))
-#		get_node("do_damage/CollisionShape2D").set_deferred("disabled", true)
-#
-#	print("monster: " + self.name + " health: " + str(current_hp))
-
 func touch_damage():
 	if $do_damage.get_overlapping_areas().size() > 0:
 		for player in $do_damage.get_overlapping_areas():
