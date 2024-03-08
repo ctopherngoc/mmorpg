@@ -322,7 +322,7 @@ func _on_idle_timer_timeout():
 						var hp_dif = current_character.stats.base.maxHealth - current_character.stats.base.health
 						current_character.stats.base.health += int(hp_dif)
 					else:
-						print("heal 5 hp")
+						#print("heal 5 hp")
 						current_character.stats.base.health += 5
 					get_node("/root/Server").update_player_stats(self)
 				else:
