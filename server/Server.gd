@@ -472,5 +472,15 @@ func _on_Button2_pressed():
 
 func _input(event):
 	if event.is_action_pressed("ui_accept"):
-		Global.dropSpawn("100001", Vector2(414, -69), {"100000": 5}, 100000)
+		Global.dropSpawn("100001", Vector2(414, -69), {"100000": 5}, "PlayerContainer")
 ######################################################################
+
+func _on_Button3_pressed():
+	print("dropping coin")
+	Global.dropSpawn("100001", Vector2(231, -405), {"100000": 5}, "PlayerContainer")
+
+
+func _on_Button4_pressed():
+	print("testing loot request")
+	var test_player = $Test/PlayerContainer
+	test_player.loot_request()
