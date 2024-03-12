@@ -393,7 +393,7 @@ remote func received_player_state(player_state):
 	var player_id = get_tree().get_rpc_sender_id()
 	var player_container = get_node(ServerData.player_location[str(player_id)] + "/%s" % str(player_id))
 	var input = player_state["P"]
-	if  input != [0,0,0,0,0]:
+	if  input != [0,0,0,0,0,0]:
 		player_container.input_queue.append(player_state["P"])
 
 	var map_node = get_node(ServerData.player_location[str(player_id)])
@@ -465,7 +465,6 @@ func send_climb_data(player_id, climb_data):
 func _on_Button_pressed():
 	$Test/PlayerContainer.attack(0)
 	#Global.damage_formula(1, ServerData.test_pstats, ServerData.test_mstats)
-
 
 # function takes current_character
 func _on_Button2_pressed():
