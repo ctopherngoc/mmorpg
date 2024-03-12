@@ -6,6 +6,7 @@ onready var timer =$Timers/Timer
 onready var idle_timer =$Timers/idle_timer
 onready var damage_timer = $Timers/DamageTimer
 onready var animation = $AnimationPlayer
+onready var loot_node = $loot_box
 #contains token and id
 var db_info = {}
 var hittable = true
@@ -13,6 +14,10 @@ var current_character = ServerData.test_pstats
 var attacking = false
 var mobs_hit = []
 
+func _ready():
+	pass
+	#self.name = "100000"
+	
 func attack(move_id):
 	attacking = true
 	#basic attack
@@ -117,3 +122,8 @@ func do_damage():
 
 func _on_Timer_timeout():
 	pass # Replace with function body.
+
+func loot_request():
+	print(self.name, " ", "Pressed Loot")
+	var loot_list = loot_node.get_overlapping_areas()
+	Global.lootRequest(self.name, loot_list)
