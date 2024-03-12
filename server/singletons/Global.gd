@@ -259,11 +259,11 @@ func lootRequest(player, loot_list):
 			var item_container = item.get_parent()
 			# if another player looted already
 			if item_container.looted:
-				pass
+				print("item already looted")
 			elif item_container.player_owner:
 				# if there are owners, if player is owner
 				# mark item looted, get player container, queuefree item
-				if player == item_container.player_owner:
+				if player == item_container.player_owner and item_container.looted == false:
 					item_container.looted = true
 					#var player_container = get_node(ServerData.player_location[str(player)] + "/%s" % str(player))
 					self.lootDrop(player, item_container)
@@ -283,9 +283,18 @@ func lootRequest(player, loot_list):
 				# add item to players inventory
 				break
 func lootDrop(player, item_container):
-	if item_container.id == str(100000):
+	if item_container.id == "100000":
 		ServerData.characters_data[str(player)]["inventory"]["gold"] += item_container.amount
 		print(player, " looted %s gold" % str(item_container.amount))
 	else:
 		print("not gold")
+		# parse if item is etc, use, equip
+		
+		# get item data
+		
+		# get inventory data
+		
+		# if multiple add item to stack
+		
+		# else find first avaliable slot in list add
 		pass
