@@ -397,7 +397,10 @@ var test_pstats = {
 			"damagePercent": 0,
 			"critRate": 0,
 		},
-	}
+	},
+	"inventory" : {
+			"gold": 0,
+	},
 }
 
 var test_mstats = {
