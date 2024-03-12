@@ -5,6 +5,7 @@ var player_owner
 var amount
 var gravity = 800
 var velocity = Vector2(0, 0)
+var looted = false
 
 func _ready():
 	pass
