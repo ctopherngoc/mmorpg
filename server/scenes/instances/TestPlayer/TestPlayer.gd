@@ -15,7 +15,7 @@ var attacking = false
 var mobs_hit = []
 
 func _ready():
-	pass
+	ServerData.characters_data[str(self.name)] = current_character
 	#self.name = "100000"
 	
 func attack(move_id):
