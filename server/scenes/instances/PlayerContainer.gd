@@ -6,6 +6,7 @@ onready var timer =$Timers/Timer
 onready var idle_timer =$Timers/idle_timer
 onready var damage_timer = $Timers/DamageTimer
 onready var animation = $AnimationPlayer
+onready var loot_node = $loot_box
 #contains token and id
 var db_info = {}
 onready var loggedin = true
@@ -36,7 +37,7 @@ var gravity = 800
 
 # 0 = right, 1 = left
 var direction = 0
-var input = [0,0,0,0,0]
+var input = [0,0,0,0,0,0]
 var attacking = false
 var hittable = true
 
@@ -199,7 +200,9 @@ func get_movement_vector():
 	if !input_queue.empty():
 		input = input_queue.pop_front()
 	else:
-		input = [0,0,0,0,0]
+		input = [0,0,0,0,0,0]
+	if input[5]:
+		self.loot_request()
 	recon_arr["input_arr"] = input
 	# calculating x vector, allow x-axis jump off ropes or idle on floor
 	if (!attacking && is_on_floor()) or (input[1] == 1 or input[3] == 1) and input[4] == 1:
@@ -336,3 +339,8 @@ func do_damage():
 
 func _on_Timer_timeout():
 	pass # Replace with function body.
+
+func loot_request():
+	print(self.name, " ", "Pressed Loot")
+	var loot_list = loot_node.get_overlapping_areas()
+	Global.lootRequest(self.name, loot_list)
