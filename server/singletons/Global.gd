@@ -260,9 +260,9 @@ func lootRequest(player, loot_list):
 		elif item_container.player_owner:
 			# if there are owners, if player is owner
 			# mark item looted, get player container, queuefree item
-			if player == item_container.playe_owner:
+			if player == item_container.player_owner:
 				item_container.looted = true
-				var player_container = get_node(ServerData.player_location[str(player)] + "/%s" % str(player))
+				#var player_container = get_node(ServerData.player_location[str(player)] + "/%s" % str(player))
 				item_container.queue_free()
 				print(item_container.name, " looted by %s" % player)
 				
@@ -272,8 +272,8 @@ func lootRequest(player, loot_list):
 				print("%s is not owner of item" % player)
 		else:
 			item_container.looted = true
-			var player_container = get_node(ServerData.player_location[str(player)] + "/%s" % str(player))
+			#var player_container = get_node(ServerData.player_location[str(player)] + "/%s" % str(player))
 			item_container.queue_free()
-			print("item looted by random playe %s" % player)
+			print("item looted by random player %s" % player)
 			# add item to players inventory
 			break
