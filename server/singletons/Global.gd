@@ -248,4 +248,32 @@ func dropSpawn(map, location, item_list, user_id):
 		print(item)
 		print(new_item)
 		get_node(map_path).add_child(new_item, true)
-		
+
+func lootRequest(player, loot_list):
+	print("processing loot for %s" % player)
+	print(loot_list)
+	for item in loot_list:
+		var item_container = item.get_parent()
+		# if another player looted already
+		if item_container.looted:
+			pass
+		elif item_container.player_owner:
+			# if there are owners, if player is owner
+			# mark item looted, get player container, queuefree item
+			if player == item_container.playe_owner:
+				item_container.looted = true
+				var player_container = get_node(ServerData.player_location[str(player)] + "/%s" % str(player))
+				item_container.queue_free()
+				print(item_container.name, " looted by %s" % player)
+				
+				# add item to players inventory
+				break
+			else:
+				print("%s is not owner of item" % player)
+		else:
+			item_container.looted = true
+			var player_container = get_node(ServerData.player_location[str(player)] + "/%s" % str(player))
+			item_container.queue_free()
+			print("item looted by random playe %s" % player)
+			# add item to players inventory
+			break
