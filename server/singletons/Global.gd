@@ -251,29 +251,41 @@ func dropSpawn(map, location, item_list, user_id):
 
 func lootRequest(player, loot_list):
 	print("processing loot for %s" % player)
-	print(loot_list)
-	for item in loot_list:
-		var item_container = item.get_parent()
-		# if another player looted already
-		if item_container.looted:
-			pass
-		elif item_container.player_owner:
-			# if there are owners, if player is owner
-			# mark item looted, get player container, queuefree item
-			if player == item_container.player_owner:
+	if loot_list.empty():
+		print("no items")
+	else:
+		print(loot_list)
+		for item in loot_list:
+			var item_container = item.get_parent()
+			# if another player looted already
+			if item_container.looted:
+				pass
+			elif item_container.player_owner:
+				# if there are owners, if player is owner
+				# mark item looted, get player container, queuefree item
+				if player == item_container.player_owner:
+					item_container.looted = true
+					#var player_container = get_node(ServerData.player_location[str(player)] + "/%s" % str(player))
+					self.lootDrop(player, item_container)
+					item_container.queue_free()
+					print(item_container.name, " looted by %s" % player)
+					
+					# add item to players inventory
+					break
+				else:
+					print("%s is not owner of item" % player)
+			else:
 				item_container.looted = true
 				#var player_container = get_node(ServerData.player_location[str(player)] + "/%s" % str(player))
+				self.lootDrop(player, item_container)
 				item_container.queue_free()
-				print(item_container.name, " looted by %s" % player)
-				
+				print("item looted by random player %s" % player)
 				# add item to players inventory
 				break
-			else:
-				print("%s is not owner of item" % player)
-		else:
-			item_container.looted = true
-			#var player_container = get_node(ServerData.player_location[str(player)] + "/%s" % str(player))
-			item_container.queue_free()
-			print("item looted by random player %s" % player)
-			# add item to players inventory
-			break
+func lootDrop(player, item_container):
+	if item_container.id == str(100000):
+		ServerData.characters_data[str(player)]["inventory"]["gold"] += item_container.amount
+		print(player, " looted %s gold" % str(item_container.amount))
+	else:
+		print("not gold")
+		pass
