@@ -89,7 +89,10 @@ func update_document(path: String, http: HTTPRequest, token: String, player_cont
 		http.request(url, _get_request_headers(token), false, HTTPClient.METHOD_PATCH, body)
 		yield(http, "request_completed")
 
-
+func delete_document(path: String, http: HTTPRequest, token: String) -> void:
+	var url := DATABASE_URL + path
+	http.request(url, _get_request_headers(token), false, HTTPClient.METHOD_DELETE)
+	
 func firebase_dictionary_converter(database_data: Dictionary, client_data: Array):
 	"""
 	takes firebase json dictionary converts to normal dictionary and appends to an array
