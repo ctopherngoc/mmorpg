@@ -158,7 +158,7 @@ var player_info = {
 	}, #equipment
 	"inventory" : {"mapValue":
 		{"fields": 
-			{"gold": {'integerValue': null},
+			{"100000": {'integerValue': null},
 			}#fields
 		}#mapvalue
 	}, #inventory
@@ -243,7 +243,7 @@ var player_template = {
 			"tattoo": -1,
 			}, #equipment
 	"inventory" : {
-				"gold": 0,
+				"100000": 0,
 			} #inventory
 }
 
@@ -399,7 +399,7 @@ var test_pstats = {
 		},
 	},
 	"inventory" : {
-			"gold": 0,
+			"100000": 0,
 	},
 }
 
