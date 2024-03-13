@@ -282,6 +282,7 @@ func lootRequest(player, loot_list):
 				print("item looted by random player %s" % player)
 				# add item to players inventory
 				break
+
 func lootDrop(player, item_container):
 	if item_container.id == "100000":
 		ServerData.characters_data[str(player)]["inventory"]["100000"] += item_container.amount
