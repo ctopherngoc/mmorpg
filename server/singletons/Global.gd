@@ -189,7 +189,7 @@ func dropGeneration(monster_id):
 		# if drop
 		if dropDetermine(item_id):
 			# gold
-			if ServerData.itemTable[item_id]["itemType"] == "gold":
+			if ServerData.itemTable[item_id]["itemType"] == "100000":
 				var monster_level = ServerData.monsterTable[monster_id]["level"]
 				var item_max_value = pow((monster_level + 1),2)
 				var item_value = rng.randi_range(item_max_value / 2,item_max_value)
@@ -284,7 +284,7 @@ func lootRequest(player, loot_list):
 				break
 func lootDrop(player, item_container):
 	if item_container.id == "100000":
-		ServerData.characters_data[str(player)]["inventory"]["gold"] += item_container.amount
+		ServerData.characters_data[str(player)]["inventory"]["100000"] += item_container.amount
 		print(player, " looted %s gold" % str(item_container.amount))
 	else:
 		print("not gold")
