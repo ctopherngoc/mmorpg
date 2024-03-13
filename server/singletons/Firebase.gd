@@ -16,6 +16,10 @@ func _get_request_headers(token_id: String) -> PoolStringArray:
 		"Content-Type: application/json",
 		"Authorization: Bearer %s" % token_id
 	])
+# used only by playerContainers (client user)
+###############################################################################
+###############################################################################
+###############################################################################
 
 # only when creating an account
 # create baseline in /users and chreating new character in /characters
@@ -86,7 +90,70 @@ func update_document(path: String, http: HTTPRequest, token: String, player_cont
 		http.request(url, _get_request_headers(token), false, HTTPClient.METHOD_PATCH, body)
 		yield(http, "request_completed")
 
-# calls only used by server
+
+func firebase_dictionary_converter(database_data: Dictionary, client_data: Array):
+	"""
+	takes firebase json dictionary converts to normal dictionary and appends to an array
+	"""
+	var temp_dict = {}
+
+	# displayname and position
+	temp_dict['displayname'] = database_data["displayname"]['stringValue']
+	temp_dict['map'] = database_data["map"]['integerValue']
+
+	# stats
+	var shortcut = database_data["stats"]["mapValue"]["fields"]
+	var keys = shortcut.keys()
+	temp_dict['stats'] = {
+		"base": {}, 
+		"equipment": {}
+		}
+	for key in keys:
+		var shortcut2 = shortcut[key]["mapValue"]["fields"]
+		var keys2 = shortcut2.keys()
+		for key2 in keys2:
+			# added situation if value saved as integervalue
+			temp_dict['stats'][key][key2] = int(shortcut2[key2]['integerValue'])
+	# avatar
+	shortcut = database_data["avatar"]["mapValue"]["fields"]
+	keys = shortcut.keys()
+	temp_dict['avatar'] = {}
+	for key in keys:
+		# added situation if value saved as integervalue
+		temp_dict['avatar'][key] = shortcut[key]['stringValue']
+
+	# equipment
+	shortcut = database_data["equipment"]["mapValue"]["fields"] 
+	keys = shortcut.keys()
+	temp_dict['equipment'] = {}
+	for key in keys:
+		if 'integerValue' in shortcut[key].keys():
+			temp_dict['equipment'][key] = shortcut[key]['integerValue']
+		else:
+			temp_dict['equipment'][key] = {}
+			var shortcut2 = shortcut[key]["mapValue"]["fields"]
+			var keys2 = shortcut2.keys()
+			for key2 in keys2:
+				if 'integerValue' in shortcut2[key2]:
+					temp_dict['equipment'][key][key2] = shortcut2[key2]['integerValue']
+				else:
+					temp_dict['equipment'][key][key2] = shortcut2[key2]['stringValue']
+	#inventory
+	shortcut = database_data["inventory"]["mapValue"]["fields"]
+	keys = shortcut.keys()
+	temp_dict['inventory'] = {}
+	for key in keys:
+		if key == "100000":
+			temp_dict['inventory'][key] = shortcut[key]['integerValue']
+		# tab keys [equips, use, etc]
+		else:
+			pass
+	
+	client_data.append(temp_dict)
+
+# used only by server (server user)
+###############################################################################
+###############################################################################
 ###############################################################################
 func _get_user_info(result: Array) -> Dictionary:
 	var result_body := JSON.parse(result[3].get_string_from_ascii()).result as Dictionary
@@ -156,7 +223,7 @@ func _server_get_document(path: String, http: HTTPRequest)-> void:
 			var document_list = result_body["documents"]
 			for document in document_list:
 				var character = document["name"].replace("projects/godotproject-ef224/databases/(default)/documents/characters/", "")
-				ServerData.characters_data[character] = new_firebase_dictionary_converter(document["fields"])
+				ServerData.characters_data[character] = server_firebase_dictionary_converter(document["fields"])
 		
 # warning-ignore:unused_argument
 func _server_update_document(http: HTTPRequest, array, action: String) -> void:
@@ -188,10 +255,8 @@ func _server_update_document(http: HTTPRequest, array, action: String) -> void:
 			# warning-ignore:return_value_discarded
 			http.request(url, _get_request_headers(server_token), false, HTTPClient.METHOD_PATCH, body)
 			yield(http, "request_completed")
-###############################################################################
 
-# used only by server
-func new_firebase_dictionary_converter(database_data: Dictionary):
+func server_firebase_dictionary_converter(database_data: Dictionary):
 	"""
 	takes firebase json dictionary converts to normal dictionary and appends to an array
 	"""
@@ -227,6 +292,7 @@ func new_firebase_dictionary_converter(database_data: Dictionary):
 	shortcut = database_data["equipment"]["mapValue"]["fields"] 
 	keys = shortcut.keys()
 	temp_dict['equipment'] = {}
+	#for equip in equip key list
 	for key in keys:
 		if 'integerValue' in shortcut[key].keys():
 			temp_dict['equipment'][key] = int(shortcut[key]['integerValue'])
@@ -239,83 +305,46 @@ func new_firebase_dictionary_converter(database_data: Dictionary):
 					temp_dict['equipment'][key][key2] = int(shortcut2[key2]['integerValue'])
 				else:
 					temp_dict['equipment'][key][key2] = str(shortcut2[key2]['stringValue'])
-
-	#inventory
-	shortcut = database_data["inventory"]["mapValue"]["fields"]
-	keys = shortcut.keys()
-	temp_dict['inventory'] = {}
-	for key in keys:
-		if key == "gold":
-			temp_dict['inventory'][key] = int(shortcut[key]['integerValue'])
-		else:
-			pass
-	return temp_dict
-
-# deleting a document will only occur if we are deleting a whole user account or deleting a character in /charaters
-func delete_document(path: String, http: HTTPRequest, token: String) -> void:
-	var url := DATABASE_URL + path
-# warning-ignore:return_value_discarded
-	http.request(url, _get_request_headers(token), false, HTTPClient.METHOD_DELETE)
-	yield(http, "request_completed")
-
-func firebase_dictionary_converter(database_data: Dictionary, client_data: Array):
 	"""
-	takes firebase json dictionary converts to normal dictionary and appends to an array
-	"""
-	var temp_dict = {}
-
-	# displayname and position
-	temp_dict['displayname'] = database_data["displayname"]['stringValue']
-	temp_dict['map'] = database_data["map"]['integerValue']
-
-	# stats
-	var shortcut = database_data["stats"]["mapValue"]["fields"]
-	var keys = shortcut.keys()
-	temp_dict['stats'] = {
-		"base": {}, 
-		"equipment": {}
-		}
-	for key in keys:
-		var shortcut2 = shortcut[key]["mapValue"]["fields"]
-		var keys2 = shortcut2.keys()
-		for key2 in keys2:
-			# added situation if value saved as integervalue
-			temp_dict['stats'][key][key2] = int(shortcut2[key2]['integerValue'])
-	# avatar
-	shortcut = database_data["avatar"]["mapValue"]["fields"]
-	keys = shortcut.keys()
-	temp_dict['avatar'] = {}
-	for key in keys:
-		# added situation if value saved as integervalue
-		temp_dict['avatar'][key] = shortcut[key]['stringValue']
-
-	# equipment
-	shortcut = database_data["equipment"]["mapValue"]["fields"] 
-	keys = shortcut.keys()
-	temp_dict['equipment'] = {}
-	for key in keys:
-		if 'integerValue' in shortcut[key].keys():
-			temp_dict['equipment'][key] = shortcut[key]['integerValue']
-		else:
-			temp_dict['equipment'][key] = {}
-			var shortcut2 = shortcut[key]["mapValue"]["fields"]
-			var keys2 = shortcut2.keys()
-			for key2 in keys2:
-				if 'integerValue' in shortcut2[key2]:
-					temp_dict['equipment'][key][key2] = shortcut2[key2]['integerValue']
-				else:
-					temp_dict['equipment'][key][key2] = shortcut2[key2]['stringValue']
-	#inventory
-	shortcut = database_data["inventory"]["mapValue"]["fields"]
-	keys = shortcut.keys()
-	temp_dict['inventory'] = {}
-	for key in keys:
-		if key == "gold":
-			temp_dict['inventory'][key] = shortcut[key]['integerValue']
-		else:
-			pass
+	inventory {
+		equipment : [],
+		use : [],
+		etc: [],
+	}
 	
-	client_data.append(temp_dict)
+	]
+	"""
+	#inventory
+	shortcut = database_data["inventory"]["mapValue"]["fields"]
+	keys = shortcut.keys()
+	temp_dict['inventory'] = {}
+	# for tab in inventory
+	for key in keys:
+		# gold
+		if key == "100000":
+			temp_dict['inventory'][key] = int(shortcut[key]['integerValue'])
+		
+		# equip tab
+		elif key == "equipment":
+			var equips_shortcut = shortcut["equipment"]['arrayValue']['values'] # [item_dict, item_dict2, item_dict3]
+			temp_dict['inventory']['equipment'] = []
+			
+			# for item dictionary in list
+			for equip in equips_shortcut:
+				var equip_shortcut = equip['mapValue']['fields']
+				var equip_keys = equip_shortcut.keys()
+				var temp_equip_dict = {}
+				for stat in equip_keys:
+					if 'integerValue' in equip_shortcut[stat]:
+						temp_equip_dict[stat] = int(equip_shortcut[stat]['integerValue'])
+					else:
+						temp_equip_dict[stat] = str(equip_shortcut[stat]['stringValue'])
+						
+						temp_dict['inventory']['equipment'].append(temp_equip_dict)
+		else:
+				pass
+	print(temp_dict['inventory'])
+	return temp_dict
 
 func server_dictionary_converter(server_data: Dictionary, firebase_data: Dictionary):
 	"""
@@ -375,7 +404,7 @@ func server_dictionary_converter(server_data: Dictionary, firebase_data: Diction
 	keys = shortcut.keys()
 	fb_shortcut = firebase_data['inventory']['mapValue']['fields']
 	for key in keys:
-		if key == "gold":
+		if key == "100000":
 			fb_shortcut[key]['integerValue'] = int(shortcut[key])
 		else:
 			pass
