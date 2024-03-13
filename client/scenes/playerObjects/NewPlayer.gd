@@ -58,7 +58,7 @@ func define_player_state(input_array):
 	Server.send_player_state(player_state)
 
 func get_input():
-	var input = [0,0,0,0,0]
+	var input = [0,0,0,0,0,0]
 	if Input.is_action_pressed("ui_up"):
 		input[0] = 1
 	if Input.is_action_pressed("ui_left"):
@@ -69,6 +69,8 @@ func get_input():
 		input[3] = 1
 	if Input.is_action_pressed("jump"):
 		input [4] = 1
+	if Input.is_action_pressed("loot"):
+		input [5] = 1
 	recon_arr["input_arr"] = input
 	return input
 
