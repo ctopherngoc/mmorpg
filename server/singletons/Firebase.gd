@@ -36,7 +36,7 @@ func save_document(path: String, fields: Dictionary, http: HTTPRequest, token: S
 # warning-ignore:return_value_discarded
 		http.request(url, _get_request_headers(token),false, HTTPClient.METHOD_POST, body)
 		yield(http, "request_completed")
-
+"""
 # because server controls database, requires user token as argument for get_request_header function
 func get_document(path: String, http: HTTPRequest, token: String, player_container)-> void:
 	var url := DATABASE_URL + path
@@ -58,14 +58,13 @@ func get_document(path: String, http: HTTPRequest, token: String, player_contain
 		var character_list = []
 		for character in document_list:
 			character_list.append(character['fields']['displayname']['stringValue'])
-
+"""
 # saving characters/updating information
 # creating new characters in /users
 func update_document(path: String, http: HTTPRequest, token: String, player_container) -> void:
-	"""
-	path: user: playerContainer = array
-	path: character: playerContainer = dictionary
-	"""
+	#path: user: playerContainer = array
+	#path: character: playerContainer = dictionary
+
 	print("direct update fb from char")
 	if 'users/' in path:
 		# convert
@@ -406,5 +405,19 @@ func server_dictionary_converter(server_data: Dictionary, firebase_data: Diction
 	for key in keys:
 		if key == "100000":
 			fb_shortcut[key]['integerValue'] = int(shortcut[key])
+		elif key == "equipment":
+			var inventory_equip_shortcut = fb_shortcut['equipment']['arrayValue']['values']
+			for equip in shortcut['equipment']:
+				var temp_dict = ServerData.equipment_data_template.duplicate(true)
+				# [inventory][equipment][equip] = {keys: values}
+				var equip_keys = equip.keys()
+				
+				# equip dict
+				for stat in equip_keys:
+					if stat in ["name", "type"]:
+						temp_dict[stat] = {'stringValue' : equip[stat]}
+					else:
+						temp_dict[stat] = {'integerValue': equip[stat]}
+				inventory_equip_shortcut = {'mapValue':{'fields': temp_dict}}
 		else:
 			pass
