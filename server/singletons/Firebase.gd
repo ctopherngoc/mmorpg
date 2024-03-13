@@ -318,6 +318,7 @@ func server_firebase_dictionary_converter(database_data: Dictionary):
 	keys = shortcut.keys()
 	temp_dict['inventory'] = {}
 	# for tab in inventory
+	print(shortcut)
 	for key in keys:
 		# gold
 		if key == "100000":
@@ -342,7 +343,6 @@ func server_firebase_dictionary_converter(database_data: Dictionary):
 						temp_dict['inventory']['equipment'].append(temp_equip_dict)
 		else:
 				pass
-	print(temp_dict['inventory'])
 	return temp_dict
 
 func server_dictionary_converter(server_data: Dictionary, firebase_data: Dictionary):
@@ -397,16 +397,20 @@ func server_dictionary_converter(server_data: Dictionary, firebase_data: Diction
 				else:
 					temp_dict[key2] = {'integerValue': shortcut2[key2]}
 			fb_shortcut[key] = {'mapValue':{'fields': temp_dict}}
-
+			
+#issue
+#############################################################################
 	#inventory
 	shortcut = server_data["inventory"]
 	keys = shortcut.keys()
 	fb_shortcut = firebase_data['inventory']['mapValue']['fields']
 	for key in keys:
 		if key == "100000":
-			fb_shortcut[key]['integerValue'] = int(shortcut[key])
+			print("gold")
+			fb_shortcut[key] = {'integerValue': int(shortcut[key])}
+			print(int(shortcut[key]))
 		elif key == "equipment":
-			var inventory_equip_shortcut = fb_shortcut['equipment']['arrayValue']['values']
+			fb_shortcut[key] = {'arrayValue':{'values':[]}}
 			for equip in shortcut['equipment']:
 				var temp_dict = ServerData.equipment_data_template.duplicate(true)
 				# [inventory][equipment][equip] = {keys: values}
@@ -418,6 +422,8 @@ func server_dictionary_converter(server_data: Dictionary, firebase_data: Diction
 						temp_dict[stat] = {'stringValue' : equip[stat]}
 					else:
 						temp_dict[stat] = {'integerValue': equip[stat]}
-				inventory_equip_shortcut = {'mapValue':{'fields': temp_dict}}
+				fb_shortcut[key]['arrayValue']['values'].append({'mapValue':{'fields': temp_dict}})
+			print("end")
+			print(fb_shortcut)
 		else:
 			pass
