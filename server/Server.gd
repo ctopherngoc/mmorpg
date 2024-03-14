@@ -7,21 +7,20 @@
 extends Node
 
 var network = NetworkedMultiplayerENet.new()
-var port = 2733
-var max_players = 100
+var port: int = 2733
+var max_players:int = 100
 
 # example tokens added
 var expected_tokens = []
 onready var player_verification_process = get_node("PlayerVerification")
 onready var character_creation_queue = []
-const username = "server@server.com"
-const password = "server123"
+const username: String = "server@server.com"
+const password: String = "server123"
 
 #######################################################
 # server netcode
 #server start 
 func _ready():
-	# not used
 	Firebase.httprequest = $HTTPRequest
 	start_server()
 	Firebase.get_data(username, password)
@@ -48,31 +47,30 @@ func _Peer_Disconnected(player_id):
 	if ServerData.player_location[str(player_id)] == 'connected':
 		ServerData.player_location.erase(str(player_id))
 	else:
-		# issue with failed log-in, stuck in log-in screen
-		print(ServerData.player_location[str(player_id)])
-		var player_container = get_node(ServerData.player_location[str(player_id)] + "/%s" % str(player_id))
+		var player_container = _Server_Get_Player_Container(player_id)
 		if not "CharacterSelect" in ServerData.player_location[str(player_id)]:
 			var cur_character = player_container.current_character
 			var firebase = Firebase.update_document("characters/%s" % str(cur_character['displayname']), player_container.http2, player_container.db_info["token"], cur_character)
 			yield(firebase, 'completed')
-			print("saved player")
 		else:
 			print("dc in characterselect did not save")
-		ServerData.player_location.erase(str(player_id))
-		ServerData.player_state_collection.erase(player_id)
-		ServerData.username_list.erase(player_id)
-		ServerData.logged_emails.erase(ServerData.player_id_emails[str(player_id)])
-		ServerData.username_list.erase(str(player_id))
-		ServerData.player_id_emails.erase(str(player_id))
+		_Server_Data_Remove_Player(player_id)
 		player_container.timer.start()
 		yield(player_container.timer, "timeout")
 		rpc_id(0, "despawn_player", player_id)
 		player_container.queue_free()
 	print("User " + str(player_id) + " Disconnected")
 
+func _Server_Data_Remove_Player(player_id):
+	ServerData.player_location.erase(str(player_id))
+	ServerData.player_state_collection.erase(player_id)
+	ServerData.logged_emails.erase(ServerData.player_id_emails[str(player_id)])
+	ServerData.player_id_emails.erase(str(player_id))
+	ServerData.username_list.erase(str(player_id))
+	
 func return_token_verification_results(player_id, result):
 	if result != false:
-		var player_container = get_node(ServerData.player_location[str(player_id)] + "/%s" % str(player_id))
+		var player_container = _Server_Get_Player_Container(player_id)
 		if player_container.characters.empty():
 			rpc_id(player_id, "return_token_verification_results", result, [])
 		else:
@@ -86,9 +84,8 @@ func return_token_verification_results(player_id, result):
 
 func fetch_token(player_id):
 	print(get_tree().multiplayer.get_network_connected_peers())
-	print('fetch token %s' % str(player_id))
 	rpc_id(player_id, "fetch_token")
-
+	
 func _on_TokenExpiration_timeout():
 	var current_time = OS.get_unix_time()
 	if expected_tokens == []:
@@ -104,7 +101,6 @@ func _on_TokenExpiration_timeout():
 		print(expected_tokens)
 
 remote func return_token(token, email):
-	print("return token")
 	var player_id = get_tree().get_rpc_sender_id()
 	player_verification_process.verify(player_id, token, email)
 
@@ -121,6 +117,8 @@ remote func determine_latency(client_time):
 	var player_id = get_tree().get_rpc_sender_id()
 	rpc_id(player_id, "return_latency", client_time)
 
+func _Server_Get_Player_Container(player_id):
+	return get_node(ServerData.player_location[str(player_id)] + "/%s" % player_id)
 ######################################################################
 # pre-spawn server functions
 
@@ -139,94 +137,58 @@ func create_characters():
 		else:
 			#[player_id, char_dict, player_container, requester]
 			character_array[2].characters.append(character_array[1]["un"])
-
-			#fill in character and top and bottom numbers
-			var temp_player = ServerData.player_template.duplicate()
 			var new_char = character_array[1]
-			temp_player['displayname'] = new_char["un"]
-			""" 
-				"avatar" : {
-					"head": null,
-					"hair": null,
-					"hcolor": null,
-					"body": null,
-					"bcolor": null,
-					"ear": null,
-					"mouth": null,
-					"eye": null,
-					"ecolor": null,
-					
-					"bc": curr_bcolor,
-					"b": curr_body,
-					"he": curr_head,
-					"ha": curr_hcolor,
-					"h": curr_hair,
-					"e": curr_eye,
-					"ec": curr_ecolor,
-					"m": curr_mouth,
-					"ea": curr_ear,
-					"o": curr_outfit,
-					"br": curr_brow,
-				}
-			"""
-			var sprite = temp_player["avatar"]
-			sprite["bcolor"] = new_char["bc"]
-			sprite["body"] = new_char["b"]
-			sprite["head"] = new_char["he"]
-			sprite["hcolor"] = new_char["hc"]
-			sprite["hair"] = new_char["h"]
-			sprite["eye"] = new_char["e"]
-			sprite["ecolor"] = new_char["ec"]
-			sprite["mouth"] = new_char["m"]
-			sprite["ear"] = new_char["ea"]
-			sprite["brow"] = new_char["br"]
+			var temp_player = _Server_New_Character(new_char)
 
-			"""
-				outfit:
-				0: top: 500000, bottom: 500001
-			 	1: top: 500002, bottom: 500003
-				2: top: 500004, bottom: 500005
-			"""
-			var equips = temp_player["equipment"]
-			print(new_char["o"])
-			if new_char["o"] == 0:
-				equips["top"] = ServerData.starter_equips[0][0]
-				equips["bottom"] = ServerData.starter_equips[0][1]
-			elif new_char["o"] == 1:
-				equips["top"] = ServerData.starter_equips[1][0]
-				equips["bottom"] = ServerData.starter_equips[1][1]
-			else:
-				equips["top"] = ServerData.starter_equips[2][0]
-				equips["bottom"] = ServerData.starter_equips[2][1]
-
-			# possibly make this into one function
-			##################################################################
 			print("creating character")
-			
-			#update characters document
-			"""
-			 ServerData.characters_data[temp_player["displayname"] = temp_player
-			"""
 			var firebase_call2 = Firebase.update_document("characters/%s" % temp_player["displayname"], character_array[2].http2, character_array[2].db_info["token"], temp_player)
 			yield(firebase_call2, 'completed')
 
-			# update database account
-			# get token or document id
-			"""
-			character_array[2].append()
-			ServerData.user_characters[""].append(temp_player["displayname"])
-			"""
 			var firebase_call3 = Firebase.update_document("users/%s" % character_array[2].db_info["id"], character_array[2].http, character_array[2].db_info["token"], character_array[2])
 			yield(firebase_call3, 'completed')
-			###################################################################
 			character_array[2].characters_info_list.append(temp_player)
 
 			# update client with new character
 			rpc_id(character_array[0], "return_create_characters", character_array[3], character_array[2].characters_info_list)
 
+func _Server_New_Character(new_char: Dictionary):
+	var temp_player = ServerData.player_template.duplicate()
+	temp_player['displayname'] = new_char["un"]
+	
+	var sprite = temp_player["avatar"]
+	sprite["bcolor"] = new_char["bc"]
+	sprite["body"] = new_char["b"]
+	sprite["head"] = new_char["he"]
+	sprite["hcolor"] = new_char["hc"]
+	sprite["hair"] = new_char["h"]
+	sprite["eye"] = new_char["e"]
+	sprite["ecolor"] = new_char["ec"]
+	sprite["mouth"] = new_char["m"]
+	sprite["ear"] = new_char["ea"]
+	sprite["brow"] = new_char["br"]
+	
+	"""
+		outfit:
+		0: top: 500000, bottom: 500001
+	 	1: top: 500002, bottom: 500003
+		2: top: 500004, bottom: 500005
+	"""
+	var equips = temp_player["equipment"]
+	print(new_char["o"])
+	if new_char["o"] == 0:
+		equips["top"] = ServerData.starter_equips[0][0]
+		equips["bottom"] = ServerData.starter_equips[0][1]
+	elif new_char["o"] == 1:
+		equips["top"] = ServerData.starter_equips[1][0]
+		equips["bottom"] = ServerData.starter_equips[1][1]
+	else:
+		equips["top"] = ServerData.starter_equips[2][0]
+		equips["bottom"] = ServerData.starter_equips[2][1]
+	return temp_player
+	
 remote func choose_character(requester, display_name: String):
 	var player_id = get_tree().get_rpc_sender_id()
-	var player_container = get_node(ServerData.player_location[str(player_id)] + "/%s" % str(player_id))
+	var player_container = _Server_Get_Player_Container(player_id)
 	for character_dict in player_container.characters_info_list:
 		if  display_name == character_dict['displayname']:
 			#player_container.current_character = character_dict
@@ -234,10 +196,6 @@ remote func choose_character(requester, display_name: String):
 			ServerData.username_list[str(player_id)] = display_name
 			break
 	var map = player_container.current_character['map']
-	#############################################
-	#map = map.replace("res://scenes/maps/", "")
-	#map = map.replace(".tscn", "")
-	############################################
 	
 	# move user container to the map
 	move_player_container(player_id, player_container, map, 'spawn')
@@ -254,7 +212,7 @@ remote func fetch_player_stats():
 			if l.name == str(player_id):
 				print(l.player_stats)
 
-remote func fetch_usernames(requester, username):
+remote func fetch_usernames(requester, username: String):
 	print("inside fetch username. Username: %s" % username)
 	var player_id = get_tree().get_rpc_sender_id()
 	if username in ServerData.user_characters.keys():
@@ -267,27 +225,18 @@ remote func fetch_usernames(requester, username):
 		rpc_id(player_id, "return_fetch_usernames", requester, true)
 		pass
 
-remote func create_character(requester, char_dict):
+remote func create_character(requester, char_dict: Dictionary):
 	print("create_character: Username: %s" % char_dict["un"])
 	var player_id = get_tree().get_rpc_sender_id()
-	var player_container = get_node(ServerData.player_location[str(player_id)] + "/%s" % player_id)
-
-	"""
-	not in dict
-	var curr_lhand: int = 0
-	var curr_hgear: int = 0
-	var curr_eyewear: int = 0
-	var curr_earring: int = 0
-	var curr_glove: int = 0
-	var curr_rhand: int = 0
-	var bottom: int = 0
-	"""
+	var player_container =_Server_Get_Player_Container(player_id)
 	character_creation_queue.append([player_id, char_dict, player_container, requester])
 
+"""
 remote func fetch_characters():
 # warning-ignore:unused_variable
 	var player_id = get_tree().get_rpc_sender_id()
 	print("In fetch characters")
+"""
 
 # warning-ignore:unused_argument
 remote func delete_character(requester, display_name: String):
@@ -298,7 +247,7 @@ remote func delete_character(requester, display_name: String):
 	print("atempting to delete %s" % display_name)
 
 	var player_id = get_tree().get_rpc_sender_id()
-	var player_container = get_node(ServerData.player_location[str(player_id)] + "/%s" % player_id)
+	var player_container = _Server_Get_Player_Container(player_id)
 
 	# find index from character array delete index in characters and charaters info list
 	var index = player_container.characters.find(display_name)
@@ -315,7 +264,7 @@ remote func delete_character(requester, display_name: String):
 remote func logout():
 	var player_id = get_tree().get_rpc_sender_id()
 # warning-ignore:unused_variable
-	var player_container = get_node(ServerData.player_location[str(player_id)] + "/%s" % str(player_id))
+	var player_container = _Server_Get_Player_Container(player_id)
 	player_container.loggedin = false
 	network.disconnect_peer(player_id)
 
@@ -327,7 +276,6 @@ func despawnPlayer(player_id):
 
 # arugment is a player container
 func update_player_stats(player_container):
-	#print('updating player stats for client')
 	rpc_id(int(player_container.name), "update_player_stats", player_container.current_character)
 
 # Character containers/information 
@@ -351,14 +299,16 @@ func move_player_container(player_id, player_container, map_id, position):
 	player.position = position
 	print("player cur position = ", player.position, " ", player.global_position)
 
+"""
 func get_player_data(player_id):
-	var player_container = get_node(ServerData.player_location[str(player_id)] + "/%s" % str(player_id))
+	var player_container = _Server_Get_Player_Container(player_id)
 	# warning-ignore:unused_variable
 	var character_count = player_container.db_info
+"""
 
 remote func portal(portal_id):
 	var player_id = get_tree().get_rpc_sender_id()
-	var player_container = get_node(ServerData.player_location[str(player_id)] + "/%s" % player_id)
+	var player_container = _Server_Get_Player_Container(player_id)
 	# validate
 	print(portal_id)
 	var portal = ServerData.player_location[str(player_id)].replace("YSort/Players", "MapObjects/%s" % portal_id)
@@ -392,14 +342,12 @@ remote func portal(portal_id):
 #world states
 remote func received_player_state(player_state):
 	var player_id = get_tree().get_rpc_sender_id()
-	var player_container = get_node(ServerData.player_location[str(player_id)] + "/%s" % str(player_id))
+	var player_container = _Server_Get_Player_Container(player_id)
 	var input = player_state["P"]
 	if  input != [0,0,0,0,0,0]:
 		player_container.input_queue.append(player_state["P"])
 
 	var map_node = get_node(ServerData.player_location[str(player_id)])
-# warning-ignore:unused_variable
-	var server_position_offset = map_node.get_global_position()
 
 	player_state["U"] = ServerData.username_list[str(player_id)]
 	player_state["P"] = player_container.position
@@ -425,7 +373,7 @@ func send_world_state(world_state):
 # server combat functions
 remote func attack(move_id):
 	var player_id = get_tree().get_rpc_sender_id()
-	var player_container = get_node(ServerData.player_location[str(player_id)] + "/%s" % str(player_id))
+	var player_container = _Server_Get_Player_Container(player_id)
 	# basic attack
 	if move_id == 0:
 		player_container.attack(0)
