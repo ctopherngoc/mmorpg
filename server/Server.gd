@@ -307,6 +307,7 @@ remote func delete_character(requester, display_name: String):
 
 	var firebase_call = Firebase.update_document("users/%s" % player_container.db_info["id"], player_container.http, player_container.db_info["token"], player_container)
 	yield(firebase_call, "completed")
+# warning-ignore:void_assignment
 	firebase_call = Firebase.delete_document("characters/%s" % display_name, player_container.http2, player_container.db_info["token"])
 	yield(firebase_call, "completed")
 	rpc_id(player_id, "return_delete_character", player_container.characters_info_list, requester)
