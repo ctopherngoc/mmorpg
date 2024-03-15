@@ -38,6 +38,13 @@ var monsters = {
 	"100004" : {},
 }
 
+var items = {
+	"100001" : {},
+	"100002" : {},
+	"100003" : {},
+	"100004" : {},
+}
+
 # current emails logged in
 var logged_emails = []
 var player_id_emails = {}
