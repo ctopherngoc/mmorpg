@@ -644,3 +644,7 @@ onready var test_player2 = {
 		"strength":4, 
 		"defense":0, 
 		"wisdom":4}}
+
+onready var item_preload = {
+	"100000": preload("res://scenes/itemObjects/100000.tscn"),
+}
