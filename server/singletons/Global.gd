@@ -233,6 +233,7 @@ func dropSpawn(map, location, item_list, user_id):
 	var map_path = "/root/Server/World/Maps/" + str(map) + "/YSort/Items"
 	var items = item_list.keys()
 # warning-ignore:shadowed_variable
+	var map_node = get_node(map_path)
 	for item in items:
 		var new_item = item_scene.instance()
 		new_item.position = location
@@ -247,7 +248,8 @@ func dropSpawn(map, location, item_list, user_id):
 			new_item.amount = item_list[item]
 		print(item)
 		print(new_item)
-		get_node(map_path).add_child(new_item, true)
+		self.addDropToMapList(map_node.get_parent().get_parent(), new_item)
+		map_node.add_child(new_item, true)
 
 func lootRequest(player, loot_list):
 	print("processing loot for %s" % player)
@@ -299,3 +301,11 @@ func lootDrop(player, item_container):
 		
 		# else find first avaliable slot in list add
 		pass
+		
+func addDropToMapList(map, item):
+	if item.position in map.item_list.keys():
+		map.item_list[item.position].append(item.id)
+	else:
+		map.item_list[item.position] = [item.id]
+	ServerData.items[str(map.name)] = map.item_list
+	print(map.item_list)
