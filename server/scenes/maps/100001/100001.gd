@@ -14,6 +14,7 @@ var open_locations = [0,1]
 
 var occupied_locations = {}
 var enemy_list = {}
+var item_list = {}
 
 func _ready():
 	var timer = Timer.new()
