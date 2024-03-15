@@ -91,6 +91,16 @@ func _physics_process(_delta):
 							# if actually alive respawned monster
 							if world_state_buffer[2]["E"][current_map][monster]['time_out'] != 0 && world_state_buffer[2]["E"][current_map][monster]['EnemyState'] != "Dead":
 								spawn_monster(monster, world_state_buffer[2]["E"][current_map][monster])
+					for item in world_state_buffer[2]["I"][current_map].keys():
+						if not world_state_buffer[1]["I"][current_map].has(item):
+							continue
+						# monster not dead on client
+						if get_node("/root/currentScene/Items").has_node(str(item)):
+							var item_node = get_node("/root/currentScene/Items/" + str(item))
+							var new_position = lerp(world_state_buffer[item]["P"], world_state_buffer[2]["I"][current_map][item]["P"], interpolation_factor)
+							item_node.move(new_position)
+						else:
+							spawn_item(world_state_buffer[2]["E"][current_map][item])
 
 			# we have no future world_state
 			elif render_time > world_state_buffer[1].T:
@@ -131,6 +141,16 @@ func spawn_monster(monster_id, monster_dict):
 	monster.state = monster_dict["EnemyState"]
 	monster.name = str(monster_id)
 	get_node("/root/currentScene/Monsters").add_child(monster, true)
+	
+func spawn_item(item_dict):
+	if item_dict['I'] == "100000":
+		var item = get_node("/root/currentScene").monster_list[monster_dict['id']].instance()
+		monster.position = monster_dict["EnemyLocation"]
+		#monster.max_hp = GameData.monsterTable["MaxHP"]
+		monster.current_hp = monster_dict["EnemyHealth"]
+		monster.state = monster_dict["EnemyState"]
+		monster.name = str(monster_id)
+		get_node("/root/currentScene/Monsters").add_child(monster, true)
 
 func server_reconciliation(server_input_data):
 	for i in range(input_queue.size()):
