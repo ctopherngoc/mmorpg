@@ -240,6 +240,7 @@ func dropSpawn(map, location, item_list, user_id):
 		new_item.position.y = new_item.position.y
 		new_item.player_owner = user_id
 		new_item.id = item
+		new_item.map = str(map)
 #		if ServerData.itemTable[item] == "gold":
 #			new_item.amount = item_list.item
 		if ServerData.itemTable[item]["itemType"] == "equipment":
@@ -248,7 +249,7 @@ func dropSpawn(map, location, item_list, user_id):
 			new_item.amount = item_list[item]
 		print(item)
 		print(new_item)
-		self.addDropToMapList(map_node.get_parent().get_parent(), new_item)
+		#self.addDropToMapList(str(map), new_item)
 		map_node.add_child(new_item, true)
 
 func lootRequest(player, loot_list):
@@ -287,8 +288,12 @@ func lootRequest(player, loot_list):
 
 func lootDrop(player, item_container):
 	if item_container.id == "100000":
-		ServerData.characters_data[str(player)]["inventory"]["100000"] += item_container.amount
+		print("Position")
+		print(item_container.position)
+		print(ServerData.items[item_container.map])
 		print(player, " looted %s gold" % str(item_container.amount))
+		ServerData.characters_data[str(player)]["inventory"]["100000"] += item_container.amount
+		print("removing item from map list and world list")
 	else:
 		print("not gold")
 		# parse if item is etc, use, equip
@@ -301,11 +306,4 @@ func lootDrop(player, item_container):
 		
 		# else find first avaliable slot in list add
 		pass
-		
-func addDropToMapList(map, item):
-	if item.position in map.item_list.keys():
-		map.item_list[item.position].append(item.id)
-	else:
-		map.item_list[item.position] = [item.id]
-	ServerData.items[str(map.name)] = map.item_list
-	print(map.item_list)
+	ServerData.items[item_container.map].erase(item_container.name)
