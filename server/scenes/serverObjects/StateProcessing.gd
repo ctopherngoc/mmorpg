@@ -21,6 +21,7 @@ func _physics_process(_delta):
 			# dictionary keys are mapname
 			
 			world_state["E"] = ServerData.monsters.duplicate(true)
+			world_state["I"] = ServerData.items.duplicate(true)
 			
 			#verification
 			
