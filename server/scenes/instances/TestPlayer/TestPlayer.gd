@@ -14,12 +14,12 @@ var current_character = {
 	"equipment": {
 		"rweapon": {
 			"id": 100000,
-			"unique_id":14333321,
+			"uniqueID":14333321,
 			"job": 0,
 			"type": "1h_sword",
 			"name": "temp sword",
 			"speed": 5,
-			"slots": 7,
+			"slot": 7,
 			"attack": 15,
 			"magic": 0,
 			"maxHealth": 0,
