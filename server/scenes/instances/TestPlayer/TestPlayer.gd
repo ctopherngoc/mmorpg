@@ -10,7 +10,89 @@ onready var loot_node = $loot_box
 #contains token and id
 var db_info = {}
 var hittable = true
-var current_character = ServerData.test_pstats
+var current_character = {
+	"equipment": {
+		"rweapon": {
+			"id": 100000,
+			"unique_id":14333321,
+			"job": 0,
+			"type": "1h_sword",
+			"name": "temp sword",
+			"speed": 5,
+			"slots": 7,
+			"attack": 15,
+			"magic": 0,
+			"maxHealth": 0,
+			"maxMana": 0,
+			"strength": 5,
+			"wisdom": 5,
+			"dexterity": 5,
+			"luck": 5,
+			"movementSpeed": 0,
+			"jumpSpeed": 0,
+			"avoidability": 0,
+			"defense": 0,
+			"magicDefense": 0,
+			"accuracy": 0,
+			"bossPercent": 0,
+			"damagePercent": 0,
+			"critRate": 0,
+			},# rwep
+		#"lweapon": null,
+	},#equip
+	"stats": 
+	{
+		"base": {
+			"maxRange": 50,
+			"minRange": 0,
+			"health": 50,
+			"mana": 50,
+			"maxHealth": 50,
+			"maxMana": 50,
+			"level": 1,
+			"experience": 0,
+			"class": 0,
+			"job": 0,
+			"sp": 0,
+			"ap": 0,
+			"strength": 4,
+			"wisdom": 4,
+			"dexterity": 4,
+			"luck": 4,
+			"movementSpeed": 100,
+			"jumpSpeed": 200,
+			"avoidability": 4,
+			"defense": 0,
+			"magicDefense": 0,
+			"accuracy": 10,
+			"bossPercent": 1,
+			"damagePercent": 1,
+			"critRate": 5,
+		},
+		"equipment": {
+			"attack": 0,
+			"magic": 0,
+			"maxHealth": 0,
+			"maxMana": 0,
+			"strength": 0,
+			"wisdom": 0,
+			"dexterity": 0,
+			"luck": 0,
+			"movementSpeed": 0,
+			"jumpSpeed": 0,
+			"avoidability": 0,
+			"defense": 0,
+			"magicDefense": 0,
+			"accuracy": 0,
+			"bossPercent": 0,
+			"damagePercent": 0,
+			"critRate": 0,
+		},
+	},
+	"inventory" : {
+			"100000": 0,
+	},
+}
 var attacking = false
 var mobs_hit = []
 
@@ -25,14 +107,14 @@ func attack(move_id):
 	if move_id == 0:
 		var equipment = current_character.equipment
 		if equipment.rweapon.type == "1h_sword":
-			animation.play("1h_sword",-1, ServerData.weapon_speed[equipment.rweapon.speed])
+			animation.play("1h_sword",-1, ServerData.static_data.weapon_speed[equipment.rweapon.speed])
 			yield(animation, "animation_finished")
 		elif equipment.rweapon.type == "2h_sword":
 			pass
 		elif equipment.weapon.type == "bow":
 		# else ranged weapon:
 			if equipment.ammo.amount > 0:
-				animation.play("bow",-1, ServerData.weapon_speed[equipment.rweapon.speed])
+				animation.play("bow",-1, ServerData.static_data.weapon_speed[equipment.rweapon.speed])
 			else:
 				return "not enough ammo"
 		#var mob_list = overlapping_bodies()
@@ -90,7 +172,7 @@ func take_damage(take_damage):
 func experience(experience):
 	print(self.name + " gain %s exp" % str(experience))
 	var current_exp = current_character["stats"]["experience"]
-	var exp_limit = ServerData.experience_table[str(current_character["stats"]["level"])]
+	var exp_limit = ServerData.static_data.experience_table[str(current_character["stats"]["level"])]
 	current_exp += experience
 
 	# if level up
