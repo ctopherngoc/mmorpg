@@ -85,14 +85,14 @@ func attack(move_id):
 	if move_id == 0:
 		var equipment = current_character.equipment
 		if equipment.rweapon.type == "1h_sword":
-			animation.play("1h_sword",-1, ServerData.weapon_speed[str(equipment.rweapon.speed)])
+			animation.play("1h_sword",-1, ServerData.static_data.weapon_speed[str(equipment.rweapon.speed)])
 			yield(animation, "animation_finished")
 		elif equipment.rweapon.type == "2h_sword":
 			pass
 		elif equipment.weapon.type == "bow":
 		# else ranged weapon:
 			if equipment.ammo.amount > 0:
-				animation.play("bow",-1, ServerData.weapon_speed[str(equipment.rweapon.speed)])
+				animation.play("bow",-1, ServerData.static_data.weapon_speed[str(equipment.rweapon.speed)])
 			else:
 				return "not enough ammo"
 		# no mobs overlap
@@ -150,7 +150,7 @@ func take_damage(take_damage):
 func experience(experience):
 	print(self.name + " gain %s exp" % str(experience))
 	var current_exp = current_character.stats.base.experience
-	var exp_limit = ServerData.experience_table[str(current_character.stats.base.level)]
+	var exp_limit = ServerData.static_data.experience_table[str(current_character.stats.base.level)]
 	current_exp += experience
 
 	# if level up
@@ -167,7 +167,7 @@ func experience(experience):
 				current_character.stats.base.ap += 3
 			# update exp_limit for multiple levels
 			get_node("/root/Server").update_player_stats(self)
-			exp_limit = ServerData.experience_table[str(current_character.stats.base.level)]
+			exp_limit = ServerData.static_data.experience_table[str(current_character.stats.base.level)]
 	current_character.stats.base.experience = current_exp
 	get_node("/root/Server").update_player_stats(self)
 	Global.store_character_data(self.name, current_character.displayname)
