@@ -299,12 +299,10 @@ func move_player_container(player_id, player_container, map_id, position):
 	player.position = position
 	print("player cur position = ", player.position, " ", player.global_position)
 
-"""
 func get_player_data(player_id):
 	var player_container = _Server_Get_Player_Container(player_id)
 	# warning-ignore:unused_variable
 	var character_count = player_container.db_info
-"""
 
 remote func portal(portal_id):
 	var player_id = get_tree().get_rpc_sender_id()
