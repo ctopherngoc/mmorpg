@@ -152,7 +152,7 @@ func create_characters():
 			rpc_id(character_array[0], "return_create_characters", character_array[3], character_array[2].characters_info_list)
 
 func _Server_New_Character(new_char: Dictionary):
-	var temp_player = ServerData.player_template.duplicate()
+	var temp_player = ServerData.static_data.player_template.duplicate()
 	temp_player['displayname'] = new_char["un"]
 	
 	var sprite = temp_player["avatar"]
@@ -176,14 +176,14 @@ func _Server_New_Character(new_char: Dictionary):
 	var equips = temp_player["equipment"]
 	print(new_char["o"])
 	if new_char["o"] == 0:
-		equips["top"] = ServerData.starter_equips[0][0]
-		equips["bottom"] = ServerData.starter_equips[0][1]
+		equips["top"] = ServerData.static_data.starter_equips[0][0]
+		equips["bottom"] = ServerData.static_data.starter_equips[0][1]
 	elif new_char["o"] == 1:
-		equips["top"] = ServerData.starter_equips[1][0]
-		equips["bottom"] = ServerData.starter_equips[1][1]
+		equips["top"] = ServerData.static_data.starter_equips[1][0]
+		equips["bottom"] = ServerData.static_data.starter_equips[1][1]
 	else:
-		equips["top"] = ServerData.starter_equips[2][0]
-		equips["bottom"] = ServerData.starter_equips[2][1]
+		equips["top"] = ServerData.static_data.starter_equips[2][0]
+		equips["bottom"] = ServerData.static_data.starter_equips[2][1]
 	return temp_player
 	
 remote func choose_character(requester, display_name: String):
@@ -411,7 +411,6 @@ func send_climb_data(player_id, climb_data):
 # Server combat test functions
 func _on_Button_pressed():
 	$Test/PlayerContainer.attack(0)
-	#Global.damage_formula(1, ServerData.test_pstats, ServerData.test_mstats)
 
 # function takes current_character
 func _on_Button2_pressed():
