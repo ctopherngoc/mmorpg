@@ -80,7 +80,7 @@ func update_document(path: String, http: HTTPRequest, token: String, player_cont
 		yield(http, "request_completed")
 	else:
 		# update /character
-		var fb_data = ServerData.player_info.duplicate(true)
+		var fb_data = ServerData.static_data.player_info.duplicate(true)
 		server_dictionary_converter(player_container, fb_data)
 		var document := {"fields": fb_data}
 		var body := to_json(document)
@@ -248,7 +248,7 @@ func _server_update_document(http: HTTPRequest, array, action: String) -> void:
 		yield(http, "request_completed")
 	else:
 		for character in ServerData.username_list.keys():
-			var fb_data = ServerData.player_info.duplicate(true)
+			var fb_data = ServerData.static_data.player_info.duplicate(true)
 			var ign: String = str(ServerData.username_list[character])
 			server_dictionary_converter(Global.characters_data[ign], fb_data)
 			var document := {"fields": fb_data}
@@ -388,7 +388,7 @@ func server_dictionary_converter(server_data: Dictionary, firebase_data: Diction
 		# currently rweapon
 		else:
 			# weapon dict
-			var temp_dict = ServerData.equipment_data_template.duplicate(true)
+			var temp_dict = ServerData.static_data.equipment_data_template.duplicate(true)
 			# [equipment][rweapon]
 			var shortcut2 = shortcut[key]
 			var keys2 = shortcut2.keys()
@@ -415,7 +415,7 @@ func server_dictionary_converter(server_data: Dictionary, firebase_data: Diction
 		elif key == "equipment":
 			fb_shortcut[key] = {'arrayValue':{'values':[]}}
 			for equip in shortcut['equipment']:
-				var temp_dict = ServerData.equipment_data_template.duplicate(true)
+				var temp_dict = ServerData.static_data.equipment_data_template.duplicate(true)
 				# [inventory][equipment][equip] = {keys: values}
 				var equip_keys = equip.keys()
 				
