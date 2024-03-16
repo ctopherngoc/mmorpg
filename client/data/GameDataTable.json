@@ -63,6 +63,48 @@
       "stackable": 0,
       "droppable": 1
     },
+    "200003": {
+      "itemName": "Acorn Armor",
+      "itemType": "equipment",
+      "dropRate": 5,
+      "stackable": 0,
+      "droppable": 1
+    },
+    "200004": {
+      "itemName": "Stone Arrow",
+      "itemType": "use",
+      "dropRate": 30,
+      "stackable": 1,
+      "droppable": 1
+    },
+    "300000": {
+      "itemName": "Health Potion",
+      "itemType": "use",
+      "dropRate": 15,
+      "stackable": 1,
+      "droppable": 1
+    },
+    "300001": {
+      "itemName": "Red Apple",
+      "itemType": "use",
+      "dropRate": 15,
+      "stackable": 1,
+      "droppable": 1
+    },
+    "300002": {
+      "itemName": "Cheese",
+      "itemType": "use",
+      "dropRate": 15,
+      "stackable": 1,
+      "droppable": 1
+    },
+    "300003": {
+      "itemName": "Meat",
+      "itemType": "use",
+      "dropRate": 15,
+      "stackable": 1,
+      "droppable": 1
+    },
     "500000": {
       "itemName": "Cloth Shirt",
       "itemType": "equipment",
@@ -148,6 +190,28 @@
       "maxMana": null,
       "movementSpeed": null,
       "strength": null,
+      "wisdom": null,
+      "job": null
+    },
+    "200003": {
+      "name": "Acorn Armor",
+      "type": "top",
+      "slot": 7,
+      "accuracy": 20,
+      "attack": null,
+      "bossPercent": null,
+      "critRate": null,
+      "damagePercent": null,
+      "defense": 10,
+      "dexterity": null,
+      "jumpSpeed": 5,
+      "luck": null,
+      "magic": null,
+      "magicDefense": 10,
+      "maxHealth": 5,
+      "maxMana": 5,
+      "movementSpeed": 5,
+      "strength": 5,
       "wisdom": null,
       "job": null
     },
