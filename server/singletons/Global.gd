@@ -99,7 +99,7 @@ func calculate_crit(crit_rate):
 func calculate_stats(player_stats):
 	var equipment = player_stats.equipment
 	var stats = player_stats.stats
-	var equipment_stats = ServerData.equipment_stats_template.duplicate(true)
+	var equipment_stats = ServerData.static_data.equipment_stats_template.duplicate(true)
 	# for every item in equipment dict
 # warning-ignore:shadowed_variable
 	for item in equipment.keys():
@@ -108,7 +108,7 @@ func calculate_stats(player_stats):
 			pass
 		else:
 			for stat in equipment[item].keys():
-				if stat in ["name", "id", "uniqueID", "type", "speed", "slot", "job"]:
+				if stat in ["name", "id", "unique_id", "type", "speed", "slots", "job"]:
 					continue
 				else:
 					# add stat value to each stat in temp equipment dict
@@ -125,7 +125,7 @@ func calculate_stats(player_stats):
 	# beginner class 
 	# (base stats: int + total equip stats: int) + int(float(total equipment attack: int) * weapon ratio: float)
 	if base.job == 0:
-		base.maxRange = (base.strength + base.wisdom + base.dexterity + base.luck + equip.strength + equip.wisdom + equip.dexterity + equip.luck) + int((float(equip.attack) * ServerData.weapon_ratio[equipment.rweapon.type]))
+		base.maxRange = (base.strength + base.wisdom + base.dexterity + base.luck + equip.strength + equip.wisdom + equip.dexterity + equip.luck) + int((float(equip.attack) * ServerData.static_data.weapon_ratio[equipment.rweapon.type]))
 		base.minRange = int(float(base.maxRange) * 0.2)
 		print(base.maxRange)
 	else:
@@ -232,7 +232,6 @@ func dropDetermine(item_id):
 func dropSpawn(map, location, item_list, user_id):
 	var map_path = "/root/Server/World/Maps/" + str(map) + "/YSort/Items"
 	var items = item_list.keys()
-# warning-ignore:shadowed_variable
 	var map_node = get_node(map_path)
 	for item in items:
 		var new_item = item_scene.instance()
@@ -241,15 +240,11 @@ func dropSpawn(map, location, item_list, user_id):
 		new_item.player_owner = user_id
 		new_item.id = item
 		new_item.map = str(map)
-#		if ServerData.itemTable[item] == "gold":
-#			new_item.amount = item_list.item
 		if ServerData.itemTable[item]["itemType"] == "equipment":
 			new_item.stats = item_list.item
 		else:
 			new_item.amount = item_list[item]
-		print(item)
 		print(new_item)
-		#self.addDropToMapList(str(map), new_item)
 		map_node.add_child(new_item, true)
 
 func lootRequest(player, loot_list):
@@ -268,7 +263,6 @@ func lootRequest(player, loot_list):
 				# mark item looted, get player container, queuefree item
 				if player == item_container.player_owner and item_container.looted == false:
 					item_container.looted = true
-					#var player_container = get_node(ServerData.player_location[str(player)] + "/%s" % str(player))
 					self.lootDrop(player, item_container)
 					item_container.queue_free()
 					print(item_container.name, " looted by %s" % player)
@@ -279,7 +273,6 @@ func lootRequest(player, loot_list):
 					print("%s is not owner of item" % player)
 			else:
 				item_container.looted = true
-				#var player_container = get_node(ServerData.player_location[str(player)] + "/%s" % str(player))
 				self.lootDrop(player, item_container)
 				item_container.queue_free()
 				print("item looted by random player %s" % player)
