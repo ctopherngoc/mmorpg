@@ -422,8 +422,8 @@ func _input(event):
 ######################################################################
 
 func _on_Button3_pressed():
-	print("dropping coin")
-	Global.dropSpawn("100001", Vector2(231, -405), {"100000": 5}, "PlayerContainer")
+	print("dropping potion")
+	Global.dropSpawn("100001", Vector2(231, -405), {"300000": 1}, "PlayerContainer")
 
 
 func _on_Button4_pressed():
