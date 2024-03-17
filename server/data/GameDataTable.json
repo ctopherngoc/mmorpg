@@ -443,5 +443,207 @@
     "30": {
       "experience": 65462
     }
+  },
+  "InventoryTable": {
+    "0": {
+      "itemID": null,
+      "amount": null
+    },
+    "1": {
+      "itemID": null,
+      "amount": null
+    },
+    "2": {
+      "itemID": null,
+      "amount": null
+    },
+    "3": {
+      "itemID": null,
+      "amount": null
+    },
+    "4": {
+      "itemID": null,
+      "amount": null
+    },
+    "5": {
+      "itemID": null,
+      "amount": null
+    },
+    "6": {
+      "itemID": null,
+      "amount": null
+    },
+    "7": {
+      "itemID": null,
+      "amount": null
+    },
+    "8": {
+      "itemID": null,
+      "amount": null
+    },
+    "9": {
+      "itemID": null,
+      "amount": null
+    },
+    "10": {
+      "itemID": null,
+      "amount": null
+    },
+    "11": {
+      "itemID": null,
+      "amount": null
+    },
+    "12": {
+      "itemID": null,
+      "amount": null
+    },
+    "13": {
+      "itemID": null,
+      "amount": null
+    },
+    "14": {
+      "itemID": null,
+      "amount": null
+    },
+    "15": {
+      "itemID": null,
+      "amount": null
+    },
+    "16": {
+      "itemID": null,
+      "amount": null
+    },
+    "17": {
+      "itemID": null,
+      "amount": null
+    },
+    "18": {
+      "itemID": null,
+      "amount": null
+    },
+    "19": {
+      "itemID": null,
+      "amount": null
+    },
+    "20": {
+      "itemID": null,
+      "amount": null
+    },
+    "21": {
+      "itemID": null,
+      "amount": null
+    },
+    "22": {
+      "itemID": null,
+      "amount": null
+    },
+    "23": {
+      "itemID": null,
+      "amount": null
+    },
+    "24": {
+      "itemID": null,
+      "amount": null
+    },
+    "25": {
+      "itemID": null,
+      "amount": null
+    },
+    "26": {
+      "itemID": null,
+      "amount": null
+    },
+    "27": {
+      "itemID": null,
+      "amount": null
+    },
+    "28": {
+      "itemID": null,
+      "amount": null
+    },
+    "29": {
+      "itemID": null,
+      "amount": null
+    },
+    "30": {
+      "itemID": null,
+      "amount": null
+    },
+    "31": {
+      "itemID": null,
+      "amount": null
+    },
+    "32": {
+      "itemID": null,
+      "amount": null
+    },
+    "33": {
+      "itemID": null,
+      "amount": null
+    },
+    "34": {
+      "itemID": null,
+      "amount": null
+    },
+    "35": {
+      "itemID": null,
+      "amount": null
+    },
+    "36": {
+      "itemID": null,
+      "amount": null
+    },
+    "37": {
+      "itemID": null,
+      "amount": null
+    },
+    "38": {
+      "itemID": null,
+      "amount": null
+    },
+    "39": {
+      "itemID": null,
+      "amount": null
+    },
+    "40": {
+      "itemID": null,
+      "amount": null
+    },
+    "41": {
+      "itemID": null,
+      "amount": null
+    },
+    "42": {
+      "itemID": null,
+      "amount": null
+    },
+    "43": {
+      "itemID": null,
+      "amount": null
+    },
+    "44": {
+      "itemID": null,
+      "amount": null
+    },
+    "45": {
+      "itemID": null,
+      "amount": null
+    },
+    "46": {
+      "itemID": null,
+      "amount": null
+    },
+    "47": {
+      "itemID": null,
+      "amount": null
+    },
+    "48": {
+      "itemID": null,
+      "amount": null
+    },
+    "49": {
+      "itemID": null,
+      "amount": null
+    }
   }
 }
