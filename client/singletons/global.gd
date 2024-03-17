@@ -152,11 +152,12 @@ func spawn_item(name, item_dict):
 		item.name = name
 		get_node("/root/currentScene/Items").add_child(item, true)
 	else:
+		print(item_dict)
 		var item = GameData.item_preload["item"].instance()
 		item.position = item_dict["P"]
 		item.name = name
 		item.id = item_dict["I"]
-		item.item_type = GameData.ItemTable[str(item.id)].itemType
+		item.item_type = GameData.itemTable[str(item.id)]['itemType']
 		get_node("/root/currentScene/Items").add_child(item, true)
 
 func server_reconciliation(server_input_data):
