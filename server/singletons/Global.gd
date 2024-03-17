@@ -236,7 +236,7 @@ func dropSpawn(map, location, item_list, user_id):
 	for item in items:
 		var new_item = item_scene.instance()
 		new_item.position = location
-		new_item.position.y = new_item.position.y
+		#new_item.position.y = new_item.position.y
 		new_item.player_owner = user_id
 		new_item.id = item
 		new_item.map = str(map)
