@@ -143,10 +143,20 @@ func spawn_monster(monster_id, monster_dict):
 	get_node("/root/currentScene/Monsters").add_child(monster, true)
 	
 func spawn_item(name, item_dict):
+	"""
+	worldstate[item integer >= 0 ]: {"P": item.position, "I": item.id}
+	"""
 	if item_dict['I'] == "100000":
 		var item = GameData.item_preload["100000"].instance()
 		item.position = item_dict["P"]
 		item.name = name
+		get_node("/root/currentScene/Items").add_child(item, true)
+	else:
+		var item = GameData.item_preload["item"].instance()
+		item.position = item_dict["P"]
+		item.name = name
+		item.id = item_dict["I"]
+		item.item_type = GameData.ItemTable[str(item.id)].itemType
 		get_node("/root/currentScene/Items").add_child(item, true)
 
 func server_reconciliation(server_input_data):
