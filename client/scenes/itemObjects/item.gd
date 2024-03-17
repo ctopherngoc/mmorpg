@@ -1,7 +1,7 @@
 extends Node2D
 onready var id
 onready var item_type
-onready var sprite_node = $Srite
+onready var sprite_node = $Sprite
 onready var spite_path = {
 	"etc": "res://assets/itemSprites/etcItems/",
 	"equipment": "res://assets/itemSprites/equipItems/",
