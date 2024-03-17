@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://scenes/userInerface/Inventory.gd" type="Script" id=1]
+[ext_resource path="res://scenes/userInerface/InventorySlot.tscn" type="PackedScene" id=2]
 
 [node name="Inventory" type="Control"]
 anchor_right = 1.0
@@ -42,6 +43,7 @@ size_flags_horizontal = 3
 alignment = 1
 
 [node name="Control" type="Control" parent="Background/M/V/Header"]
+margin_right = 25.0
 margin_bottom = 25.0
 size_flags_horizontal = 3
 
@@ -62,16 +64,14 @@ align = 1
 valign = 1
 
 [node name="Exit" type="Control" parent="Background/M/V/Header"]
-margin_left = 258.0
-margin_right = 258.0
+margin_left = 225.0
+margin_right = 250.0
 margin_bottom = 25.0
 size_flags_horizontal = 3
 
 [node name="TextureButton" type="TextureButton" parent="Background/M/V/Header/Exit"]
-anchor_left = 1.0
 anchor_right = 1.0
-margin_left = -40.0
-margin_bottom = 40.0
+anchor_bottom = 1.0
 rect_min_size = Vector2( 25, 25 )
 expand = true
 
@@ -97,15 +97,30 @@ scrolling_enabled = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 size_flags_vertical = 3
+scroll_horizontal_enabled = false
 
 [node name="GridContainer" type="GridContainer" parent="Background/M/V/TabContainer/Equip/ScrollContainer"]
-margin_right = 250.0
+margin_right = 252.0
 margin_bottom = 422.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_constants/vseparation = 3
-custom_constants/hseparation = 3
-columns = 5
+custom_constants/vseparation = 4
+custom_constants/hseparation = 4
+columns = 4
+
+[node name="0" parent="Background/M/V/TabContainer/Equip/ScrollContainer/GridContainer" instance=ExtResource( 2 )]
+
+[node name="1" parent="Background/M/V/TabContainer/Equip/ScrollContainer/GridContainer" instance=ExtResource( 2 )]
+margin_left = 64.0
+margin_right = 124.0
+
+[node name="2" parent="Background/M/V/TabContainer/Equip/ScrollContainer/GridContainer" instance=ExtResource( 2 )]
+margin_left = 128.0
+margin_right = 188.0
+
+[node name="3" parent="Background/M/V/TabContainer/Equip/ScrollContainer/GridContainer" instance=ExtResource( 2 )]
+margin_left = 192.0
+margin_right = 252.0
 
 [node name="Use" type="Tabs" parent="Background/M/V/TabContainer"]
 visible = false
@@ -120,18 +135,35 @@ size_flags_vertical = 3
 scrolling_enabled = false
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Background/M/V/TabContainer/Use"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_right = 2.0
 size_flags_vertical = 3
+scroll_horizontal_enabled = false
 
 [node name="GridContainer" type="GridContainer" parent="Background/M/V/TabContainer/Use/ScrollContainer"]
-margin_right = 250.0
+margin_right = 252.0
 margin_bottom = 422.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_constants/vseparation = 3
-custom_constants/hseparation = 3
-columns = 5
+custom_constants/vseparation = 4
+custom_constants/hseparation = 4
+columns = 4
+
+[node name="0" parent="Background/M/V/TabContainer/Use/ScrollContainer/GridContainer" instance=ExtResource( 2 )]
+
+[node name="1" parent="Background/M/V/TabContainer/Use/ScrollContainer/GridContainer" instance=ExtResource( 2 )]
+margin_left = 64.0
+margin_right = 124.0
+
+[node name="2" parent="Background/M/V/TabContainer/Use/ScrollContainer/GridContainer" instance=ExtResource( 2 )]
+margin_left = 128.0
+margin_right = 188.0
+
+[node name="3" parent="Background/M/V/TabContainer/Use/ScrollContainer/GridContainer" instance=ExtResource( 2 )]
+margin_left = 192.0
+margin_right = 252.0
 
 [node name="ETC" type="Tabs" parent="Background/M/V/TabContainer"]
 visible = false
@@ -146,18 +178,35 @@ size_flags_vertical = 3
 scrolling_enabled = false
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Background/M/V/TabContainer/ETC"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_right = 2.0
 size_flags_vertical = 3
+scroll_horizontal_enabled = false
 
 [node name="GridContainer" type="GridContainer" parent="Background/M/V/TabContainer/ETC/ScrollContainer"]
-margin_right = 250.0
+margin_right = 252.0
 margin_bottom = 422.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_constants/vseparation = 3
-custom_constants/hseparation = 3
-columns = 5
+custom_constants/vseparation = 4
+custom_constants/hseparation = 4
+columns = 4
+
+[node name="0" parent="Background/M/V/TabContainer/ETC/ScrollContainer/GridContainer" instance=ExtResource( 2 )]
+
+[node name="1" parent="Background/M/V/TabContainer/ETC/ScrollContainer/GridContainer" instance=ExtResource( 2 )]
+margin_left = 64.0
+margin_right = 124.0
+
+[node name="2" parent="Background/M/V/TabContainer/ETC/ScrollContainer/GridContainer" instance=ExtResource( 2 )]
+margin_left = 128.0
+margin_right = 188.0
+
+[node name="3" parent="Background/M/V/TabContainer/ETC/ScrollContainer/GridContainer" instance=ExtResource( 2 )]
+margin_left = 192.0
+margin_right = 252.0
 
 [node name="Foreground" type="NinePatchRect" parent="."]
 margin_right = 40.0
