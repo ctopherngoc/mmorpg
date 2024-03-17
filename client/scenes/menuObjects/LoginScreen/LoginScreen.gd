@@ -27,6 +27,7 @@ func _fail_login() -> void:
 func _on_Button1_pressed():
 	Global.player = GameData.test_player
 	Server.testing = true
+	Global.player = GameData.test_player
 	# warning-ignore:return_value_discarded
 	SceneHandler.change_scene("100000")
 

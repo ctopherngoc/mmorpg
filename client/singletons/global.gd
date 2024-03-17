@@ -45,7 +45,7 @@ func update_world_state(world_state):
 func _physics_process(_delta):
 	# Current turn off client process of other characters and enemy because
 	# working on item drop, data load from json/spreadsheet etc
-	if in_game:
+	if in_game and !Server.testing:
 		var render_time = OS.get_system_time_msecs() - interpolation_offset
 		if world_state_buffer.size() > 1 && Server.server_status:
 			while world_state_buffer.size() > 2 and render_time > world_state_buffer[2].T:
