@@ -85,14 +85,14 @@ func attack(move_id):
 	if move_id == 0:
 		var equipment = current_character.equipment
 		if equipment.rweapon.type == "1h_sword":
-			animation.play("1h_sword",-1, ServerData.static_data.weapon_speed[str(equipment.rweapon.speed)])
+			animation.play("1h_sword",-1, ServerData.static_data.weapon_speed[equipment.rweapon.speed])
 			yield(animation, "animation_finished")
 		elif equipment.rweapon.type == "2h_sword":
 			pass
 		elif equipment.weapon.type == "bow":
 		# else ranged weapon:
 			if equipment.ammo.amount > 0:
-				animation.play("bow",-1, ServerData.static_data.weapon_speed[str(equipment.rweapon.speed)])
+				animation.play("bow",-1, ServerData.static_data.weapon_speed[equipment.rweapon.speed])
 			else:
 				return "not enough ammo"
 		# no mobs overlap
