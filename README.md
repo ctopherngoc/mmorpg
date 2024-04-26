@@ -10,17 +10,23 @@ the monsters.
 Install Godot 3.5 on the running machine
 
 ### Installing/Executing
-Current release is client authoritative. Server authoritative model with server reconciliation and client prediction has been implemented but not released.<br />
+Current release (v2.0.0) is server authoritative model with server reconciliation and client prediction has been implemented. Although it is implemented, it is not true server authorative because Godot kinematics are not fully determinalistic.<br />
 <br />
-For client-authoritvative Install: <br />
-Download the current release (v1.1.0) .zip from the release section.<br />
+Local Install: <br />
+Download the current release (v2.0.0) .zip from the release section.<br />
 Unzip the executable.<br />
 <br />
-Run the client executable.<br />
+Run the Server executable.<br />
 <br />
-When running the client, test login credentials will be automatically populated<br />
+Run the Authentication executable.<br />
+<br />
+Run the Gateway executable.<br />
+<br />
+Run the Client executable.<br />
+<br />
+The client, test login credentials will be automatically populated<br />
 Click on log-in<br />
-Once server authenticates user info and client is connected to server, select a character and click on select character<br />
+Once server authenticates user info and client is connected to server, select the test character and click on select character<br />
 Character will spawn in last map and populated into the server<br />
 
 ## Controls
