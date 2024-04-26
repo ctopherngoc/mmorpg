@@ -27,8 +27,8 @@ Character will spawn in last map and populated into the server<br />
 
 CRTL: Attack<br />
 ALT:     Jump<br />
-Up       Climb up/ Use Portal<br />
-Down     Climb Down<br />
+Up:      Climb up/ Use Portal<br />
+Down:    Climb Down<br />
 Left:    Move Left<br />
 Right    Move Right<br />
 
