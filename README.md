@@ -13,8 +13,7 @@ Install Godot 3.5 on the running machine
 Current release (v2.0.0) is server authoritative model with server reconciliation and client prediction has been implemented. Although it is implemented, it is not true server authorative because Godot kinematics are not fully determinalistic.<br />
 <br />
 Local Install: <br />
-Download the current release (v2.0.0) .zip from the release section.<br />
-Unzip the executable.<br />
+Download the current release (v2.0.0) .zip from the release section. Unzip the executable.<br />
 <br />
 Run the Server executable.<br />
 <br />
@@ -24,8 +23,7 @@ Run the Gateway executable.<br />
 <br />
 Run the Client executable.<br />
 <br />
-The client, test login credentials will be automatically populated<br />
-Click on log-in<br />
+The client, test login credentials will be automatically populated. Click on the login button. <br />
 Once server authenticates user info and client is connected to server, select the test character and click on select character<br />
 Character will spawn in last map and populated into the server<br />
 
