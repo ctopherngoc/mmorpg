@@ -123,3 +123,4 @@ margin_bottom = 14.0
 
 [connection signal="pressed" from="VBoxContainer/registerButton/Button" to="." method="_on_Button_pressed"]
 [connection signal="pressed" from="VBoxContainer/registerButton/backButton" to="." method="_on_backButton_pressed"]
+[connection signal="request_completed" from="HTTPRequest" to="." method="_on_HTTPRequest_request_completed"]
