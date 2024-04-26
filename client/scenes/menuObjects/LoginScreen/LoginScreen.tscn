@@ -84,6 +84,12 @@ margin_right = 46.0
 margin_bottom = 20.0
 text = "Login"
 
+[node name="RegisterButton" type="Button" parent="VBoxContainer/loginButton"]
+margin_left = 50.0
+margin_right = 114.0
+margin_bottom = 20.0
+text = "Register"
+
 [node name="notification" type="HBoxContainer" parent="VBoxContainer"]
 margin_top = 98.0
 margin_right = 222.0
@@ -102,13 +108,13 @@ margin_right = 56.0
 margin_bottom = 20.0
 text = "Option"
 
-[node name="create" type="HBoxContainer" parent="VBoxContainer"]
+[node name="Testing" type="HBoxContainer" parent="VBoxContainer"]
+visible = false
 margin_top = 140.0
 margin_right = 222.0
-margin_bottom = 140.0
+margin_bottom = 160.0
 
-[node name="Button1" type="Button" parent="VBoxContainer/create"]
-visible = false
+[node name="Button1" type="Button" parent="VBoxContainer/Testing"]
 margin_right = 58.0
 margin_bottom = 20.0
 text = "Testing"
@@ -117,8 +123,9 @@ text = "Testing"
 visible = false
 
 [connection signal="pressed" from="VBoxContainer/loginButton/Button" to="." method="_on_Button_pressed"]
+[connection signal="pressed" from="VBoxContainer/loginButton/RegisterButton" to="." method="_on_RegisterButton_pressed"]
 [connection signal="pressed" from="VBoxContainer/options/Button2" to="." method="_on_Button2_pressed"]
-[connection signal="pressed" from="VBoxContainer/create/Button1" to="." method="_on_Button1_pressed"]
+[connection signal="pressed" from="VBoxContainer/Testing/Button1" to="." method="_on_Button1_pressed"]
 [connection signal="pressed" from="Options/PanelContainer/back" to="." method="_on_back_pressed"]
 
 [editable path="Options"]

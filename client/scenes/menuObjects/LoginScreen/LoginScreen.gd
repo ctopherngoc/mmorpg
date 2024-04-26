@@ -5,6 +5,7 @@ onready var username : LineEdit = $VBoxContainer/username/LineEdit
 onready var password : LineEdit = $VBoxContainer/password/LineEdit
 onready var notification : Label = $VBoxContainer/notification/Label
 onready var login_button : Button = $VBoxContainer/loginButton/Button
+onready var register_button: Button = $VBoxContainer/loginButton/RegisterButton
 onready var MainMenu = $VBoxContainer
 onready var OptionMenu = $Options
 
@@ -40,3 +41,7 @@ func _on_back_pressed():
 	MainMenu.show()
 	#Title.show()
 	OptionMenu.hide()
+
+
+func _on_RegisterButton_pressed():
+	SceneHandler.change_scene("register")
