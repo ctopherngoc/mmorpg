@@ -6,7 +6,7 @@ onready var current_bgm = "menu"
 # menu hash map
 onready var menu_scenes = {
 	"mainMenu" : "res://scenes/menuObjects/mainMenu.tscn",
-	"register" : "res://scenes/menuObjects/RegisterScreen.tscn",
+	"register" : "res://scenes/menuObjects/LoginScreen/Register.tscn",
 	"login" : "res://scenes/menuObjects/LoginScreen/LoginScreen.tscn",
 	"characterSelect" : "res://scenes/menuObjects/CharacterSelect/UserProfile.tscn",
 	"create": "res://scenes/menuObjects/CharacterCreate/Create.tscn",

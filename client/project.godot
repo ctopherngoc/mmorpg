@@ -22,6 +22,7 @@ Gateway="*res://singletons/Gateway.gd"
 Signals="*res://singletons/Signals.gd"
 GameData="*res://singletons/gamedata.gd"
 SceneHandler="*res://singletons/SceneHandler.tscn"
+Firebase="*res://singletons/Firebase.gd"
 
 [display]
 

@@ -1,0 +1,126 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://resources/background/login_screen/login_screen.jpg" type="Texture" id=1]
+[ext_resource path="res://scenes/menuObjects/LoginScreen/Register.gd" type="Script" id=2]
+
+[node name="Register" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 2 )
+
+[node name="Background" type="Sprite" parent="."]
+position = Vector2( 639.778, 361 )
+scale = Vector2( 0.664815, 0.664815 )
+texture = ExtResource( 1 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+margin_left = 550.0
+margin_top = 300.0
+margin_right = 772.0
+margin_bottom = 497.0
+
+[node name="register" type="HBoxContainer" parent="VBoxContainer"]
+margin_right = 222.0
+margin_bottom = 14.0
+
+[node name="registerLabel" type="Label" parent="VBoxContainer/register"]
+margin_right = 97.0
+margin_bottom = 14.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Create Account"
+align = 1
+
+[node name="username" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 18.0
+margin_right = 222.0
+margin_bottom = 42.0
+
+[node name="usernameLabel" type="Label" parent="VBoxContainer/username"]
+margin_top = 5.0
+margin_right = 40.0
+margin_bottom = 19.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "email:"
+
+[node name="LineEdit" type="LineEdit" parent="VBoxContainer/username"]
+margin_left = 44.0
+margin_right = 194.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 150, 0 )
+placeholder_text = "enter email"
+caret_blink = true
+caret_blink_speed = 0.5
+
+[node name="password" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 46.0
+margin_right = 222.0
+margin_bottom = 70.0
+
+[node name="passwordLabel" type="Label" parent="VBoxContainer/password"]
+margin_top = 5.0
+margin_right = 64.0
+margin_bottom = 19.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "password:"
+
+[node name="LineEdit" type="LineEdit" parent="VBoxContainer/password"]
+margin_left = 68.0
+margin_right = 218.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 150, 0 )
+secret = true
+placeholder_text = "enter password"
+caret_blink = true
+caret_blink_speed = 0.5
+
+[node name="password2" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 74.0
+margin_right = 222.0
+margin_bottom = 98.0
+
+[node name="passwordLabel" type="Label" parent="VBoxContainer/password2"]
+margin_top = 5.0
+margin_right = 64.0
+margin_bottom = 19.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "password:"
+
+[node name="LineEdit" type="LineEdit" parent="VBoxContainer/password2"]
+margin_left = 68.0
+margin_right = 218.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 150, 0 )
+secret = true
+placeholder_text = "confirm password"
+caret_blink = true
+caret_blink_speed = 0.5
+
+[node name="registerButton" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 102.0
+margin_right = 222.0
+margin_bottom = 122.0
+
+[node name="Button" type="Button" parent="VBoxContainer/registerButton"]
+margin_right = 53.0
+margin_bottom = 20.0
+text = "Create"
+
+[node name="backButton" type="Button" parent="VBoxContainer/registerButton"]
+margin_left = 57.0
+margin_right = 111.0
+margin_bottom = 20.0
+text = "Return"
+
+[node name="notification" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 126.0
+margin_right = 222.0
+margin_bottom = 140.0
+
+[node name="Label" type="Label" parent="VBoxContainer/notification"]
+margin_bottom = 14.0
+
+[node name="HTTPRequest" type="HTTPRequest" parent="."]
+
+[connection signal="pressed" from="VBoxContainer/registerButton/Button" to="." method="_on_Button_pressed"]
+[connection signal="pressed" from="VBoxContainer/registerButton/backButton" to="." method="_on_backButton_pressed"]
+[connection signal="request_completed" from="HTTPRequest" to="." method="_on_HTTPRequest_request_completed"]
