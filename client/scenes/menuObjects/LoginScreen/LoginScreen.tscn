@@ -105,9 +105,10 @@ text = "Option"
 [node name="create" type="HBoxContainer" parent="VBoxContainer"]
 margin_top = 140.0
 margin_right = 222.0
-margin_bottom = 160.0
+margin_bottom = 140.0
 
 [node name="Button1" type="Button" parent="VBoxContainer/create"]
+visible = false
 margin_right = 58.0
 margin_bottom = 20.0
 text = "Testing"
