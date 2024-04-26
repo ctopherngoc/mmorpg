@@ -24,8 +24,7 @@ Run the Gateway executable.<br />
 Run the Client executable.<br />
 <br />
 The client, test login credentials will be automatically populated. Click on the login button. <br />
-Once server authenticates user info and client is connected to server, select the test character and click on select character<br />
-Character will spawn in last map and populated into the server<br />
+Once server authenticates user info and client is connected to server, select the test character and click on select character. Character will spawn in and populated into the server<br />
 
 ## Controls
 
