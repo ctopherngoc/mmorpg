@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://scenes/playerObjects/NewPlayer.tscn" type="PackedScene" id=1]
 [ext_resource path="res://resources/background/maps/BaseLevel.jpg" type="Texture" id=2]
@@ -8,6 +8,7 @@
 [ext_resource path="res://scenes/npcObjects/000001/000001.tscn" type="PackedScene" id=6]
 [ext_resource path="res://assets/tiles/0001/platform.tscn" type="PackedScene" id=7]
 [ext_resource path="res://scenes/mapObjects/Portal.tscn" type="PackedScene" id=8]
+[ext_resource path="res://scenes/userInerface/Inventory.tscn" type="PackedScene" id=9]
 [ext_resource path="res://scenes/mapObjects/Ladder.tscn" type="PackedScene" id=10]
 
 [node name="Map" type="Node"]
@@ -53,3 +54,9 @@ position = Vector2( 113, -314 )
 
 [node name="UI" parent="." instance=ExtResource( 4 )]
 layer = 2
+
+[node name="Inventory" parent="." instance=ExtResource( 9 )]
+margin_left = 363.0
+margin_top = -560.0
+margin_right = -621.0
+margin_bottom = -771.0
