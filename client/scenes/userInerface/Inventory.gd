@@ -38,7 +38,12 @@ func _ready():
 	inv_ref["100000"] = 123456789
 	
 	
-	
+	"""
+	update to own function instead of _Ready so it can be called by
+	_ready and also when update inventory
+	Drag and Drop Inventory System | Godot Tutorial
+	https://www.youtube.com/watch?v=dZYlwmBCziM
+	"""
 	# scroll through tabs (equip, use, etc) notmade yet
 	for tab in inventory_tabs:
 		if tab == "100000":
@@ -52,9 +57,12 @@ func _ready():
 				if inv_ref[tab][count] != null:
 					var item = inv_ref[tab][count]
 					var item_name = GameData.itemTable[str(item['i'])]["itemName"]
+					inv_slot_new.item_data["id"] = str(item['i'])
+					inv_slot_new.item_data["item"] = GameData.itemTable[str(item['i'])]["itemName"]
 					# if stackable exit number on iventory slot
 					if tab in stackable_tabs:
 						inv_slot_new.get_node("VBoxContainer/Label").text = str(item["q"])
+						inv_slot_new.item_data["q"]= item["q"]
 					if tab == "equipment":
 						var temp_item_path = item_path + "equipItems/" + inv_ref[tab][count]["i"] + ".png"
 						inv_slot_new.get_node("Icon").texture = load(temp_item_path)
@@ -94,3 +102,12 @@ func _on_Header_gui_input(event):
 	if event is InputEventMouseMotion and drag_position:
 		rect_global_position = get_global_mouse_position() - drag_position
 			
+
+"""
+func update inventory
+
+Required to add rpc calls to server to swap inventory data.
+Server remove func to validate item move request -> 
+update server char inventory data -> client remote func to update character data ->
+ update inventory window icons (similar to health hud)
+"""

@@ -269,3 +269,23 @@ func logout():
 	Global.in_game = false
 	network.close_connection()
 	SceneHandler.change_scene("login")
+	
+"""
+
+Required to add rpc calls to server to swap inventory data.
+Server remove func to validate item move request -> 
+update server char inventory data -> client remote func to update character data ->
+ update inventory window icons (similar to health hud)
+
+func send_inventory_movement(item):
+	rpc_id(1, "move_item", item)
+	
+remote func update_player_inventory(player_id):
+	for character in Global.character_list:
+		if character["displayname"] == player_stats["displayname"]:
+			character = player_stats
+		
+		# find payer node/inventory node
+		create an update inventory function
+	
+"""
