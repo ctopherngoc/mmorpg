@@ -1,6 +1,5 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=7 format=2]
 
-[ext_resource path="res://scenes/userInerface/PlayerStats.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/userInerface/PlayerInfo.gd" type="Script" id=2]
 [ext_resource path="res://assets/UI/Bar Progression/bg.png" type="Texture" id=3]
 [ext_resource path="res://assets/UI/Bar Progression/green.png" type="Texture" id=4]
@@ -147,11 +146,3 @@ margin_bottom = 34.0
 value = 50.0
 texture_under = ExtResource( 3 )
 texture_progress = ExtResource( 6 )
-
-[node name="PlayerStats" parent="." instance=ExtResource( 1 )]
-visible = false
-margin_left = 368.0
-margin_top = 225.0
-margin_right = 823.0
-margin_bottom = 504.0
-mouse_filter = 2

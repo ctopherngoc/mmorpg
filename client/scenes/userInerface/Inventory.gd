@@ -1,6 +1,7 @@
 extends Control
 
 var inventory_slot = preload("res://scenes/userInerface/InventorySlot.tscn")
+signal move_to_top
 
 onready var use_grid = $Background/M/V/TabContainer/Use/ScrollContainer/GridContainer
 onready var equip_grid = $Background/M/V/TabContainer/Equip/ScrollContainer/GridContainer
@@ -16,6 +17,8 @@ onready var stackable_tabs = ["etc", "use"]
 onready var item_path= "res://assets/itemSprites/"
 onready var max_slots = 32
 onready var inventory_tabs
+var drag_position = null
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	inventory_tabs = inv_ref.keys()
@@ -77,3 +80,17 @@ func _input(event):
 	if event.is_action_pressed("inventory"):
 		self.visible = not self.visible
 		print("toggle inventory")
+
+
+func _on_Header_gui_input(event):
+	if event is InputEventMouseButton:
+		# left mouse button
+		if event.pressed && event.get_button_index() == 1:
+			print("left mouse button")
+			drag_position = get_global_mouse_position() - rect_global_position
+			emit_signal('move_to_top', self)
+		else:
+			drag_position = null
+	if event is InputEventMouseMotion and drag_position:
+		rect_global_position = get_global_mouse_position() - drag_position
+			

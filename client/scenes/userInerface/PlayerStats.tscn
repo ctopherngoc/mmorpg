@@ -111,3 +111,5 @@ margin_bottom = 14.0
 size_flags_horizontal = 3
 text = "5"
 align = 2
+
+[connection signal="gui_input" from="." to="." method="_on_PlayerStats_gui_input"]

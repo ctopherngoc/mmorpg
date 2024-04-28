@@ -1,9 +1,9 @@
 extends CanvasLayer
 
-onready var QuitConfirm = $InGameMenu/QuitConfirm
-onready var AnimPlayer = $InGameMenu/AnimationPlayer
-onready var OptionMenu = $InGameMenu/Options
-onready var MenuMenu = $InGameMenu
+onready var QuitConfirm = $Control/InGameMenu/QuitConfirm
+onready var AnimPlayer = $Control/InGameMenu/AnimationPlayer
+onready var OptionMenu = $Control/InGameMenu/Options
+onready var MenuMenu = $Control/InGameMenu
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -11,16 +11,8 @@ func _ready():
 
 func _input(_event):
 	if Input.is_action_just_pressed("ui_cancel"):
-		if !MenuMenu.visible:
-			#get_tree().set_pause(true)
-			MenuMenu.set_visible(true)
-			#Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-		else:
-			#get_tree().set_pause(false)
-			MenuMenu.set_visible(false)
-			#Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-		
-	
+		MenuMenu.visible = not MenuMenu.visible
+
 func focus_entered():
 	pass
 	#SoundManager.PlayMouseEffect()
