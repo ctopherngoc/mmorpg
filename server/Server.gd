@@ -184,6 +184,16 @@ func _Server_New_Character(new_char: Dictionary):
 	else:
 		equips["top"] = ServerData.static_data.starter_equips[2][0]
 		equips["bottom"] = ServerData.static_data.starter_equips[2][1]
+	
+	var inventory = temp_player["inventory"]
+	var inventory_key = inventory.keys()
+	for tab in inventory_key:
+		if tab != "100000":
+			var count = 0
+			while count < 32:
+				inventory[tab].append(null)
+				count += 1
+	
 	return temp_player
 	
 remote func choose_character(requester, display_name: String):

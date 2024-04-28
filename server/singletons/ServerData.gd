@@ -158,6 +158,9 @@ var static_data = {
 		"inventory" : {"mapValue":
 			{"fields": 
 				{"100000": {'integerValue': null},
+				"equipment": [],
+				"use": [],
+				"etc": [],
 				}#fields
 			}#mapvalue
 		}, #inventory
