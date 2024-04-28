@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://scenes/userInerface/PlayerStats.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/userInerface/PlayerInfo.gd" type="Script" id=2]
@@ -7,7 +7,6 @@
 [ext_resource path="res://assets/UI/Bar Progression/blue.png" type="Texture" id=5]
 [ext_resource path="res://assets/UI/Bar Progression/red.png" type="Texture" id=6]
 [ext_resource path="res://scenes/menuObjects/Options/godot-simpleTheme-master/simpleTheme.tres" type="Theme" id=7]
-[ext_resource path="res://scenes/userInerface/Inventory.tscn" type="PackedScene" id=8]
 
 [node name="PlayerInfo" type="Control"]
 anchor_right = 1.0
@@ -156,10 +155,3 @@ margin_top = 225.0
 margin_right = 823.0
 margin_bottom = 504.0
 mouse_filter = 2
-
-[node name="Inventory" parent="." instance=ExtResource( 8 )]
-visible = false
-margin_left = 904.0
-margin_top = 48.0
-margin_right = -80.0
-margin_bottom = -163.0
