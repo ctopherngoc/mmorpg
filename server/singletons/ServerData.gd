@@ -21,7 +21,7 @@ func _ready():
 	itemTable = gamedata_json.result["ItemTable"]
 	equipmentTable = gamedata_json.result["EquipmentTable"]
 	
-	print(monsterTable)
+	#print(monsterTable)
 	#print(equipmentTable)
 	
 	
@@ -158,9 +158,9 @@ var static_data = {
 		"inventory" : {"mapValue":
 			{"fields": 
 				{"100000": {'integerValue': null},
-				"equipment": [],
-				"use": [],
-				"etc": [],
+				"equipment": {'arrayValue':{'values':[{"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}]}},
+				"use": {'arrayValue':{'values':[{"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null},]}},
+				"etc": {'arrayValue':{'values':[{"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null},]}},
 				}#fields
 			}#mapvalue
 		}, #inventory
@@ -243,9 +243,10 @@ var static_data = {
 				"pocket": -1,
 				"tattoo": -1,
 				}, #equipment
-		"inventory" : {
-					"100000": 0,
-				} #inventory
+		 "inventory":{"100000":0,
+		"equipment": [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+			"etc": [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+			"use": [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]} #inventory
 	},
 	"starter_equips" : 
 		[
