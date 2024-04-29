@@ -1,6 +1,6 @@
 extends Node
 
-const API_KEY := "AIzaSyC2PkBqVa6lm9zG7gfy7MLZvNpRytA8klU"
+const API_KEY := ""
 const PROJECT_ID := "godotproject-ef224"
 const DATABASE_URL := "https://firestore.googleapis.com/v1/projects/%s/databases/(default)/documents/" % PROJECT_ID 
 const LOGIN_URL := "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=%s" % API_KEY
@@ -36,29 +36,6 @@ func save_document(path: String, fields: Dictionary, http: HTTPRequest, token: S
 # warning-ignore:return_value_discarded
 		http.request(url, _get_request_headers(token),false, HTTPClient.METHOD_POST, body)
 		yield(http, "request_completed")
-"""
-# because server controls database, requires user token as argument for get_request_header function
-func get_document(path: String, http: HTTPRequest, token: String, player_container)-> void:
-	var url := DATABASE_URL + path
-# warning-ignore:return_value_discarded
-	http.request(url, _get_request_headers(token), false, HTTPClient.METHOD_GET)
-	var result := yield(http, "request_completed") as Array
-	var result_body := JSON.parse(result[3].get_string_from_ascii()).result as Dictionary
-	if result_body.has('fields'):
-		if "users/" in path:
-			if result_body["fields"]['characters']['arrayValue'].size() > 0:
-				for i in result_body["fields"]['characters']['arrayValue']['values']:
-					player_container.characters.append(i["stringValue"])
-		elif "characters/" in path:
-			# container = [player_id, char_dict, player_container, requester]
-			firebase_dictionary_converter(result_body['fields'], player_container.characters_info_list)
-	# documents search
-	elif result_body.has('documents'):
-		var document_list = result_body["documents"]
-		var character_list = []
-		for character in document_list:
-			character_list.append(character['fields']['displayname']['stringValue'])
-"""
 # saving characters/updating information
 # creating new characters in /users
 func update_document(path: String, http: HTTPRequest, token: String, player_container) -> void:
@@ -181,9 +158,6 @@ func firebase_dictionary_converter(database_data: Dictionary, client_data: Array
 							#temp_dict['equipment'][count].append({})
 							var inv_equip_keys = eqp_shortcut.keys()
 							for equip_key in inv_equip_keys:
-	#							if 'integerValue' in eqp_shortcut[equip_key].keys():
-	#								temp_dict['inventory']['equipment'][count] = eqp_shortcut[equip_key]['integerValue']
-	#							else:
 								temp_dict['inventory'][key][count] = {}
 								var shortcut2 = eqp_shortcut[equip_key]["mapValue"]["fields"]
 								var keys2 = shortcut2.keys()
@@ -371,15 +345,6 @@ func server_firebase_dictionary_converter(database_data: Dictionary):
 					temp_dict['equipment'][key][key2] = int(shortcut2[key2]['integerValue'])
 				else:
 					temp_dict['equipment'][key][key2] = str(shortcut2[key2]['stringValue'])
-	"""
-	inventory {
-		equipment : [],
-		use : [],
-		etc: [],
-	}
-	
-	]
-	"""
 	#inventory
 	shortcut = database_data["inventory"]["mapValue"]["fields"]
 	keys = shortcut.keys()
@@ -392,46 +357,42 @@ func server_firebase_dictionary_converter(database_data: Dictionary):
 			# tab keys [equips, use, etc]
 			else:
 				temp_dict['inventory'][key] = []
-				print("inventory key: ", key)
-				print(shortcut[key])
+#				print("inventory key: ", key)
+#				print(shortcut[key])
 				var inventory_shortcut = shortcut[key]['arrayValue']['values'] # [item_dict, item_dict2, item_dict3]
 				# in equips
-				# inv['equipment'] = [equip_dict1, equip_dict2...]
 				if key == "equipment":
 					#currently have [equip_dict1, equip_dict2...]
 					var count = 0
 					for equip_dict in inventory_shortcut:
 						#for each equip dict if null
-						if 'nullValue' in equip_dict:
+						if 'nullValue' in equip_dict.keys():
 							temp_dict['inventory'][key].append(null)
 						# equip_dict not null
 						else:
 							# now in equip{}
-							var eqp_shortcut = equip_dict["mapValue"]["fields"]
+							var equip_shortcut = equip_dict["mapValue"]["fields"]
 							#temp_dict['equipment'][count].append({})
-							var inv_equip_keys = eqp_shortcut.keys()
+							var inv_equip_keys = equip_shortcut.keys()
+							temp_dict['inventory'][key].append({})
 							for equip_key in inv_equip_keys:
-	#							if 'integerValue' in eqp_shortcut[equip_key].keys():
-	#								temp_dict['inventory']['equipment'][count] = eqp_shortcut[equip_key]['integerValue']
-	#							else:
-								temp_dict['inventory'][key][count] = {}
-								var shortcut2 = eqp_shortcut[equip_key]["mapValue"]["fields"]
-								var keys2 = shortcut2.keys()
+								# append inventory equipment
+								var keys2 = equip_shortcut.keys()
 								for key2 in keys2:
-									if 'integerValue' in shortcut2[key2]:
-										temp_dict['inventory'][key][count][key2] = shortcut2[key2]['integerValue']
+									if 'integerValue' in equip_shortcut[key2]:
+										temp_dict['inventory'][key][count][key2] = equip_shortcut[key2]['integerValue']
 									else:
-										temp_dict['inventory'][key][count][key2] = shortcut2[key2]['stringValue']
+										temp_dict['inventory'][key][count][key2] = equip_shortcut[key2]['stringValue']
 							count += 1
 				# for use, etc tab
 				else:
-					print(inventory_shortcut)
+#					print(inventory_shortcut)
 					for item_dict in inventory_shortcut:
 						if 'nullValue' in item_dict:
-							print("null")
+#							print("null")
 							temp_dict['inventory'][key].append(null)
 						else:
-							print("not null: ", item_dict)
+#							print("not null: ", item_dict)
 							var item_slot = item_dict['mapValue']['fields']
 							var item_slot_keys = item_slot.keys()
 							var temp_item_dict = {}
@@ -499,32 +460,53 @@ func server_dictionary_converter(server_data: Dictionary, firebase_data: Diction
 					temp_dict[key2] = {'integerValue': shortcut2[key2]}
 			fb_shortcut[key] = {'mapValue':{'fields': temp_dict}}
 			
-#issue
-#############################################################################
 	#inventory
 	shortcut = server_data["inventory"]
 	keys = shortcut.keys()
 	fb_shortcut = firebase_data['inventory']['mapValue']['fields']
 	for key in keys:
+		# inventory gold
 		if key == "100000":
 			print("gold")
 			fb_shortcut[key] = {'integerValue': int(shortcut[key])}
-			print(int(shortcut[key]))
-		elif key == "equipment":
-			fb_shortcut[key] = {'arrayValue':{'values':[]}}
-			for equip in shortcut['equipment']:
-				var temp_dict = ServerData.static_data.equipment_data_template.duplicate(true)
-				# [inventory][equipment][equip] = {keys: values}
-				var equip_keys = equip.keys()
-				
-				# equip dict
-				for stat in equip_keys:
-					if stat in ["name", "type"]:
-						temp_dict[stat] = {'stringValue' : equip[stat]}
-					else:
-						temp_dict[stat] = {'integerValue': equip[stat]}
-				fb_shortcut[key]['arrayValue']['values'].append({'mapValue':{'fields': temp_dict}})
-			print("end")
-			print(fb_shortcut)
 		else:
-			pass
+			# inventory equipment
+			if key == "equipment":
+				fb_shortcut[key] = {'arrayValue':{'values':[]}}
+				var fb_equip_shortcut = fb_shortcut[key]["arrayValue"]["values"]
+				# for dict in dict_array
+				for equip in shortcut["equipment"]:
+					#print("equip: ", equip)
+					if equip == null:
+						fb_equip_shortcut.append({'nullValue': null})
+					else:
+						var temp_dict = ServerData.static_data.equipment_data_template.duplicate(true)
+						# [inventory][equipment][equip] = {keys: values}
+						var equip_keys = equip.keys()
+						# equip dict
+						for stat in equip_keys:
+							if stat in ["name", "type"]:
+								temp_dict[stat] = {'stringValue' : equip[stat]}
+							else:
+								temp_dict[stat] = {'integerValue': equip[stat]}
+						fb_equip_shortcut.append({'mapValue':{'fields': temp_dict}})
+			# etc, use
+			else:
+				fb_shortcut[key] = {'arrayValue':{'values':[]}}
+				var item_shortcut = fb_shortcut[key]['arrayValue']['values']
+				for item in shortcut[key]:
+					if item == null:
+						item_shortcut.append({'nullValue': null})
+					else:
+						var item_dict = {}
+						var item_data_keys = item.keys()
+						for item_data_key in item_data_keys:
+							if item[item_data_key] == null:
+								item_shortcut = {'nullValue': null}
+							elif item[item_data_key] is String:
+								item_dict[item_data_key] = {'stringValue': item[item_data_key]}
+								item_shortcut.append({'mapValue':{'fields': item_dict}})
+							#int
+							else:
+								item_dict[item_data_key] = {'integerValue': item[item_data_key]} 
+								item_shortcut.append({'mapValue':{'fields': item_dict}})

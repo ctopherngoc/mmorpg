@@ -440,3 +440,10 @@ func _on_Button4_pressed():
 	print("testing loot request")
 	var test_player = $Test/PlayerContainer
 	test_player.loot_request()
+
+
+func _on_Button5_pressed():
+	var server_dict = ServerData.characters_data["duma123"]
+	var fb_data = ServerData.static_data.player_info.duplicate(true)
+	Firebase.server_dictionary_converter(server_dict, fb_data)
+	print(fb_data.inventory.mapValue.fields.equipment.arrayValue.values)
