@@ -443,7 +443,39 @@ func _on_Button4_pressed():
 
 
 func _on_Button5_pressed():
-	var server_dict = ServerData.characters_data["duma123"]
+	var server_dict = ServerData.characters_data["duma123"].duplicate(true)
 	var fb_data = ServerData.static_data.player_info.duplicate(true)
+	
+	var inventory_shortcut = server_dict["inventory"]["equipment"]
+#	inventory_shortcut.clear()
+#	var count = 0
+#	while count <= 31:
+#		inventory_shortcut.append(null)
+#		count += 1
+#
+#	inventory_shortcut = server_dict.inventory.etc
+#	inventory_shortcut.clear()
+#	count = 0
+#	while count <= 31:
+#		inventory_shortcut.append(null)
+#		count += 1
+#
+#	inventory_shortcut = server_dict.inventory.use
+#	inventory_shortcut.clear()
+#	count = 0
+#	while count <= 31:
+#		inventory_shortcut.append(null)
+#		count += 1
+	#print(server_dict.inventory)
 	Firebase.server_dictionary_converter(server_dict, fb_data)
-	print(fb_data.inventory.mapValue.fields.equipment.arrayValue.values)
+	# print array
+	#print(fb_data.inventory.mapValue.fields.equipment.arrayValue.values)
+	#print size
+	#print(fb_data.inventory.mapValue.fields.equipment.arrayValue.values.size())
+	#save("res://save.json",fb_data)
+	
+func save(var path : String, var thing_to_save):
+	var file = File.new()
+	file.open(path, File.WRITE)
+	file.store_line(JSON.print(thing_to_save, "\t"))
+	file.close()
