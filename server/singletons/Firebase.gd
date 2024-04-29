@@ -139,8 +139,6 @@ func firebase_dictionary_converter(database_data: Dictionary, client_data: Array
 			# tab keys [equips, use, etc]
 			else:
 				temp_dict['inventory'][key] = []
-				print("inventory key: ", key)
-				print(shortcut[key])
 				var inventory_shortcut = shortcut[key]['arrayValue']['values'] # [item_dict, item_dict2, item_dict3]
 				# in equips
 				# inv['equipment'] = [equip_dict1, equip_dict2...]
@@ -155,7 +153,6 @@ func firebase_dictionary_converter(database_data: Dictionary, client_data: Array
 						else:
 							# now in equip{}
 							var eqp_shortcut = equip_dict["mapValue"]["fields"]
-							#temp_dict['equipment'][count].append({})
 							var inv_equip_keys = eqp_shortcut.keys()
 							for equip_key in inv_equip_keys:
 								temp_dict['inventory'][key][count] = {}
@@ -169,13 +166,10 @@ func firebase_dictionary_converter(database_data: Dictionary, client_data: Array
 							count += 1
 				# for use, etc tab
 				else:
-					print(inventory_shortcut)
 					for item_dict in inventory_shortcut:
 						if 'nullValue' in item_dict:
-							print("null")
 							temp_dict['inventory'][key].append(null)
 						else:
-							print("not null: ", item_dict)
 							var item_slot = item_dict['mapValue']['fields']
 							var item_slot_keys = item_slot.keys()
 							var temp_item_dict = {}
@@ -357,8 +351,6 @@ func server_firebase_dictionary_converter(database_data: Dictionary):
 			# tab keys [equips, use, etc]
 			else:
 				temp_dict['inventory'][key] = []
-#				print("inventory key: ", key)
-#				print(shortcut[key])
 				var inventory_shortcut = shortcut[key]['arrayValue']['values'] # [item_dict, item_dict2, item_dict3]
 				# in equips
 				if key == "equipment":
@@ -386,13 +378,10 @@ func server_firebase_dictionary_converter(database_data: Dictionary):
 							count += 1
 				# for use, etc tab
 				else:
-#					print(inventory_shortcut)
 					for item_dict in inventory_shortcut:
 						if 'nullValue' in item_dict:
-#							print("null")
 							temp_dict['inventory'][key].append(null)
 						else:
-#							print("not null: ", item_dict)
 							var item_slot = item_dict['mapValue']['fields']
 							var item_slot_keys = item_slot.keys()
 							var temp_item_dict = {}
@@ -467,19 +456,18 @@ func server_dictionary_converter(server_data: Dictionary, firebase_data: Diction
 	for key in keys:
 		# inventory gold
 		if key == "100000":
-			print("gold")
 			fb_shortcut[key] = {'integerValue': int(shortcut[key])}
 		else:
 			# inventory equipment
 			if key == "equipment":
-				fb_shortcut[key] = {'arrayValue':{'values':[]}}
+				#fb_shortcut[key] = {'arrayValue':{'values':[]}}
 				var fb_equip_shortcut = fb_shortcut[key]["arrayValue"]["values"]
 				# for dict in dict_array
+				var count = 0
 				for equip in shortcut["equipment"]:
-					#print("equip: ", equip)
-					if equip == null:
-						fb_equip_shortcut.append({'nullValue': null})
-					else:
+					if equip != null:
+						#fb_equip_shortcut.append({'nullValue': null})
+					#else:
 						var temp_dict = ServerData.static_data.equipment_data_template.duplicate(true)
 						# [inventory][equipment][equip] = {keys: values}
 						var equip_keys = equip.keys()
@@ -489,15 +477,15 @@ func server_dictionary_converter(server_data: Dictionary, firebase_data: Diction
 								temp_dict[stat] = {'stringValue' : equip[stat]}
 							else:
 								temp_dict[stat] = {'integerValue': equip[stat]}
-						fb_equip_shortcut.append({'mapValue':{'fields': temp_dict}})
+						fb_equip_shortcut[count] = {'mapValue':{'fields': temp_dict}}
+					count += 1
 			# etc, use
 			else:
-				fb_shortcut[key] = {'arrayValue':{'values':[]}}
+				#fb_shortcut[key] = {'arrayValue':{'values':[]}}
 				var item_shortcut = fb_shortcut[key]['arrayValue']['values']
 				for item in shortcut[key]:
-					if item == null:
-						item_shortcut.append({'nullValue': null})
-					else:
+					var count = 0
+					if item != null:
 						var item_dict = {}
 						var item_data_keys = item.keys()
 						for item_data_key in item_data_keys:
@@ -505,8 +493,9 @@ func server_dictionary_converter(server_data: Dictionary, firebase_data: Diction
 								item_shortcut = {'nullValue': null}
 							elif item[item_data_key] is String:
 								item_dict[item_data_key] = {'stringValue': item[item_data_key]}
-								item_shortcut.append({'mapValue':{'fields': item_dict}})
+								#item_shortcut[count] = {'mapValue':{'fields': item_dict}}
 							#int
 							else:
 								item_dict[item_data_key] = {'integerValue': item[item_data_key]} 
-								item_shortcut.append({'mapValue':{'fields': item_dict}})
+						item_shortcut[count] = {'mapValue':{'fields': item_dict}}
+					count += 1
