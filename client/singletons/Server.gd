@@ -276,9 +276,6 @@ Required to add rpc calls to server to swap inventory data.
 Server remove func to validate item move request -> 
 update server char inventory data -> client remote func to update character data ->
  update inventory window icons (similar to health hud)
-
-func send_inventory_movement(item):
-	rpc_id(1, "move_item", item)
 	
 remote func update_player_inventory(player_id):
 	for character in Global.character_list:
@@ -289,3 +286,10 @@ remote func update_player_inventory(player_id):
 		create an update inventory function
 	
 """
+func send_inventory_movement(tab: int, from: int, to: int):
+	"""
+	tab: 0 = equip, 1 = use, 3 = etc
+	from: 0-31 (slot)
+	to: 0-31(slot)
+	"""
+	rpc_id(1, "move_item", [tab, from, to])
