@@ -7,6 +7,8 @@ onready var use_grid = $Background/M/V/TabContainer/Use/ScrollContainer/GridCont
 onready var equip_grid = $Background/M/V/TabContainer/Equip/ScrollContainer/GridContainer
 onready var etc_grid = $Background/M/V/TabContainer/ETC/ScrollContainer/GridContainer
 onready var gold_label = $Background/M/V/ColorRect/HBoxContainer/goldLabel
+
+# global.player
 onready var inv_ref = {
 	"100000": 0,
 	"equipment": [],
@@ -21,6 +23,7 @@ var drag_position = null
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	Signals.connect("update_inventory", self, "poplulate_inventory")
 	inventory_tabs = inv_ref.keys()
 	for key in inventory_tabs:
 		if key != "100000":
@@ -37,7 +40,7 @@ func _ready():
 	inv_ref["equipment"][6] = {'i': "500005"}
 	inv_ref["100000"] = 123456789
 	
-	
+	poplulate_inventory()
 	"""
 	update to own function instead of _Ready so it can be called by
 	_ready and also when update inventory
@@ -45,6 +48,8 @@ func _ready():
 	https://www.youtube.com/watch?v=dZYlwmBCziM
 	"""
 	# scroll through tabs (equip, use, etc) notmade yet
+func poplulate_inventory():
+	# inventory_tabs can be changed to global.player.inventory
 	for tab in inventory_tabs:
 		if tab == "100000":
 			gold_label.text = str(inv_ref[tab])
