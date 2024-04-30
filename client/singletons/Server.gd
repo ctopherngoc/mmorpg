@@ -230,6 +230,10 @@ remote func update_player_stats(player_stats):
 					print("Player gained %s exp." % str(player_stats["stats"]["base"]["experience"] - Global.player["stats"]["base"]["experience"]))
 					Global.player["stats"]["base"]["experience"] = player_stats["stats"]["base"]["experience"]
 					Signals.emit_signal("update_exp")
+
+			if player_stats["inventory"] != Global.player["inventory"]:
+				Global.player["inventory"] = player_stats["inventory"]
+				Signals.emit_signal("update_inventory")
 			break
 
 func portal(portal):
