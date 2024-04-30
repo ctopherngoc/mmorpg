@@ -62,15 +62,15 @@ func can_drop_data(_pos, data):
 func drop_data(_pos,data):
 	
 	# temp vars to hold each slots info
-	var new_data = data.item_data
-	var old_data = item_data
+	var drag_icon = data.item_data
+	var drop_icon = item_data
 	
 	# update beginning slot with destination slot info
 	data.origin_node.icon.texture = icon.texture
-	data.origin_node.item_data = old_data
+	data.origin_node.item_data = drop_icon
 	# update distination slot with beginning slot info
 	icon.texture = data["origin_texture"]
-	item_data = new_data
+	item_data = drag_icon
 	
 	# if both are equips end function
 	if tab == "equipment" and data["tab"] == "equipment":
