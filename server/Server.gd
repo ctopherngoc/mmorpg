@@ -427,15 +427,11 @@ func _on_Button2_pressed():
 	Global.calculate_stats($Test/PlayerContainer.current_character)
 ######################################################################
 
-# remote func move_item(inv_data: Array):
-func move_item(inv_data: Array):
+func offline_move_item(inv_data: Array):
 	"""
 	inv_data=[tab:int, from:int, to:int]
-	
 	assuming from_item != null (you cant drag and drop empty slots)
 	"""
-#	var player_id = get_tree().get_rpc_sender_id()
-#	var player_container = _Server_Get_Player_Container(player_id)
 	var tab = {0: "equip", 1: "use", 2: "etc"}
 	
 	######################################################################
@@ -459,10 +455,30 @@ func move_item(inv_data: Array):
 	else:
 		player_container.current_character.inventory[tab[inv_data[0]]][inv_data[2]] = item1
 		player_container.current_character.inventory[tab[inv_data[0]]][inv_data[1]] = null
+
+remote func move_item(inv_data: Array):
+	"""
+	inv_data=[tab:int, from:int, to:int]
+	assuming from_item != null (you cant drag and drop empty slots)
+	"""
+	var player_id = get_tree().get_rpc_sender_id()
+	var player_container = _Server_Get_Player_Container(player_id)
+	var tab = {0: "equip", 1: "use", 2: "etc"}
+	
+	var item1 = player_container.current_character.inventory[tab[inv_data[0]]][inv_data[1]]
+	# if to_slot != null -> to_slot = from_slot, from_slot = to_slot
+	if player_container.current_character.inventory[tab[inv_data[0]]][inv_data[2]] != null:
+		var item2 = player_container.current_character.inventory[tab[inv_data[0]]][inv_data[2]]
+		player_container.current_character.inventory[tab[inv_data[0]]][inv_data[2]] = item1
+		player_container.current_character.inventory[tab[inv_data[0]]][inv_data[1]] = item2
+	# if to_slot = null -> to_slot = from_slot, from_slot = null
+	else:
+		player_container.current_character.inventory[tab[inv_data[0]]][inv_data[2]] = item1
+		player_container.current_character.inventory[tab[inv_data[0]]][inv_data[1]] = null
 	#print("after: ", player_container.current_character.inventory.use)
 	
 	# update client
-	#update_player_stats(player_container):
+	update_player_stats(player_container)
 
 func _unhandled_input(event):
 	if event is InputEventKey:if event.pressed and event.scancode == KEY_SPACE:
