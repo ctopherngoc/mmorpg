@@ -425,16 +425,55 @@ func _on_Button_pressed():
 # function takes current_character
 func _on_Button2_pressed():
 	Global.calculate_stats($Test/PlayerContainer.current_character)
-
-func _input(event):
-	if event.is_action_pressed("ui_accept"):
-		Global.dropSpawn("100001", Vector2(414, -69), {"100000": 5}, "PlayerContainer")
 ######################################################################
 
+# remote func move_item(inv_data: Array):
+func move_item(inv_data: Array):
+	"""
+	inv_data=[tab:int, from:int, to:int]
+	
+	assuming from_item != null (you cant drag and drop empty slots)
+	"""
+#	var player_id = get_tree().get_rpc_sender_id()
+#	var player_container = _Server_Get_Player_Container(player_id)
+	var tab = {0: "equip", 1: "use", 2: "etc"}
+	
+	######################################################################
+	# test data
+	var player_container = {
+		"current_character": {
+			"inventory": {
+				"equip": [null, null, null],
+				"etc": [null, null, null],
+				"use": [{"i": 300000, "q": 5}, null, {"i": 300002, "q": 100}],}}}
+
+	######################################################################
+	
+	var item1 = player_container.current_character.inventory[tab[inv_data[0]]][inv_data[1]]
+	# if to_slot != null -> to_slot = from_slot, from_slot = to_slot
+	if player_container.current_character.inventory[tab[inv_data[0]]][inv_data[2]] != null:
+		var item2 = player_container.current_character.inventory[tab[inv_data[0]]][inv_data[2]]
+		player_container.current_character.inventory[tab[inv_data[0]]][inv_data[2]] = item1
+		player_container.current_character.inventory[tab[inv_data[0]]][inv_data[1]] = item2
+	# if to_slot = null -> to_slot = from_slot, from_slot = null
+	else:
+		player_container.current_character.inventory[tab[inv_data[0]]][inv_data[2]] = item1
+		player_container.current_character.inventory[tab[inv_data[0]]][inv_data[1]] = null
+	#print("after: ", player_container.current_character.inventory.use)
+	
+	# update client
+	#update_player_stats(player_container):
+
+func _unhandled_input(event):
+	if event is InputEventKey:if event.pressed and event.scancode == KEY_SPACE:
+			move_item([1,0,1])
+			#Global.dropSpawn("100001", Vector2(414, -69), {"100000": 5}, "PlayerContainer")
+		
+######################################################################
 func _on_Button3_pressed():
 	print("dropping potion")
 	Global.dropSpawn("100001", Vector2(231, -405), {"300000": 1}, "PlayerContainer")
-
+	
 
 func _on_Button4_pressed():
 	print("testing loot request")
