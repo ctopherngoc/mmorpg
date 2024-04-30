@@ -53,6 +53,8 @@ func _ready():
 			# for item in each tab
 			while count < max_slots:
 				var inv_slot_new = inventory_slot.instance()
+				inv_slot_new.tab = tab
+				inv_slot_new.slot_index = count
 				# there is an item in data
 				if inv_ref[tab][count] != null:
 					var item = inv_ref[tab][count]
@@ -88,7 +90,6 @@ func _input(event):
 	if event.is_action_pressed("inventory"):
 		self.visible = not self.visible
 		print("toggle inventory")
-
 
 func _on_Header_gui_input(event):
 	if event is InputEventMouseButton:
