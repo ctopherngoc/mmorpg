@@ -184,15 +184,11 @@ func _Server_New_Character(new_char: Dictionary):
 	else:
 		equips["top"] = ServerData.static_data.starter_equips[2][0]
 		equips["bottom"] = ServerData.static_data.starter_equips[2][1]
-	
-	var inventory = temp_player["inventory"]
-	var inventory_key = inventory.keys()
-	for tab in inventory_key:
-		if tab != "100000":
-			var count = 0
-			while count < 32:
-				inventory[tab].append(null)
-				count += 1
+		
+	############################################################################
+	#temp add weapon
+	equips.rweapon = {"accuracy":0, "attack":15, "avoidability":0, "bossPercent":5, "critRate":0, "damagePercent":0, "defense":0, "dexterity":4, "id":"200001", "job":0, "jumpSpeed":0, "luck":5, "magic":0, "magicDefense":0, "maxHealth":0, "maxMana":0, "movementSpeed":0, "name":"Training Sword", "slot":7, "speed":5, "strength":5, "type":"1h_sword", "wisdom":5, "uniqueID": 100000000}
+	#############################################################################
 	
 	return temp_player
 	
@@ -202,7 +198,17 @@ remote func choose_character(requester, display_name: String):
 	for character_dict in player_container.characters_info_list:
 		if  display_name == character_dict['displayname']:
 			#player_container.current_character = character_dict
+			#player_container.current_character = ServerData.characters_data[display_name]
+			###################################################################
+#			var inventory_tabs = ServerData.characters_data[display_name].inventory.keys()
+#			for tab in inventory_tabs:
+#				if tab != "100000":
+#					while ServerData.characters_data[display_name].inventory[tab].size() < 32:
+#						ServerData.characters_data[display_name].inventory[tab].append(null)
+#					print(ServerData.characters_data[display_name].inventory[tab])
 			player_container.current_character = ServerData.characters_data[display_name]
+			##################################################################
+			#print(player_container.current_character.inventory)
 			ServerData.username_list[str(player_id)] = display_name
 			break
 	var map = player_container.current_character['map']
@@ -267,8 +273,8 @@ remote func delete_character(requester, display_name: String):
 	var firebase_call = Firebase.update_document("users/%s" % player_container.db_info["id"], player_container.http, player_container.db_info["token"], player_container)
 	yield(firebase_call, "completed")
 # warning-ignore:void_assignment
-	firebase_call = Firebase.delete_document("characters/%s" % display_name, player_container.http2, player_container.db_info["token"])
-	yield(firebase_call, "completed")
+	var firebase_call2 = Firebase.delete_document("characters/%s" % display_name, player_container.http2, player_container.db_info["token"])
+	yield(firebase_call2, "completed")
 	rpc_id(player_id, "return_delete_character", player_container.characters_info_list, requester)
 
 remote func logout():
@@ -464,6 +470,8 @@ remote func move_item(inv_data: Array):
 	var player_id = get_tree().get_rpc_sender_id()
 	var player_container = _Server_Get_Player_Container(player_id)
 	var tab = {0: "equip", 1: "use", 2: "etc"}
+	print("in move_item rpc")
+	print(player_container.current_character.inventory[tab[inv_data[0]]])
 	
 	var item1 = player_container.current_character.inventory[tab[inv_data[0]]][inv_data[1]]
 	# if to_slot != null -> to_slot = from_slot, from_slot = to_slot
@@ -476,7 +484,7 @@ remote func move_item(inv_data: Array):
 		player_container.current_character.inventory[tab[inv_data[0]]][inv_data[2]] = item1
 		player_container.current_character.inventory[tab[inv_data[0]]][inv_data[1]] = null
 	#print("after: ", player_container.current_character.inventory.use)
-	
+	print(player_container.current_character.inventory[tab[inv_data[0]]])
 	# update client
 	update_player_stats(player_container)
 
@@ -498,36 +506,16 @@ func _on_Button4_pressed():
 
 
 func _on_Button5_pressed():
-	var server_dict = ServerData.characters_data["duma123"].duplicate(true)
-	var fb_data = ServerData.static_data.player_info.duplicate(true)
-	
-	var inventory_shortcut = server_dict["inventory"]["equipment"]
-#	inventory_shortcut.clear()
-#	var count = 0
-#	while count <= 31:
-#		inventory_shortcut.append(null)
-#		count += 1
-#
-#	inventory_shortcut = server_dict.inventory.etc
-#	inventory_shortcut.clear()
-#	count = 0
-#	while count <= 31:
-#		inventory_shortcut.append(null)
-#		count += 1
-#
-#	inventory_shortcut = server_dict.inventory.use
-#	inventory_shortcut.clear()
-#	count = 0
-#	while count <= 31:
-#		inventory_shortcut.append(null)
-#		count += 1
-	#print(server_dict.inventory)
-	Firebase.server_dictionary_converter(server_dict, fb_data)
-	# print array
-	#print(fb_data.inventory.mapValue.fields.equipment.arrayValue.values)
-	#print size
-	#print(fb_data.inventory.mapValue.fields.equipment.arrayValue.values.size())
+	print("firebase button press")
+	var server_dict = ServerData.characters_data["testing222"].duplicate(true)
+	server_dict.inventory.use[3] = {"id": "300001", "q": 123}
+	#server_dict.inventory.use[3] = null
+	#server_dict.equipment.rweapon = {"accuracy":0, "type": "1h_sword", "id": 10000}
+	#server_dict.equipment.rweapon =  {"accuracy":0, "attack":15, "avoidability":0, "bossPercent":5, "critRate":0, "damagePercent":0, "defense":0, "dexterity":4, "id":"200001", "job":0, "jumpSpeed":0, "luck":5, "magic":0, "magicDefense":0, "maxHealth":0, "maxMana":0, "movementSpeed":0, "name":"Training Sword", "slot":7, "speed":5, "strength":5, "type":"1h_sword", "wisdom":5, "uniqueID": 100000000}
+	#server_dict.equipment.rweapon = ServerData.characters_data["duma123"].equipment.rweapon
+	#server_dict.equipment.top = {"id": 500000}
 	#save("res://save.json",fb_data)
+	Firebase.test_update_document("characters/testing222", server_dict)
 	
 func save(var path : String, var thing_to_save):
 	var file = File.new()
