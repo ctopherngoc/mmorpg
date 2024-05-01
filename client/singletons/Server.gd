@@ -57,7 +57,7 @@ func _on_server_disconnect():
 	server_status = false
 	Global.world_state_buffer.clear()
 	Global.input_queue.clear()
-	timer.stop()
+	Signals.emit_signal("log_out")
 	print("server disconnected")
 	
 	if login_status == 1:
@@ -215,18 +215,19 @@ remote func update_player_stats(player_stats):
 					print("Player took %s damage." % str(Global.player["stats"]["base"]["health"] - player_stats["stats"]["base"]["health"]))
 				# gained health
 				else:
-					print("Player healed %s health." % str(abs(character["stats"]["base"]["health"] - player_stats["stats"]["base"]["health"])))
+					print("Player healed %s health." % str(abs(Global.player["stats"]["base"]["health"] - player_stats["stats"]["base"]["health"])))
 				Global.player["stats"]["base"]["health"] = player_stats["stats"]["base"]["health"]
 				Signals.emit_signal("update_health")
 				
 			# level check -> exp check
-			if player_stats["stats"]["base"]["level"] > Global.player["stats"]["base"]["level"]:
+			if player_stats["stats"]["base"]["level"] != Global.player["stats"]["base"]["level"]:
 				print("Level up")
 				Global.player["stats"]["base"]["experience"] = player_stats["stats"]["base"]["experience"]
 				Global.player["stats"]["base"]["level"] = player_stats["stats"]["base"]["level"]
 				Signals.emit_signal("update_level")
+				Signals.emit_signal("update_exp")
 
-			if player_stats["stats"]["base"]["experience"] > Global.player["stats"]["base"]["experience"]:
+			if player_stats["stats"]["base"]["experience"] != Global.player["stats"]["base"]["experience"]:
 					print("Player gained %s exp." % str(player_stats["stats"]["base"]["experience"] - Global.player["stats"]["base"]["experience"]))
 					Global.player["stats"]["base"]["experience"] = player_stats["stats"]["base"]["experience"]
 					Signals.emit_signal("update_exp")
@@ -272,6 +273,7 @@ func logout():
 	rpc_id(1, "logout")
 	Global.in_game = false
 	network.close_connection()
+	Signals.emit_signal("log_out")
 	SceneHandler.change_scene("login")
 	
 """
@@ -292,7 +294,7 @@ remote func update_player_inventory(player_id):
 """
 func send_inventory_movement(tab: int, from: int, to: int):
 	"""
-	tab: 0 = equip, 1 = use, 3 = etc
+	tab: 0 = equip, 1 = use, 2 = etc
 	from: 0-31 (slot)
 	to: 0-31(slot)
 	"""
