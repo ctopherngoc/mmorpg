@@ -2,6 +2,8 @@ extends CenterContainer
 onready var tab
 onready var slot_index
 
+var tab_dict = {"equipment": 0, "use": 1, "etc": 2}
+
 var item_data = {
 	"id": null,
 	"item": null,
@@ -49,21 +51,18 @@ func can_drop_data(_pos, data):
 			return true
 		else:
 			return false
-	#print(data)
-	return true # calls drop data
-	
-	#else
-	#swap item
-	
-	# check if item can be swapped
-	#rpc call server to swapitem
-	pass
 
 func drop_data(_pos,data):
-	
 	# temp vars to hold each slots info
 	var drag_icon = data.item_data
 	var drop_icon = item_data
+	
+	"""
+	tab: 0 = equip, 1 = use, 2 = etc
+	from: 0-31 (slot)
+	to: 0-31(slot)
+	"""
+	Server.send_inventory_movement(tab_dict[tab], data["from_slot"], slot_index)
 	
 	# update beginning slot with destination slot info
 	data.origin_node.icon.texture = icon.texture
