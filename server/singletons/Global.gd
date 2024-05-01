@@ -112,9 +112,9 @@ func calculate_stats(player_stats):
 					continue
 				else:
 					# add stat value to each stat in temp equipment dict
-					print("%s before: " % stat, equipment_stats[stat])
+					#print("%s before: " % stat, equipment_stats[stat])
 					equipment_stats[stat] += equipment[item][stat]
-					print("%s after: " % stat, equipment_stats[stat])
+					#print("%s after: " % stat, equipment_stats[stat])
 		# update equipment stats of player_dict
 	stats.equipment = equipment_stats
 	
@@ -125,7 +125,10 @@ func calculate_stats(player_stats):
 	# beginner class 
 	# (base stats: int + total equip stats: int) + int(float(total equipment attack: int) * weapon ratio: float)
 	if base.job == 0:
-		base.maxRange = (base.strength + base.wisdom + base.dexterity + base.luck + equip.strength + equip.wisdom + equip.dexterity + equip.luck) + int((float(equip.attack) * ServerData.static_data.weapon_ratio[equipment.rweapon.type]))
+		if equipment.rweapon == null:
+			base.maxRange = (base.strength + base.wisdom + base.dexterity + base.luck + equip.strength + equip.wisdom + equip.dexterity + equip.luck)
+		else:
+			base.maxRange = (base.strength + base.wisdom + base.dexterity + base.luck + equip.strength + equip.wisdom + equip.dexterity + equip.luck) + int((float(equip.attack) * ServerData.static_data.weapon_ratio[equipment.rweapon.type]))
 		base.minRange = int(float(base.maxRange) * 0.2)
 		print(base.maxRange)
 	else:
@@ -229,10 +232,11 @@ func dropDetermine(item_id):
 	else:
 		return false
 
-func dropSpawn(map, location, item_list, user_id):
+func dropSpawn(map, location, item_dict, user_id):
 	var map_path = "/root/Server/World/Maps/" + str(map) + "/YSort/Items"
-	var items = item_list.keys()
+	var items = item_dict.keys()
 	var map_node = get_node(map_path)
+	print(item_dict)
 	for item in items:
 		var new_item = item_scene.instance()
 		new_item.position = location
@@ -241,9 +245,9 @@ func dropSpawn(map, location, item_list, user_id):
 		new_item.id = item
 		new_item.map = str(map)
 		if ServerData.itemTable[item]["itemType"] == "equipment":
-			new_item.stats = item_list.item
+			new_item.stats = item_dict[item]
 		else:
-			new_item.amount = item_list[item]
+			new_item.amount = item_dict[item]
 		print(new_item)
 		map_node.add_child(new_item, true)
 
