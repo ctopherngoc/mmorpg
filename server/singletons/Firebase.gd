@@ -1,6 +1,5 @@
 extends Node
 
-const API_KEY := ""
 const PROJECT_ID := "godotproject-ef224"
 const DATABASE_URL := "https://firestore.googleapis.com/v1/projects/%s/databases/(default)/documents/" % PROJECT_ID 
 const LOGIN_URL := "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=%s" % API_KEY
@@ -59,6 +58,7 @@ func update_document(path: String, http: HTTPRequest, token: String, player_cont
 		# update /character
 		var fb_data = ServerData.static_data.player_info.duplicate(true)
 		server_dictionary_converter(player_container, fb_data)
+		save("res://save.json",fb_data)
 		var document := {"fields": fb_data}
 		var body := to_json(document)
 		var url := DATABASE_URL + path
@@ -424,17 +424,20 @@ func server_dictionary_converter(server_data: Dictionary, firebase_data: Diction
 	fb_shortcut = firebase_data['avatar']['mapValue']['fields']
 	for key in keys:
 		fb_shortcut[key]['stringValue'] = str(shortcut[key])
-	
+	#################################################################################################
 	# equipment
 	shortcut = server_data["equipment"]
 	keys = shortcut.keys()
 	fb_shortcut = firebase_data['equipment']['mapValue']['fields']
+	#print(fb_shortcut)
 	for key in keys:
 		# non implement gear are integers
-		if shortcut[key] is int:
+		if typeof(shortcut[key]) == TYPE_INT:
 			fb_shortcut[key]['integerValue'] = int(shortcut[key])
 		# currently rweapon
-		else:
+		elif typeof(shortcut[key]) == TYPE_DICTIONARY:
+			#print("dictionary#######")
+			#print(key)
 			# weapon dict
 			var temp_dict = ServerData.static_data.equipment_data_template.duplicate(true)
 			# [equipment][rweapon]
@@ -445,10 +448,14 @@ func server_dictionary_converter(server_data: Dictionary, firebase_data: Diction
 			for key2 in keys2:
 				if key2 in ["name", "type"]:
 					temp_dict[key2] = {'stringValue' : shortcut2[key2]}
+					#print(temp_dict[key2])
 				else:
 					temp_dict[key2] = {'integerValue': shortcut2[key2]}
+					#print(temp_dict[key2])
+					
 			fb_shortcut[key] = {'mapValue':{'fields': temp_dict}}
-			
+	#print(fb_shortcut)
+#####################################################################################################
 	#inventory
 	shortcut = server_data["inventory"]
 	keys = shortcut.keys()
@@ -483,14 +490,20 @@ func server_dictionary_converter(server_data: Dictionary, firebase_data: Diction
 			else:
 				#fb_shortcut[key] = {'arrayValue':{'values':[]}}
 				var item_shortcut = fb_shortcut[key]['arrayValue']['values']
+				var count = 0
 				for item in shortcut[key]:
-					var count = 0
+#					if key == "use":
+#						print(key, " ", item)
 					if item != null:
+						# temp item dictionary
 						var item_dict = {}
+						# this is server item keys to dictionary
 						var item_data_keys = item.keys()
+						
+						# for item keys (item data) {id, q}
 						for item_data_key in item_data_keys:
 							if item[item_data_key] == null:
-								item_shortcut = {'nullValue': null}
+								item_dict[item_data_key] = {'nullValue': null}
 							elif item[item_data_key] is String:
 								item_dict[item_data_key] = {'stringValue': item[item_data_key]}
 								#item_shortcut[count] = {'mapValue':{'fields': item_dict}}
@@ -498,4 +511,26 @@ func server_dictionary_converter(server_data: Dictionary, firebase_data: Diction
 							else:
 								item_dict[item_data_key] = {'integerValue': item[item_data_key]} 
 						item_shortcut[count] = {'mapValue':{'fields': item_dict}}
+					else:
+						item_shortcut[count] = {'nullValue': null}
 					count += 1
+
+func save(var path : String, var thing_to_save):
+	var file = File.new()
+	file.open(path, File.WRITE)
+	file.store_line(JSON.print(thing_to_save, "\t"))
+	file.close()
+	
+func test_update_document(path: String, player_dict) -> void:
+	var fb_data = ServerData.static_data.player_info.duplicate(true)
+	server_dictionary_converter(player_dict, fb_data)
+	#print("after server_dict_converter")
+	#print(fb_data.inventory.mapValue.fields.use.arrayValue.values)
+	#print(fb_data.equipment.mapValue.fields)
+	#save("res://save.json",fb_data)
+	var document := {"fields": fb_data}
+	var body := to_json(document)
+	var url := DATABASE_URL + path
+	# warning-ignore:return_value_discarded
+	httprequest.request(url, _get_request_headers(server_token), false, HTTPClient.METHOD_PATCH, body)
+	yield(httprequest, "request_completed")
