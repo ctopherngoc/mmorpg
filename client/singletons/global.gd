@@ -29,7 +29,7 @@ var player_position = null
 
 # loads player info
 func _ready():
-	pass
+	Signals.connect("log_out", self, "log_out")
 
 func update_lastmap(map):
 	last_map = map
@@ -182,3 +182,17 @@ func server_reconciliation(server_input_data):
 
 func test_movement():
 	pass
+	
+func log_out():
+	input_queue = []
+	current_map = ""
+	in_game = false
+
+	last_world_state = 0
+	world_state_buffer = []
+	character_list = []
+	player = null
+	last_portal = null
+	last_map = null
+	player_position = null
+	
