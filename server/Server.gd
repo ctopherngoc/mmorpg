@@ -197,17 +197,7 @@ remote func choose_character(requester, display_name: String):
 	var player_container = _Server_Get_Player_Container(player_id)
 	for character_dict in player_container.characters_info_list:
 		if  display_name == character_dict['displayname']:
-			#player_container.current_character = character_dict
-			#player_container.current_character = ServerData.characters_data[display_name]
-			###################################################################
-#			var inventory_tabs = ServerData.characters_data[display_name].inventory.keys()
-#			for tab in inventory_tabs:
-#				if tab != "100000":
-#					while ServerData.characters_data[display_name].inventory[tab].size() < 32:
-#						ServerData.characters_data[display_name].inventory[tab].append(null)
-#					print(ServerData.characters_data[display_name].inventory[tab])
 			player_container.current_character = ServerData.characters_data[display_name]
-			##################################################################
 			#print(player_container.current_character.inventory)
 			ServerData.username_list[str(player_id)] = display_name
 			break
@@ -246,13 +236,6 @@ remote func create_character(requester, char_dict: Dictionary):
 	var player_id = get_tree().get_rpc_sender_id()
 	var player_container =_Server_Get_Player_Container(player_id)
 	character_creation_queue.append([player_id, char_dict, player_container, requester])
-
-"""
-remote func fetch_characters():
-# warning-ignore:unused_variable
-	var player_id = get_tree().get_rpc_sender_id()
-	print("In fetch characters")
-"""
 
 # warning-ignore:unused_argument
 remote func delete_character(requester, display_name: String):
@@ -433,34 +416,34 @@ func _on_Button2_pressed():
 	Global.calculate_stats($Test/PlayerContainer.current_character)
 ######################################################################
 
-func offline_move_item(inv_data: Array):
-	"""
-	inv_data=[tab:int, from:int, to:int]
-	assuming from_item != null (you cant drag and drop empty slots)
-	"""
-	var tab = {0: "equip", 1: "use", 2: "etc"}
-	
-	######################################################################
-	# test data
-	var player_container = {
-		"current_character": {
-			"inventory": {
-				"equip": [null, null, null],
-				"etc": [null, null, null],
-				"use": [{"i": 300000, "q": 5}, null, {"i": 300002, "q": 100}],}}}
-
-	######################################################################
-	
-	var item1 = player_container.current_character.inventory[tab[inv_data[0]]][inv_data[1]]
-	# if to_slot != null -> to_slot = from_slot, from_slot = to_slot
-	if player_container.current_character.inventory[tab[inv_data[0]]][inv_data[2]] != null:
-		var item2 = player_container.current_character.inventory[tab[inv_data[0]]][inv_data[2]]
-		player_container.current_character.inventory[tab[inv_data[0]]][inv_data[2]] = item1
-		player_container.current_character.inventory[tab[inv_data[0]]][inv_data[1]] = item2
-	# if to_slot = null -> to_slot = from_slot, from_slot = null
-	else:
-		player_container.current_character.inventory[tab[inv_data[0]]][inv_data[2]] = item1
-		player_container.current_character.inventory[tab[inv_data[0]]][inv_data[1]] = null
+#func offline_move_item(inv_data: Array):
+#	"""
+#	inv_data=[tab:int, from:int, to:int]
+#	assuming from_item != null (you cant drag and drop empty slots)
+#	"""
+#	var tab = {0: "equip", 1: "use", 2: "etc"}
+#
+#	######################################################################
+#	# test data
+#	var player_container = {
+#		"current_character": {
+#			"inventory": {
+#				"equip": [null, null, null],
+#				"etc": [null, null, null],
+#				"use": [{"i": 300000, "q": 5}, null, {"i": 300002, "q": 100}],}}}
+#
+#	######################################################################
+#
+#	var item1 = player_container.current_character.inventory[tab[inv_data[0]]][inv_data[1]]
+#	# if to_slot != null -> to_slot = from_slot, from_slot = to_slot
+#	if player_container.current_character.inventory[tab[inv_data[0]]][inv_data[2]] != null:
+#		var item2 = player_container.current_character.inventory[tab[inv_data[0]]][inv_data[2]]
+#		player_container.current_character.inventory[tab[inv_data[0]]][inv_data[2]] = item1
+#		player_container.current_character.inventory[tab[inv_data[0]]][inv_data[1]] = item2
+#	# if to_slot = null -> to_slot = from_slot, from_slot = null
+#	else:
+#		player_container.current_character.inventory[tab[inv_data[0]]][inv_data[2]] = item1
+#		player_container.current_character.inventory[tab[inv_data[0]]][inv_data[1]] = null
 
 remote func move_item(inv_data: Array):
 	"""
@@ -479,11 +462,11 @@ remote func move_item(inv_data: Array):
 		var item2 = player_container.current_character.inventory[tab[inv_data[0]]][inv_data[2]]
 		player_container.current_character.inventory[tab[inv_data[0]]][inv_data[2]] = item1
 		player_container.current_character.inventory[tab[inv_data[0]]][inv_data[1]] = item2
+		
 	# if to_slot = null -> to_slot = from_slot, from_slot = null
 	else:
 		player_container.current_character.inventory[tab[inv_data[0]]][inv_data[2]] = item1
 		player_container.current_character.inventory[tab[inv_data[0]]][inv_data[1]] = null
-	#print("after: ", player_container.current_character.inventory.use)
 	print(player_container.current_character.inventory[tab[inv_data[0]]])
 	# update client
 	update_player_stats(player_container)
@@ -506,16 +489,19 @@ func _on_Button4_pressed():
 
 
 func _on_Button5_pressed():
-	print("firebase button press")
-	var server_dict = ServerData.characters_data["testing222"].duplicate(true)
-	server_dict.inventory.use[3] = {"id": "300001", "q": 123}
+#	print("firebase button press")
+#	var server_dict = ServerData.characters_data["testing222"].duplicate(true)
+#	server_dict.inventory.use[3] = {"id": "300001", "q": 123}
 	#server_dict.inventory.use[3] = null
 	#server_dict.equipment.rweapon = {"accuracy":0, "type": "1h_sword", "id": 10000}
 	#server_dict.equipment.rweapon =  {"accuracy":0, "attack":15, "avoidability":0, "bossPercent":5, "critRate":0, "damagePercent":0, "defense":0, "dexterity":4, "id":"200001", "job":0, "jumpSpeed":0, "luck":5, "magic":0, "magicDefense":0, "maxHealth":0, "maxMana":0, "movementSpeed":0, "name":"Training Sword", "slot":7, "speed":5, "strength":5, "type":"1h_sword", "wisdom":5, "uniqueID": 100000000}
 	#server_dict.equipment.rweapon = ServerData.characters_data["duma123"].equipment.rweapon
 	#server_dict.equipment.top = {"id": 500000}
 	#save("res://save.json",fb_data)
-	Firebase.test_update_document("characters/testing222", server_dict)
+	#Firebase.test_update_document("characters/testing222", server_dict)
+	
+	var server_dict =  {"owner": "testing123", "accuracy":0, "attack":15, "avoidability":0, "bossPercent":5, "critRate":0, "damagePercent":0, "defense":0, "dexterity":4, "id":"200001", "job":0, "jumpSpeed":0, "luck":5, "magic":0, "magicDefense":0, "maxHealth":0, "maxMana":0, "movementSpeed":0, "name":"Training Sword", "slot":7, "speed":5, "strength":5, "type":"1h_sword", "wisdom":5, "uniqueID": 100000000}
+	Firebase.test_update_document("items/%s" % str(server_dict.id + str(server_dict.uniqueID)), server_dict)
 	
 func save(var path : String, var thing_to_save):
 	var file = File.new()
