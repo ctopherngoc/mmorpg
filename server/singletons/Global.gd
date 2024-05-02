@@ -7,6 +7,8 @@ var server = null
 var rng = RandomNumberGenerator.new()
 var item_scene = preload("res://scenes/instances/Item.tscn")
 
+const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+
 func _ready():
 	pass
 	server = get_node("/root/Server")
@@ -236,7 +238,7 @@ func dropSpawn(map, location, item_dict, user_id):
 	var map_path = "/root/Server/World/Maps/" + str(map) + "/YSort/Items"
 	var items = item_dict.keys()
 	var map_node = get_node(map_path)
-	print(item_dict)
+	print("dropSpawn %s" % item_dict)
 	for item in items:
 		var new_item = item_scene.instance()
 		new_item.position = location
@@ -244,6 +246,9 @@ func dropSpawn(map, location, item_dict, user_id):
 		new_item.player_owner = user_id
 		new_item.id = item
 		new_item.map = str(map)
+		for i in range(6):
+			new_item.id += chars[randi() % chars.length()]
+		print("Drop id: %s used for client node.name to spawn and despawn items should be in world state", new_item.id)
 		if ServerData.itemTable[item]["itemType"] == "equipment":
 			new_item.stats = item_dict[item]
 		else:
