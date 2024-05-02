@@ -7,6 +7,7 @@ var gravity = 800
 var velocity = Vector2(0, 0)
 var looted = false
 var map
+var drop_id
 
 func _ready():
 	pass
