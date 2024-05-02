@@ -72,5 +72,6 @@ func UpdateItemStateList():
 	if  get_node("YSort/Items").get_child_count() > 0:
 		var index  = 0
 		for item in get_node("YSort/Items").get_children():
-			ServerData.items[self.name][item.name] = {"P": item.position, "I": item.id}
+			# N = drop_id client node name
+			ServerData.items[self.name][item.name] = {"P": item.position, "I": item.id, "N": item.drop_id}
 			index += 1
