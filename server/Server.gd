@@ -508,3 +508,26 @@ func save(var path : String, var thing_to_save):
 	file.open(path, File.WRITE)
 	file.store_line(JSON.print(thing_to_save, "\t"))
 	file.close()
+
+####################################################################################
+# placeholder functions for item ownership and unique item tracking
+func add_item_database():
+	"""
+	this function should be called on new item drop is looted. Primarily for equipments to keep track of item ownership
+	unique item ownership is important in case of trading.
+	"""
+	pass
+
+func transfer_item_ownership():
+	"""
+	this function should be called when item is traded or looted after previous owner drops.
+	"""
+	pass
+
+func delete_item():
+	"""
+	this function should be called when unique item is sold or when item dispears after dropping
+	removing from database.
+	"""
+	pass
+####################################################################################
