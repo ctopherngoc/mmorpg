@@ -200,6 +200,7 @@ func get_movement_vector():
 	if !input_queue.empty():
 		input = input_queue.pop_front()
 	else:
+		# [up, down, left, right, jump, loot]
 		input = [0,0,0,0,0,0]
 	if input[5]:
 		self.loot_request()
