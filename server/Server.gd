@@ -341,6 +341,7 @@ remote func received_player_state(player_state):
 	var player_id = get_tree().get_rpc_sender_id()
 	var player_container = _Server_Get_Player_Container(player_id)
 	var input = player_state["P"]
+	# [up, down, left, right, jump, loot]
 	if  input != [0,0,0,0,0,0]:
 		player_container.input_queue.append(player_state["P"])
 
