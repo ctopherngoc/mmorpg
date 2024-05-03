@@ -209,4 +209,4 @@ func _on_Timer_timeout():
 func loot_request():
 	print(self.name, " ", "Pressed Loot")
 	var loot_list = loot_node.get_overlapping_areas()
-	Global.lootRequest(self.name, loot_list)
+	#Global.lootRequest(self.name, loot_list)
