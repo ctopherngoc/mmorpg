@@ -9,7 +9,7 @@ extends Node
 var network = NetworkedMultiplayerENet.new()
 var port: int = 2733
 var max_players:int = 100
-
+var stats
 # example tokens added
 var expected_tokens = []
 onready var player_verification_process = get_node("PlayerVerification")
@@ -192,7 +192,8 @@ func _Server_New_Character(new_char: Dictionary):
 	
 	return temp_player
 	
-remote func choose_character(requester, display_name: String):
+remote func choose_character(requester, display_name: String) -> void:
+	print("requester: %s" % typeof(requester))
 	var player_id = get_tree().get_rpc_sender_id()
 	var player_container = _Server_Get_Player_Container(player_id)
 	for character_dict in player_container.characters_info_list:
@@ -210,7 +211,7 @@ remote func choose_character(requester, display_name: String):
 	Global.calculate_stats(player_container.current_character)
 	rpc_id(player_id, "return_choose_character", requester)
 
-remote func fetch_player_stats():
+remote func fetch_player_stats() -> void:
 	var player_id = get_tree().get_rpc_sender_id()
 	var Maps = get_node("World/Maps")
 	for i in Maps.get_children():
@@ -218,7 +219,7 @@ remote func fetch_player_stats():
 			if l.name == str(player_id):
 				print(l.player_stats)
 
-remote func fetch_usernames(requester, username: String):
+remote func fetch_usernames(requester, username: String) -> void:
 	print("inside fetch username. Username: %s" % username)
 	var player_id = get_tree().get_rpc_sender_id()
 	if username in ServerData.user_characters.keys():
@@ -231,14 +232,14 @@ remote func fetch_usernames(requester, username: String):
 		rpc_id(player_id, "return_fetch_usernames", requester, true)
 		pass
 
-remote func create_character(requester, char_dict: Dictionary):
+remote func create_character(requester, char_dict: Dictionary) -> void:
 	print("create_character: Username: %s" % char_dict["un"])
 	var player_id = get_tree().get_rpc_sender_id()
 	var player_container =_Server_Get_Player_Container(player_id)
 	character_creation_queue.append([player_id, char_dict, player_container, requester])
 
 # warning-ignore:unused_argument
-remote func delete_character(requester, display_name: String):
+remote func delete_character(requester, display_name: String) -> void:
 	""" 
 		var characters = []
 		var characters_info_list = []
@@ -260,7 +261,7 @@ remote func delete_character(requester, display_name: String):
 	yield(firebase_call2, "completed")
 	rpc_id(player_id, "return_delete_character", player_container.characters_info_list, requester)
 
-remote func logout():
+remote func logout() -> void:
 	var player_id = get_tree().get_rpc_sender_id()
 # warning-ignore:unused_variable
 	var player_container = _Server_Get_Player_Container(player_id)
@@ -270,15 +271,20 @@ remote func logout():
 ######################################################################
 # ingame functions account/character container 
 
-func despawnPlayer(player_id):
+func despawnPlayer(player_id) -> void:
 	rpc_unreliable_id(0, "receive_despawn_player", player_id)
 
 # arugment is a player container
-func update_player_stats(player_container):
+func update_player_stats(player_container: KinematicBody2D) -> void:
 	rpc_id(int(player_container.name), "update_player_stats", player_container.current_character)
 
 # Character containers/information 
-func move_player_container(player_id, player_container, map_id, position):
+func move_player_container(player_id: int, player_container: KinematicBody2D, map_id: int, position) -> void:
+	"""
+	position can be string or vector2
+	string = spawn
+	vector2 = move to destination
+	"""
 	var old_parent = get_node(str(ServerData.player_location[str(player_id)]))
 	var new_parent = get_node("/root/Server/World/Maps/%s/YSort/Players" % str(map_id))
 
@@ -404,7 +410,7 @@ remote func attack(move_id):
 # 0 = no climb
 # 1 = can climb
 
-func send_climb_data(player_id, climb_data):
+func send_climb_data(player_id: int, climb_data: int):
 	rpc_id(int(player_id), "receive_climb_data", climb_data)
 
 ######################################################################
@@ -511,14 +517,6 @@ func save(var path : String, var thing_to_save):
 	file.close()
 
 ####################################################################################
-# placeholder functions for item ownership and unique item tracking
-func add_item_database():
-	"""
-	this function should be called on new item drop is looted. Primarily for equipments to keep track of item ownership
-	unique item ownership is important in case of trading.
-	"""
-	pass
-
 func transfer_item_ownership():
 	"""
 	this function should be called when item is traded or looted after previous owner drops.
