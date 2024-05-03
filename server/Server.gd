@@ -20,12 +20,12 @@ const password: String = "server123"
 #######################################################
 # server netcode
 #server start 
-func _ready():
+func _ready() -> void:
 	Firebase.httprequest = $HTTPRequest
 	start_server()
 	Firebase.get_data(username, password)
 
-func start_server():
+func start_server() -> void:
 	network.create_server(port, max_players)
 	get_tree().set_network_peer(network)
 	print("Server Started")
@@ -33,17 +33,17 @@ func start_server():
 	network.connect("peer_connected", self, "_Peer_Connected")
 	network.connect("peer_disconnected", self, "_Peer_Disconnected")
 
-func _process(_delta):
+func _process(_delta: float) -> void:
 	create_characters()
 
 # Player connect
-func _Peer_Connected(player_id):
+func _Peer_Connected(player_id: int) -> void:
 	print("User " + str(player_id) + " Connected")
 	ServerData.player_location[str(player_id)] = 'connected'
 	player_verification_process.start(player_id)
 
 # when player disconnects
-func _Peer_Disconnected(player_id):
+func _Peer_Disconnected(player_id: int) -> void:
 	if ServerData.player_location[str(player_id)] == 'connected':
 		ServerData.player_location.erase(str(player_id))
 	else:
@@ -61,14 +61,14 @@ func _Peer_Disconnected(player_id):
 		player_container.queue_free()
 	print("User " + str(player_id) + " Disconnected")
 
-func _Server_Data_Remove_Player(player_id):
+func _Server_Data_Remove_Player(player_id: int) -> void:
 	ServerData.player_location.erase(str(player_id))
 	ServerData.player_state_collection.erase(player_id)
 	ServerData.logged_emails.erase(ServerData.player_id_emails[str(player_id)])
 	ServerData.player_id_emails.erase(str(player_id))
 	ServerData.username_list.erase(str(player_id))
 	
-func return_token_verification_results(player_id, result):
+func return_token_verification_results(player_id: int, result: bool) -> void:
 	if result != false:
 		var player_container = _Server_Get_Player_Container(player_id)
 		if player_container.characters.empty():
@@ -82,7 +82,7 @@ func return_token_verification_results(player_id, result):
 		network.disconnect_peer(player_id)
 		print("playercontainer empty probably big issue")
 
-func fetch_token(player_id):
+func fetch_token(player_id: int):
 	print(get_tree().multiplayer.get_network_connected_peers())
 	rpc_id(player_id, "fetch_token")
 	
@@ -403,13 +403,9 @@ remote func attack(move_id):
 				print("wrong weapon")
 		else:
 			print("ya cheating banned")
-	"""
-	#player_container.attack()
-	#rpc_id(0, "receive_attack", player_id, attack_time)
-	"""
+	
 # 0 = no climb
 # 1 = can climb
-
 func send_climb_data(player_id: int, climb_data: int):
 	rpc_id(int(player_id), "receive_climb_data", climb_data)
 
@@ -469,7 +465,6 @@ remote func move_item(inv_data: Array):
 		var item2 = player_container.current_character.inventory[tab[inv_data[0]]][inv_data[2]]
 		player_container.current_character.inventory[tab[inv_data[0]]][inv_data[2]] = item1
 		player_container.current_character.inventory[tab[inv_data[0]]][inv_data[1]] = item2
-		
 	# if to_slot = null -> to_slot = from_slot, from_slot = null
 	else:
 		player_container.current_character.inventory[tab[inv_data[0]]][inv_data[2]] = item1
@@ -525,8 +520,17 @@ func transfer_item_ownership():
 
 func delete_item():
 	"""
-	this function should be called when unique item is sold or when item dispears after dropping
-	removing from database.
+	remove item from database. this function should be called when:
+		1. unique item is sold
+		2. when item on floor dispears
+		3. dropping unique item
 	"""
 	pass
 ####################################################################################
+
+func send_client_notification(player_id, message: int) -> void:
+	"""
+	message type:
+		0 = inventory full
+	"""
+	rpc_id(player_id, "server_message", message)
