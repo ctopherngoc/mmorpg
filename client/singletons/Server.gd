@@ -299,3 +299,6 @@ func send_inventory_movement(tab: int, from: int, to: int):
 	to: 0-31(slot)
 	"""
 	rpc_id(1, "move_item", [tab, from, to])
+
+remote func server_message(message_int: int):
+	print("received messge %s" % message_int)
