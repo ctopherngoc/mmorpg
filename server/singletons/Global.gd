@@ -324,7 +324,9 @@ func lootDrop(player: KinematicBody2D, item_container: KinematicBody2D) -> void:
 				# update map itemlist
 				ServerData.items[item_container.map].erase(item_container.name)
 				server.update_player_stats(player)
-										# remove item node from map
+				# remove item node from map
+				var item_dict = item_container.stats
+				add_item_database(item_dict, player)
 				item_container.queue_free()
 				print("removing item from map list and world list (not stackable, null at index: %s)" % index)
 			# inventory does not have room
@@ -336,6 +338,15 @@ func lootDrop(player: KinematicBody2D, item_container: KinematicBody2D) -> void:
 			if item_container.stats.stackable:
 				# item is in inventory
 				if item_container.id in inventory_ref.keys():
+					"""
+					can add if statement here for max_quantity looting. If inventory.item.q <= max_item
+						loot
+						queue free
+						update
+						etc
+					else
+						send error
+					"""
 					# increment quantity in dictionary
 					inventory_ref[item_container.id].q += 1
 					# update map itemlist (removes item from dictionary using node name)
@@ -390,6 +401,7 @@ func add_item_database(data_dict: Dictionary, player_container: KinematicBody2D)
 	this function should be called on new item drop is looted. Primarily for equipments to keep track of item ownership
 	unique item ownership is important in case of trading.
 	"""
+	data_dict["owner"] = player_container.current_character.displayname
 	var path = "items/%s" % (data_dict.id + str(data_dict.uniqueID)) 
 	var firebase = Firebase.update_document(path, player_container.http, player_container.db_info["token"], data_dict)
 	yield(firebase, 'completed')
