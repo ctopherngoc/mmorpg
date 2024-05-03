@@ -6,20 +6,21 @@ extends Node
 var server = null
 var rng = RandomNumberGenerator.new()
 var item_scene = preload("res://scenes/instances/Item.tscn")
+const max_int = 9223372036854775807
 
 const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 
-func _ready():
+func _ready() -> void:
 	pass
 	server = get_node("/root/Server")
 
-func store_character_data(player_id, display_name):
+func store_character_data(player_id: String, display_name: String) -> void:
 	var player_container = get_node(ServerData.player_location[str(player_id)] + "/%s" % str(player_id))
 	var firebase = Firebase.update_document("characters/%s" % display_name, player_container.http, player_container.db_info.token, player_container.current_character)
 	yield(firebase, 'completed')
 	#print("%s saved data" % display_name)
 
-func npc_attack(player, monster_stats):
+func npc_attack(player: KinematicBody2D, monster_stats: Dictionary) -> void:
 	var player_stats = player.current_character.stats
 	# calculate basic hit mechanic and damage formula
 	# hit mechanic
@@ -38,7 +39,7 @@ func player_death(player_id):
 	pass
 
 # save all player data to firebase db every 10 minutes
-func _on_Timer_timeout():
+func _on_Timer_timeout() -> void:
 	if ServerData.username_list.size() > 0:
 		var player_id_arr = Array(ServerData.username_list.keys())
 		for player_id in player_id_arr:
@@ -47,10 +48,10 @@ func _on_Timer_timeout():
 	#else:
 		#print("no players no need to save db")
 
-func send_climb_data(player_id, climb_data):
+func send_climb_data(player_id: String, climb_data: int):
 	server.send_climb_data(player_id, climb_data)
 
-func damage_formula(type: bool, player_dict: Dictionary, target_stats: Dictionary):
+func damage_formula(type: bool, player_dict: Dictionary, target_stats: Dictionary) -> int:
 	var stats = player_dict.stats
 	if stats.base.accuracy + stats.equipment.accuracy < target_stats.avoidability:
 		var acc_diff = target_stats.avoidability - (stats.base.accuracy + stats.equipment.accuracy)
@@ -76,7 +77,7 @@ func damage_formula(type: bool, player_dict: Dictionary, target_stats: Dictionar
 		if stats.base.magic >= target_stats.magicDefense:
 			damage = float(stats.base.magic * stats.equipment.magic / target_stats.magicDefense)
 		else:
-			pass
+			return 0
 		#######################################################################
 	damage = damage * ((float(stats.base.damagePercent + stats.equipment.damagePercent) * 0.1) + 1.0)
 	print("after dmg_percent: %s" % damage)
@@ -87,9 +88,9 @@ func damage_formula(type: bool, player_dict: Dictionary, target_stats: Dictionar
 	var crit_ratio = calculate_crit(crit_rate)
 	var final_damage = int(damage * crit_ratio)
 	print("final damage: %s" % final_damage)
-	return final_damage 
+	return final_damage
 
-func calculate_crit(crit_rate):
+func calculate_crit(crit_rate: int) -> float:
 	var crit_number = rng.randi_range(1,100)
 	if crit_number <= crit_rate:
 		print("crit")
@@ -98,7 +99,7 @@ func calculate_crit(crit_rate):
 		print("no crit")
 		return 1.0
 
-func calculate_stats(player_stats):
+func calculate_stats(player_stats: Dictionary) -> void:
 	var equipment = player_stats.equipment
 	var stats = player_stats.stats
 	var equipment_stats = ServerData.static_data.equipment_stats_template.duplicate(true)
@@ -136,7 +137,7 @@ func calculate_stats(player_stats):
 	else:
 		pass
 
-func npc_hit(dmg, npc, player):
+func npc_hit(dmg: int, npc: KinematicBody2D, player: String):
 	if dmg <= npc.stats.currentHP:
 		npc.stats.currentHP -= dmg
 		if str(player) in npc.attackers.keys():
@@ -182,7 +183,7 @@ func npc_hit(dmg, npc, player):
 		npc.die()
 	print("monster: " + npc.name + " health: " + str(npc.stats.currentHP))
 
-func dropGeneration(monster_id):
+func dropGeneration(monster_id: String) -> Dictionary:
 	"""
 	takes monster_id and calls dropDetemination. If true calculate gold amount, item randoization, item amount
 	returns dictionary with item_key : item_details
@@ -212,17 +213,19 @@ func dropGeneration(monster_id):
 						equip_stats[key] += rng.randi_range(-5,5)
 						if equip_stats[key] < 0:
 							equip_stats[key] = 0
-				equip_stats["uniqueID"] = rng.randi_range(1, 1000000000)
 				# create unique id
+				equip_stats["uniqueID"] = rng.randi_range(1, 1000000000)
+				
 				item_list[item_id] = equip_stats
 				#print(equip_stats)
 			# etc, material, use
 			else:
-				pass
+				# drops 1 use/etc item
+				item_list[item_id] = 1
 	print(item_list)
 	return item_list
 	
-func dropDetermine(item_id):
+func dropDetermine(item_id: String) -> bool:
 	"""
 	function takes drop drate from ServerData itemtable and calculates drop outcome
 	returns true/false
@@ -234,7 +237,8 @@ func dropDetermine(item_id):
 	else:
 		return false
 
-func dropSpawn(map, location, item_dict, user_id):
+func dropSpawn(map: String, location: Vector2, item_dict: Dictionary, user_id) -> void:
+	# user_id could be string or null
 	var map_path = "/root/Server/World/Maps/" + str(map) + "/YSort/Items"
 	var items = item_dict.keys()
 	var map_node = get_node(map_path)
@@ -246,8 +250,11 @@ func dropSpawn(map, location, item_dict, user_id):
 		new_item.player_owner = user_id
 		new_item.id = item
 		new_item.map = str(map)
+		var node_name = ""
+		# sets node name to random string of 6 nums/letters
 		for i in range(6):
-			new_item.id += chars[randi() % chars.length()]
+			 node_name += chars[randi() % chars.length()]
+		new_item.name = node_name
 		print("Drop id: %s used for client node.name to spawn and despawn items should be in world state", new_item.id)
 		if ServerData.itemTable[item]["itemType"] == "equipment":
 			new_item.stats = item_dict[item]
@@ -256,13 +263,15 @@ func dropSpawn(map, location, item_dict, user_id):
 		print(new_item)
 		map_node.add_child(new_item, true)
 
-func lootRequest(player, loot_list):
+func lootRequest(player: KinematicBody2D, loot_list: Array) -> void:
 	print("processing loot for %s" % player)
 	if loot_list.empty():
 		print("no items")
 	else:
 		print(loot_list)
+		# for item area2d in list of item area2ds
 		for item in loot_list:
+			# get item node
 			var item_container = item.get_parent()
 			# if another player looted already
 			if item_container.looted:
@@ -270,12 +279,10 @@ func lootRequest(player, loot_list):
 			elif item_container.player_owner:
 				# if there are owners, if player is owner
 				# mark item looted, get player container, queuefree item
+				var player_id = player.name
 				if player == item_container.player_owner and item_container.looted == false:
 					item_container.looted = true
 					self.lootDrop(player, item_container)
-					item_container.queue_free()
-					print(item_container.name, " looted by %s" % player)
-					
 					# add item to players inventory
 					break
 				else:
@@ -283,29 +290,107 @@ func lootRequest(player, loot_list):
 			else:
 				item_container.looted = true
 				self.lootDrop(player, item_container)
-				item_container.queue_free()
-				print("item looted by random player %s" % player)
-				# add item to players inventory
 				break
 
-func lootDrop(player, item_container):
+func lootDrop(player: KinematicBody2D, item_container: KinematicBody2D) -> void:
+	print("Looted Item Position: ", item_container.position, ServerData.items[item_container.map])
 	if item_container.id == "100000":
-		print("Position")
-		print(item_container.position)
-		print(ServerData.items[item_container.map])
-		print(player, " looted %s gold" % str(item_container.amount))
-		ServerData.characters_data[str(player)]["inventory"]["100000"] += item_container.amount
-		print("removing item from map list and world list")
+		# if resulting gold > int variable capacity (max_int)
+		# set gold to max_number
+		if ServerData.characters_data[str(player)]["inventory"]["100000"] + item_container.amount < 0:
+			ServerData.characters_data[str(player)]["inventory"]["100000"] = max_int
+		# add it to current amount
+		else:
+			ServerData.characters_data[str(player)]["inventory"]["100000"] += item_container.amount
+		# update map itemlist
+		ServerData.items[item_container.map].erase(item_container.name)
+		server.update_player_stats(player)
+		# remove item node from map
+		print("removing %s gold from map list and world list" % item_container.amount)
+		item_container.queue_free()
+	# parse if item is etc, use, equip
 	else:
-		print("not gold")
-		# parse if item is etc, use, equip
-		
-		# get item data
-		
-		# get inventory data
-		
-		# if multiple add item to stack
-		
-		# else find first avaliable slot in list add
-		pass
-	ServerData.items[item_container.map].erase(item_container.name)
+		# get reference to player inventory -> item type tab
+		# reference is of type Array
+		# algorithm to add item into inventory dictionary
+		var inventory_ref = ServerData.characters_data[str(player)]["inventory"][item_container.stats.itemType]
+		# items without stats dictionary are non-equipment items
+		if typeof(item_container.stats) != TYPE_NIL:
+			var index = inventory_ref.find(null)
+			# inventory has room
+			if index >= 0:
+				# add item to index and update client
+				inventory_ref[index] = {"id": str(item_container), "q": 1}
+				# update map itemlist
+				ServerData.items[item_container.map].erase(item_container.name)
+				server.update_player_stats(player)
+										# remove item node from map
+				item_container.queue_free()
+				print("removing item from map list and world list (not stackable, null at index: %s)" % index)
+			# inventory does not have room
+			else:
+				server.send_client_notification(int(player.name), 0)
+				print("player: %s's equip inventory full", player.name)
+		else:
+			# if check if item stackable
+			if item_container.stats.stackable:
+				# item is in inventory
+				if item_container.id in inventory_ref.keys():
+					# increment quantity in dictionary
+					inventory_ref[item_container.id].q += 1
+					# update map itemlist (removes item from dictionary using node name)
+					# client should have despawn mechanic on loot to queue free
+					ServerData.items[item_container.map].erase(item_container.name)
+					# update player stats
+					server.update_player_stats(player)
+					# remove item node from map
+					item_container.queue_free()
+					print("removing item from map list and world list (stackable item is in inventory)")
+				# item is not in inventory
+				else:
+					# if player inventory has room (null value): returns index, returns -1 if no room
+					var index = inventory_ref.find(null)
+					# inventory has room
+					if index >= 0:
+						# update map itemlist
+						ServerData.items[item_container.map].erase(item_container.name)
+						# add item to index and update client
+						inventory_ref[index] = {"id": str(item_container), "q": 1}
+						server.update_player_stats(player)
+						# remove item node from map
+						item_container.queue_free()
+						print("removing item from map list and world list (stackable not in inventory)")
+					# inventory does not have room
+					else:
+						server.send_client_notification(int(player.name), 0)
+						print("player: %s's inventory full stackable", player.name)
+			# if look for first open space
+			else:
+				# if player inventory has room (null value): returns index, returns -1 if no room
+				var index = inventory_ref.find(null)
+				# inventory has room
+				if index >= 0:
+					# update map itemlist
+					ServerData.items[item_container.map].erase(item_container.name)
+					# add item to index and update client
+					inventory_ref[index] = {"id": str(item_container), "q": 1}
+					server.update_player_stats(player)
+					# remove item node from map
+					item_container.queue_free()
+					print("removing item from map list and world list (not stackable, null at index: %s)" % index)
+				# inventory does not have room
+				else:
+					server.send_client_notification(int(player.name), 0)
+					print("player: %s's inventory full not stackable", player.name)
+	#ServerData.items[item_container.map].erase(item_container.name)
+	
+# placeholder functions for item ownership and unique item tracking
+func add_item_database(data_dict: Dictionary, player_container: KinematicBody2D) -> void:
+	"""
+	this function should be called on new item drop is looted. Primarily for equipments to keep track of item ownership
+	unique item ownership is important in case of trading.
+	"""
+	var path = "items/%s" % (data_dict.id + str(data_dict.uniqueID)) 
+	var firebase = Firebase.update_document(path, player_container.http, player_container.db_info["token"], data_dict)
+	yield(firebase, 'completed')
+	print("added %s to firebase. owner is %s", [data_dict.name, player_container.name])
