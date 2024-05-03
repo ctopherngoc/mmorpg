@@ -68,7 +68,11 @@ func SpawnEnemy():
 				enemy_list[enemy]['time_out'] = enemy_list[enemy]['time_out'] - 1
 	ServerData.monsters[map_id] = enemy_list
 	
-func UpdateItemStateList():
+func UpdateItemStateList() -> void:
+	"""
+	gets a list of children nodes in ysort: items -> updates/add item dict
+	ServerData.items.keys() are item nodes name. Unique 6 len string of Uppercase Chars and Ints
+	"""
 	if  get_node("YSort/Items").get_child_count() > 0:
 		var index  = 0
 		for item in get_node("YSort/Items").get_children():
