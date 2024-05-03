@@ -79,7 +79,7 @@ func delete_document(path: String, http: HTTPRequest, token: String) -> void:
 	var url := DATABASE_URL + path
 	http.request(url, _get_request_headers(token), false, HTTPClient.METHOD_DELETE)
 	
-func firebase_dictionary_converter(database_data: Dictionary, client_data: Array):
+func firebase_dictionary_converter(database_data: Dictionary, client_data: Array) -> void:
 	"""
 	takes firebase json dictionary converts to normal dictionary and appends to an array
 	"""
@@ -195,7 +195,7 @@ func _get_user_info(result: Array) -> Dictionary:
 		"timestamp" : OS.get_unix_time(),
 	}
 
-func login(email: String, password: String, http: HTTPRequest, results: Array):
+func login(email: String, password: String, http: HTTPRequest, results: Array) -> void:
 	var body := {
 		'email': email,
 		'password': password,
@@ -217,7 +217,7 @@ func login(email: String, password: String, http: HTTPRequest, results: Array):
 	else:
 		results.append(result[1])
 
-func get_data(username, password):
+func get_data(username: String, password: String) -> void:
 	var results = []
 	var firebaseStatus = login(username, password, httprequest, results)
 	yield(firebaseStatus, "completed")
@@ -287,7 +287,7 @@ func _server_update_document(http: HTTPRequest, array, action: String) -> void:
 			http.request(url, _get_request_headers(server_token), false, HTTPClient.METHOD_PATCH, body)
 			yield(http, "request_completed")
 
-func server_firebase_dictionary_converter(database_data: Dictionary):
+func server_firebase_dictionary_converter(database_data: Dictionary) -> Dictionary:
 	"""
 	takes firebase json dictionary converts to normal dictionary and appends to an array
 	"""
@@ -393,7 +393,7 @@ func server_firebase_dictionary_converter(database_data: Dictionary):
 							temp_dict['inventory'][key].append(temp_item_dict)
 	return temp_dict
 
-func server_dictionary_converter(server_data: Dictionary, firebase_data: Dictionary):
+func server_dictionary_converter(server_data: Dictionary, firebase_data: Dictionary) -> void:
 	"""
 	in: server dictionary
 	out: firebase dictionary
@@ -491,21 +491,21 @@ func server_dictionary_converter(server_data: Dictionary, firebase_data: Diction
 						item_shortcut[count] = {'nullValue': null}
 					count += 1
 
-func save(var path : String, var thing_to_save):
+func save(var path : String, var thing_to_save: Dictionary):
 	var file = File.new()
 	file.open(path, File.WRITE)
 	file.store_line(JSON.print(thing_to_save, "\t"))
 	file.close()
 
-func item_data_converter(before, after):
+func item_data_converter(before: Dictionary, after: Dictionary) -> Dictionary:
 	for stat in before.keys():
 		if typeof(before[stat]) == TYPE_STRING:
 			after[stat]["stringValue"] = before[stat]
 		else:
 			after[stat]["integerValue"] = before[stat]
-		return{'mapValue':{'fields': after}}
-		
-func test_update_document(path: String, data_dict) -> void:
+	return{'mapValue':{'fields': after}}
+
+func test_update_document(path: String, data_dict: Dictionary) -> void:
 	
 	# update player 
 	###########################################################################
