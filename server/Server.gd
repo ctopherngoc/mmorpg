@@ -480,8 +480,12 @@ func _unhandled_input(event):
 		
 ######################################################################
 func _on_Button3_pressed():
-	print("dropping potion")
-	Global.dropSpawn("100001", Vector2(231, -405), {"300000": 1}, "PlayerContainer")
+#	print("dropping potion")
+#	Global.dropSpawn("100001", Vector2(231, -405), {"300000": 1}, "PlayerContainer")
+	print("testcase 1")
+	print("dropping leather pants")
+	var bottom = {"500003": 1, "accuracy":0, "attack":15, "avoidability":0, "bossPercent":5, "critRate":0, "damagePercent":0, "defense":0, "dexterity":4, "job":0, "jumpSpeed":0, "luck":5, "magic":0, "magicDefense":0, "maxHealth":0, "maxMana":0, "movementSpeed":0, "name":"Leather Bottom", "slot":7, "speed":5, "strength":5, "type":"bottom", "wisdom":5, "uniqueID": 100000000}
+	Global.dropSpawn("100001",  Vector2(231, -405), {"500003": bottom}, "testing123")
 	
 
 func _on_Button4_pressed():
