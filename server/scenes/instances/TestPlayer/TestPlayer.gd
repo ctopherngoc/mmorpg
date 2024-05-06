@@ -11,8 +11,11 @@ onready var loot_node = $loot_box
 var db_info = {}
 var hittable = true
 var current_character = {
+	"displayname": "testing123",
+	
 	"equipment": {
 		"rweapon": {
+			"owner": "testing123",
 			"id": 100000,
 			"uniqueID":14333321,
 			"job": 0,
@@ -89,9 +92,11 @@ var current_character = {
 			"critRate": 0,
 		},
 	},
-	"inventory" : {
-			"100000": 0,
-	},
+	"inventory":
+		{"100000":0,
+		"equipment": [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+			"etc": [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+			"use": [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]}, #inventory
 }
 var attacking = false
 var mobs_hit = []
@@ -209,4 +214,4 @@ func _on_Timer_timeout():
 func loot_request():
 	print(self.name, " ", "Pressed Loot")
 	var loot_list = loot_node.get_overlapping_areas()
-	#Global.lootRequest(self.name, loot_list)
+	Global.lootRequest(self, loot_list)
