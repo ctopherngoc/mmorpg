@@ -27,8 +27,9 @@ func _on_Timer2_timeout() -> void:
 	self.queue_free()
 
 
-func _on_Area2D_area_entered(area: CollisionShape2D) -> void:
+func _on_Area2D_area_entered(area: Area2D) -> void:
 	print("detect player")
+	print(area)
 	if player_owner:
 		print(area.get_parent().name)
 		if area.get_parent().name == player_owner:
