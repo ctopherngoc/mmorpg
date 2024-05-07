@@ -7,7 +7,7 @@ onready var player_container_scene = preload("res://scenes/instances/PlayerConta
 
 var awaiting_verification = {}
 
-func start(player_id) -> void:
+func start(player_id: int) -> void:
 	print("player verification start: player_id: %s" % typeof(player_id))
 	"""
 	authenticate token
@@ -15,7 +15,7 @@ func start(player_id) -> void:
 	awaiting_verification[player_id] = {"Timestamp": OS.get_unix_time()}
 	main_interface.fetch_token(player_id)
 	
-func verify(player_id, token, email) -> void:
+func verify(player_id: int, token: Dictionary, email: String) -> void:
 	print("player verification: player_id: %s, token: %s, email: %s" % [typeof(player_id), typeof(token), typeof(email)])
 	var temp_token = token['token'] + str(token['timestamp'])
 	
@@ -61,7 +61,7 @@ func _on_VerificationExpiration_timeout() -> void:
 	if(!awaiting_verification.empty()):
 		print("Awaiting verification: %s" % str(awaiting_verification))
 	
-func create_player_container(player_id, token, email) -> void:
+func create_player_container(player_id: int, token: Dictionary, email: String) -> void:
 	print("create_player_container: player_id: %s, token: %s, email: %s" % [typeof(player_id), typeof(token), typeof(email)])
 	var new_player_container = player_container_scene.instance()
 	new_player_container.name = str(player_id)
