@@ -7,8 +7,12 @@ var server = null
 var rng = RandomNumberGenerator.new()
 var item_scene = preload("res://scenes/instances/Item.tscn")
 const max_int = 9223372036854775807
-
 const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+
+######################################################################
+# testing variables
+var testplayer
+######################################################################
 
 func _ready() -> void:
 	pass
@@ -111,11 +115,12 @@ func calculate_stats(player_stats: Dictionary) -> void:
 			pass
 		else:
 			for stat in equipment[item].keys():
-				if stat in ["name", "id", "uniqueID", "type", "speed", "slot", "job"]:
+				if stat in ["name", "id", "uniqueID", "type", "speed", "slot", "job", "owner"]:
 					continue
 				else:
 					# add stat value to each stat in temp equipment dict
 					#print("%s before: " % stat, equipment_stats[stat])
+					
 					equipment_stats[stat] += equipment[item][stat]
 					#print("%s after: " % stat, equipment_stats[stat])
 		# update equipment stats of player_dict
@@ -254,7 +259,8 @@ func dropSpawn(map: String, location: Vector2, item_dict: Dictionary, user_id) -
 		# sets node name to random string of 6 nums/letters
 		for i in range(6):
 			 node_name += chars[randi() % chars.length()]
-		new_item.name = node_name
+		new_item.drop_id = node_name
+		new_item.name = new_item.drop_id
 		print("Drop id: %s used for client node.name to spawn and despawn items should be in world state", new_item.id)
 		if ServerData.itemTable[item]["itemType"] == "equipment":
 			new_item.stats = item_dict[item]
@@ -280,31 +286,47 @@ func lootRequest(player: KinematicBody2D, loot_list: Array) -> void:
 				# if there are owners, if player is owner
 				# mark item looted, get player container, queuefree item
 				var player_id = player.name
-				if player == item_container.player_owner and item_container.looted == false:
-					item_container.looted = true
+				if player.current_character.displayname == item_container.player_owner and item_container.looted == false:
+					#item_container.looted = true
 					self.lootDrop(player, item_container)
 					# add item to players inventory
 					break
 				else:
 					print("%s is not owner of item" % player)
 			else:
-				item_container.looted = true
+				#item_container.looted = true
 				self.lootDrop(player, item_container)
 				break
 
 func lootDrop(player: KinematicBody2D, item_container: KinematicBody2D) -> void:
 	print("Looted Item Position: ", item_container.position, ServerData.items[item_container.map])
 	if item_container.id == "100000":
+		item_container.looted = true
 		# if resulting gold > int variable capacity (max_int)
 		# set gold to max_number
-		if ServerData.characters_data[str(player)]["inventory"]["100000"] + item_container.amount < 0:
-			ServerData.characters_data[str(player)]["inventory"]["100000"] = max_int
+		###########################################################################################
+#		if ServerData.characters_data[str(player)]["inventory"]["100000"] + item_container.amount < 0:
+#			ServerData.characters_data[str(player)]["inventory"]["100000"] = max_int
+#		# add it to current amount
+#		else:
+#			ServerData.characters_data[str(player)]["inventory"]["100000"] += item_container.amount
+#		# update map itemlist
+#		ServerData.items[item_container.map].erase(item_container.name)
+#		server.update_player_stats(player)
+#		# remove item node from map
+#		print("removing %s gold from map list and world list" % item_container.amount)
+#		item_container.queue_free()
+		###########################################################################################
+		# test
+		if Global.testplayer.current_character["inventory"]["100000"] + item_container.amount < 0:
+			print("max gold")
+			Global.testplayer.current_character["inventory"]["100000"] = max_int
 		# add it to current amount
 		else:
-			ServerData.characters_data[str(player)]["inventory"]["100000"] += item_container.amount
+			Global.testplayer.current_character["inventory"]["100000"] += item_container.amount
 		# update map itemlist
 		ServerData.items[item_container.map].erase(item_container.name)
-		server.update_player_stats(player)
+		#########server.update_player_stats(player)
 		# remove item node from map
 		print("removing %s gold from map list and world list" % item_container.amount)
 		item_container.queue_free()
@@ -313,31 +335,37 @@ func lootDrop(player: KinematicBody2D, item_container: KinematicBody2D) -> void:
 		# get reference to player inventory -> item type tab
 		# reference is of type Array
 		# algorithm to add item into inventory dictionary
-		var inventory_ref = ServerData.characters_data[str(player)]["inventory"][item_container.stats.itemType]
+		#####var inventory_ref = ServerData.characters_data[str(player.current_character.displayname)]["inventory"][ServerData.itemTable[item_container.id]["itemType"]]
+		var inventory_ref = player.current_character["inventory"][ServerData.itemTable[item_container.id]["itemType"]]
 		# items without stats dictionary are non-equipment items
 		if typeof(item_container.stats) != TYPE_NIL:
 			var index = inventory_ref.find(null)
 			# inventory has room
 			if index >= 0:
+				item_container.looted = true
+				print(index)
 				# add item to index and update client
-				inventory_ref[index] = {"id": str(item_container), "q": 1}
+				item_container.stats["owner"] = player.current_character.displayname
+				inventory_ref[index] = item_container.stats
 				# update map itemlist
 				ServerData.items[item_container.map].erase(item_container.name)
-				server.update_player_stats(player)
+				####server.update_player_stats(player)
 				# remove item node from map
 				var item_dict = item_container.stats
-				add_item_database(item_dict, player)
+				print("item_dict: \n %s" % item_dict)
+				#####add_item_database(item_dict, player)
 				item_container.queue_free()
 				print("removing item from map list and world list (not stackable, null at index: %s)" % index)
 			# inventory does not have room
 			else:
-				server.send_client_notification(int(player.name), 0)
-				print("player: %s's equip inventory full", player.name)
+				####server.send_client_notification(int(player.name), 0)
+				print("player: %s's equip inventory full" % player.name)
 		else:
 			# if check if item stackable
 			if item_container.stats.stackable:
 				# item is in inventory
 				if item_container.id in inventory_ref.keys():
+					item_container.looted = true
 					"""
 					can add if statement here for max_quantity looting. If inventory.item.q <= max_item
 						loot
@@ -363,6 +391,7 @@ func lootDrop(player: KinematicBody2D, item_container: KinematicBody2D) -> void:
 					var index = inventory_ref.find(null)
 					# inventory has room
 					if index >= 0:
+						item_container.looted = true
 						# update map itemlist
 						ServerData.items[item_container.map].erase(item_container.name)
 						# add item to index and update client
@@ -381,6 +410,7 @@ func lootDrop(player: KinematicBody2D, item_container: KinematicBody2D) -> void:
 				var index = inventory_ref.find(null)
 				# inventory has room
 				if index >= 0:
+					item_container.looted = true
 					# update map itemlist
 					ServerData.items[item_container.map].erase(item_container.name)
 					# add item to index and update client
