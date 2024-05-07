@@ -78,6 +78,7 @@ func get_animation() -> int:
 func load_player_stats() -> void:
 	max_horizontal_speed = current_character.stats.base.movementSpeed
 	jump_speed = current_character.stats.base.jumpSpeed
+	print(typeof(current_character.inventory["100000"]))
 
 func attack(move_id: int) -> void:
 	attacking = true
@@ -85,14 +86,14 @@ func attack(move_id: int) -> void:
 	if move_id == 0:
 		var equipment = current_character.equipment
 		if equipment.rweapon.type == "1h_sword":
-			animation.play("1h_sword",-1, ServerData.static_data.weapon_speed[equipment.rweapon.speed])
+			animation.play("1h_sword",-1, ServerData.static_data.weapon_speed[equipment.rweapon.attackSpeed])
 			yield(animation, "animation_finished")
 		elif equipment.rweapon.type == "2h_sword":
 			pass
 		elif equipment.weapon.type == "bow":
 		# else ranged weapon:
 			if equipment.ammo.amount > 0:
-				animation.play("bow",-1, ServerData.static_data.weapon_speed[equipment.rweapon.speed])
+				animation.play("bow",-1, ServerData.static_data.weapon_speed[equipment.rweapon.attackSspeed])
 			else:
 				return "not enough ammo"
 		# no mobs overlap
@@ -157,7 +158,9 @@ func experience(experience: int) -> void:
 	if current_exp >= exp_limit:
 		# multiple levels
 		while current_exp >= exp_limit:
-			current_exp -= exp_limit
+			print("current xp: %s, exp max: %s, ending xp: %s" % [current_exp, exp_limit,  current_exp - exp_limit])
+			current_exp %= exp_limit
+			print("new current xp: %s" % current_exp)
 			current_character.stats.base.level += 1
 			current_character.stats.base.sp += 5
 			print("%s Level Up" % current_character.displayname)
@@ -245,11 +248,11 @@ func get_velocity(move_vector: Vector2, delta: float) -> void:
 				velocity.y = 100
 				if is_on_floor():
 					is_climbing = false
-					Global.send_climb_data(self.name, 1)
+					Global.send_climb_data(int(self.name), 1)
 			# jump off rope
 			elif input[4] == 1 && (input[1] == 1 or input[3] == 1):
 				is_climbing = false
-				Global.send_climb_data(self.name, 1)
+				Global.send_climb_data(int(self.name), 1)
 				velocity.y = move_vector.y * jump_speed * .8
 				velocity.x = move_vector.x * 200
 		# can climb but not climbing
@@ -260,7 +263,7 @@ func get_velocity(move_vector: Vector2, delta: float) -> void:
 			# press up on ladder initiates climbing
 			elif input[0] == 1:
 					is_climbing = true
-					Global.send_climb_data(self.name, 2)
+					Global.send_climb_data(int(self.name), 2)
 					velocity.y = 0
 					velocity.x = 0
 			# over lapping ladder pressing nothing allows gravity
@@ -275,7 +278,7 @@ func get_velocity(move_vector: Vector2, delta: float) -> void:
 			velocity.y += gravity * delta
 	if !can_climb:
 		is_climbing = false
-		Global.send_climb_data(self.name, 0)
+		Global.send_climb_data(int(self.name), 0)
 
 ################################
 # edit so direction can be sent through world_state
@@ -342,6 +345,6 @@ func _on_Timer_timeout() -> void:
 	pass # Replace with function body.
 
 func loot_request() -> void:
-	print(self.name, " ", "Pressed Loot")
+	#print(self.name, " ", "Pressed Loot")
 	var loot_list = loot_node.get_overlapping_areas()
 	Global.lootRequest(self, loot_list)
