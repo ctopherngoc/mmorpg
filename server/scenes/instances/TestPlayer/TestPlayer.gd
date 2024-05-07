@@ -104,7 +104,7 @@ var mobs_hit = []
 func _ready():
 	#ServerData.characters_data[str(self.name)] = current_character
 	#self.name = "100000"
-	pass
+	Global.testplayer = self
 	
 func attack(move_id):
 	attacking = true
@@ -215,3 +215,16 @@ func loot_request():
 	print(self.name, " ", "Pressed Loot")
 	var loot_list = loot_node.get_overlapping_areas()
 	Global.lootRequest(self, loot_list)
+
+func _on_Button_pressed():
+	current_character.inventory["etc"] = [{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}]
+	current_character.inventory["use"] = [{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}]
+	current_character.inventory["equipment"] = [{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}]
+	current_character.inventory["100000"] = Global.max_int
+
+
+func _on_Button2_pressed():
+	current_character.inventory["etc"] = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+	current_character.inventory["use"] = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+	current_character.inventory["equipment"] = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+	current_character.inventory["100000"] = 0
