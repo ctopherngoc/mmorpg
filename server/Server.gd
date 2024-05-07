@@ -187,7 +187,7 @@ func _Server_New_Character(new_char: Dictionary):
 		
 	############################################################################
 	#temp add weapon
-	equips.rweapon = {"accuracy":0, "attack":15, "avoidability":0, "bossPercent":5, "critRate":0, "damagePercent":0, "defense":0, "dexterity":4, "id":"200001", "job":0, "jumpSpeed":0, "luck":5, "magic":0, "magicDefense":0, "maxHealth":0, "maxMana":0, "movementSpeed":0, "name":"Training Sword", "slot":7, "speed":5, "strength":5, "type":"1h_sword", "wisdom":5, "uniqueID": 100000000}
+	equips.rweapon = {"accuracy":0, "attack":15, "avoidability":0, "bossPercent":5, "critRate":0, "damagePercent":0, "defense":0, "dexterity":4, "id":"200001", "job":0, "jumpSpeed":0, "luck":5, "magic":0, "magicDefense":0, "maxHealth":0, "maxMana":0, "movementSpeed":0, "name":"Training Sword", "slot":7, "attackSpeed":5, "strength":5, "type":"1h_sword", "wisdom":5, "uniqueID": str(Global.rng.randi_range(1, 1000000000))}
 	#############################################################################
 	
 	return temp_player
@@ -279,7 +279,7 @@ func update_player_stats(player_container: KinematicBody2D) -> void:
 	rpc_id(int(player_container.name), "update_player_stats", player_container.current_character)
 
 # Character containers/information 
-func move_player_container(player_id: int, player_container: KinematicBody2D, map_id: int, position) -> void:
+func move_player_container(player_id: int, player_container: KinematicBody2D, map_id: String, position) -> void:
 	"""
 	position can be string or vector2
 	string = spawn
@@ -456,7 +456,7 @@ remote func move_item(inv_data: Array):
 	var player_id = get_tree().get_rpc_sender_id()
 	var player_container = _Server_Get_Player_Container(player_id)
 	var tab = {0: "equip", 1: "use", 2: "etc"}
-	print("in move_item rpc")
+	#print("in move_item rpc")
 	print(player_container.current_character.inventory[tab[inv_data[0]]])
 	
 	var item1 = player_container.current_character.inventory[tab[inv_data[0]]][inv_data[1]]
@@ -512,8 +512,11 @@ func _on_Button5_pressed():
 	#server_dict.equipment.top = {"id": 500000}
 	#save("res://save.json",fb_data)
 	#Firebase.test_update_document("characters/testing222", server_dict)
-	
-	var server_dict =  {"owner": "testing123", "accuracy":0, "attack":15, "avoidability":0, "bossPercent":5, "critRate":0, "damagePercent":0, "defense":0, "dexterity":4, "id":"200001", "job":0, "jumpSpeed":0, "luck":5, "magic":0, "magicDefense":0, "maxHealth":0, "maxMana":0, "movementSpeed":0, "name":"Training Sword", "slot":7, "speed":5, "strength":5, "type":"1h_sword", "wisdom":5, "uniqueID": 100000000}
+	#print(ServerData.characters_data["testing222"]["inventory"]["equipment"][0])
+	#var actual_equip = ServerData.characters_data["testing222"]["inventory"]["equipment"][0]
+	#var server_dict =  {"owner": "testing222", "accuracy":0, "attack":15, "avoidability":0, "bossPercent":5, "critRate":0, "damagePercent":0, "defense":0, "dexterity":4, "id":"200001", "job":0, "jumpSpeed":0, "luck":5, "magic":0, "magicDefense":0, "maxHealth":0, "maxMana":0, "movementSpeed":0, "name":"Training Sword", "slot":7, "movementSpeed":5, "strength":5, "type":"1h_sword", "wisdom":5, "uniqueID": 10000002}
+	#print(server_dict)
+	var server_dict =  {"owner": "testing222", "id":"200001", "uniqueID": "10000002", "name": "test_item", "type": "1h_sword"}
 	Firebase.test_update_document("items/%s" % str(server_dict.id + str(server_dict.uniqueID)), server_dict)
 	
 func save(var path : String, var thing_to_save):
