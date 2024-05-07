@@ -60,8 +60,7 @@ var static_data = {
 		"4": [],
 		"5": [],
 	},
-	"player_info" :
-		{
+	"player_info" : {
 		"displayname": {'stringValue': null},
 		"map": {'integerValue': null},
 		"stats" : { "mapValue":
@@ -165,8 +164,7 @@ var static_data = {
 			}#mapvalue
 		}, #inventory
 	},
-	"player_template" : 
-		{
+	"player_template" : {
 		"displayname": null,
 		"map": "100001",
 		"stats" : {
@@ -256,12 +254,11 @@ var static_data = {
 			[500004, 500005],
 		],
 	"equipment_data_template" : {
-		"id": 0,
+		"id": "",
 		"job": 0,
-		"uniqueID":0,
+		"uniqueID":"",
 		"type": "",
 		"name": "",
-		"speed": 5,
 		"slot": 7,
 		"attack": 0,
 		"magic": 0,
@@ -281,8 +278,7 @@ var static_data = {
 		"damagePercent": 0,
 		"critRate": 0,
 		},
-	"equipment_stats_template" :
-		{
+	"equipment_stats_template" : {
 			"attack": 0,
 			"magic": 0,
 			"maxHealth": 0,
@@ -355,12 +351,11 @@ var static_data = {
 	},
 	"fb_equipment_template" : {
 		"owner": {"stringValue": ""},
-		"id": {"integerValue": 0},
+		"id": {"stringValue": ""},
 		"job": {"integerValue": 0},
-		"uniqueID":{"integerValue": 0},
+		"uniqueID":{"stringValue": ""},
 		"type": {"stringValue": ""},
 		"name": {"stringValue": ""},
-		"speed": {"integerValue": 0},
 		"slot": {"integerValue": 0},
 		"attack": {"integerValue": 0},
 		"magic": {"integerValue": 0},
@@ -379,6 +374,7 @@ var static_data = {
 		"bossPercent": {"integerValue": 0},
 		"damagePercent": {"integerValue": 0},
 		"critRate": {"integerValue": 0},
+		"attackSpeed": {"integerValue": 0},
 		},
 }
 
