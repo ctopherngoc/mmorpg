@@ -8,6 +8,7 @@ var velocity = Vector2(0, 0)
 var looted = false
 var map
 var drop_id
+var stackable = 0
 
 func _ready():
 	pass
