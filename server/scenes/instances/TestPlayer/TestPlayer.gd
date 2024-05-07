@@ -212,7 +212,7 @@ func _on_Timer_timeout():
 	pass # Replace with function body.
 
 func loot_request():
-	print(self.name, " ", "Pressed Loot")
+	#print(self.name, " ", "Pressed Loot")
 	var loot_list = loot_node.get_overlapping_areas()
 	Global.lootRequest(self, loot_list)
 
@@ -224,7 +224,13 @@ func _on_Button_pressed():
 
 
 func _on_Button2_pressed():
-	current_character.inventory["etc"] = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
-	current_character.inventory["use"] = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
-	current_character.inventory["equipment"] = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
-	current_character.inventory["100000"] = 0
+#	current_character.inventory["etc"] = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+#	current_character.inventory["use"] = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+#	current_character.inventory["equipment"] = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+#	current_character.inventory["100000"] = 0
+	ServerData.characters_data['testing222'].inventory["equipment"] = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+
+
+func _on_Button6_pressed():
+	var random_unique_id = (((Global.rng.randi_range(10000000, 10000000000) + Global.rng.randi_range(100, 10000)) / Global.rng.randi_range(2, 5)) - Global.rng.randi_range(10, 100) * Global.rng.randi_range(2, 6)) + Global.rng.randi_range(10, 51)
+	print(random_unique_id)
