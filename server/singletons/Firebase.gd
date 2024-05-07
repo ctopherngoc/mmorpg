@@ -1,5 +1,5 @@
 extends Node
-const API_KEY := ""
+const API_KEY := "AIzaSyC2PkBqVa6lm9zG7gfy7MLZvNpRytA8klU"
 const PROJECT_ID := "godotproject-ef224"
 const DATABASE_URL := "https://firestore.googleapis.com/v1/projects/%s/databases/(default)/documents/" % PROJECT_ID 
 const LOGIN_URL := "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=%s" % API_KEY
@@ -135,7 +135,7 @@ func firebase_dictionary_converter(database_data: Dictionary, client_data: Array
 	for item in shortcut.keys():
 			# if gold
 			if item == "100000":
-				temp_dict['inventory'][item] = shortcut[item]['integerValue']
+				temp_dict['inventory'][item] = int(shortcut[item]['integerValue'])
 			# tab keys [equips, use, etc]
 			else:
 				temp_dict['inventory'][item] = []
@@ -344,7 +344,7 @@ func server_firebase_dictionary_converter(database_data: Dictionary) -> Dictiona
 	for key in keys:
 			# if gold
 			if key == "100000":
-				temp_dict['inventory'][key] = shortcut[key]['integerValue']
+				temp_dict['inventory'][key] = int(shortcut[key]['integerValue'])
 			# tab keys [equips, use, etc]
 			else:
 				temp_dict['inventory'][key] = []
@@ -526,5 +526,5 @@ func test_update_document(path: String, data_dict: Dictionary) -> void:
 	# warning-ignore:return_value_discarded
 	#httprequest.request(url, _get_request_headers(server_token), false, HTTPClient.METHOD_PATCH, body)
 	var new_path = "items/%s" % (data_dict.id + str(data_dict.uniqueID)) 
-	update_document(new_path, httprequest, server_token, data_dict)
+	update_document(path, httprequest, server_token, data_dict)
 	#yield(httprequest, "request_completed")
