@@ -104,7 +104,7 @@ func update_inventory():
 					# get item node from node_list
 					var item = inv_ref[tab][count]
 					var item_node = node_list[tab][count]
-					
+					print("in update inventory, item: %s" % item)
 					var item_name = GameData.itemTable[str(item['id'])]["itemName"]
 					item_node.item_data["id"] = str(item['id'])
 					item_node.item_data["item"] = GameData.itemTable[str(item['id'])]["itemName"]
