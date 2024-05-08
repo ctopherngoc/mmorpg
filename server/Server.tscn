@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://scenes/serverObjects/PlayerVerification.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Server.gd" type="Script" id=2]
@@ -6,8 +6,7 @@
 [ext_resource path="res://scenes/maps/100002/100002.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scenes/maps/100001/100001.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scenes/maps/Camera2D.gd" type="Script" id=6]
-[ext_resource path="res://scenes/monsterObjects/100001/test_000001.tscn" type="PackedScene" id=7]
-[ext_resource path="res://scenes/instances/TestPlayer/TestPlayer.tscn" type="PackedScene" id=8]
+[ext_resource path="res://scenes/Test/Test_Rig.tscn" type="PackedScene" id=7]
 
 [node name="Server" type="Node"]
 script = ExtResource( 2 )
@@ -43,6 +42,8 @@ script = ExtResource( 3 )
 position = Vector2( 512, -301 )
 current = true
 script = ExtResource( 6 )
+
+[node name="Test" parent="." instance=ExtResource( 7 )]
 
 [node name="Test" type="Node2D" parent="."]
 position = Vector2( 231, -405 )
@@ -87,3 +88,6 @@ text = "Loot Item"
 [connection signal="pressed" from="Test/Button2" to="." method="_on_Button2_pressed"]
 [connection signal="pressed" from="Test/Button3" to="." method="_on_Button3_pressed"]
 [connection signal="pressed" from="Test/Button4" to="." method="_on_Button4_pressed"]
+[connection signal="pressed" from="Test/Button5" to="." method="_on_Button5_pressed"]
+
+[editable path="Test"]

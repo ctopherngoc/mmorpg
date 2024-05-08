@@ -1,0 +1,554 @@
+{
+	"displayname": {
+		"stringValue": "testing123"
+	},
+	"map": {
+		"integerValue": 100001
+	},
+	"stats": {
+		"mapValue": {
+			"fields": {
+				"base": {
+					"mapValue": {
+						"fields": {
+							"maxRange": {
+								"integerValue": 16
+							},
+							"minRange": {
+								"integerValue": 3
+							},
+							"maxHealth": {
+								"integerValue": 50
+							},
+							"health": {
+								"integerValue": 35
+							},
+							"maxMana": {
+								"integerValue": 50
+							},
+							"mana": {
+								"integerValue": 50
+							},
+							"level": {
+								"integerValue": 1
+							},
+							"experience": {
+								"integerValue": 0
+							},
+							"class": {
+								"integerValue": 0
+							},
+							"job": {
+								"integerValue": 0
+							},
+							"sp": {
+								"integerValue": 0
+							},
+							"ap": {
+								"integerValue": 0
+							},
+							"strength": {
+								"integerValue": 4
+							},
+							"wisdom": {
+								"integerValue": 4
+							},
+							"dexterity": {
+								"integerValue": 4
+							},
+							"luck": {
+								"integerValue": 4
+							},
+							"movementSpeed": {
+								"integerValue": 100
+							},
+							"jumpSpeed": {
+								"integerValue": 200
+							},
+							"avoidability": {
+								"integerValue": 4
+							},
+							"defense": {
+								"integerValue": 0
+							},
+							"magicDefense": {
+								"integerValue": 0
+							},
+							"accuracy": {
+								"integerValue": 10
+							},
+							"bossPercent": {
+								"integerValue": 1
+							},
+							"damagePercent": {
+								"integerValue": 1
+							},
+							"critRate": {
+								"integerValue": 5
+							}
+						}
+					}
+				},
+				"equipment": {
+					"mapValue": {
+						"fields": {
+							"attack": {
+								"integerValue": 0
+							},
+							"magic": {
+								"integerValue": 0
+							},
+							"maxHealth": {
+								"integerValue": 0
+							},
+							"maxMana": {
+								"integerValue": 0
+							},
+							"strength": {
+								"integerValue": 0
+							},
+							"wisdom": {
+								"integerValue": 0
+							},
+							"dexterity": {
+								"integerValue": 0
+							},
+							"luck": {
+								"integerValue": 0
+							},
+							"movementSpeed": {
+								"integerValue": 0
+							},
+							"jumpSpeed": {
+								"integerValue": 0
+							},
+							"avoidability": {
+								"integerValue": 0
+							},
+							"defense": {
+								"integerValue": 0
+							},
+							"magicDefense": {
+								"integerValue": 0
+							},
+							"accuracy": {
+								"integerValue": 0
+							},
+							"bossPercent": {
+								"integerValue": 0
+							},
+							"damagePercent": {
+								"integerValue": 0
+							},
+							"critRate": {
+								"integerValue": 0
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	"avatar": {
+		"mapValue": {
+			"fields": {
+				"head": {
+					"stringValue": "0"
+				},
+				"hair": {
+					"stringValue": "0"
+				},
+				"hcolor": {
+					"stringValue": "0"
+				},
+				"body": {
+					"stringValue": "0"
+				},
+				"bcolor": {
+					"stringValue": "0"
+				},
+				"ear": {
+					"stringValue": "0"
+				},
+				"mouth": {
+					"stringValue": "0"
+				},
+				"eye": {
+					"stringValue": "0"
+				},
+				"ecolor": {
+					"stringValue": "0"
+				},
+				"brow": {
+					"stringValue": "0"
+				}
+			}
+		}
+	},
+	"equipment": {
+		"mapValue": {
+			"fields": {
+				"ammo": {
+					"integerValue": -1
+				},
+				"headgear": {
+					"integerValue": -1
+				},
+				"faceacc": {
+					"integerValue": -1
+				},
+				"eyeacc": {
+					"integerValue": -1
+				},
+				"top": {
+					"integerValue": 500000
+				},
+				"bottom": {
+					"integerValue": 500001
+				},
+				"earring": {
+					"integerValue": -1
+				},
+				"glove": {
+					"integerValue": -1
+				},
+				"pocket": {
+					"integerValue": -1
+				},
+				"lweapon": {
+					"integerValue": -1
+				},
+				"rweapon": {
+					"integerValue": -1
+				},
+				"tattoo": {
+					"integerValue": -1
+				}
+			}
+		}
+	},
+	"inventory": {
+		"mapValue": {
+			"fields": {
+				"100000": {
+					"integerValue": 0
+				},
+				"equipment": {
+					"arrayValue": {
+						"values": [
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							}
+						]
+					}
+				},
+				"use": {
+					"arrayValue": {
+						"values": [
+							{
+								"mapValue": {
+									"fields": {
+										"q": {
+											"integerValue": 10
+										},
+										"id": {
+											"stringValue": "300001"
+										}
+									}
+								}
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							}
+						]
+					}
+				},
+				"etc": {
+					"arrayValue": {
+						"values": [
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							}
+						]
+					}
+				}
+			}
+		}
+	}
+}

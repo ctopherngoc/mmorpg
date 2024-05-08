@@ -57,6 +57,7 @@ shape = SubResource( 22 )
 disabled = true
 
 [node name="Button" type="Button" parent="."]
+visible = false
 margin_left = -28.0
 margin_top = -97.0
 margin_right = 53.0
@@ -64,6 +65,7 @@ margin_bottom = -77.0
 text = "move right"
 
 [node name="Button2" type="Button" parent="."]
+visible = false
 margin_left = -119.0
 margin_top = -99.0
 margin_right = -46.0

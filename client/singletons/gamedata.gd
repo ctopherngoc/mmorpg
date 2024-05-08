@@ -89,7 +89,7 @@ onready var test_player = {
 		},
 	"equipment": {
 		"rweapon": {
-			"id": 100000,
+			"id": 200005,
 			"uniqueID":14333321,
 			"job": 0,
 			"type": "1h_sword",

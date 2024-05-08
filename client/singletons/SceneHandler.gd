@@ -15,7 +15,6 @@ onready var menu_scenes = {
 func _ready():
 # warning-ignore:return_value_discarded
 	get_tree().change_scene("res://scenes/menuObjects/LoginScreen/LoginScreen.tscn")
-	
 
 func _process(_delta):
 	# turn on music

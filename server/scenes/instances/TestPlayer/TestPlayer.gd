@@ -11,8 +11,11 @@ onready var loot_node = $loot_box
 var db_info = {}
 var hittable = true
 var current_character = {
+	"displayname": "testing123",
+	
 	"equipment": {
 		"rweapon": {
+			"owner": "testing123",
 			"id": 100000,
 			"uniqueID":14333321,
 			"job": 0,
@@ -89,9 +92,11 @@ var current_character = {
 			"critRate": 0,
 		},
 	},
-	"inventory" : {
-			"100000": 0,
-	},
+	"inventory":
+		{"100000":0,
+		"equipment": [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+			"etc": [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+			"use": [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]}, #inventory
 }
 var attacking = false
 var mobs_hit = []
@@ -99,7 +104,7 @@ var mobs_hit = []
 func _ready():
 	#ServerData.characters_data[str(self.name)] = current_character
 	#self.name = "100000"
-	pass
+	Global.testplayer = self
 	
 func attack(move_id):
 	attacking = true
@@ -207,6 +212,25 @@ func _on_Timer_timeout():
 	pass # Replace with function body.
 
 func loot_request():
-	print(self.name, " ", "Pressed Loot")
+	#print(self.name, " ", "Pressed Loot")
 	var loot_list = loot_node.get_overlapping_areas()
-	Global.lootRequest(self.name, loot_list)
+	Global.lootRequest(self, loot_list)
+
+func _on_Button_pressed():
+	current_character.inventory["etc"] = [{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}]
+	current_character.inventory["use"] = [{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}]
+	current_character.inventory["equipment"] = [{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}]
+	current_character.inventory["100000"] = Global.max_int
+
+
+func _on_Button2_pressed():
+#	current_character.inventory["etc"] = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+#	current_character.inventory["use"] = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+#	current_character.inventory["equipment"] = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+#	current_character.inventory["100000"] = 0
+	ServerData.characters_data['testing222'].inventory["equipment"] = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+
+
+func _on_Button6_pressed():
+	var random_unique_id = (((Global.rng.randi_range(10000000, 10000000000) + Global.rng.randi_range(100, 10000)) / Global.rng.randi_range(2, 5)) - Global.rng.randi_range(10, 100) * Global.rng.randi_range(2, 6)) + Global.rng.randi_range(10, 51)
+	print(random_unique_id)

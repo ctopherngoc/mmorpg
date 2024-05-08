@@ -21,7 +21,7 @@ func _ready():
 	itemTable = gamedata_json.result["ItemTable"]
 	equipmentTable = gamedata_json.result["EquipmentTable"]
 	
-	print(monsterTable)
+	#print(monsterTable)
 	#print(equipmentTable)
 	
 	
@@ -60,8 +60,7 @@ var static_data = {
 		"4": [],
 		"5": [],
 	},
-	"player_info" :
-		{
+	"player_info" : {
 		"displayname": {'stringValue': null},
 		"map": {'integerValue': null},
 		"stats" : { "mapValue":
@@ -158,12 +157,14 @@ var static_data = {
 		"inventory" : {"mapValue":
 			{"fields": 
 				{"100000": {'integerValue': null},
+				"equipment": {'arrayValue':{'values':[{"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}]}},
+				"use": {'arrayValue':{'values':[{"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null},]}},
+				"etc": {'arrayValue':{'values':[{"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null}, {"nullValue": null},]}},
 				}#fields
 			}#mapvalue
 		}, #inventory
 	},
-	"player_template" : 
-		{
+	"player_template" : {
 		"displayname": null,
 		"map": "100001",
 		"stats" : {
@@ -237,12 +238,14 @@ var static_data = {
 				"glove": -1,
 				"lweapon": -1,
 				"rweapon": -1,
+				#"rweapon": {"accuracy":0, "attack":15, "avoidability":0, "bossPercent":0, "critRate":0, "damagePercent":0, "defense":0, "dexterity":4, "id":"200001", "job":0, "jumpSpeed":0, "luck":5, "magic":0, "magicDefense":0, "maxHealth":0, "maxMana":0, "movementSpeed":0, "name":"Training Sword", "slot":7, "speed":5, "strength":5, "type":"1h_sword", "uniqueID":1000000, "wisdom":5},
 				"pocket": -1,
 				"tattoo": -1,
 				}, #equipment
-		"inventory" : {
-					"100000": 0,
-				} #inventory
+		 "inventory":{"100000":0,
+		"equipment": [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+			"etc": [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+			"use": [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]} #inventory
 	},
 	"starter_equips" : 
 		[
@@ -250,35 +253,32 @@ var static_data = {
 			[500002, 500003],
 			[500004, 500005],
 		],
-	"equipment_data_template" :
-		{
-			"id": 0,
-			"job": 0,
-			"unique_id":0,
-			"type": "",
-			"name": "",
-			"speed": 5,
-			"slot": 7,
-			"attack": 0,
-			"magic": 0,
-			"maxHealth": 0,
-			"maxMana": 0,
-			"strength": 0,
-			"wisdom": 0,
-			"dexterity": 0,
-			"luck": 0,
-			"movementSpeed": 0,
-			"jumpSpeed": 0,
-			"avoidability": 0,
-			"defense": 0,
-			"magicDefense": 0,
-			"accuracy": 0,
-			"bossPercent": 0,
-			"damagePercent": 0,
-			"critRate": 0,
+	"equipment_data_template" : {
+		"id": "",
+		"job": 0,
+		"uniqueID":"",
+		"type": "",
+		"name": "",
+		"slot": 7,
+		"attack": 0,
+		"magic": 0,
+		"maxHealth": 0,
+		"maxMana": 0,
+		"strength": 0,
+		"wisdom": 0,
+		"dexterity": 0,
+		"luck": 0,
+		"movementSpeed": 0,
+		"jumpSpeed": 0,
+		"avoidability": 0,
+		"defense": 0,
+		"magicDefense": 0,
+		"accuracy": 0,
+		"bossPercent": 0,
+		"damagePercent": 0,
+		"critRate": 0,
 		},
-	"equipment_stats_template" :
-		{
+	"equipment_stats_template" : {
 			"attack": 0,
 			"magic": 0,
 			"maxHealth": 0,
@@ -349,6 +349,33 @@ var static_data = {
 		'29': 59511,
 		'30': 65462,
 	},
+	"fb_equipment_template" : {
+		"owner": {"stringValue": ""},
+		"id": {"stringValue": ""},
+		"job": {"integerValue": 0},
+		"uniqueID":{"stringValue": ""},
+		"type": {"stringValue": ""},
+		"name": {"stringValue": ""},
+		"slot": {"integerValue": 0},
+		"attack": {"integerValue": 0},
+		"magic": {"integerValue": 0},
+		"maxHealth": {"integerValue": 0},
+		"maxMana":{"integerValue": 0},
+		"strength": {"integerValue": 0},
+		"wisdom": {"integerValue": 0},
+		"dexterity": {"integerValue": 0},
+		"luck": {"integerValue": 0},
+		"movementSpeed": {"integerValue": 0},
+		"jumpSpeed": {"integerValue": 0},
+		"avoidability": {"integerValue": 0},
+		"defense": {"integerValue": 0},
+		"magicDefense": {"integerValue": 0},
+		"accuracy": {"integerValue": 0},
+		"bossPercent": {"integerValue": 0},
+		"damagePercent": {"integerValue": 0},
+		"critRate": {"integerValue": 0},
+		"attackSpeed": {"integerValue": 0},
+		},
 }
 
 var portal_data = {
@@ -367,104 +394,3 @@ var portal_data = {
 					'spawn': Vector2(904, -252)}
 	},
 }
-
-"""
-var test_pstats = {
-	"equipment": {
-		"rweapon": {
-			"id": 100000,
-			"unique_id":14333321,
-			"job": 0,
-			"type": "1h_sword",
-			"name": "temp sword",
-			"speed": 5,
-			"slots": 7,
-			"attack": 15,
-			"magic": 0,
-			"maxHealth": 0,
-			"maxMana": 0,
-			"strength": 5,
-			"wisdom": 5,
-			"dexterity": 5,
-			"luck": 5,
-			"movementSpeed": 0,
-			"jumpSpeed": 0,
-			"avoidability": 0,
-			"defense": 0,
-			"magicDefense": 0,
-			"accuracy": 0,
-			"bossPercent": 0,
-			"damagePercent": 0,
-			"critRate": 0,
-			},# rwep
-		#"lweapon": null,
-	},#equip
-	"stats": 
-	{
-		"base": {
-			"maxRange": 50,
-			"minRange": 0,
-			"health": 50,
-			"mana": 50,
-			"maxHealth": 50,
-			"maxMana": 50,
-			"level": 1,
-			"experience": 0,
-			"class": 0,
-			"job": 0,
-			"sp": 0,
-			"ap": 0,
-			"strength": 4,
-			"wisdom": 4,
-			"dexterity": 4,
-			"luck": 4,
-			"movementSpeed": 100,
-			"jumpSpeed": 200,
-			"avoidability": 4,
-			"defense": 0,
-			"magicDefense": 0,
-			"accuracy": 10,
-			"bossPercent": 1,
-			"damagePercent": 1,
-			"critRate": 5,
-		},
-		"equipment": {
-			"attack": 0,
-			"magic": 0,
-			"maxHealth": 0,
-			"maxMana": 0,
-			"strength": 0,
-			"wisdom": 0,
-			"dexterity": 0,
-			"luck": 0,
-			"movementSpeed": 0,
-			"jumpSpeed": 0,
-			"avoidability": 0,
-			"defense": 0,
-			"magicDefense": 0,
-			"accuracy": 0,
-			"bossPercent": 0,
-			"damagePercent": 0,
-			"critRate": 0,
-		},
-	},
-	"inventory" : {
-			"100000": 0,
-	},
-}
-
-var test_mstats = {
-	"health": 50,
-	"mana": 50,
-	"maxHealth": 50,
-	"maxMana": 50,
-	"level": 1,
-	"movementSpeed": 100,
-	"jumpSpeed": 200,
-	"avoidability": 4,
-	"defense": 16,
-	"magicDefense": 1,
-	"accuracy": 10,
-	"boss": 0
-}
-"""
