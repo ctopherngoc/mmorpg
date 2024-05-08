@@ -217,7 +217,8 @@ remote func fetch_player_stats() -> void:
 	for i in Maps.get_children():
 		for l in i.get_children():
 			if l.name == str(player_id):
-				print(l.player_stats)
+				pass
+				#print(l.player_stats)
 
 remote func fetch_usernames(requester, username: String) -> void:
 	print("inside fetch username. Username: %s" % username)
@@ -296,13 +297,13 @@ func move_player_container(player_id: int, player_container: KinematicBody2D, ma
 	var map_node = get_node("/root/Server/World/Maps/%s" % str(map_id))
 	var map_position = map_node.get_global_position()
 	var new_location = Vector2.ZERO
-	print("move: ", str(map_position))
+	#print("move: ", str(map_position))
 
 	if typeof(position) == TYPE_STRING:
 		position = Vector2(map_node.spawn_position.x, map_node.spawn_position.y)
-	print("new location: ", new_location)
+	#print("new location: ", new_location)
 	player.position = position
-	print("player cur position = ", player.position, " ", player.global_position)
+	#print("player cur position = ", player.position, " ", player.global_position)
 
 func get_player_data(player_id):
 	var player_container = _Server_Get_Player_Container(player_id)
@@ -313,7 +314,7 @@ remote func portal(portal_id):
 	var player_id = get_tree().get_rpc_sender_id()
 	var player_container = _Server_Get_Player_Container(player_id)
 	# validate
-	print(portal_id)
+	#print(portal_id)
 	var portal = ServerData.player_location[str(player_id)].replace("YSort/Players", "MapObjects/%s" % portal_id)
 	# get portal node
 	get_node(portal).over_lapping_bodies(player_id)
@@ -458,7 +459,7 @@ remote func move_item(inv_data: Array):
 	var tab = {0: "equipment", 1: "use", 2: "etc"}
 	#print("in move_item rpc")
 	#print(player_container.current_character.inventory[tab[inv_data[0]]])
-	print(inv_data)
+	#print(inv_data)
 	
 	var item1 = player_container.current_character.inventory[tab[inv_data[0]]][inv_data[1]]
 	# if to_slot != null -> to_slot = from_slot, from_slot = to_slot
@@ -470,7 +471,7 @@ remote func move_item(inv_data: Array):
 	else:
 		player_container.current_character.inventory[tab[inv_data[0]]][inv_data[2]] = item1
 		player_container.current_character.inventory[tab[inv_data[0]]][inv_data[1]] = null
-	print(player_container.current_character.inventory[tab[inv_data[0]]])
+	#print(player_container.current_character.inventory[tab[inv_data[0]]])
 	# update client
 	update_player_stats(player_container)
 

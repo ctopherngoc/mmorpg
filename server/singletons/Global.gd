@@ -67,31 +67,31 @@ func damage_formula(type: bool, player_dict: Dictionary, target_stats: Dictionar
 		if rng.randi_range(1,10) < acc_diff:
 			print("miss")
 			return -1
-	print("Acc >= Avoid")
+	#print("Acc >= Avoid")
 	var damage = rng.randi_range(stats.base.minRange, stats.base.maxRange)
-	print("damage before: ", damage)
+	#print("damage before: ", damage)
 	if type:
-		print("phyiscal")
+		#print("phyiscal")
 		if stats.base.maxRange >= target_stats.defense:
 			damage = float( damage * 2 - target_stats.defense)
 		else:
 			damage = float( damage * damage / target_stats.defense)
-		print("damage after %s" % damage)
+		#print("damage after %s" % damage)
 	#magic damage
 	else:
 		# update later
 		#####################################################################
-		print("magic")
+		#print("magic")
 		if stats.base.magic >= target_stats.magicDefense:
 			damage = float(stats.base.magic * stats.equipment.magic / target_stats.magicDefense)
 		else:
 			return 0
 		#######################################################################
 	damage = damage * ((float(stats.base.damagePercent + stats.equipment.damagePercent) * 0.1) + 1.0)
-	print("after dmg_percent: %s" % damage)
+	#print("after dmg_percent: %s" % damage)
 	if target_stats["boss"] == 1:
 		damage = damage * ((float(stats.base.bossPercent + stats.equipment.bossPercent) * 0.1) + 1.0)
-		print("After boss percent: %s" % damage)
+		#print("After boss percent: %s" % damage)
 	var crit_rate = stats.base.critRate + stats.equipment.critRate
 	var crit_ratio = calculate_crit(crit_rate)
 	var final_damage = int(damage * crit_ratio)
@@ -142,7 +142,7 @@ func calculate_stats(player_stats: Dictionary) -> void:
 		else:
 			base.maxRange = (base.strength + base.wisdom + base.dexterity + base.luck + equip.strength + equip.wisdom + equip.dexterity + equip.luck) + int((float(equip.attack) * ServerData.static_data.weapon_ratio[equipment.rweapon.type]))
 		base.minRange = int(float(base.maxRange) * 0.2)
-		print(base.maxRange)
+		#print(base.maxRange)
 	else:
 		pass
 
@@ -271,14 +271,14 @@ func dropSpawn(map: String, location: Vector2, item_dict: Dictionary, user_id) -
 		#default not stackable
 		if ServerData.itemTable[item]["stackable"] == 1:
 			new_item.stackable = 1
-		print("Drop id: %s used for client node.name to spawn and despawn items should be in world state", new_item.id)
+		#print("Drop id: %s used for client node.name to spawn and despawn items should be in world state", new_item.id)
 		if ServerData.itemTable[item]["itemType"] == "equipment":
 			new_item.stats = item_dict[item]
 			new_item.stats['id'] = item
 		else:
 			new_item.amount = item_dict[item]
 			new_item.stackable = item_dict[item]
-		print(new_item)
+		#print(new_item)
 		map_node.add_child(new_item, true)
 
 func lootRequest(player: KinematicBody2D, loot_list: Array) -> void:
@@ -287,7 +287,7 @@ func lootRequest(player: KinematicBody2D, loot_list: Array) -> void:
 		pass
 		#print("no items")
 	else:
-		print(loot_list)
+		#print(loot_list)
 		# for item area2d in list of item area2ds
 		for item in loot_list:
 			# get item node
@@ -314,15 +314,15 @@ func lootRequest(player: KinematicBody2D, loot_list: Array) -> void:
 				break
 
 func lootDrop(player: KinematicBody2D, item_container: KinematicBody2D) -> void:
-	print("Looted Item Position: ", item_container.position, ServerData.items[item_container.map])
+	#print("Looted Item Position: ", item_container.position, ServerData.items[item_container.map])
 	if item_container.id == "100000":
 		item_container.looted = true
 		
-		print( "player gold: %s, drop: %s" %[typeof(player.current_character["inventory"]["100000"]), typeof(item_container.amount)])
+		#print( "player gold: %s, drop: %s" %[typeof(player.current_character["inventory"]["100000"]), typeof(item_container.amount)])
 		# if resulting gold > int variable capacity (max_int), set gold to max_number
 		###########################################################################################
 		if player.current_character["inventory"]["100000"] + item_container.amount < 0:
-			print("max gold")
+			#print("max gold")
 			player.current_character["inventory"]["100000"] = max_int
 		# add it to current amount
 		else:
@@ -331,7 +331,7 @@ func lootDrop(player: KinematicBody2D, item_container: KinematicBody2D) -> void:
 		ServerData.items[item_container.map].erase(item_container.name)
 		server.update_player_stats(player)
 		# remove item node from map
-		print("removing %s gold from map list and world list" % item_container.amount)
+		#print("removing %s gold from map list and world list" % item_container.amount)
 		item_container.queue_free()
 		
 	# parse if item is etc, use, equip
@@ -360,11 +360,11 @@ func lootDrop(player: KinematicBody2D, item_container: KinematicBody2D) -> void:
 				http_requests.append([item_dict, player])
 				#add_item_database(item_dict, player)
 				item_container.queue_free()
-				print("removing item from map list and world list (not stackable, null at index: %s)" % index)
+				#print("removing item from map list and world list (not stackable, null at index: %s)" % index)
 			# inventory does not have room
 			else:
 				server.send_client_notification(int(player.name), 0)
-				print("player: %s's equip inventory full" % player.name)
+				#print("player: %s's equip inventory full" % player.name)
 		else:
 			# if check if item stackable
 			if item_container.stackable:
@@ -394,7 +394,7 @@ func lootDrop(player: KinematicBody2D, item_container: KinematicBody2D) -> void:
 							server.update_player_stats(player)
 							# remove item node from map
 							item_container.queue_free()
-							print("removing item from map list and world list (stackable item is in inventory)")
+							#print("removing item from map list and world list (stackable item is in inventory)")
 							return
 						else:
 							count += 1
@@ -413,11 +413,11 @@ func lootDrop(player: KinematicBody2D, item_container: KinematicBody2D) -> void:
 					server.update_player_stats(player)
 					# remove item node from map
 					item_container.queue_free()
-					print("removing item from map list and world list (stackable not in inventory)")
+					#print("removing item from map list and world list (stackable not in inventory)")
 				# inventory does not have room
 				else:
 					server.send_client_notification(int(player.name), 0)
-					print("player: %s's inventory full stackable", player.name)
+					#print("player: %s's inventory full stackable", player.name)
 			# if look for first open space
 			else:
 				# if player inventory has room (null value): returns index, returns -1 if no room
@@ -432,11 +432,11 @@ func lootDrop(player: KinematicBody2D, item_container: KinematicBody2D) -> void:
 					server.update_player_stats(player)
 					# remove item node from map
 					item_container.queue_free()
-					print("removing item from map list and world list (not stackable, null at index: %s)" % index)
+					#print("removing item from map list and world list (not stackable, null at index: %s)" % index)
 				# inventory does not have room
 				else:
 					server.send_client_notification(int(player.name), 0)
-					print("player: %s's inventory full not stackable", player.name)
+					#print("player: %s's inventory full not stackable", player.name)
 	#ServerData.items[item_container.map].erase(item_container.name)
 	
 # placeholder functions for item ownership and unique item tracking
@@ -445,7 +445,7 @@ func add_item_database(data_dict: Dictionary, player_container: KinematicBody2D)
 	this function should be called on new item drop is looted. Primarily for equipments to keep track of item ownership
 	unique item ownership is important in case of trading.
 	"""
-	print("inside add_item_database")
+	#print("inside add_item_database")
 	#print(data_dict)
 	#print(player_container)
 	data_dict["owner"] = player_container.current_character.displayname
@@ -453,11 +453,11 @@ func add_item_database(data_dict: Dictionary, player_container: KinematicBody2D)
 	#print(data_dict)
 	var firebase = Firebase.update_document(path, player_container.http, player_container.db_info["token"], data_dict)
 	yield(firebase, 'completed')
-	print("added %s to firebase. owner is %s" % [data_dict.name, player_container.name])
+	#print("added %s to firebase. owner is %s" % [data_dict.name, player_container.name])
 	
 func add_item():
 	if http_requests.size() > 0:
-		print("adding item to database")
+		#print("adding item to database")
 		var item_argument_array = http_requests[0]
 		http_requests.remove(0)
 		var request = add_item_database(item_argument_array[0], item_argument_array[1])
