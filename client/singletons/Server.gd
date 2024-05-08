@@ -188,7 +188,7 @@ remote func receive_despawn_player(player_id):
 	Global.despawn_player(player_id)
 	
 func send_attack(skill_id):
-	print("server.gd: send_attack")
+	#print("server.gd: send_attack")
 	rpc_id(1, "attack", skill_id)
 	
 remote func receive_attack(player_id, attack_time):
@@ -257,11 +257,11 @@ remote func receive_climb_data(climb_data):
 	if Global.in_game:
 		var player = get_node("/root/currentScene/Player")
 		if climb_data == 2:
-			print("server: is climbing")
+			#print("server: is climbing")
 			player.can_climb = true
 			player.is_climbing = true
 		elif climb_data == 1:
-			print("server: can climb")
+			#print("server: can climb")
 			player.is_climbing = false
 			player.can_climb = true
 		else:
