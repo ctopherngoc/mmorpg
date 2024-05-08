@@ -223,7 +223,7 @@ func dropGeneration(monster_id: String) -> Dictionary:
 			else:
 				# drops 1 use/etc item
 				item_list[item_id] = 1
-	print(item_list)
+	#print(item_list)
 	return item_list
 	
 func dropDetermine(item_id: String) -> bool:
@@ -298,7 +298,8 @@ func lootRequest(player: KinematicBody2D, loot_list: Array) -> void:
 					# add item to players inventory
 					break
 				else:
-					print("%s is not owner of item" % player.current_character.displayname)
+					pass
+					#print("%s is not owner of item" % player.current_character.displayname)
 			else:
 				#item_container.looted = true
 				self.lootDrop(player, item_container)

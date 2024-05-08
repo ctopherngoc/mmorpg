@@ -78,7 +78,7 @@ func return_token_verification_results(player_id: int, result: bool) -> void:
 		print("playercontainer empty probably big issue")
 
 func fetch_token(player_id: int):
-	print(get_tree().multiplayer.get_network_connected_peers())
+	#print(get_tree().multiplayer.get_network_connected_peers())
 	rpc_id(player_id, "fetch_token")
 	
 func _on_TokenExpiration_timeout():
@@ -90,7 +90,7 @@ func _on_TokenExpiration_timeout():
 			var token_time = int(expected_tokens[i].right(936))
 			# deletes tokens older or future
 			if current_time - token_time >= 30 or current_time - token_time < 0:
-				print(i)
+				#print(i)
 				expected_tokens.remove(i)
 		print("Expected Tokens:")
 		print(expected_tokens)
@@ -169,7 +169,7 @@ func _Server_New_Character(new_char: Dictionary):
 		2: top: 500004, bottom: 500005
 	"""
 	var equips = temp_player["equipment"]
-	print(new_char["o"])
+	#print(new_char["o"])
 	if new_char["o"] == 0:
 		equips["top"] = ServerData.static_data.starter_equips[0][0]
 		equips["bottom"] = ServerData.static_data.starter_equips[0][1]
@@ -320,20 +320,20 @@ remote func portal(portal_id):
 	var map_id = get_node(ServerData.player_location[str(player_id)].replace("YSort/Players", "")).map_id
 	var next_map = ServerData.portal_data[map_id][portal_id]['map']
 	# get mapname, move user container to the map
-	print("move character container to %s" % next_map)
+	#print("move character container to %s" % next_map)
 	move_player_container(player_id, player_container, next_map, ServerData.portal_data[map_id][portal_id]['spawn'])
-	print('update current character last map')
+	#print('update current character last map')
 	player_container.current_character['map'] = next_map
 
 	update_player_stats(player_container)
 
-	print("update character list last map")
+	#print("update character list last map")
 	for character in player_container.characters_info_list:
 		if character['displayname'] == player_container.current_character['displayname']:
 			character['map'] = player_container.current_character['map']
 
 	# send rpc to client to change map
-	print('sending signal to client to change map')
+	#print('sending signal to client to change map')
 	rpc_id(player_id, "change_map", next_map, ServerData.portal_data[map_id][portal_id]['spawn'])
 	# put some where if world state != current map ignore
 #######################################################
@@ -460,7 +460,9 @@ remote func move_item(inv_data: Array):
 	var tab = {0: "equipment", 1: "use", 2: "etc"}
 	#print("in move_item rpc")
 	#print(player_container.current_character.inventory[tab[inv_data[0]]])
+
 	#print(inv_data)
+
 	
 	var item1 = player_container.current_character.inventory[tab[inv_data[0]]][inv_data[1]]
 	# if to_slot != null -> to_slot = from_slot, from_slot = to_slot
