@@ -7,7 +7,7 @@ onready var spite_path = {
 	"equipment": "res://assets/itemSprites/equipItems/",
 	"use": "res://assets/itemSprites/useItems/",
 }
-func _ready():
+func _ready() -> void:
 	"""
 	worldstate[item] :  {"P": item.position, "I": item.id}
 	"""
