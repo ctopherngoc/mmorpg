@@ -262,6 +262,7 @@ func dropSpawn(map: String, location: Vector2, item_dict: Dictionary, user_id) -
 		new_item.map = str(map)
 		var node_name = ""
 		# sets node name to random string of 6 nums/letters
+# warning-ignore:unused_variable
 		for i in range(6):
 			 node_name += chars[randi() % chars.length()]
 		new_item.drop_id = node_name
@@ -298,6 +299,7 @@ func lootRequest(player: KinematicBody2D, loot_list: Array) -> void:
 			elif item_container.player_owner:
 				# if there are owners, if player is owner
 				# mark item looted, get player container, queuefree item
+# warning-ignore:unused_variable
 				var player_id = player.name
 				if player.name== item_container.player_owner and item_container.looted == false:
 					#item_container.looted = true
