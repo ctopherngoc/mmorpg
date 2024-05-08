@@ -43,7 +43,7 @@ func define_player_state():
 	Server.send_player_state(player_state)
 
 func get_input():
-	var input = [0,0,0,0,0]
+	var input = [0,0,0,0,0,0]
 	if Input.is_action_pressed("ui_up"):
 		input[0] = 1
 	if Input.is_action_pressed("ui_left"):
@@ -54,6 +54,9 @@ func get_input():
 		input[3] = 1
 	if Input.get_action_strength("jump"):
 		input [4] = 1
+	if Input.is_action_pressed("loot"):
+		input [5] = 1
+	recon_arr["input_arr"] = input
 	return input
 
 func movement_loop(delta):
@@ -148,7 +151,8 @@ func update_animation():
 	# send rpc to server
 	elif(Input.is_action_pressed("attack") && !is_climbing && Global.movable):
 		attacking = true
-		sprite.play("slash",-1, GameData.weapon_speed[str(Global.player.equipment.rweapon.speed)])
+		#sprite.play("slash",-1, GameData.weapon_speed[str(Global.player.equipment.rweapon.speed)])
+		sprite.play("slash",-1, GameData.weapon_speed[str(Global.player.equipment.rweapon.attackSpeed)])
 		Server.send_attack(0)
 	else:
 		if(!is_on_floor()):

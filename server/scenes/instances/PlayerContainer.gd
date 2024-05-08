@@ -11,6 +11,7 @@ onready var timer =$Timers/Timer
 onready var idle_timer =$Timers/idle_timer
 onready var damage_timer = $Timers/DamageTimer
 onready var animation = $AnimationPlayer
+onready var loot_node = $loot_box
 #contains token and id
 var db_info = {}
 var mobs_hit = []
@@ -36,33 +37,63 @@ var jump_speed = null
 var gravity = 800
 # 0 = right, 1 = left
 var direction = 0
-var input = [0,0,0,0,0]
-
+var input = [0,0,0,0,0,0]
+var attacking = false
 var hittable = true
-var current_character
-func _physics_process(delta):
+
+#implement animation again
+"""
+f: is on floor: 0:no 1: yes
+d: direction 0:L 1:R
+"""
+onready var animation_state = {
+	"f": 1,
+	"d": 1,
+}
+
+########
+#temp
+onready var recon_arr = {
+	"input_arr": [],
+	"velocity": Vector2(0,0),
+	"mns": null,
+	"end_pos": Vector2(0,0),
+	"m_vector": null,
+}
+########
+
+func _physics_process(delta: float) -> void:
 	if loggedin:
 		if "Map" in str(self.get_path()):
 			movement_loop(delta)
 
-func load_player_stats():
+func get_animation() -> int:
+	if self.is_on_floor():
+		animation_state.f = 1
+	else:
+		animation_state.f = 0
+	animation_state.d = direction
+	return animation_state
+
+func load_player_stats() -> void:
 	max_horizontal_speed = current_character.stats.base.movementSpeed
 	jump_speed = current_character.stats.base.jumpSpeed
+	print(typeof(current_character.inventory["100000"]))
 
-func attack(move_id):
+func attack(move_id: int) -> void:
 	attacking = true
 	#basic attack
 	if move_id == 0:
 		var equipment = current_character.equipment
 		if equipment.rweapon.type == "1h_sword":
-			animation.play("1h_sword",-1, ServerData.weapon_speed[str(equipment.rweapon.speed)])
+			animation.play("1h_sword",-1, ServerData.static_data.weapon_speed[equipment.rweapon.attackSpeed])
 			yield(animation, "animation_finished")
 		elif equipment.rweapon.type == "2h_sword":
 			pass
 		elif equipment.weapon.type == "bow":
 		# else ranged weapon:
 			if equipment.ammo.amount > 0:
-				animation.play("bow",-1, ServerData.weapon_speed[str(equipment.rweapon.speed)])
+				animation.play("bow",-1, ServerData.static_data.weapon_speed[equipment.rweapon.attackSspeed])
 			else:
 				return "not enough ammo"
 		# no mobs overlap
@@ -92,7 +123,7 @@ func attack(move_id):
 				Global.npc_hit(damage, mob_parent, self.name)
 	attacking = false
 
-func overlapping_bodies():
+func overlapping_bodies() -> void:
 	#if $attack_range.get_overlapping_areas().size() > 0:
 	mobs_hit.clear()
 	# multi hit based on class currently
@@ -100,7 +131,7 @@ func overlapping_bodies():
 		print(body.get_parent())
 		mobs_hit.append(body)
 
-func take_damage(take_damage):
+func take_damage(take_damage: int) -> void:
 	if hittable:
 		hittable = false
 		print(self.name + " takes %s damage" % str(take_damage))
@@ -117,17 +148,19 @@ func take_damage(take_damage):
 	else:
 		pass
 
-func experience(experience):
+func experience(experience: int) -> void:
 	print(self.name + " gain %s exp" % str(experience))
 	var current_exp = current_character.stats.base.experience
-	var exp_limit = ServerData.experience_table[str(current_character.stats.base.level)]
+	var exp_limit = ServerData.static_data.experience_table[str(current_character.stats.base.level)]
 	current_exp += experience
 
 	# if level up
 	if current_exp >= exp_limit:
 		# multiple levels
 		while current_exp >= exp_limit:
-			current_exp -= exp_limit
+			print("current xp: %s, exp max: %s, ending xp: %s" % [current_exp, exp_limit,  current_exp - exp_limit])
+			current_exp %= exp_limit
+			print("new current xp: %s" % current_exp)
 			current_character.stats.base.level += 1
 			current_character.stats.base.sp += 5
 			print("%s Level Up" % current_character.displayname)
@@ -137,14 +170,14 @@ func experience(experience):
 				current_character.stats.base.ap += 3
 			# update exp_limit for multiple levels
 			get_node("/root/Server").update_player_stats(self)
-			exp_limit = ServerData.experience_table[str(current_character.stats.base.level)]
+			exp_limit = ServerData.static_data.experience_table[str(current_character.stats.base.level)]
 	current_character.stats.base.experience = current_exp
 	get_node("/root/Server").update_player_stats(self)
 	Global.store_character_data(self.name, current_character.displayname)
 	print("Level: %s" % current_character.stats.base.level)
 	print("EXP: %s" % current_character.stats.base.experience)
 
-func movement_loop(delta):
+func movement_loop(delta: float) -> Vector2:
 	var move_vector = get_movement_vector()
 	change_direction()
 	# change get velocity
@@ -158,12 +191,16 @@ func movement_loop(delta):
 		velocity.x = 0
 	return self.global_position
 
-func get_movement_vector():
+func get_movement_vector() -> Vector2:
 	var moveVector = Vector2.ZERO
 	if !input_queue.empty():
 		input = input_queue.pop_front()
 	else:
-		input = [0,0,0,0,0]
+		# [up, down, left, right, jump, loot]
+		input = [0,0,0,0,0,0]
+	if input[5]:
+		self.loot_request()
+	recon_arr["input_arr"] = input
 	# calculating x vector, allow x-axis jump off ropes or idle on floor
 	if (!attacking && is_on_floor()) or (input[1] == 1 or input[3] == 1) and input[4] == 1:
 		moveVector.x = (input[3] - input[1]) * velocity_multiplier
@@ -182,7 +219,7 @@ func get_movement_vector():
 			moveVector.y = 0
 	return moveVector
 
-func get_velocity(move_vector, delta):
+func get_velocity(move_vector: Vector2, delta: float) -> void:
 	velocity.x += move_vector.x * max_horizontal_speed
 	# slow down movement
 	if(move_vector.x == 0):
@@ -204,11 +241,11 @@ func get_velocity(move_vector, delta):
 				velocity.y = 100
 				if is_on_floor():
 					is_climbing = false
-					Global.send_climb_data(self.name, 1)
+					Global.send_climb_data(int(self.name), 1)
 			# jump off rope
 			elif input[4] == 1 && (input[1] == 1 or input[3] == 1):
 				is_climbing = false
-				Global.send_climb_data(self.name, 1)
+				Global.send_climb_data(int(self.name), 1)
 				velocity.y = move_vector.y * jump_speed * .8
 				velocity.x = move_vector.x * 200
 		# can climb but not climbing
@@ -219,7 +256,7 @@ func get_velocity(move_vector, delta):
 			# press up on ladder initiates climbing
 			elif input[0] == 1:
 					is_climbing = true
-					Global.send_climb_data(self.name, 2)
+					Global.send_climb_data(int(self.name), 2)
 					velocity.y = 0
 					velocity.x = 0
 			# over lapping ladder pressing nothing allows gravity
@@ -234,11 +271,11 @@ func get_velocity(move_vector, delta):
 			velocity.y += gravity * delta
 	if !can_climb:
 		is_climbing = false
-		Global.send_climb_data(self.name, 0)
+		Global.send_climb_data(int(self.name), 0)
 
 ################################
 # edit so direction can be sent through world_state
-func change_direction():
+func change_direction() -> void:
 	if !input.empty():
 		if input[3] == 1 && !attacking:
 			if velocity.x < 0 && is_on_floor():
@@ -262,16 +299,16 @@ func change_direction():
 ##	var knockback = knockback_direction * knockback_modifier *40	
 ##	self.global_position += knockback
 
-func _on_DamageTimer_timeout():
+func _on_DamageTimer_timeout() -> void:
 	hittable = true
 	damage_timer.stop()
 
-func start_idle_timer():
+func start_idle_timer() -> void:
 	idle_timer.start(1.0)
 	print("idle timer start")
 
 # regen 5hp every 5 seconds if idle
-func _on_idle_timer_timeout():
+func _on_idle_timer_timeout() -> void:
 	if self.position != cur_position or attacking or is_climbing:
 		cur_position = self.position
 		idle_counter = 0
@@ -285,7 +322,7 @@ func _on_idle_timer_timeout():
 						var hp_dif = current_character.stats.base.maxHealth - current_character.stats.base.health
 						current_character.stats.base.health += int(hp_dif)
 					else:
-						print("heal 5 hp")
+						#print("heal 5 hp")
 						current_character.stats.base.health += 5
 					get_node("/root/Server").update_player_stats(self)
 				else:
@@ -294,15 +331,13 @@ func _on_idle_timer_timeout():
 		else:
 			idle_counter = 0
 			
-func do_damage():
+func do_damage() -> void:
 	print("mob hit")
 
-func _on_Timer_timeout():
+func _on_Timer_timeout() -> void:
 	pass # Replace with function body.
 
-"""
-func overlappingBodies():
-	print("area ovlapping: " + str($do_damage.get_overlapping_areas().size()))
-	for body in $do_damage.get_overlapping_areas():
-		print('player overlapping with: ', body)
-"""
+func loot_request() -> void:
+	#print(self.name, " ", "Pressed Loot")
+	var loot_list = loot_node.get_overlapping_areas()
+	Global.lootRequest(self, loot_list)

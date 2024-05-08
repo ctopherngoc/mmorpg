@@ -31,15 +31,3 @@ func _ready():
 
 	if Global.last_portal:
 		$Player.global_position = Global.last_portal
-
-"""
-func register_player(player):
-		main_player = player
-		main_player.connect("died", self, "on_player_died", [], CONNECT_DEFERRED)
-"""
-
-func create_player():
-	var player_instance = main_player_template.instance()
-	add_child_below_node(main_player, player_instance)
-	player_instance.global_position = spawn_location
-	main_player = player_instance

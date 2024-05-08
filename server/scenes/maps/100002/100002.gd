@@ -34,7 +34,7 @@ func _process(_delta):
 				enemy_list[monster_id]['EnemyLocation'] = monster_container.position
 				enemy_list[monster_id]['EnemyHealth'] = monster_container.current_hp
 				enemy_list[monster_id]['EnemyState'] = monster_container.state
-
+	UpdateItemStateList()
 # after timer function called
 func SpawnEnemy():
 	if get_node("YSort/Players").get_child_count() == 0:
@@ -67,3 +67,11 @@ func SpawnEnemy():
 			else:
 				enemy_list[enemy]['time_out'] = enemy_list[enemy]['time_out'] - 1
 	ServerData.monsters[map_id] = enemy_list
+
+func UpdateItemStateList():
+	if  get_node("YSort/Items").get_child_count() > 0:
+		var index  = 0
+		for item in get_node("YSort/Items").get_children():
+			ServerData.items[self.name][item.name] = {"P": item.position, "I": item.id}
+			index += 1
+

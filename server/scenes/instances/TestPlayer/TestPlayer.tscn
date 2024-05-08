@@ -1,6 +1,6 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
-[ext_resource path="res://scenes/instances/retired/NewServerPlayer1.gd" type="Script" id=1]
+[ext_resource path="res://scenes/instances/TestPlayer/TestPlayer.gd" type="Script" id=1]
 
 [sub_resource type="RectangleShape2D" id=20]
 extents = Vector2( 25, 54.5 )
@@ -118,6 +118,9 @@ tracks/0/keys = {
 "values": [  ]
 }
 
+[sub_resource type="RectangleShape2D" id=28]
+extents = Vector2( 2.25, 55 )
+
 [node name="PlayerContainer" type="KinematicBody2D" groups=["player"]]
 position = Vector2( -7, -29 )
 collision_layer = 3776
@@ -193,6 +196,15 @@ anims/1h_sword = SubResource( 24 )
 "anims/2h_sword " = SubResource( 26 )
 anims/RESET = SubResource( 25 )
 anims/bow = SubResource( 27 )
+
+[node name="loot_box" type="Area2D" parent="." groups=["climber"]]
+position = Vector2( 8, -3 )
+collision_layer = 65536
+collision_mask = 65536
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="loot_box"]
+position = Vector2( -8, 3 )
+shape = SubResource( 28 )
 
 [connection signal="timeout" from="Timers/idle_timer" to="." method="_on_idle_timer_timeout"]
 [connection signal="timeout" from="Timers/Timer" to="." method="_on_Timer_timeout"]

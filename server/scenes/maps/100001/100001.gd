@@ -1,4 +1,4 @@
-extends Node2D
+ extends Node2D
 var map_id = "100001"
 var map_name = "Grassy Road 1"
 
@@ -32,7 +32,7 @@ func _process(_delta):
 				enemy_list[monster_id]['EnemyLocation'] = monster_container.position
 				enemy_list[monster_id]['EnemyHealth'] = monster_container.current_hp
 				enemy_list[monster_id]['EnemyState'] = monster_container.state
-
+	UpdateItemStateList()
 # after timer function called
 func SpawnEnemy():
 	# only calculate/spawn monsters when at least 1 player is actively in the map
@@ -67,3 +67,15 @@ func SpawnEnemy():
 			else:
 				enemy_list[enemy]['time_out'] = enemy_list[enemy]['time_out'] - 1
 	ServerData.monsters[map_id] = enemy_list
+	
+func UpdateItemStateList() -> void:
+	"""
+	gets a list of children nodes in ysort: items -> updates/add item dict
+	ServerData.items.keys() are item nodes name. Unique 6 len string of Uppercase Chars and Ints
+	"""
+	if  get_node("YSort/Items").get_child_count() > 0:
+		var index  = 0
+		for item in get_node("YSort/Items").get_children():
+			# N = drop_id client node name
+			ServerData.items[self.name][item.name] = {"P": item.position, "I": item.id, "N": item.drop_id}
+			index += 1

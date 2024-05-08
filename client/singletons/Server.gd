@@ -51,7 +51,8 @@ func _on_connection_succeeded():
 func _on_server_disconnect():
 	server_status = false
 	Global.world_state_buffer.clear()
-	timer.stop()
+	Global.input_queue.clear()
+	Signals.emit_signal("log_out")
 	print("server disconnected")
 	
 	if login_status == 1:
@@ -175,7 +176,7 @@ remote func receive_despawn_player(player_id):
 	Global.despawn_player(player_id)
 	
 func send_attack(skill_id):
-	print("server.gd: send_attack")
+	#print("server.gd: send_attack")
 	rpc_id(1, "attack", skill_id)
 	
 remote func receive_attack(player_id, attack_time):
@@ -202,21 +203,26 @@ remote func update_player_stats(player_stats):
 					print("Player took %s damage." % str(Global.player["stats"]["base"]["health"] - player_stats["stats"]["base"]["health"]))
 				# gained health
 				else:
-					print("Player healed %s health." % str(abs(character["stats"]["base"]["health"] - player_stats["stats"]["base"]["health"])))
+					print("Player healed %s health." % str(abs(Global.player["stats"]["base"]["health"] - player_stats["stats"]["base"]["health"])))
 				Global.player["stats"]["base"]["health"] = player_stats["stats"]["base"]["health"]
 				Signals.emit_signal("update_health")
 				
 			# level check -> exp check
-			if player_stats["stats"]["base"]["level"] > Global.player["stats"]["base"]["level"]:
+			if player_stats["stats"]["base"]["level"] != Global.player["stats"]["base"]["level"]:
 				print("Level up")
 				Global.player["stats"]["base"]["experience"] = player_stats["stats"]["base"]["experience"]
 				Global.player["stats"]["base"]["level"] = player_stats["stats"]["base"]["level"]
 				Signals.emit_signal("update_level")
+				Signals.emit_signal("update_exp")
 
-			if player_stats["stats"]["base"]["experience"] > Global.player["stats"]["base"]["experience"]:
+			if player_stats["stats"]["base"]["experience"] != Global.player["stats"]["base"]["experience"]:
 					print("Player gained %s exp." % str(player_stats["stats"]["base"]["experience"] - Global.player["stats"]["base"]["experience"]))
 					Global.player["stats"]["base"]["experience"] = player_stats["stats"]["base"]["experience"]
 					Signals.emit_signal("update_exp")
+
+			if player_stats["inventory"] != Global.player["inventory"]:
+				Global.player["inventory"] = player_stats["inventory"]
+				Signals.emit_signal("update_inventory")
 			break
 
 func portal(portal):
@@ -239,11 +245,11 @@ remote func receive_climb_data(climb_data):
 	if Global.in_game:
 		var player = get_node("/root/currentScene/Player")
 		if climb_data == 2:
-			print("server: is climbing")
+			#print("server: is climbing")
 			player.can_climb = true
 			player.is_climbing = true
 		elif climb_data == 1:
-			print("server: can climb")
+			#print("server: can climb")
 			player.is_climbing = false
 			player.can_climb = true
 		else:
@@ -254,5 +260,32 @@ func logout():
 	timer.stop()
 	rpc_id(1, "logout")
 	network.close_connection()
-	Global.in_game = false
+	Signals.emit_signal("log_out")
 	SceneHandler.change_scene("login")
+	
+"""
+
+Required to add rpc calls to server to swap inventory data.
+Server remove func to validate item move request -> 
+update server char inventory data -> client remote func to update character data ->
+ update inventory window icons (similar to health hud)
+	
+remote func update_player_inventory(player_id):
+	for character in Global.character_list:
+		if character["displayname"] == player_stats["displayname"]:
+			character = player_stats
+		
+		# find payer node/inventory node
+		create an update inventory function
+	
+"""
+func send_inventory_movement(tab: int, from: int, to: int):
+	"""
+	tab: 0 = equip, 1 = use, 2 = etc
+	from: 0-31 (slot)
+	to: 0-31(slot)
+	"""
+	rpc_id(1, "move_item", [tab, from, to])
+
+remote func server_message(message_int: int):
+	print("received messge %s" % message_int)
