@@ -232,7 +232,7 @@ func dropGeneration(monster_id: String) -> Dictionary:
 			else:
 				# drops 1 use/etc item
 				item_list[item_id] = 1
-	print(item_list)
+	#print(item_list)
 	return item_list
 	
 func dropDetermine(item_id: String) -> bool:
@@ -271,14 +271,14 @@ func dropSpawn(map: String, location: Vector2, item_dict: Dictionary, user_id) -
 		#default not stackable
 		if ServerData.itemTable[item]["stackable"] == 1:
 			new_item.stackable = 1
-		print("Drop id: %s used for client node.name to spawn and despawn items should be in world state", new_item.id)
+		#print("Drop id: %s used for client node.name to spawn and despawn items should be in world state", new_item.id)
 		if ServerData.itemTable[item]["itemType"] == "equipment":
 			new_item.stats = item_dict[item]
 			new_item.stats['id'] = item
 		else:
 			new_item.amount = item_dict[item]
 			new_item.stackable = item_dict[item]
-		print(new_item)
+		#print(new_item)
 		map_node.add_child(new_item, true)
 
 func lootRequest(player: KinematicBody2D, loot_list: Array) -> void:
@@ -287,7 +287,7 @@ func lootRequest(player: KinematicBody2D, loot_list: Array) -> void:
 		pass
 		#print("no items")
 	else:
-		print(loot_list)
+		#print(loot_list)
 		# for item area2d in list of item area2ds
 		for item in loot_list:
 			# get item node
@@ -307,22 +307,23 @@ func lootRequest(player: KinematicBody2D, loot_list: Array) -> void:
 					# add item to players inventory
 					break
 				else:
-					print("%s is not owner of item" % player.current_character.displayname)
+					pass
+					#print("%s is not owner of item" % player.current_character.displayname)
 			else:
 				#item_container.looted = true
 				self.lootDrop(player, item_container)
 				break
 
 func lootDrop(player: KinematicBody2D, item_container: KinematicBody2D) -> void:
-	print("Looted Item Position: ", item_container.position, ServerData.items[item_container.map])
+	#print("Looted Item Position: ", item_container.position, ServerData.items[item_container.map])
 	if item_container.id == "100000":
 		item_container.looted = true
 		
-		print( "player gold: %s, drop: %s" %[typeof(player.current_character["inventory"]["100000"]), typeof(item_container.amount)])
+		#print( "player gold: %s, drop: %s" %[typeof(player.current_character["inventory"]["100000"]), typeof(item_container.amount)])
 		# if resulting gold > int variable capacity (max_int), set gold to max_number
 		###########################################################################################
 		if player.current_character["inventory"]["100000"] + item_container.amount < 0:
-			print("max gold")
+			#print("max gold")
 			player.current_character["inventory"]["100000"] = max_int
 		# add it to current amount
 		else:
@@ -331,7 +332,7 @@ func lootDrop(player: KinematicBody2D, item_container: KinematicBody2D) -> void:
 		ServerData.items[item_container.map].erase(item_container.name)
 		server.update_player_stats(player)
 		# remove item node from map
-		print("removing %s gold from map list and world list" % item_container.amount)
+		#print("removing %s gold from map list and world list" % item_container.amount)
 		item_container.queue_free()
 		
 	# parse if item is etc, use, equip
@@ -360,11 +361,11 @@ func lootDrop(player: KinematicBody2D, item_container: KinematicBody2D) -> void:
 				http_requests.append([item_dict, player])
 				#add_item_database(item_dict, player)
 				item_container.queue_free()
-				print("removing item from map list and world list (not stackable, null at index: %s)" % index)
+				#print("removing item from map list and world list (not stackable, null at index: %s)" % index)
 			# inventory does not have room
 			else:
 				server.send_client_notification(int(player.name), 0)
-				print("player: %s's equip inventory full" % player.name)
+				#print("player: %s's equip inventory full" % player.name)
 		else:
 			# if check if item stackable
 			if item_container.stackable:
@@ -394,7 +395,7 @@ func lootDrop(player: KinematicBody2D, item_container: KinematicBody2D) -> void:
 							server.update_player_stats(player)
 							# remove item node from map
 							item_container.queue_free()
-							print("removing item from map list and world list (stackable item is in inventory)")
+							#print("removing item from map list and world list (stackable item is in inventory)")
 							return
 						else:
 							count += 1
@@ -413,11 +414,11 @@ func lootDrop(player: KinematicBody2D, item_container: KinematicBody2D) -> void:
 					server.update_player_stats(player)
 					# remove item node from map
 					item_container.queue_free()
-					print("removing item from map list and world list (stackable not in inventory)")
+					#print("removing item from map list and world list (stackable not in inventory)")
 				# inventory does not have room
 				else:
 					server.send_client_notification(int(player.name), 0)
-					print("player: %s's inventory full stackable", player.name)
+					#print("player: %s's inventory full stackable", player.name)
 			# if look for first open space
 			else:
 				# if player inventory has room (null value): returns index, returns -1 if no room
@@ -432,11 +433,11 @@ func lootDrop(player: KinematicBody2D, item_container: KinematicBody2D) -> void:
 					server.update_player_stats(player)
 					# remove item node from map
 					item_container.queue_free()
-					print("removing item from map list and world list (not stackable, null at index: %s)" % index)
+					#print("removing item from map list and world list (not stackable, null at index: %s)" % index)
 				# inventory does not have room
 				else:
 					server.send_client_notification(int(player.name), 0)
-					print("player: %s's inventory full not stackable", player.name)
+					#print("player: %s's inventory full not stackable", player.name)
 	#ServerData.items[item_container.map].erase(item_container.name)
 	
 # placeholder functions for item ownership and unique item tracking
@@ -445,7 +446,7 @@ func add_item_database(data_dict: Dictionary, player_container: KinematicBody2D)
 	this function should be called on new item drop is looted. Primarily for equipments to keep track of item ownership
 	unique item ownership is important in case of trading.
 	"""
-	print("inside add_item_database")
+	#print("inside add_item_database")
 	#print(data_dict)
 	#print(player_container)
 	data_dict["owner"] = player_container.current_character.displayname
@@ -453,11 +454,11 @@ func add_item_database(data_dict: Dictionary, player_container: KinematicBody2D)
 	#print(data_dict)
 	var firebase = Firebase.update_document(path, player_container.http, player_container.db_info["token"], data_dict)
 	yield(firebase, 'completed')
-	print("added %s to firebase. owner is %s" % [data_dict.name, player_container.name])
+	#print("added %s to firebase. owner is %s" % [data_dict.name, player_container.name])
 	
 func add_item():
 	if http_requests.size() > 0:
-		print("adding item to database")
+		#print("adding item to database")
 		var item_argument_array = http_requests[0]
 		http_requests.remove(0)
 		var request = add_item_database(item_argument_array[0], item_argument_array[1])

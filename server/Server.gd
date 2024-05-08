@@ -83,7 +83,7 @@ func return_token_verification_results(player_id: int, result: bool) -> void:
 		print("playercontainer empty probably big issue")
 
 func fetch_token(player_id: int):
-	print(get_tree().multiplayer.get_network_connected_peers())
+	#print(get_tree().multiplayer.get_network_connected_peers())
 	rpc_id(player_id, "fetch_token")
 	
 func _on_TokenExpiration_timeout():
@@ -95,7 +95,7 @@ func _on_TokenExpiration_timeout():
 			var token_time = int(expected_tokens[i].right(936))
 			# deletes tokens older or future
 			if current_time - token_time >= 30 or current_time - token_time < 0:
-				print(i)
+				#print(i)
 				expected_tokens.remove(i)
 		print("Expected Tokens:")
 		print(expected_tokens)
@@ -174,7 +174,7 @@ func _Server_New_Character(new_char: Dictionary):
 		2: top: 500004, bottom: 500005
 	"""
 	var equips = temp_player["equipment"]
-	print(new_char["o"])
+	#print(new_char["o"])
 	if new_char["o"] == 0:
 		equips["top"] = ServerData.static_data.starter_equips[0][0]
 		equips["bottom"] = ServerData.static_data.starter_equips[0][1]
@@ -217,7 +217,8 @@ remote func fetch_player_stats() -> void:
 	for i in Maps.get_children():
 		for l in i.get_children():
 			if l.name == str(player_id):
-				print(l.player_stats)
+				pass
+				#print(l.player_stats)
 
 remote func fetch_usernames(requester, username: String) -> void:
 	print("inside fetch username. Username: %s" % username)
@@ -296,13 +297,13 @@ func move_player_container(player_id: int, player_container: KinematicBody2D, ma
 	var map_node = get_node("/root/Server/World/Maps/%s" % str(map_id))
 	var map_position = map_node.get_global_position()
 	var new_location = Vector2.ZERO
-	print("move: ", str(map_position))
+	#print("move: ", str(map_position))
 
 	if typeof(position) == TYPE_STRING:
 		position = Vector2(map_node.spawn_position.x, map_node.spawn_position.y)
-	print("new location: ", new_location)
+	#print("new location: ", new_location)
 	player.position = position
-	print("player cur position = ", player.position, " ", player.global_position)
+	#print("player cur position = ", player.position, " ", player.global_position)
 
 func get_player_data(player_id):
 	var player_container = _Server_Get_Player_Container(player_id)
@@ -313,7 +314,7 @@ remote func portal(portal_id):
 	var player_id = get_tree().get_rpc_sender_id()
 	var player_container = _Server_Get_Player_Container(player_id)
 	# validate
-	print(portal_id)
+	#print(portal_id)
 	var portal = ServerData.player_location[str(player_id)].replace("YSort/Players", "MapObjects/%s" % portal_id)
 	# get portal node
 	get_node(portal).over_lapping_bodies(player_id)
@@ -323,20 +324,20 @@ remote func portal(portal_id):
 	var map_id = get_node(ServerData.player_location[str(player_id)].replace("YSort/Players", "")).map_id
 	var next_map = ServerData.portal_data[map_id][portal_id]['map']
 	# get mapname, move user container to the map
-	print("move character container to %s" % next_map)
+	#print("move character container to %s" % next_map)
 	move_player_container(player_id, player_container, next_map, ServerData.portal_data[map_id][portal_id]['spawn'])
-	print('update current character last map')
+	#print('update current character last map')
 	player_container.current_character['map'] = next_map
 
 	update_player_stats(player_container)
 
-	print("update character list last map")
+	#print("update character list last map")
 	for character in player_container.characters_info_list:
 		if character['displayname'] == player_container.current_character['displayname']:
 			character['map'] = player_container.current_character['map']
 
 	# send rpc to client to change map
-	print('sending signal to client to change map')
+	#print('sending signal to client to change map')
 	rpc_id(player_id, "change_map", next_map, ServerData.portal_data[map_id][portal_id]['spawn'])
 	# put some where if world state != current map ignore
 #######################################################
@@ -455,9 +456,9 @@ remote func move_item(inv_data: Array):
 	"""
 	var player_id = get_tree().get_rpc_sender_id()
 	var player_container = _Server_Get_Player_Container(player_id)
-	var tab = {0: "equip", 1: "use", 2: "etc"}
+	var tab = {0: "equipment", 1: "use", 2: "etc"}
 	#print("in move_item rpc")
-	print(player_container.current_character.inventory[tab[inv_data[0]]])
+	#print(player_container.current_character.inventory[tab[inv_data[0]]])
 	
 	var item1 = player_container.current_character.inventory[tab[inv_data[0]]][inv_data[1]]
 	# if to_slot != null -> to_slot = from_slot, from_slot = to_slot
@@ -469,7 +470,7 @@ remote func move_item(inv_data: Array):
 	else:
 		player_container.current_character.inventory[tab[inv_data[0]]][inv_data[2]] = item1
 		player_container.current_character.inventory[tab[inv_data[0]]][inv_data[1]] = null
-	print(player_container.current_character.inventory[tab[inv_data[0]]])
+	#print(player_container.current_character.inventory[tab[inv_data[0]]])
 	# update client
 	update_player_stats(player_container)
 

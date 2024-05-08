@@ -44,50 +44,7 @@ current = true
 script = ExtResource( 6 )
 
 [node name="Test" parent="." instance=ExtResource( 7 )]
-
-[node name="Test" type="Node2D" parent="."]
-position = Vector2( 231, -405 )
-
-[node name="PlayerContainer" parent="Test" instance=ExtResource( 8 )]
-position = Vector2( -13, -148 )
-
-[node name="Monster" parent="Test" instance=ExtResource( 7 )]
-position = Vector2( 45, 6 )
-
-[node name="Button" type="Button" parent="Test"]
-margin_left = -173.0
-margin_top = -64.0
-margin_right = -79.0
-margin_bottom = -44.0
-text = "Calc Damage"
-
-[node name="Button2" type="Button" parent="Test"]
-margin_left = -164.0
-margin_top = -32.0
-margin_right = -82.0
-margin_bottom = -12.0
-text = "Calc Attack"
-
-[node name="Button3" type="Button" parent="Test"]
-margin_left = -163.0
-margin_top = -5.0
-margin_right = -85.0
-margin_bottom = 15.0
-text = "Drop Item"
-
-[node name="Button4" type="Button" parent="Test"]
-margin_left = -163.0
-margin_top = 25.0
-margin_right = -85.0
-margin_bottom = 45.0
-text = "Loot Item"
+position = Vector2( 786, -548 )
 
 [connection signal="timeout" from="PlayerVerification/VerificationExpiration" to="PlayerVerification" method="_on_VerificationExpiration_timeout"]
 [connection signal="timeout" from="TokenExpiration" to="." method="_on_TokenExpiration_timeout"]
-[connection signal="pressed" from="Test/Button" to="." method="_on_Button_pressed"]
-[connection signal="pressed" from="Test/Button2" to="." method="_on_Button2_pressed"]
-[connection signal="pressed" from="Test/Button3" to="." method="_on_Button3_pressed"]
-[connection signal="pressed" from="Test/Button4" to="." method="_on_Button4_pressed"]
-[connection signal="pressed" from="Test/Button5" to="." method="_on_Button5_pressed"]
-
-[editable path="Test"]
