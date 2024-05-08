@@ -67,31 +67,31 @@ func damage_formula(type: bool, player_dict: Dictionary, target_stats: Dictionar
 		if rng.randi_range(1,10) < acc_diff:
 			print("miss")
 			return -1
-	print("Acc >= Avoid")
+	#print("Acc >= Avoid")
 	var damage = rng.randi_range(stats.base.minRange, stats.base.maxRange)
-	print("damage before: ", damage)
+	#print("damage before: ", damage)
 	if type:
-		print("phyiscal")
+		#print("phyiscal")
 		if stats.base.maxRange >= target_stats.defense:
 			damage = float( damage * 2 - target_stats.defense)
 		else:
 			damage = float( damage * damage / target_stats.defense)
-		print("damage after %s" % damage)
+		#print("damage after %s" % damage)
 	#magic damage
 	else:
 		# update later
 		#####################################################################
-		print("magic")
+		#print("magic")
 		if stats.base.magic >= target_stats.magicDefense:
 			damage = float(stats.base.magic * stats.equipment.magic / target_stats.magicDefense)
 		else:
 			return 0
 		#######################################################################
 	damage = damage * ((float(stats.base.damagePercent + stats.equipment.damagePercent) * 0.1) + 1.0)
-	print("after dmg_percent: %s" % damage)
+	#print("after dmg_percent: %s" % damage)
 	if target_stats["boss"] == 1:
 		damage = damage * ((float(stats.base.bossPercent + stats.equipment.bossPercent) * 0.1) + 1.0)
-		print("After boss percent: %s" % damage)
+		#print("After boss percent: %s" % damage)
 	var crit_rate = stats.base.critRate + stats.equipment.critRate
 	var crit_ratio = calculate_crit(crit_rate)
 	var final_damage = int(damage * crit_ratio)
@@ -142,7 +142,7 @@ func calculate_stats(player_stats: Dictionary) -> void:
 		else:
 			base.maxRange = (base.strength + base.wisdom + base.dexterity + base.luck + equip.strength + equip.wisdom + equip.dexterity + equip.luck) + int((float(equip.attack) * ServerData.static_data.weapon_ratio[equipment.rweapon.type]))
 		base.minRange = int(float(base.maxRange) * 0.2)
-		print(base.maxRange)
+		#print(base.maxRange)
 	else:
 		pass
 

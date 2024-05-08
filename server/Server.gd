@@ -459,6 +459,9 @@ remote func move_item(inv_data: Array):
 	var tab = {0: "equipment", 1: "use", 2: "etc"}
 	#print("in move_item rpc")
 	#print(player_container.current_character.inventory[tab[inv_data[0]]])
+
+	#print(inv_data)
+
 	
 	var item1 = player_container.current_character.inventory[tab[inv_data[0]]][inv_data[1]]
 	# if to_slot != null -> to_slot = from_slot, from_slot = to_slot
