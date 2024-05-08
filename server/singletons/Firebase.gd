@@ -57,6 +57,7 @@ func update_document(path: String, http: HTTPRequest, token: String, data) -> vo
 		yield(http, "request_completed")
 	if 'items/' in path:
 		var fb_data = ServerData.static_data.fb_equipment_template.duplicate(true)
+# warning-ignore:return_value_discarded
 		item_data_converter(data, fb_data)
 		var document := {"fields": fb_data}
 		var body := to_json(document)
@@ -525,6 +526,7 @@ func test_update_document(path: String, data_dict: Dictionary) -> void:
 #	var url := DATABASE_URL + path
 	# warning-ignore:return_value_discarded
 	#httprequest.request(url, _get_request_headers(server_token), false, HTTPClient.METHOD_PATCH, body)
+# warning-ignore:unused_variable
 	var new_path = "items/%s" % (data_dict.id + str(data_dict.uniqueID)) 
 	update_document(path, httprequest, server_token, data_dict)
 	#yield(httprequest, "request_completed")
