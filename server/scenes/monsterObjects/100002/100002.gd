@@ -1,6 +1,7 @@
 extends KinematicBody2D
 var id = '100002'
 var location = null
+var map_id = null
 var state = "idle"
 var stats = {}
 
