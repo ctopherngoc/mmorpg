@@ -1,11 +1,10 @@
 extends Node
 
 # singleton: http.gd links variable to httprequest
-onready var http : HTTPRequest
+onready var http
 var network = NetworkedMultiplayerENet.new()
 var port = 2735
 var max_servers = 5
-
 func _ready():
 	start_server()
 
@@ -38,6 +37,10 @@ remote func authenticate_player(username, password, player_id):
 	else:
 		print("Signin Successful")
 		var server = "GameServer1"
+		if not Firebase.account_id_list.has(str(results[1].id)):
+			Firebase.account_id_list.append(str(results[1].id))
+			var url = "users/%s" % str(results[1].id)
+			Firebase.update_document(url)
 		var temp_token = results[1]['token'] + str(results[1]['timestamp'])
 		Server.distribute_login_token(temp_token, server)
 		
