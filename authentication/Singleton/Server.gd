@@ -7,11 +7,11 @@ var max_players = 100
 
 var server_list = {}
 
-func _ready():
+func _ready() -> void:
 	start_server()
 
 # warning-ignore:unused_argument
-func _process(_delta):
+func _process(_delta: float) -> void:
 	if not custom_multiplayer.has_network_peer():
 		return;
 	custom_multiplayer.poll()
@@ -26,16 +26,14 @@ func start_server():
 	network.connect("peer_connected", self, "_Peer_Connected")
 	network.connect("peer_disconnected", self, "_Peer_Disconnected")
 
-func _Peer_Connected(server_id):
+func _Peer_Connected(server_id) -> void:
 	print("server " + str(server_id) + " Connected")
 	server_list["GameServer1"] = server_id
 	
 func _Peer_Disconnected(gameserver_id):
 	print("server " + str(gameserver_id) + " Disconnected")
 	
-func distribute_login_token(token, server):
+func distribute_login_token(token: String, server: String) -> void:
 	var server_peer_id = server_list[server]
 	print("sent token to server")
 	rpc_id(server_peer_id, "received_login_token", token)
-	
-	
