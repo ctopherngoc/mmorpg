@@ -7,14 +7,16 @@ onready var player_container_scene = preload("res://scenes/instances/PlayerConta
 
 var awaiting_verification = {}
 
-func start(player_id):
+func start(player_id: int) -> void:
+	print("player verification start: player_id: %s" % typeof(player_id))
 	"""
 	authenticate token
 	"""
 	awaiting_verification[player_id] = {"Timestamp": OS.get_unix_time()}
 	main_interface.fetch_token(player_id)
 	
-func verify(player_id, token, email):
+func verify(player_id: int, token: Dictionary, email: String) -> void:
+	print("player verification: player_id: %s, token: %s, email: %s" % [typeof(player_id), typeof(token), typeof(email)])
 	var temp_token = token['token'] + str(token['timestamp'])
 	
 	if email in ServerData.logged_emails:
@@ -42,7 +44,7 @@ func verify(player_id, token, email):
 		else:
 			main_interface.get_player_data(player_id)
 
-func _on_VerificationExpiration_timeout():
+func _on_VerificationExpiration_timeout() -> void:
 	var current_time = OS.get_unix_time()
 	var start_time
 	if awaiting_verification == {}:
@@ -59,7 +61,8 @@ func _on_VerificationExpiration_timeout():
 	if(!awaiting_verification.empty()):
 		print("Awaiting verification: %s" % str(awaiting_verification))
 	
-func create_player_container(player_id, token, email):
+func create_player_container(player_id: int, token: Dictionary, email: String) -> void:
+	print("create_player_container: player_id: %s, token: %s, email: %s" % [typeof(player_id), typeof(token), typeof(email)])
 	var new_player_container = player_container_scene.instance()
 	new_player_container.name = str(player_id)
 	get_node("/root/Server/World/CharacterSelect").add_child(new_player_container, true)
@@ -78,7 +81,7 @@ func create_player_container(player_id, token, email):
 		player_container.characters_info_list.append(ServerData.characters_data[character])
 
 # this assumes from conditionals that there are characters	
-func fill_player_container(player_container):
+func fill_player_container(player_container: KinematicBody2D) -> void:
 	for character in player_container.characters:
 		var firebase_call = Firebase.get_document("characters/%s" % character, player_container.http, player_container.db_info["token"], player_container)
 		yield(firebase_call, "completed")

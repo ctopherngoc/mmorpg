@@ -1,8 +1,20 @@
 extends Node
 
+var monsterTable
+var itemTable
+var equipmentTable
+
+# Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	var data_file = File.new()
+	data_file.open("res://data/GameDataTable.json", File.READ)
+	var gamedata_json = JSON.parse(data_file.get_as_text())
+	data_file.close()
 	
+	monsterTable = gamedata_json.result["MonsterTable"]
+	itemTable = gamedata_json.result["ItemTable"]
+	equipmentTable = gamedata_json.result["EquipmentTable"]
+
 onready var bgm_dict = {
 	'menu': preload("res://scenes/bgm/menu_bgm.mp3"),
 	'Remy': preload("res://scenes/bgm/game_bgm.mp3"),
@@ -61,59 +73,102 @@ onready var equipment_sprite = {
 }
 
 onready var test_player = {
-	"avatar":{
-		"bcolor":"0", 
-		"body":"0",
-		"brow":"1",
-		"ear":"0", 
-		"ecolor":"2", 
-		"eye":"1", 
-		"hair":"2", 
-		"hcolor":"1", 
-		"head":"0", 
-		"mouth":"0",
-	}, 
-	"displayname":"duma123", 
-	"equipment":{
-		"ammo":-1, 
-		"bottom":500005, 
-		"earring":-1, 
-		"eyeacc":-1, 
-		"faceacc":-1, 
-		"glove":-1, 
-		"headgear":-1, 
-		"lweapon":200001, 
-		"pocket":-1, 
-		"rweapon":200000, 
-		"tattoo":-1, 
-		"top":500004,
-	}, 
-	"inventory":{
-		"money":0,
-	}, 
-	"map":100002, 
-	"stats":{
-		"accuracy":10, 
-		"ap":0, 
-		"avoidability":4, 
-		"class":0, 
-		"dexterity":4, 
-		"experience":5, 
-		"health":25, 
-		"job":0, 
-		"jumpSpeed":200, 
-		"level":1, 
-		"luck":4, 
-		"magicDefense":0, 
-		"mana":25, 
-		"maxHealth":50, 
-		"maxMana":50, 
-		"movementSpeed":100, 
-		"sp":0, 
-		"strength":4, 
-		"defense":0, 
-		"wisdom":4},
-	}
+	"displayname": "test",
+	"map": "100000",
+	"avatar" : {
+			"head": "1",
+			"hair": "1",
+			"hcolor": "1",
+			"body": "1",
+			"bcolor": "1",
+			"brow": "1",
+			"ear": "1",
+			"mouth": "1",
+			"eye": "1",
+			"ecolor": "1",
+		},
+	"equipment": {
+		"rweapon": {
+			"id": 200005,
+			"uniqueID":14333321,
+			"job": 0,
+			"type": "1h_sword",
+			"name": "temp sword",
+			"speed": 5,
+			"slot": 7,
+			"attack": 15,
+			"magic": 0,
+			"maxHealth": 0,
+			"maxMana": 0,
+			"strength": 5,
+			"wisdom": 5,
+			"dexterity": 5,
+			"luck": 5,
+			"movementSpeed": 0,
+			"jumpSpeed": 0,
+			"avoidability": 0,
+			"defense": 0,
+			"magicDefense": 0,
+			"accuracy": 0,
+			"bossPercent": 0,
+			"damagePercent": 0,
+			"critRate": 0,
+			},# rwep
+		#"lweapon": null,
+	},#equip
+	"stats": 
+	{
+		"base": {
+			"maxRange": 50,
+			"minRange": 0,
+			"health": 50,
+			"mana": 50,
+			"maxHealth": 50,
+			"maxMana": 50,
+			"level": 1,
+			"experience": 0,
+			"class": 0,
+			"job": 0,
+			"sp": 0,
+			"ap": 0,
+			"strength": 4,
+			"wisdom": 4,
+			"dexterity": 4,
+			"luck": 4,
+			"movementSpeed": 100,
+			"jumpSpeed": 200,
+			"avoidability": 4,
+			"defense": 0,
+			"magicDefense": 0,
+			"accuracy": 10,
+			"bossPercent": 1,
+			"damagePercent": 1,
+			"critRate": 5,
+		},
+		"equipment": {
+			"attack": 0,
+			"magic": 0,
+			"maxHealth": 0,
+			"maxMana": 0,
+			"strength": 0,
+			"wisdom": 0,
+			"dexterity": 0,
+			"luck": 0,
+			"movementSpeed": 0,
+			"jumpSpeed": 0,
+			"avoidability": 0,
+			"defense": 0,
+			"magicDefense": 0,
+			"accuracy": 0,
+			"bossPercent": 0,
+			"damagePercent": 0,
+			"critRate": 0,
+		},
+	},
+	"inventory" : {
+			"100000": 0,
+	},
+}
 
 onready var weapon_speed = {
 	"1" : null,
@@ -552,7 +607,6 @@ onready var string_validation = [
 	"whore",
   ]
 
-
 onready var experience_table = {
 	'1': 20,
 	'2': 38,
@@ -586,50 +640,7 @@ onready var experience_table = {
 	'30': 65462,
 }
 
-onready var test_player2 = {
-	"avatar": 
-		{"bcolor":"0", 
-		"body":"0", 
-		"brow":"1", 
-		"ear":"0", 
-		"ecolor":"2", 
-		"eye":"1", 
-		"hair":"2", 
-		"hcolor":"1", 
-		"head":"0", 
-		"mouth":"0"}, 
-	"displayname":"testing", 
-	"equipment":{
-		"bottom":"500005", 
-		"earring":"-1", 
-		"face":"-1", 
-		"glove":"-1", 
-		"head":"-1", 
-		"lhand":"-1", 
-		"pocket":"-1", 
-		"rhand":"-1", 
-		"top":"500004"}, 
-	"inventory":{
-		"money":0},
-		"map":100000, 
-		"stats":{
-		"accuracy":10, 
-		"ap":0, 
-		"avoidability":4, 
-		"class":0, 
-		"dexterity":4, 
-		"experience":0, 
-		"health":50, 
-		"job":0, 
-		"jumpSpeed":200, 
-		"level":1, 
-		"luck":4, 
-		"magicDefense":0, 
-		"mana":50, 
-		"maxHealth":50, 
-		"maxMana":50, 
-		"movementSpeed":100, 
-		"sp":0, 
-		"strength":4, 
-		"defense":0, 
-		"wisdom":4}}
+onready var item_preload = {
+	"100000": preload("res://scenes/itemObjects/100000.tscn"),
+	"item": preload("res://scenes/itemObjects/item.tscn"),
+}

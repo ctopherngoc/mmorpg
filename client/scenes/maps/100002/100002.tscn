@@ -57,3 +57,5 @@ position = Vector2( 108, -271 )
 
 [node name="UI" parent="." instance=ExtResource( 6 )]
 layer = 2
+
+[node name="Items" type="Node" parent="."]

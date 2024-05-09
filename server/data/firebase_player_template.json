@@ -1,0 +1,621 @@
+{
+	"displayname": {
+		"stringValue": "duma123"
+	},
+	"map": {
+		"integerValue": 100001
+	},
+	"stats": {
+		"mapValue": {
+			"fields": {
+				"base": {
+					"mapValue": {
+						"fields": {
+							"maxRange": {
+								"integerValue": 53
+							},
+							"minRange": {
+								"integerValue": 10
+							},
+							"maxHealth": {
+								"integerValue": 50
+							},
+							"health": {
+								"integerValue": 50
+							},
+							"maxMana": {
+								"integerValue": 50
+							},
+							"mana": {
+								"integerValue": 50
+							},
+							"level": {
+								"integerValue": 9
+							},
+							"experience": {
+								"integerValue": 485
+							},
+							"class": {
+								"integerValue": 0
+							},
+							"job": {
+								"integerValue": 0
+							},
+							"sp": {
+								"integerValue": 40
+							},
+							"ap": {
+								"integerValue": 0
+							},
+							"strength": {
+								"integerValue": 4
+							},
+							"wisdom": {
+								"integerValue": 4
+							},
+							"dexterity": {
+								"integerValue": 4
+							},
+							"luck": {
+								"integerValue": 4
+							},
+							"movementSpeed": {
+								"integerValue": 100
+							},
+							"jumpSpeed": {
+								"integerValue": 200
+							},
+							"avoidability": {
+								"integerValue": 4
+							},
+							"defense": {
+								"integerValue": 0
+							},
+							"magicDefense": {
+								"integerValue": 0
+							},
+							"accuracy": {
+								"integerValue": 10
+							},
+							"bossPercent": {
+								"integerValue": 0
+							},
+							"damagePercent": {
+								"integerValue": 0
+							},
+							"critRate": {
+								"integerValue": 5
+							}
+						}
+					}
+				},
+				"equipment": {
+					"mapValue": {
+						"fields": {
+							"attack": {
+								"integerValue": 15
+							},
+							"magic": {
+								"integerValue": 0
+							},
+							"maxHealth": {
+								"integerValue": 0
+							},
+							"maxMana": {
+								"integerValue": 0
+							},
+							"strength": {
+								"integerValue": 5
+							},
+							"wisdom": {
+								"integerValue": 5
+							},
+							"dexterity": {
+								"integerValue": 4
+							},
+							"luck": {
+								"integerValue": 5
+							},
+							"movementSpeed": {
+								"integerValue": 0
+							},
+							"jumpSpeed": {
+								"integerValue": 0
+							},
+							"avoidability": {
+								"integerValue": 0
+							},
+							"defense": {
+								"integerValue": 0
+							},
+							"magicDefense": {
+								"integerValue": 0
+							},
+							"accuracy": {
+								"integerValue": 0
+							},
+							"bossPercent": {
+								"integerValue": 0
+							},
+							"damagePercent": {
+								"integerValue": 0
+							},
+							"critRate": {
+								"integerValue": 0
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	"avatar": {
+		"mapValue": {
+			"fields": {
+				"head": {
+					"stringValue": "0"
+				},
+				"hair": {
+					"stringValue": "0"
+				},
+				"hcolor": {
+					"stringValue": "0"
+				},
+				"body": {
+					"stringValue": "0"
+				},
+				"bcolor": {
+					"stringValue": "0"
+				},
+				"ear": {
+					"stringValue": "0"
+				},
+				"mouth": {
+					"stringValue": "0"
+				},
+				"eye": {
+					"stringValue": "0"
+				},
+				"ecolor": {
+					"stringValue": "0"
+				},
+				"brow": {
+					"stringValue": "0"
+				}
+			}
+		}
+	},
+	"equipment": {
+		"mapValue": {
+			"fields": {
+				"ammo": {
+					"integerValue": -1
+				},
+				"headgear": {
+					"integerValue": -1
+				},
+				"faceacc": {
+					"integerValue": -1
+				},
+				"eyeacc": {
+					"integerValue": -1
+				},
+				"top": {
+					"integerValue": 500000
+				},
+				"bottom": {
+					"integerValue": 500001
+				},
+				"earring": {
+					"integerValue": -1
+				},
+				"glove": {
+					"integerValue": -1
+				},
+				"pocket": {
+					"integerValue": -1
+				},
+				"lweapon": {
+					"integerValue": 200000
+				},
+				"rweapon": {
+					"mapValue": {
+						"fields": {
+							"id": {
+								"integerValue": 200001
+							},
+							"job": {
+								"integerValue": 0
+							},
+							"unique_id": 0,
+							"type": {
+								"stringValue": "1h_sword"
+							},
+							"name": {
+								"stringValue": "Training Sword"
+							},
+							"speed": {
+								"integerValue": 5
+							},
+							"slot": {
+								"integerValue": 7
+							},
+							"attack": {
+								"integerValue": 15
+							},
+							"magic": {
+								"integerValue": 0
+							},
+							"maxHealth": {
+								"integerValue": 0
+							},
+							"maxMana": {
+								"integerValue": 0
+							},
+							"strength": {
+								"integerValue": 5
+							},
+							"wisdom": {
+								"integerValue": 5
+							},
+							"dexterity": {
+								"integerValue": 4
+							},
+							"luck": {
+								"integerValue": 5
+							},
+							"movementSpeed": {
+								"integerValue": 0
+							},
+							"jumpSpeed": {
+								"integerValue": 0
+							},
+							"avoidability": {
+								"integerValue": 0
+							},
+							"defense": {
+								"integerValue": 0
+							},
+							"magicDefense": {
+								"integerValue": 0
+							},
+							"accuracy": {
+								"integerValue": 0
+							},
+							"bossPercent": {
+								"integerValue": 0
+							},
+							"damagePercent": {
+								"integerValue": 0
+							},
+							"critRate": {
+								"integerValue": 0
+							},
+							"uniqueID": {
+								"integerValue": 1000000
+							}
+						}
+					}
+				},
+				"tattoo": {
+					"integerValue": -1
+				}
+			}
+		}
+	},
+	"inventory": {
+		"mapValue": {
+			"fields": {
+				"100000": {
+					"integerValue": 5000
+				},
+				"equipment": {
+					"arrayValue": {
+						"values": [
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							}
+						]
+					}
+				},
+				"use": {
+					"arrayValue": {
+						"values": [
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							}
+						]
+					}
+				},
+				"etc": {
+					"arrayValue": {
+						"values": [
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							},
+							{
+								"nullValue": null
+							}
+						]
+					}
+				}
+			}
+		}
+	}
+}

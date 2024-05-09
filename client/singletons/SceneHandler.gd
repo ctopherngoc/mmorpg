@@ -6,7 +6,7 @@ onready var current_bgm = "menu"
 # menu hash map
 onready var menu_scenes = {
 	"mainMenu" : "res://scenes/menuObjects/mainMenu.tscn",
-	"register" : "res://scenes/menuObjects/LoginScreen/Register.tscn",
+	"register" : "res://scenes/menuObjects/RegisterScreen/RegisterScreen.tscn",
 	"login" : "res://scenes/menuObjects/LoginScreen/LoginScreen.tscn",
 	"characterSelect" : "res://scenes/menuObjects/CharacterSelect/UserProfile.tscn",
 	"create": "res://scenes/menuObjects/CharacterCreate/Create.tscn",
@@ -15,7 +15,6 @@ onready var menu_scenes = {
 func _ready():
 # warning-ignore:return_value_discarded
 	get_tree().change_scene("res://scenes/menuObjects/LoginScreen/LoginScreen.tscn")
-	
 
 func _process(_delta):
 	# turn on music
@@ -31,6 +30,7 @@ func change_scene(scene: String):
 		get_tree().change_scene(menu_scenes[scene])
 		if current_bgm != "menu":
 			Global.bgm.set_stream(GameData.bgm_dict["menu"])
+			current_bgm = "menu"
 	else:
 		# if in map
 		Global.current_map = scene
