@@ -72,27 +72,27 @@ func _physics_process(delta):
 func update_avatar(data):
 	if data == "avatar":
 		#body
-		var sprite = load(GameData.avatar_sprite.body + avatar['bcolor'] + avatar['body'] + ".png")
+		var sprite = load(GameData.avatar_sprite.body + str(avatar['bcolor']) + str(avatar['body']) + ".png")
 		body.set_texture(sprite)
 		#brow
-		sprite = load(GameData.avatar_sprite.brow + avatar['brow'] + ".png")
+		sprite = load(GameData.avatar_sprite.brow + str(avatar['brow']) + ".png")
 		brow.set_texture(sprite)
 		#ear
-		sprite = load(GameData.avatar_sprite.rear + avatar['bcolor'] + avatar['ear'] + ".png")
+		sprite = load(GameData.avatar_sprite.rear + str(avatar['bcolor']) + str(avatar['ear']) + ".png")
 		rear.set_texture(sprite)
-		sprite = load(GameData.avatar_sprite.lear + avatar['bcolor'] + avatar['ear'] + ".png")
+		sprite = load(GameData.avatar_sprite.lear + str(avatar['bcolor']) + str(avatar['ear']) + ".png")
 		lear.set_texture(sprite)
 		#eye
-		sprite = load(GameData.avatar_sprite.eye + avatar['ecolor'] + avatar['eye'] + ".png")
+		sprite = load(GameData.avatar_sprite.eye + str(avatar['ecolor']) + str(avatar['eye']) + ".png")
 		eye.set_texture(sprite)
 		#hair
-		sprite = load(GameData.avatar_sprite.hair + avatar['hcolor'] + avatar['hair'] + ".png")
+		sprite = load(GameData.avatar_sprite.hair + str(avatar['hcolor']) + str(avatar['hair']) + ".png")
 		hair.set_texture(sprite)
 		#head
-		sprite = load(GameData.avatar_sprite.head + avatar['head'] + ".png")
+		sprite = load(GameData.avatar_sprite.head + str(avatar['head']) + ".png")
 		head.set_texture(sprite)
 		#mouth
-		sprite = load(GameData.avatar_sprite.mouth + avatar['mouth'] + ".png")
+		sprite = load(GameData.avatar_sprite.mouth + str(avatar['mouth']) + ".png")
 		mouth.set_texture(sprite)
 		
 	if data == "equipment":
