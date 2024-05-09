@@ -143,6 +143,8 @@ func create_characters():
 			print("creating character")
 			var firebase_call2 = Firebase.update_document("characters/%s" % temp_player["displayname"], character_array[2].http2, character_array[2].db_info["token"], temp_player)
 			yield(firebase_call2, 'completed')
+			
+			ServerData.characters_data[temp_player.displayname] = temp_player
 
 			var firebase_call3 = Firebase.update_document("users/%s" % character_array[2].db_info["id"], character_array[2].http, character_array[2].db_info["token"], character_array[2])
 			yield(firebase_call3, 'completed')
