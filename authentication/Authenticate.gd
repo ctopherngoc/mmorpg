@@ -27,7 +27,7 @@ remote func authenticate_player(username, password, player_id):
 	var gateway_id = get_tree().get_rpc_sender_id()
 	
 	print("Starting authentication")
-	print("this is http: %s" % http)
+	#print("this is http: %s" % http)
 	var results = []
 	var firebaseStatus = Firebase.login(username, password, http, results)
 	yield(firebaseStatus, "completed")
