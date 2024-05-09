@@ -1,6 +1,6 @@
 extends Node
 
-const API_KEY := "AIzaSyC2PkBqVa6lm9zG7gfy7MLZvNpRytA8klU"
+const API_KEY := ""
 const PROJECT_ID := "godotproject-ef224"
 const REGISTER_URL := "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=%s" % API_KEY
 const LOGIN_URL := "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=%s" % API_KEY
@@ -84,7 +84,7 @@ func update_document(path: String) -> void:
 	var character_list = {"fields": {'characters':{'arrayValue':{'values': []}}}}
 	var body := to_json(character_list)
 	var url := DATABASE_URL + path
-	print(body)
+	#print(body)
 	# warning-ignore:return_value_discarded
 	fb_http.request(url, _get_request_headers(auth_token), false, HTTPClient.METHOD_PATCH, body)
 	yield(fb_http, "request_completed")
