@@ -76,6 +76,8 @@ func create_player_container(player_id: int, token: Dictionary, email: String) -
 	
 	player_container.db_info["token"] = token["token"]
 	player_container.db_info["id"] = token["id"]
+	if not ServerData.user_characters.keys().has(player_container.db_info["id"]):
+		ServerData.user_characters[player_container.db_info["id"]] = []
 	player_container.characters = ServerData.user_characters[player_container.db_info["id"]]
 	for character in player_container.characters:
 		player_container.characters_info_list.append(ServerData.characters_data[character])

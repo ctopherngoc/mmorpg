@@ -112,7 +112,7 @@
     "500000": {
       "itemName": "Cloth Shirt",
       "itemType": "equipment",
-      "dropRate": 100,
+      "dropRate": 5,
       "stackable": 0,
       "droppable": 1
     },

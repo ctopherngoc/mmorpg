@@ -22,3 +22,4 @@ func register(email: String, password: String, http) -> void:
 	var result := yield(http, "request_completed") as Array
 	if result[1] == 200:
 		current_token = _get_token_id_from_result(result)
+		

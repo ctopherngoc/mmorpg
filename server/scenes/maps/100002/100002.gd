@@ -3,7 +3,7 @@ var map_id = "100002"
 var map_name = "Grassy Road 2"
 
 var enemy_id_counter = 0
-var enemy_maximum = 2
+var enemy_maximum = 4
 var spawn_position = Vector2(110, -275)
 
 var green_guy = preload("res://scenes/monsterObjects/100001/100001.tscn")
@@ -37,6 +37,7 @@ func _process(_delta):
 	UpdateItemStateList()
 # after timer function called
 func SpawnEnemy():
+	# only calculate/spawn monsters when at least 1 player is actively in the map
 	if get_node("YSort/Players").get_child_count() == 0:
 		pass
 	elif enemy_list.size() >= enemy_maximum:
@@ -51,6 +52,7 @@ func SpawnEnemy():
 				########################################### 
 				# spawns server enemy in map
 				var new_enemy = enemy_types[i].instance()
+				new_enemy.map_id = map_id
 				new_enemy.position = location
 				new_enemy.name = str(i)
 				get_node("YSort/Monsters/").add_child(new_enemy, true)
@@ -68,10 +70,15 @@ func SpawnEnemy():
 				enemy_list[enemy]['time_out'] = enemy_list[enemy]['time_out'] - 1
 	ServerData.monsters[map_id] = enemy_list
 
-func UpdateItemStateList():
+func UpdateItemStateList() -> void:
+	"""
+	gets a list of children nodes in ysort: items -> updates/add item dict
+	ServerData.items.keys() are item nodes name. Unique 6 len string of Uppercase Chars and Ints
+	"""
 	if  get_node("YSort/Items").get_child_count() > 0:
 		var index  = 0
 		for item in get_node("YSort/Items").get_children():
-			ServerData.items[self.name][item.name] = {"P": item.position, "I": item.id}
+			# N = drop_id client node name
+			ServerData.items[self.name][item.name] = {"P": item.position, "I": item.id, "N": item.drop_id}
 			index += 1
 

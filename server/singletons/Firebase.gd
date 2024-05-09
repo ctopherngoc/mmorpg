@@ -56,7 +56,7 @@ func update_document(path: String, http: HTTPRequest, token: String, data) -> vo
 		# warning-ignore:return_value_discarded
 		http.request(url, _get_request_headers(token), false, HTTPClient.METHOD_PATCH, body)
 		yield(http, "request_completed")
-	if 'items/' in path:
+	elif 'items/' in path:
 		var fb_data = ServerData.static_data.fb_equipment_template.duplicate(true)
 # warning-ignore:return_value_discarded
 		item_data_converter(data, fb_data)
@@ -66,7 +66,7 @@ func update_document(path: String, http: HTTPRequest, token: String, data) -> vo
 		# warning-ignore:return_value_discarded
 		httprequest.request(url, _get_request_headers(server_token), false, HTTPClient.METHOD_PATCH, body)
 		yield(httprequest, "request_completed")
-	else:
+	elif 'characters/' in path:
 		# update /character
 		var fb_data = ServerData.static_data.player_info.duplicate(true)
 		server_dictionary_converter(data, fb_data)
