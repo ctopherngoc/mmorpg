@@ -23,7 +23,7 @@ func _on_Button_pressed():
 	else:
 		Firebase.register(email.text, password.text, http)
 
-func _on_HTTPRequest_request_completed(result: int, response_code: int, headers: PoolStringArray, body: PoolByteArray) -> void:
+func _on_HTTPRequest_request_completed(_result: int, response_code: int, _headers: PoolStringArray, body: PoolByteArray) -> void:
 	print("request complete")
 	var response_body := JSON.parse(body.get_string_from_ascii())
 	if response_code != 200:

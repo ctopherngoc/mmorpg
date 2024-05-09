@@ -49,7 +49,9 @@ position = Vector2( 356, -409 )
 [node name="OtherPlayers" type="Node" parent="."]
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
-position = Vector2( 104, -272 )
+position = Vector2( 113, -275 )
+
+[node name="Items" type="Node" parent="."]
 
 [node name="UI" parent="." instance=ExtResource( 4 )]
 layer = 2

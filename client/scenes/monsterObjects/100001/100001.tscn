@@ -1,0 +1,133 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://scenes/monsterObjects/100001/idle.png" type="Texture" id=1]
+[ext_resource path="res://scenes/monsterObjects/100001/100001.gd" type="Script" id=2]
+[ext_resource path="res://scenes/monsterObjects/100001/walk.png" type="Texture" id=3]
+[ext_resource path="res://scenes/monsterObjects/Label.tscn" type="PackedScene" id=4]
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 16.75, 17.5 )
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 16, 17.5 )
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 16, 17.5 )
+
+[sub_resource type="SpriteFrames" id=4]
+animations = [ {
+"frames": [ ExtResource( 1 ) ],
+"loop": true,
+"name": "idle",
+"speed": 1.0
+}, {
+"frames": [ ExtResource( 1 ), ExtResource( 3 ) ],
+"loop": true,
+"name": "walk",
+"speed": 2.0
+} ]
+
+[sub_resource type="Animation" id=5]
+resource_name = "idle"
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1e-05 ),
+"update": 1,
+"values": [ 0 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprite:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ "walk" ]
+}
+
+[sub_resource type="Animation" id=6]
+resource_name = "walk"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1e-05 ),
+"update": 1,
+"values": [ "walk" ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprite:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.25 ),
+"transitions": PoolRealArray( 1e-05, 1.04221e-05 ),
+"update": 1,
+"values": [ 0, 1 ]
+}
+
+[node name="Monster" type="KinematicBody2D"]
+collision_layer = 0
+collision_mask = 16
+script = ExtResource( 2 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+position = Vector2( 0.25, 0.5 )
+shape = SubResource( 2 )
+
+[node name="do_damage" type="Area2D" parent="."]
+visible = false
+position = Vector2( 0, 1 )
+scale = Vector2( 0.999998, 1 )
+collision_layer = 4
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="do_damage"]
+position = Vector2( -2.38419e-07, -0.5 )
+shape = SubResource( 3 )
+
+[node name="take_damage" type="Area2D" parent="." groups=["enemy"]]
+scale = Vector2( 1.58333, 1.5 )
+collision_layer = 32
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="take_damage"]
+position = Vector2( 0, 0.333333 )
+scale = Vector2( 0.631579, 0.666667 )
+shape = SubResource( 1 )
+
+[node name="Sprite" type="AnimatedSprite" parent="."]
+rotation = 3.14159
+scale = Vector2( 1.583, -1.5 )
+frames = SubResource( 4 )
+animation = "walk"
+frame = 1
+flip_h = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/idle = SubResource( 5 )
+anims/walk = SubResource( 6 )
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 1.5
+
+[node name="Label" parent="." instance=ExtResource( 4 )]
+
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
