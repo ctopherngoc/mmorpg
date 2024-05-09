@@ -16,13 +16,13 @@ Current release (v3.0.0) is server authoritative model with server reconciliatio
 <br />
 Local Install: <br />
 Download the current release (v3.0.0) .zip from the release section. Unzip the executable.<br />
-1. Run the Authentication executable.<br />
+Run the Authentication executable.<br />
 <br />
-2. Run the Gateway executable.<br />
+Run the Gateway executable.<br />
 <br />
-3. Run the Server executable.<br />
+Run the Server executable.<br />
 <br />
-4. Run the Client executable.<br />
+Run the Client executable.<br />
 <br />
 
 Registering: <br />
