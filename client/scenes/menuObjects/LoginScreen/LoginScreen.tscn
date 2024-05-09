@@ -48,7 +48,7 @@ margin_left = 72.0
 margin_right = 222.0
 margin_bottom = 24.0
 rect_min_size = Vector2( 150, 0 )
-text = "123@123.com"
+placeholder_text = "email"
 caret_blink = true
 caret_blink_speed = 0.5
 
@@ -69,8 +69,8 @@ margin_left = 68.0
 margin_right = 218.0
 margin_bottom = 24.0
 rect_min_size = Vector2( 150, 0 )
-text = "123456"
 secret = true
+placeholder_text = "password"
 caret_blink = true
 caret_blink_speed = 0.5
 
