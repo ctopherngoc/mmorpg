@@ -76,7 +76,7 @@ margin_top = 361.0
 margin_right = 424.0
 margin_bottom = 375.0
 custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "Menu Effects"
+text = "Effects"
 align = 1
 
 [node name="EffectsSlider" type="HSlider" parent="Sliders"]
