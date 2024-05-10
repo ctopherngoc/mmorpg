@@ -12,16 +12,19 @@ func _ready():
 
 # warning-ignore:unused_argument
 func _on_SoundSlider_value_changed(value):
-	pass
+	var sfx_index= AudioServer.get_bus_index("Music")
+	AudioServer.set_bus_volume_db(sfx_index, linear2db(value))
 	#SoundManager.ChangeVolume(SoundManager.BG_MUSIC_BUS, linear2db(value))
 
 # warning-ignore:unused_argument
 func _on_EffectsSlider_value_changed(value):
-	pass
+	var sfx_index= AudioServer.get_bus_index("Effects")
+	AudioServer.set_bus_volume_db(sfx_index, linear2db(value))
 	#SoundManager.ChangeVolume(SoundManager.MENU_EFFECT_BUS, linear2db(value))
 
 # warning-ignore:unused_argument
 func _on_MasterSlider_value_changed(value):
-	pass
+	var sfx_index= AudioServer.get_bus_index("Master")
+	AudioServer.set_bus_volume_db(sfx_index, linear2db(value))
 	#SoundManager.ChangeVolume(SoundManager.MASTER_BUS, linear2db(value))
 
