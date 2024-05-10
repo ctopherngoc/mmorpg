@@ -30,9 +30,9 @@ custom_constants/separation = 10
 alignment = 1
 
 [node name="RESO" type="HBoxContainer" parent="VideoOptions"]
-margin_top = 286.0
+margin_top = 316.0
 margin_right = 424.0
-margin_bottom = 306.0
+margin_bottom = 336.0
 
 [node name="Resolution" type="Label" parent="VideoOptions/RESO"]
 margin_top = 3.0
@@ -51,9 +51,9 @@ size_flags_vertical = 3
 align = 1
 
 [node name="Windowed" type="HBoxContainer" parent="VideoOptions"]
-margin_top = 316.0
+margin_top = 346.0
 margin_right = 424.0
-margin_bottom = 340.0
+margin_bottom = 370.0
 
 [node name="fullyscreen" type="Label" parent="VideoOptions/Windowed"]
 margin_top = 5.0
@@ -69,9 +69,9 @@ margin_bottom = 24.0
 size_flags_horizontal = 10
 
 [node name="VSYNC" type="HBoxContainer" parent="VideoOptions"]
-margin_top = 350.0
+margin_top = 380.0
 margin_right = 424.0
-margin_bottom = 374.0
+margin_bottom = 404.0
 
 [node name="vsync" type="Label" parent="VideoOptions/VSYNC"]
 margin_top = 5.0
@@ -87,9 +87,10 @@ margin_bottom = 24.0
 size_flags_horizontal = 10
 
 [node name="FXAA" type="HBoxContainer" parent="VideoOptions"]
-margin_top = 384.0
+visible = false
+margin_top = 397.0
 margin_right = 424.0
-margin_bottom = 408.0
+margin_bottom = 421.0
 
 [node name="FXAA" type="Label" parent="VideoOptions/FXAA"]
 margin_top = 5.0
@@ -105,6 +106,7 @@ margin_bottom = 24.0
 size_flags_horizontal = 10
 
 [node name="MSAA" type="HBoxContainer" parent="VideoOptions"]
+visible = false
 margin_top = 418.0
 margin_right = 424.0
 margin_bottom = 434.0
