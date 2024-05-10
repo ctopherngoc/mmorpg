@@ -70,15 +70,17 @@ func _on_server_disconnect():
 
 # ping calulation. Should be used when lag compensation is implemented 
 # with server reconciliation
-func determine_latency():
+func determine_latency() -> void:
 	rpc_id(1, "determine_latency", OS.get_system_time_msecs())
 
 # sync client clock with server clock
 remote func return_server_time(server_time, client_time):
+	print("return_server_time", typeof(server_time), typeof(client_time))
 	latency = (OS.get_system_time_msecs() - client_time) / 2
 	client_clock = server_time + latency
 
 remote func return_latency(client_time):
+	print("return_latency", typeof(client_time))
 	latency_array.append((OS.get_system_time_msecs() - client_time) / 2)
 	if latency_array.size() == 9:
 		var total_latency = 0
@@ -97,6 +99,7 @@ remote func return_latency(client_time):
 #################################################################
 # Character functions
 func check_usernames(requester, username):
+	print("check_username", typeof(requester), typeof((username)))
 	rpc_id(1, "fetch_usernames", requester, username)
 
 remote func return_fetch_usernames(requester, results):
@@ -131,16 +134,16 @@ remote func return_choose_character(requester):
 	SceneHandler.change_scene(Global.player['map']) 
 	#instance_from_id(requester).load_world()
 
-func fetch_player_stats():
+func fetch_player_stats() -> void:
 	if !testing:
 		rpc_id(1, "fetch_player_stats")
 
 ##############################################################################
 # Authentication
-remote func fetch_token():
+remote func fetch_token() -> void:
 	rpc_id(1, "return_token", token, email)
 
-remote func return_token_verification_results(result, array):
+remote func return_token_verification_results(result, array: Array) -> void:
 	print("server.gd: return_token_verification_results")
 	if result == true:
 		print("token verified")
@@ -154,7 +157,7 @@ remote func return_token_verification_results(result, array):
 		login_scene.login_button.disabled = false
 		login_scene.notification.text = "login failed, please try again"
 
-remote func already_logged_in():
+remote func already_logged_in() -> void:
 	print("server.gd: already_logged_in")
 	var login_scene = get_tree().get_current_scene()
 	login_scene.login_button.disabled = false
@@ -164,7 +167,7 @@ remote func already_logged_in():
 
 #################################################################################
 # Player functions
-remote func despawn_player(player_id):
+remote func despawn_player(player_id: int) -> void:
 	print("server.gd: despawn player")
 	var other_players = get_node("/root/currentScene/OtherPlayers")
 	for player in other_players.get_children():
@@ -178,7 +181,7 @@ func send_player_state(player_state):
 		if Global.in_game:
 			rpc_unreliable_id(1, "received_player_state", player_state)
 
-remote func receive_world_state(world_state):
+remote func receive_world_state(world_state: Dictionary) -> void:
 	if Global.current_map == "":
 		pass
 	else:	
@@ -187,7 +190,7 @@ remote func receive_world_state(world_state):
 remote func receive_despawn_player(player_id):
 	Global.despawn_player(player_id)
 	
-func send_attack(skill_id):
+func send_attack(skill_id: int):
 	#print("server.gd: send_attack")
 	rpc_id(1, "attack", skill_id)
 	
@@ -202,7 +205,7 @@ remote func receive_attack(player_id, attack_time):
 	else:
 		pass
 
-remote func update_player_stats(player_stats):
+remote func update_player_stats(player_stats: Dictionary) -> void:
 	for character in Global.character_list:
 		if character["displayname"] == player_stats["displayname"]:
 			character = player_stats
@@ -276,22 +279,6 @@ func logout():
 	Signals.emit_signal("log_out")
 	SceneHandler.change_scene("login")
 	
-"""
-
-Required to add rpc calls to server to swap inventory data.
-Server remove func to validate item move request -> 
-update server char inventory data -> client remote func to update character data ->
- update inventory window icons (similar to health hud)
-	
-remote func update_player_inventory(player_id):
-	for character in Global.character_list:
-		if character["displayname"] == player_stats["displayname"]:
-			character = player_stats
-		
-		# find payer node/inventory node
-		create an update inventory function
-	
-"""
 func send_inventory_movement(tab: int, from: int, to: int):
 	"""
 	tab: 0 = equip, 1 = use, 2 = etc
