@@ -109,7 +109,6 @@ margin_bottom = 20.0
 text = "Option"
 
 [node name="Testing" type="HBoxContainer" parent="VBoxContainer"]
-visible = false
 margin_top = 140.0
 margin_right = 222.0
 margin_bottom = 160.0
