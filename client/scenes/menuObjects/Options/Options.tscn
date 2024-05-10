@@ -32,12 +32,14 @@ margin_right = 1280.0
 margin_bottom = 720.0
 theme = ExtResource( 2 )
 tab_align = 0
+all_tabs_in_front = true
 
 [node name="Sound" parent="PanelContainer/TabContainer" instance=ExtResource( 4 )]
 visible = true
 
 [node name="Video" parent="PanelContainer/TabContainer" instance=ExtResource( 3 )]
 visible = false
+margin_top = 39.0
 
 [node name="back" type="Button" parent="PanelContainer"]
 margin_top = 689.0
@@ -46,3 +48,5 @@ margin_bottom = 720.0
 size_flags_vertical = 8
 theme = ExtResource( 2 )
 text = "Back"
+
+[connection signal="pressed" from="PanelContainer/back" to="." method="_on_back_pressed"]
