@@ -35,7 +35,9 @@ func AddResolutions():
 	
 	for r in Resolutions:
 		ResolutionOptionButton.add_item(r, index)
-		
+		#####################################################
+		# if settings saved load here
+		#####################################################
 		if Resolutions[r] == CurrentResolution:
 			ResolutionOptionButton._select_int(index)
 		index += 1
