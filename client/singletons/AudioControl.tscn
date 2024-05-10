@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://resources/sounds/bgm/menu_bgm.mp3" type="AudioStream" id=1]
+[ext_resource path="res://singletons/AudioControl.gd" type="Script" id=2]
+[ext_resource path="res://resources/sounds/menu/button_click.mp3" type="AudioStream" id=3]
+[ext_resource path="res://resources/sounds/menu/button_hover.mp3" type="AudioStream" id=4]
+
+[node name="AudioControl" type="Node"]
+script = ExtResource( 2 )
+
+[node name="bgm" type="Node" parent="."]
+
+[node name="bgm" type="AudioStreamPlayer" parent="bgm"]
+stream = ExtResource( 1 )
+bus = "Music"
+
+[node name="menu" type="Node" parent="."]
+
+[node name="click" type="AudioStreamPlayer" parent="menu"]
+stream = ExtResource( 3 )
+bus = "Effects"
+
+[node name="hover" type="AudioStreamPlayer" parent="menu"]
+stream = ExtResource( 4 )
+bus = "Effects"

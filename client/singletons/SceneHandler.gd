@@ -18,8 +18,8 @@ func _ready():
 
 func _process(_delta):
 	# turn on music
-	if Global.bgm.playing == false:
-		Global.bgm.playing = true
+	if AudioControl.bgm.playing == false:
+		AudioControl.bgm.playing = true
 
 func change_scene(scene: String):
 # warning-ignore:return_value_discarded
@@ -29,7 +29,7 @@ func change_scene(scene: String):
 	if scene in menu_scenes.keys():
 		get_tree().change_scene(menu_scenes[scene])
 		if current_bgm != "menu":
-			Global.bgm.set_stream(GameData.bgm_dict["menu"])
+			AudioControl.bgm.set_stream(GameData.bgm_dict["menu"])
 			current_bgm = "menu"
 	else:
 		# if in map
@@ -39,7 +39,7 @@ func change_scene(scene: String):
 		# if map different bgm
 		if GameData.map_dict[scene]["bgm"] != current_bgm:
 			current_bgm = GameData.map_dict[scene]["bgm"]
-			Global.bgm.set_stream(GameData.bgm_dict[GameData.map_dict[scene]["bgm"]])
+			AudioControl.bgm.set_stream(GameData.bgm_dict[GameData.map_dict[scene]["bgm"]])
 		# warning-ignore:return_value_discarded
 		get_tree().change_scene(GameData.map_dict[scene]["path"])
 	$AnimationPlayer.play_backwards("dissolve")

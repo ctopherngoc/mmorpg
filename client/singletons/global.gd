@@ -12,7 +12,6 @@ onready var ip = "127.0.0.1"
 onready var input_queue = []
 const interpolation_offset = 100
 onready var current_map = ""
-onready var bgm = $bgm
 onready var in_game = false
 
 var other_player = preload("res://scenes/playerObjects/PlayerTemplate.tscn")

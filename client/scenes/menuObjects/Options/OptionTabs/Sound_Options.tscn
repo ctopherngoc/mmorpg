@@ -1,8 +1,6 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://scenes/menuObjects/Options/OptionTabs/Sound_Options.gd" type="Script" id=1]
-[ext_resource path="res://resources/sounds/menu/button_click.mp3" type="AudioStream" id=2]
-[ext_resource path="res://resources/sounds/menu/button_hover.mp3" type="AudioStream" id=3]
 
 [sub_resource type="StyleBoxEmpty" id=2]
 
@@ -100,16 +98,6 @@ margin_right = 1280.0
 margin_bottom = 681.0
 size_flags_horizontal = 3
 custom_styles/separator = SubResource( 3 )
-
-[node name="audioStreams" type="Node" parent="."]
-
-[node name="click" type="AudioStreamPlayer" parent="audioStreams"]
-stream = ExtResource( 2 )
-bus = "Effects"
-
-[node name="hover" type="AudioStreamPlayer" parent="audioStreams"]
-stream = ExtResource( 3 )
-bus = "Effects"
 
 [connection signal="value_changed" from="Sliders/MasterSlider" to="." method="_on_MasterSlider_value_changed"]
 [connection signal="value_changed" from="Sliders/SoundSlider" to="." method="_on_SoundSlider_value_changed"]

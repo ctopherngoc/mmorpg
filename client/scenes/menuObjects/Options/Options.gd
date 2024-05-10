@@ -6,7 +6,7 @@ onready var option_path = "user://gameOption.dat"
 
 func _ready() -> void:
 	load_settings()
-	Global.bgm.play()
+	AudioControl.bgm.play()
 
 func _on_back_pressed() -> void:
 	save_settings()

@@ -8,8 +8,8 @@ onready var musicValue: float
 onready var effectValue: float
 #onready var menuStream = $menuStream
 #Global.bgm.set_stream(GameData.bgm_dict["menu"])
-onready var menu_click = $audioStreams/click
-onready var menu_hover = $audioStreams/hover
+#onready var menu_click = $audioStreams/click
+#onready var menu_hover = $audioStreams/hover
 onready var load_settings = false
 func _ready() -> void:
 	pass
@@ -20,7 +20,7 @@ func _ready() -> void:
 # warning-ignore:unused_argument
 func _on_SoundSlider_value_changed(value: float) -> void:
 	if load_settings:
-		menu_click.play()
+		AudioControl.play_audio("menuClick")
 	var sfx_index= AudioServer.get_bus_index("Music")
 	musicValue = value
 	AudioServer.set_bus_volume_db(sfx_index, linear2db(value))
@@ -29,7 +29,7 @@ func _on_SoundSlider_value_changed(value: float) -> void:
 # warning-ignore:unused_argument
 func _on_EffectsSlider_value_changed(value: float) -> void:
 	if load_settings:
-		menu_click.play()
+		AudioControl.play_audio("menuClick")
 	var sfx_index= AudioServer.get_bus_index("Effects")
 	effectValue = value
 	AudioServer.set_bus_volume_db(sfx_index, linear2db(value))
@@ -38,7 +38,7 @@ func _on_EffectsSlider_value_changed(value: float) -> void:
 # warning-ignore:unused_argument
 func _on_MasterSlider_value_changed(value: float) -> void:
 	if load_settings:
-		menu_click.play()
+		AudioControl.play_audio("menuClick")
 	var sfx_index= AudioServer.get_bus_index("Master")
 	masterValue = value
 	AudioServer.set_bus_volume_db(sfx_index, linear2db(value))
