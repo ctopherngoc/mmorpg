@@ -16,8 +16,13 @@ func _ready():
 	equipmentTable = gamedata_json.result["EquipmentTable"]
 
 onready var bgm_dict = {
-	'menu': preload("res://scenes/bgm/menu_bgm.mp3"),
-	'Remy': preload("res://scenes/bgm/game_bgm.mp3"),
+	'menu': preload("res://resources/sounds/bgm/menu_bgm.mp3"),
+	'Remy': preload("res://resources/sounds/bgm/game_bgm.mp3"),
+}
+
+onready var menu_sound_dict = {
+	'click': preload("res://resources/sounds/menu/button_click.mp3"),
+	'hover': preload("res://resources/sounds/menu/button_hover.mp3"),
 }
 
 onready var region_dict = {
