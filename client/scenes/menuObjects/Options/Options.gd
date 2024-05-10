@@ -6,6 +6,7 @@ onready var option_path = "user://gameOption.dat"
 
 func _ready() -> void:
 	load_settings()
+	Global.bgm.play()
 
 func _on_back_pressed() -> void:
 	save_settings()
@@ -13,6 +14,7 @@ func _on_back_pressed() -> void:
 func load_settings() -> void:
 	var save_file = File.new()
 	if not save_file.file_exists(option_path):
+		sound_node.load_settings = true
 		return
 	save_file.open(option_path, File.READ)
 	var settings_data = JSON.parse(save_file.get_as_text())
