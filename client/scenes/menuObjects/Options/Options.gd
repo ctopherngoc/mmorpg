@@ -43,3 +43,7 @@ func save_settings() -> void:
 if Resolutions[r] == CurrentResolution:
 			ResolutionOptionButton._select_int(index)
 """
+
+
+func _on_back_mouse_entered():
+	AudioControl.play_audio("menuHover")
