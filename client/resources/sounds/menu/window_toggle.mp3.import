@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/window_toggle.mp3-cd458b2a5680e0676fbfe38d8ed4defb.mp3str"
+
+[deps]
+
+source_file="res://resources/sounds/menu/window_toggle.mp3"
+dest_files=[ "res://.import/window_toggle.mp3-cd458b2a5680e0676fbfe38d8ed4defb.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

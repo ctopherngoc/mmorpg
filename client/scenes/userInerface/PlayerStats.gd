@@ -23,6 +23,7 @@ func load_player_stats(stats):
 
 func _input(event):
 	if event.is_action_pressed("stats"):
+		AudioControl.play_audio("windowToggle")
 		self.visible = not self.visible
 		print("toggle stats")
 

@@ -273,9 +273,10 @@ remote func receive_climb_data(climb_data):
 
 func logout():
 	timer.stop()
-	rpc_id(1, "logout")
 	Global.in_game = false
-	network.close_connection()
+	if !Server.testing:
+		network.close_connection()
+		rpc_id(1, "logout")
 	Signals.emit_signal("log_out")
 	SceneHandler.change_scene("login")
 	

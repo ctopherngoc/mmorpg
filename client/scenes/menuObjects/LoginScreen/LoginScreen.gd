@@ -38,18 +38,19 @@ func _on_Button2_pressed():
 	MainMenu.hide()
 	OptionMenu.show()
 
-
 func _on_back_pressed():
 	#SoundManager.PlayButtonPressDown()
 	MainMenu.show()
 	#Title.show()
 	OptionMenu.hide()
 
-
 func _on_RegisterButton_pressed():
 	AudioControl.play_audio("menuClick")
 	SceneHandler.change_scene("register")
 
-
 func _on_Button_mouse_entered():
 	AudioControl.play_audio("menuHover")
+	
+func return_to_login() -> void:
+	OptionMenu.hide()
+	MainMenu.show()

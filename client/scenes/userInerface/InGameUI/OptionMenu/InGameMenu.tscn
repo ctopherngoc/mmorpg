@@ -317,9 +317,12 @@ autoplay = "loading"
 anims/RESET = SubResource( 6 )
 anims/loading = SubResource( 7 )
 
+[connection signal="mouse_entered" from="menu/VBoxContainer/resume" to="." method="_on_Button_mouse_entered"]
 [connection signal="pressed" from="menu/VBoxContainer/resume" to="." method="_on_resume_pressed"]
 [connection signal="button_down" from="menu/VBoxContainer/Options" to="." method="_on_Options_button_down"]
+[connection signal="mouse_entered" from="menu/VBoxContainer/Options" to="." method="_on_Button_mouse_entered"]
 [connection signal="button_down" from="menu/VBoxContainer/End" to="." method="_on_End_button_down"]
+[connection signal="mouse_entered" from="menu/VBoxContainer/End" to="." method="_on_Button_mouse_entered"]
 [connection signal="pressed" from="Options/PanelContainer/back" to="." method="_on_back_pressed"]
 [connection signal="confirmed" from="QuitConfirm" to="." method="_on_AcceptDialog_confirmed"]
 

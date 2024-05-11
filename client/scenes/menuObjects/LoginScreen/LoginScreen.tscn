@@ -129,6 +129,3 @@ visible = false
 [connection signal="pressed" from="VBoxContainer/options/Button2" to="." method="_on_Button2_pressed"]
 [connection signal="mouse_entered" from="VBoxContainer/Testing/Button1" to="." method="_on_Button_mouse_entered"]
 [connection signal="pressed" from="VBoxContainer/Testing/Button1" to="." method="_on_Button1_pressed"]
-[connection signal="pressed" from="Options/PanelContainer/back" to="." method="_on_back_pressed"]
-
-[editable path="Options"]

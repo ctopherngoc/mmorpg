@@ -12,16 +12,13 @@ onready var menu_scenes = {
 	"create": "res://scenes/menuObjects/CharacterCreate/Create.tscn",
 }
 
-func _ready():
-# warning-ignore:return_value_discarded
-	get_tree().change_scene("res://scenes/menuObjects/LoginScreen/LoginScreen.tscn")
+func _ready() -> void:
+	pass
 
 func _process(_delta):
-	# turn on music
-	if AudioControl.bgm.playing == false:
-		AudioControl.bgm.playing = true
+	pass
 
-func change_scene(scene: String):
+func change_scene(scene: String) -> void:
 # warning-ignore:return_value_discarded
 	# if in menu
 	$AnimationPlayer.play("dissolve")
