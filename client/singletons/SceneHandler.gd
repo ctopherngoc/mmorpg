@@ -21,6 +21,9 @@ func _process(_delta):
 func change_scene(scene: String) -> void:
 # warning-ignore:return_value_discarded
 	# if in menu
+	# makes screen black
+	if Global.in_game:
+			get_node("/root/currentScene").visible = false
 	$AnimationPlayer.play("dissolve")
 	yield($AnimationPlayer, "animation_finished")
 	if scene in menu_scenes.keys():
@@ -41,4 +44,14 @@ func change_scene(scene: String) -> void:
 			AudioControl.bgm.play()
 		# warning-ignore:return_value_discarded
 		get_tree().change_scene(GameData.map_dict[scene]["path"])
+		if Global.in_game:
+			get_node("/root/currentScene").visible = true
 	$AnimationPlayer.play_backwards("dissolve")
+	
+#func _unhandled_input(event):
+#	if event.pressed and event.scancode == KEY_SPACE:
+#		get_node("/root/currentScene").visible = false
+#		$AnimationPlayer.play("dissolve")
+#		yield($AnimationPlayer, "animation_finished")
+#		get_node("/root/currentScene").visible = true
+#		$AnimationPlayer.play_backwards("dissolve")

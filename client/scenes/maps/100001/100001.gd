@@ -1,4 +1,4 @@
-extends Node
+extends Node2D
 var map_id = "100001"
 var map_name = "Grassy Road 1"
 
