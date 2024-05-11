@@ -48,7 +48,7 @@ func health_bar_update():
 	pass
 
 func on_death():
-	AudioControl.play_audio("death_squish")
+	AudioControl.play_audio("deathSquish2")
 	despawn = 0
 	get_node("do_damage/CollisionShape2D").set_deferred("disabled", true)
 	yield(get_tree().create_timer(0.2), "timeout")

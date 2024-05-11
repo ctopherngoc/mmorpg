@@ -1,7 +1,7 @@
 extends CanvasLayer
 
-onready var current_scene_container = preload("res://scenes/menuObjects/LoginScreen/LoginScreen.tscn")
-onready var current_scene = "menu"
+#onready var current_scene_container = preload("res://scenes/menuObjects/LoginScreen/LoginScreen.tscn")
+#onready var current_scene = "menu"
 onready var current_bgm = "menu"
 # menu hash map
 onready var menu_scenes = {
@@ -35,8 +35,10 @@ func change_scene(scene: String) -> void:
 		
 		# if map different bgm
 		if GameData.map_dict[scene]["bgm"] != current_bgm:
+			print("%s != %s" % [GameData.map_dict[scene]["bgm"], current_bgm])
 			current_bgm = GameData.map_dict[scene]["bgm"]
 			AudioControl.bgm.set_stream(GameData.bgm_dict[GameData.map_dict[scene]["bgm"]])
+			AudioControl.bgm.play()
 		# warning-ignore:return_value_discarded
 		get_tree().change_scene(GameData.map_dict[scene]["path"])
 	$AnimationPlayer.play_backwards("dissolve")

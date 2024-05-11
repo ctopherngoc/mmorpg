@@ -74,13 +74,11 @@ func determine_latency() -> void:
 	rpc_id(1, "determine_latency", OS.get_system_time_msecs())
 
 # sync client clock with server clock
-remote func return_server_time(server_time, client_time):
-	print("return_server_time", typeof(server_time), typeof(client_time))
+remote func return_server_time(server_time: int, client_time:int) -> void:
 	latency = (OS.get_system_time_msecs() - client_time) / 2
 	client_clock = server_time + latency
 
-remote func return_latency(client_time):
-	print("return_latency", typeof(client_time))
+remote func return_latency(client_time: int):
 	latency_array.append((OS.get_system_time_msecs() - client_time) / 2)
 	if latency_array.size() == 9:
 		var total_latency = 0
@@ -196,6 +194,7 @@ func send_attack(skill_id: int):
 	
 remote func receive_attack(player_id, attack_time):
 	print("server.gd: recieve_attack")
+	print(typeof(player_id), " ", typeof(attack_time))
 	if player_id == get_tree().get_network_unique_id():
 		print("self attack: pass")
 	elif get_node("/root/currentScene/OtherPlayers").has_node(str(player_id)):
@@ -224,6 +223,7 @@ remote func update_player_stats(player_stats: Dictionary) -> void:
 				
 			# level check -> exp check
 			if player_stats["stats"]["base"]["level"] != Global.player["stats"]["base"]["level"]:
+				AudioControl.play_audio("levelUp")
 				print("Level up")
 				Global.player["stats"]["base"]["experience"] = player_stats["stats"]["base"]["experience"]
 				Global.player["stats"]["base"]["level"] = player_stats["stats"]["base"]["level"]

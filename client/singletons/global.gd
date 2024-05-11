@@ -115,8 +115,8 @@ func _physics_process(_delta: float) -> void:
 						# spawn item
 						else:
 							# item not looted
-							#if !world_state_buffer[2]["I"][current_map][item]['L']:
-							AudioControl.play_audio("drop")
+							if world_state_buffer[2]["I"][current_map][item]['D']:
+								AudioControl.play_audio("drop")
 							spawn_item(item, world_state_buffer[2]["I"][current_map][item])
 				# no items in future state -> despawn all
 				else:

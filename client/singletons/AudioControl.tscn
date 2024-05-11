@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://resources/sounds/bgm/menu_bgm.mp3" type="AudioStream" id=1]
 [ext_resource path="res://singletons/AudioControl.gd" type="Script" id=2]
@@ -13,6 +13,9 @@
 [ext_resource path="res://resources/sounds/combat/death_squish.wav" type="AudioStream" id=11]
 [ext_resource path="res://resources/sounds/map/portal.wav" type="AudioStream" id=12]
 [ext_resource path="res://resources/sounds/map/loot.wav" type="AudioStream" id=13]
+[ext_resource path="res://resources/sounds/combat/death_squish2.wav" type="AudioStream" id=14]
+[ext_resource path="res://resources/sounds/combat/level_up.wav" type="AudioStream" id=15]
+[ext_resource path="res://resources/sounds/combat/squish.wav" type="AudioStream" id=16]
 
 [node name="AudioControl" type="Node"]
 script = ExtResource( 2 )
@@ -34,40 +37,71 @@ stream = ExtResource( 4 )
 bus = "Effects"
 
 [node name="item_swap" type="AudioStreamPlayer" parent="menu"]
+bus = "Effects"
 
 [node name="window_toggle" type="AudioStreamPlayer" parent="menu"]
 stream = ExtResource( 5 )
+bus = "Effects"
 
 [node name="combat" type="Node" parent="."]
 
 [node name="blunt_hit" type="AudioStreamPlayer" parent="combat"]
 stream = ExtResource( 6 )
-
-[node name="squish" type="AudioStreamPlayer" parent="combat"]
+volume_db = -5.0
+bus = "Effects"
 
 [node name="blade_swing" type="AudioStreamPlayer" parent="combat"]
 stream = ExtResource( 9 )
+volume_db = -5.0
+bus = "Effects"
 
 [node name="blunt_swing" type="AudioStreamPlayer" parent="combat"]
 stream = ExtResource( 7 )
+volume_db = -5.0
+bus = "Effects"
 
 [node name="blade_hit" type="AudioStreamPlayer" parent="combat"]
+volume_db = -5.0
+bus = "Effects"
 
 [node name="h_blade_swing" type="AudioStreamPlayer" parent="combat"]
 stream = ExtResource( 8 )
+volume_db = -5.0
+bus = "Effects"
 
 [node name="h_blade_hit" type="AudioStreamPlayer" parent="combat"]
+volume_db = -5.0
+bus = "Effects"
 
 [node name="death_squish" type="AudioStreamPlayer" parent="combat"]
 stream = ExtResource( 11 )
+volume_db = -5.0
+bus = "Effects"
+
+[node name="level_up" type="AudioStreamPlayer" parent="combat"]
+stream = ExtResource( 15 )
+volume_db = -5.0
+bus = "Effects"
+
+[node name="death_squish2" type="AudioStreamPlayer" parent="combat"]
+stream = ExtResource( 14 )
+volume_db = -5.0
+bus = "Effects"
+
+[node name="squish" type="AudioStreamPlayer" parent="combat"]
+stream = ExtResource( 16 )
+volume_db = -5.0
 
 [node name="map" type="Node" parent="."]
 
 [node name="drop" type="AudioStreamPlayer" parent="map"]
 stream = ExtResource( 10 )
+bus = "Effects"
 
 [node name="portal" type="AudioStreamPlayer" parent="map"]
 stream = ExtResource( 12 )
+bus = "Effects"
 
 [node name="loot" type="AudioStreamPlayer" parent="map"]
 stream = ExtResource( 13 )
+bus = "Effects"

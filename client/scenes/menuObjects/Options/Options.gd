@@ -8,7 +8,8 @@ onready var tabContainer = $PanelContainer/TabContainer
 
 func _ready() -> void:
 	load_settings()
-	AudioControl.bgm.play()
+	if not Global.in_game:
+		AudioControl.bgm.play()
 
 func _on_back_pressed() -> void:
 	AudioControl.play_audio("menuClick")
@@ -17,8 +18,6 @@ func _on_back_pressed() -> void:
 	if not Global.in_game:
 		login.return_to_login()
 	# if testing -> offline
-	else:
-		Server.logout
 
 func load_settings() -> void:
 	var save_file = File.new()

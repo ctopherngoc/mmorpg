@@ -10,6 +10,9 @@ onready var stream_dict = {
 	"itemSwap": $menu/item_swap,
 	"windowToggle": $menu/window_toggle,
 	"squish": $combat/squish,
+	"deathSquish": $combat/death_squish,
+	"deathSquish2": $combat/death_squish2,
+	"levelUp": $combat/level_up,
 	"1h_swing": $combat/blade_swing,
 	"2h_swing": $combat/h_blade_swing,
 	"blunt_swing": $combat/blunt_swing,
@@ -22,7 +25,6 @@ onready var stream_dict = {
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
-
 
 func play_audio(audio: String) -> void:
 	stream_dict[audio].play()

@@ -178,6 +178,11 @@ func update_animation(move_vector):
 		#sprite.play("slash",-1, GameData.weapon_speed[str(Global.player.equipment.rweapon.speed)])
 		sprite.play("slash",-1, GameData.weapon_speed[str(Global.player.equipment.rweapon.attackSpeed)])
 		#### insert sound play
+		determine_weapon_noise()
+		"""
+		can insert determine_weapon_noise into compositesprite animations
+		determine attack speed -> adjust when sound is played (delay for slower wep)
+		"""
 		Server.send_attack(0)
 	else:
 		if(!is_on_floor()):
@@ -193,6 +198,7 @@ func update_animation(move_vector):
 
 func determine_weapon_noise() -> void:
 	if Global.player.equipment.rweapon.type in ["dagger", "1h_sword", "1h_axe", "staff", "wand"]:
+		print("1hsword")
 		#var rng = Global.rng.randi_range(1,101)
 #		if rng <= 50:
 #			pass

@@ -162,7 +162,6 @@ func npc_hit(dmg: int, npc: KinematicBody2D, player: String):
 	# if dead change state and make it unhittable
 	if npc.stats.currentHP <= 0:
 		npc.state = "Dead"
-
 		for attacker in npc.attackers.keys():
 			var highest_attacker = null
 			var  damage = null
@@ -468,3 +467,12 @@ func add_item():
 		http_requests.remove(0)
 		var request = add_item_database(item_argument_array[0], item_argument_array[1])
 		yield(request, "completed")
+
+func add_item_to_world_state(item: KinematicBody2D, map_id: String) -> void:
+	# N = drop_id client node name
+	ServerData.items[map_id][item.name] = {"P": item.position, "I": item.id, "D": item.just_dropped}
+	if item.just_dropped == 1:
+		item.just_dropped = 0
+	elif item.just_dropped == -1:
+		ServerData.items[map_id].erase(item.name)
+		item.queue_free()
