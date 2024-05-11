@@ -554,3 +554,6 @@ func send_client_notification(player_id, message: int) -> void:
 		0 = inventory full
 	"""
 	rpc_id(player_id, "server_message", message)
+	
+func send_loot_data(player_id: String, loot_data: Dictionary) -> void:
+	rpc_id(int(player_id), "loot_data", loot_data)

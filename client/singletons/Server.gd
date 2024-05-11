@@ -241,6 +241,7 @@ remote func update_player_stats(player_stats: Dictionary) -> void:
 			break
 
 func portal(portal):
+	AudioControl.play_audio("portal")
 	rpc_id(1, "portal", portal)
 	print("RPC to server for portal")
 
@@ -290,3 +291,17 @@ func send_inventory_movement(tab: int, from: int, to: int):
 
 remote func server_message(message_int: int):
 	print("received messge %s" % message_int)
+	
+remote func loot_data(item_data: Dictionary) -> void:
+	AudioControl.play_audio("loot")
+	# update notification
+	# var string
+	# if item_data.id = 10000:
+		# string = "Picked up %s gold" % GameData[item_data.q]"
+	# else:
+		# var string = "Picked up %s" % GameData[item_data.id]"
+	#update_message(string)
+
+func update_message(message: String):
+	pass
+	# insert script to edit notification var with message

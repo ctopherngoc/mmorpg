@@ -19,6 +19,7 @@ var last_world_state = 0
 var world_state_buffer = []
 var ui = null
 var movable = true
+var rng = RandomNumberGenerator.new()
 
 var character_list = []
 var player = null
@@ -115,6 +116,7 @@ func _physics_process(_delta: float) -> void:
 						else:
 							# item not looted
 							#if !world_state_buffer[2]["I"][current_map][item]['L']:
+							AudioControl.play_audio("drop")
 							spawn_item(item, world_state_buffer[2]["I"][current_map][item])
 				# no items in future state -> despawn all
 				else:

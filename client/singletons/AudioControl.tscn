@@ -1,10 +1,18 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://resources/sounds/bgm/menu_bgm.mp3" type="AudioStream" id=1]
 [ext_resource path="res://singletons/AudioControl.gd" type="Script" id=2]
 [ext_resource path="res://resources/sounds/menu/button_click.mp3" type="AudioStream" id=3]
 [ext_resource path="res://resources/sounds/menu/button_hover.mp3" type="AudioStream" id=4]
 [ext_resource path="res://resources/sounds/menu/window_toggle.mp3" type="AudioStream" id=5]
+[ext_resource path="res://resources/sounds/combat/blunt_hit.wav" type="AudioStream" id=6]
+[ext_resource path="res://resources/sounds/combat/bunt_swing.wav" type="AudioStream" id=7]
+[ext_resource path="res://resources/sounds/combat/2h_blade_swing.wav" type="AudioStream" id=8]
+[ext_resource path="res://resources/sounds/combat/blade_swing2.wav" type="AudioStream" id=9]
+[ext_resource path="res://resources/sounds/map/drop.wav" type="AudioStream" id=10]
+[ext_resource path="res://resources/sounds/combat/death_squish.wav" type="AudioStream" id=11]
+[ext_resource path="res://resources/sounds/map/portal.wav" type="AudioStream" id=12]
+[ext_resource path="res://resources/sounds/map/loot.wav" type="AudioStream" id=13]
 
 [node name="AudioControl" type="Node"]
 script = ExtResource( 2 )
@@ -29,3 +37,37 @@ bus = "Effects"
 
 [node name="window_toggle" type="AudioStreamPlayer" parent="menu"]
 stream = ExtResource( 5 )
+
+[node name="combat" type="Node" parent="."]
+
+[node name="blunt_hit" type="AudioStreamPlayer" parent="combat"]
+stream = ExtResource( 6 )
+
+[node name="squish" type="AudioStreamPlayer" parent="combat"]
+
+[node name="blade_swing" type="AudioStreamPlayer" parent="combat"]
+stream = ExtResource( 9 )
+
+[node name="blunt_swing" type="AudioStreamPlayer" parent="combat"]
+stream = ExtResource( 7 )
+
+[node name="blade_hit" type="AudioStreamPlayer" parent="combat"]
+
+[node name="h_blade_swing" type="AudioStreamPlayer" parent="combat"]
+stream = ExtResource( 8 )
+
+[node name="h_blade_hit" type="AudioStreamPlayer" parent="combat"]
+
+[node name="death_squish" type="AudioStreamPlayer" parent="combat"]
+stream = ExtResource( 11 )
+
+[node name="map" type="Node" parent="."]
+
+[node name="drop" type="AudioStreamPlayer" parent="map"]
+stream = ExtResource( 10 )
+
+[node name="portal" type="AudioStreamPlayer" parent="map"]
+stream = ExtResource( 12 )
+
+[node name="loot" type="AudioStreamPlayer" parent="map"]
+stream = ExtResource( 13 )

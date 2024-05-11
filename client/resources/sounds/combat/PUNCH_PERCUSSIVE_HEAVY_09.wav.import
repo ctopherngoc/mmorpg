@@ -1,0 +1,23 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/PUNCH_PERCUSSIVE_HEAVY_09.wav-b0e632d1ff14236533a72fac2332de77.sample"
+
+[deps]
+
+source_file="res://resources/sounds/combat/PUNCH_PERCUSSIVE_HEAVY_09.wav"
+dest_files=[ "res://.import/PUNCH_PERCUSSIVE_HEAVY_09.wav-b0e632d1ff14236533a72fac2332de77.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

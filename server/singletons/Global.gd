@@ -299,7 +299,7 @@ func lootRequest(player: KinematicBody2D, loot_list: Array) -> void:
 			elif item_container.player_owner:
 				# if there are owners, if player is owner
 				# mark item looted, get player container, queuefree item
-# warning-ignore:unused_variable
+				# warning-ignore:unused_variable
 				var player_id = player.name
 				if player.name== item_container.player_owner and item_container.looted == false:
 					#item_container.looted = true
@@ -330,6 +330,7 @@ func lootDrop(player: KinematicBody2D, item_container: KinematicBody2D) -> void:
 			player.current_character["inventory"]["100000"] += item_container.amount
 		# update map itemlist
 		ServerData.items[item_container.map].erase(item_container.name)
+		server.send_loot_data(player.name, {"id": item_container.id})
 		server.update_player_stats(player)
 		# remove item node from map
 		#print("removing %s gold from map list and world list" % item_container.amount)
@@ -359,6 +360,7 @@ func lootDrop(player: KinematicBody2D, item_container: KinematicBody2D) -> void:
 				var item_dict = item_container.stats
 				#print("item_dict: \n %s" % item_dict)
 				http_requests.append([item_dict, player])
+				server.send_loot_data(player.name, {"id": item_container.id})
 				#add_item_database(item_dict, player)
 				item_container.queue_free()
 				#print("removing item from map list and world list (not stackable, null at index: %s)" % index)
@@ -394,6 +396,7 @@ func lootDrop(player: KinematicBody2D, item_container: KinematicBody2D) -> void:
 							# update player stats
 							server.update_player_stats(player)
 							# remove item node from map
+							server.send_loot_data(player.name, {"id": item_container.id})
 							item_container.queue_free()
 							#print("removing item from map list and world list (stackable item is in inventory)")
 							return
@@ -411,6 +414,7 @@ func lootDrop(player: KinematicBody2D, item_container: KinematicBody2D) -> void:
 					ServerData.items[item_container.map].erase(item_container.name)
 					# add item to index and update client
 					inventory_ref[index] = {"id": str(item_container.id), "q": 1}
+					server.send_loot_data(player.name, {"id": item_container.id})
 					server.update_player_stats(player)
 					# remove item node from map
 					item_container.queue_free()
@@ -430,6 +434,7 @@ func lootDrop(player: KinematicBody2D, item_container: KinematicBody2D) -> void:
 					ServerData.items[item_container.map].erase(item_container.name)
 					# add item to index and update client
 					inventory_ref[index] = {"id": str(item_container), "q": 1}
+					server.send_loot_data(player.name, {"id": item_container.id})
 					server.update_player_stats(player)
 					# remove item node from map
 					item_container.queue_free()
