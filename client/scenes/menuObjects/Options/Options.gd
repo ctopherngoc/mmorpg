@@ -27,9 +27,11 @@ func load_settings() -> void:
 	save_file.open(option_path, File.READ)
 	var settings_data = JSON.parse(save_file.get_as_text())
 	var sound_settings = settings_data.result["sound"]
+	var video_settings =settings_data.result["video"]
 	sound_node.masterValue = float(sound_settings.master)
 	sound_node.effectValue = float(sound_settings.effect)
 	sound_node.musicValue = float(sound_settings.music)
+	video_node.load_settings(video_settings)
 	sound_node.set_sound_values()
 	print("Loaded")
 	save_file.close()
@@ -38,10 +40,15 @@ func save_settings() -> void:
 	sound_node.save_sound_values()
 	var file = File.new()
 	file.open(option_path, file.WRITE)
-	var data ={"sound": {
+	var data ={ "sound": {
 		"master": sound_node.masterValue,
 		"music": sound_node.musicValue,
 		"effect": sound_node.effectValue,
+		},
+		"video": {
+		"vsync": video_node.VsyncToggle.pressed,
+		"resolution": String(get_viewport().get_size().x)+"x"+String(get_viewport().get_size().y),
+		"fullscreen": video_node.FullscreenToggle.pressed,
 		}
 	}
 	file.store_line(JSON.print(data, "\t"))
