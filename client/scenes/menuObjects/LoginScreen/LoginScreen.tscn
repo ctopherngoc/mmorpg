@@ -109,7 +109,6 @@ margin_bottom = 20.0
 text = "Option"
 
 [node name="Testing" type="HBoxContainer" parent="VBoxContainer"]
-visible = false
 margin_top = 140.0
 margin_right = 222.0
 margin_bottom = 160.0
@@ -122,10 +121,19 @@ text = "Testing"
 [node name="Options" parent="." instance=ExtResource( 3 )]
 visible = false
 
+[connection signal="focus_entered" from="VBoxContainer/username/LineEdit" to="." method="_on_LineEdit_focus_entered"]
+[connection signal="mouse_entered" from="VBoxContainer/username/LineEdit" to="." method="_on_LineEdit_mouse_entered"]
+[connection signal="text_changed" from="VBoxContainer/username/LineEdit" to="." method="_on_LineEdit_text_changed"]
+[connection signal="text_entered" from="VBoxContainer/username/LineEdit" to="." method="_on_LineEdit_text_entered"]
+[connection signal="focus_entered" from="VBoxContainer/password/LineEdit" to="." method="_on_LineEdit_focus_entered"]
+[connection signal="mouse_entered" from="VBoxContainer/password/LineEdit" to="." method="_on_LineEdit_mouse_entered"]
+[connection signal="text_changed" from="VBoxContainer/password/LineEdit" to="." method="_on_LineEdit_text_changed"]
+[connection signal="text_entered" from="VBoxContainer/password/LineEdit" to="." method="_on_LineEdit_text_entered"]
+[connection signal="mouse_entered" from="VBoxContainer/loginButton/Button" to="." method="_on_Button_mouse_entered"]
 [connection signal="pressed" from="VBoxContainer/loginButton/Button" to="." method="_on_Button_pressed"]
+[connection signal="mouse_entered" from="VBoxContainer/loginButton/RegisterButton" to="." method="_on_Button_mouse_entered"]
 [connection signal="pressed" from="VBoxContainer/loginButton/RegisterButton" to="." method="_on_RegisterButton_pressed"]
+[connection signal="mouse_entered" from="VBoxContainer/options/Button2" to="." method="_on_Button_mouse_entered"]
 [connection signal="pressed" from="VBoxContainer/options/Button2" to="." method="_on_Button2_pressed"]
+[connection signal="mouse_entered" from="VBoxContainer/Testing/Button1" to="." method="_on_Button_mouse_entered"]
 [connection signal="pressed" from="VBoxContainer/Testing/Button1" to="." method="_on_Button1_pressed"]
-[connection signal="pressed" from="Options/PanelContainer/back" to="." method="_on_back_pressed"]
-
-[editable path="Options"]

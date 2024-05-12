@@ -21,6 +21,7 @@ func get_drag_data(_pos):
 	# if slot is not null
 	#if Global.player.inventory[tab][slot_index] != null:
 	if item_data.id != null:
+		AudioControl.play_audio("menuClick")
 		var data = {}
 		data["origin_node"] = self
 		data["origin_texture"] = icon.texture
@@ -63,6 +64,7 @@ func drop_data(_pos,data):
 	to: 0-31(slot)
 	"""
 	Server.send_inventory_movement(tab_dict[tab], data["from_slot"], slot_index)
+	AudioControl.play_audio("itemSwap")
 	
 	# update beginning slot with destination slot info
 	data.origin_node.icon.texture = icon.texture

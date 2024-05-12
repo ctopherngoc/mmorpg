@@ -12,7 +12,6 @@ onready var ip = "127.0.0.1"
 onready var input_queue = []
 const interpolation_offset = 100
 onready var current_map = ""
-onready var bgm = $bgm
 onready var in_game = false
 
 var other_player = preload("res://scenes/playerObjects/PlayerTemplate.tscn")
@@ -20,6 +19,7 @@ var last_world_state = 0
 var world_state_buffer = []
 var ui = null
 var movable = true
+var rng = RandomNumberGenerator.new()
 
 var character_list = []
 var player = null
@@ -115,7 +115,8 @@ func _physics_process(_delta: float) -> void:
 						# spawn item
 						else:
 							# item not looted
-							#if !world_state_buffer[2]["I"][current_map][item]['L']:
+							if world_state_buffer[2]["I"][current_map][item]['D']:
+								AudioControl.play_audio("drop")
 							spawn_item(item, world_state_buffer[2]["I"][current_map][item])
 				# no items in future state -> despawn all
 				else:

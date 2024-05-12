@@ -4,9 +4,20 @@ onready var QuitConfirm = $QuitConfirm
 onready var AnimPlayer = $AnimationPlayer
 onready var OptionMenu = $Options
 onready var MenuMenu = $menu
+onready var ConfirmMenu = $QuitConfirm
+
+onready var confirmButton
+onready var cancelButton
 
 func _ready():
-	pass
+	#confirmButton = ConfirmMenu.get_ok()
+	#cancelButton = ConfirmMenu.get_cancel()
+	ConfirmMenu.get_ok().connect("pressed", self, "button_click")
+	ConfirmMenu.get_ok().connect("mouse_entered", self, "button_hover")
+	ConfirmMenu.get_ok().focus_mode = Control.FOCUS_NONE
+	ConfirmMenu.get_cancel().connect("pressed", self, "button_click")
+	ConfirmMenu.get_cancel().connect("mouse_entered", self, "button_hover")
+	ConfirmMenu.get_cancel().focus_mode = Control.FOCUS_NONE
 	#Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 func _input(_event):
@@ -28,12 +39,12 @@ func _on_Start_button_down():
 	AnimPlayer.play("loading")
 
 func _on_Options_button_down():
-	#SoundManager.PlayButtonPressUp()
+	play_button_pressed()
 	MenuMenu.hide()
 	OptionMenu.show()
 
 func _on_End_button_down():
-	pass
+	play_button_pressed()
 	#SoundManager.PlayFX(SoundManager.ErrorSound)
 
 	QuitConfirm.popup_centered_ratio(.2)
@@ -62,7 +73,7 @@ func _on_back_pressed():
 	OptionMenu.hide()
 
 func _on_resume_pressed():
-	#SoundManager.TrackAnim.play("hide")
+	play_button_pressed()
 	self.hide()
 	#Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	#get_tree().set_pause(false)
@@ -70,3 +81,16 @@ func _on_resume_pressed():
 func _on_Back_button_down():
 	#SoundManager.PlayButtonPressDown()
 	MenuMenu.show()
+
+
+func _on_Button_mouse_entered():
+	AudioControl.play_audio("menuHover")
+
+func play_button_pressed():
+	AudioControl.play_audio("menuHover")
+
+func button_click() -> void:
+	AudioControl.play_audio("menuClick")
+
+func button_hover() -> void:
+	AudioControl.play_audio("menuHover")

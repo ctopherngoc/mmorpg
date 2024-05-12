@@ -11,6 +11,7 @@ func _ready():
 	notification.add_color_override("font_color", Color("ff0300"))
 
 func _on_Button_pressed():
+	AudioControl.play_audio("menuClick")
 	createButton.disabled = true;
 	if password.text != confirm.text:
 		notification.text = "passwords do not match"
@@ -37,4 +38,9 @@ func _on_HTTPRequest_request_completed(_result: int, response_code: int, _header
 
 
 func _on_backButton_pressed():
+	AudioControl.play_audio("menuClick")
 	SceneHandler.change_scene("login")
+
+
+func _on_Button_mouse_entered():
+	AudioControl.play_audio("menuHover")

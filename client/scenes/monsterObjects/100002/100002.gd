@@ -39,6 +39,7 @@ func move(new_position):
 func health(health):
 	if health != current_hp:
 		print(str(self.name) + " took " + str(current_hp - health) + " damage")
+		AudioControl.play_audio("squish")
 		current_hp = health
 		health_bar_update()
 
@@ -47,6 +48,7 @@ func health_bar_update():
 	pass
 
 func on_death():
+	AudioControl.play_audio("deathSquish2")
 	despawn = 0
 	get_node("do_damage/CollisionShape2D").set_deferred("disabled", true)
 	yield(get_tree().create_timer(0.2), "timeout")

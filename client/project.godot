@@ -11,8 +11,9 @@ config_version=4
 [application]
 
 config/name="game client"
-run/main_scene="res://singletons/SceneHandler.tscn"
-config/icon="res://icon.png"
+run/main_scene="res://scenes/menuObjects/LoginScreen/LogoScreen.tscn"
+config/use_custom_user_dir=true
+config/icon="res://Blossom_Logo.png"
 
 [autoload]
 
@@ -23,6 +24,7 @@ Signals="*res://singletons/Signals.gd"
 GameData="*res://singletons/gamedata.gd"
 SceneHandler="*res://singletons/SceneHandler.tscn"
 Firebase="*res://singletons/Firebase.gd"
+AudioControl="*res://singletons/AudioControl.tscn"
 
 [display]
 

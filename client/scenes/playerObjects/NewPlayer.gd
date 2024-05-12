@@ -106,11 +106,13 @@ func get_movement_vector(input):
 	if is_climbing:
 		if (input[1] == 1 or input[3] == 1) and input[4] == 1:
 			moveVector.y = -1
+			AudioControl.play_audio("jump")
 		else:
 			moveVector.y = 0
 	else:
 		if input[4] == 1 && !attacking:
 			moveVector.y = -1
+			AudioControl.play_audio("jump")
 		else:
 			moveVector.y = 0
 	return moveVector
@@ -166,82 +168,6 @@ func get_velocity(move_vector, input, delta):
 			velocity.y += gravity * delta
 	if !can_climb:
 		is_climbing = false
-		
-#######################################
-# old input based movement
-"""
-func get_movement_vector():
-	var moveVector = Vector2.ZERO
-	
-	# calculating x vector, allow x-axis jump off ropes or idle on floor
-	if (!attacking && is_on_floor()) or (Input.is_action_pressed("move_right") or Input.is_action_pressed("move_left")) and Input.get_action_strength("jump"):
-		moveVector.x = (Input.get_action_strength("move_right") - Input.get_action_strength("move_left")) * velocity_multiplier
-	else:
-		moveVector.x = 0	
-	# calculating y vector, allow jump off ropes
-	if is_climbing:
-		if (Input.is_action_pressed("move_right") or Input.is_action_pressed("move_left")) and Input.get_action_strength("jump"):
-			moveVector.y = -1
-		else:
-			moveVector.y = 0
-	else:
-		if Input.get_action_strength("jump") && !attacking:
-			moveVector.y = -1
-		else:
-			moveVector.y = 0
-	return moveVector
-
-
-func get_velocity(move_vector, delta):
-	velocity.x += move_vector.x * max_horizontal_speed
-	# slow down movement
-	if(move_vector.x == 0):
-		# allows forward jumping
-		if(is_on_floor()):
-			# instant stop
-			velocity.x = 0
-
-	# allows maximum velocity
-	velocity.x = clamp(velocity.x, -max_horizontal_speed, max_horizontal_speed)
-	if can_climb:
-		if is_climbing:
-			velocity.y = 0
-			if Input.is_action_pressed("ui_up"):
-				velocity.y = -100
-			elif Input.is_action_pressed("ui_down"):
-				velocity.y = 100
-				if is_on_floor():
-					is_climbing = false
-			# jump off rope
-			elif Input.is_action_pressed("jump") && (Input.is_action_pressed("move_left") or Input.is_action_pressed("move_right")):
-				is_climbing = false
-				velocity.y = move_vector.y * jump_speed * .8
-				velocity.x = move_vector.x * 200
-		# can climb but not climbing
-		else:
-			#if moving
-			if (move_vector.y < 0 && is_on_floor()):
-					velocity.y = move_vector.y * jump_speed
-			# press up on ladder initiates climbing
-			elif Input.is_action_pressed("ui_up"):
-					is_climbing = true
-					velocity.y = 0
-					velocity.x = 0
-			# over lapping ladder pressing nothing allows gravity
-			else:
-				velocity.y += gravity * delta
-	# not climbable state
-	else:
-		# normal movement
-		if (move_vector.y < 0 && is_on_floor()):
-			velocity.y = move_vector.y * jump_speed
-		else:
-			velocity.y += gravity * delta
-	if !can_climb:
-		is_climbing = false
-# attack > jump > walking > takeDamage > standing
-
-"""
 
 func update_animation(move_vector):
 	#var move_vector = get_movement_vector()
@@ -253,6 +179,12 @@ func update_animation(move_vector):
 		attacking = true
 		#sprite.play("slash",-1, GameData.weapon_speed[str(Global.player.equipment.rweapon.speed)])
 		sprite.play("slash",-1, GameData.weapon_speed[str(Global.player.equipment.rweapon.attackSpeed)])
+		#### insert sound play
+		determine_weapon_noise()
+		"""
+		can insert determine_weapon_noise into compositesprite animations
+		determine attack speed -> adjust when sound is played (delay for slower wep)
+		"""
 		Server.send_attack(0)
 	else:
 		if(!is_on_floor()):
@@ -266,6 +198,20 @@ func update_animation(move_vector):
 		else:
 			sprite.play("idle")
 
+func determine_weapon_noise() -> void:
+	if Global.player.equipment.rweapon.type in ["dagger", "1h_sword", "1h_axe", "staff", "wand"]:
+		print("1hsword")
+		#var rng = Global.rng.randi_range(1,101)
+#		if rng <= 50:
+#			pass
+#		else:
+#			pass
+		AudioControl.play_audio("1h_swing")
+	elif Global.player.equipment.rweapon.type in ["1h_blunt", "2h_blunt"]:
+		AudioControl.play_audio("blunt_swing")
+	elif Global.player.equipment.rweapon.type in ["2h_sword", "2h_axe"]:
+		AudioControl.play_audio("2h_swing")
+	
 func movable_switch():
 	Global.movable = true
 	

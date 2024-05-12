@@ -48,4 +48,5 @@ func touch_damage():
 # call in global for univeral dmg xp
 func die():
 	get_node("do_damage/CollisionShape2D").set_deferred("disabled", true)
+	get_node("take_damage/CollisionShape2D").set_deferred("disabled", true)
 

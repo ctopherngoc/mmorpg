@@ -1,4 +1,4 @@
- extends Node2D
+extends Node2D
 var map_id = "100001"
 var map_name = "Grassy Road 1"
 
@@ -76,6 +76,5 @@ func UpdateItemStateList() -> void:
 	if  get_node("YSort/Items").get_child_count() > 0:
 		var index  = 0
 		for item in get_node("YSort/Items").get_children():
-			# N = drop_id client node name
-			ServerData.items[self.name][item.name] = {"P": item.position, "I": item.id, "N": item.drop_id}
+			Global.add_item_to_world_state(item, self.name)
 			index += 1

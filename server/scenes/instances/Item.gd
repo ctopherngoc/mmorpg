@@ -9,6 +9,7 @@ var looted = false
 var map
 var drop_id
 var stackable = 0
+var just_dropped = 1
 
 func _ready():
 	pass
@@ -25,7 +26,10 @@ func _on_Timer_timeout() -> void:
 # existance timer
 func _on_Timer2_timeout() -> void:
 	print(self.name, " discard item")
-	self.queue_free()
+	#ServerData.items[item_container.map].erase(item_container.name)
+	#ServerData.items[map].erase(self.name)
+	just_dropped = -1
+	#self.queue_free()
 
 
 func _on_Area2D_area_entered(area: Area2D) -> void:

@@ -130,6 +130,7 @@ func update_inventory():
 func _input(event):
 	if event.is_action_pressed("inventory"):
 		self.visible = not self.visible
+		AudioControl.play_audio("windowToggle")
 		print("toggle inventory")
 
 func _on_Header_gui_input(event):
@@ -170,3 +171,7 @@ func test_setup():
 	inv_ref["equipment"][1] = {'id': "500004"}
 	inv_ref["equipment"][6] = {'id': "500005"}
 	inv_ref["100000"] = 123456789
+
+
+func _on_TabContainer_tab_selected(tab):
+	AudioControl.play_audio("menuClick")
