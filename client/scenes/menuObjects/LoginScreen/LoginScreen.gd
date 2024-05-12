@@ -15,6 +15,9 @@ func _ready() -> void:
 
 func _on_Button_pressed() -> void:
 	AudioControl.play_audio("menuClick")
+	login_request()
+
+func login_request() -> void:
 	if username.text.empty() or password.text.empty():
 		notification.text = "Enter username and password"
 	else:
@@ -54,3 +57,19 @@ func _on_Button_mouse_entered():
 func return_to_login() -> void:
 	OptionMenu.hide()
 	MainMenu.show()
+
+
+func _on_LineEdit_text_entered(new_text):
+	login_request()
+
+
+func _on_LineEdit_text_changed(new_text):
+	AudioControl.play_audio("typing")
+
+
+func _on_LineEdit_mouse_entered():
+	AudioControl.play_audio("menuHover")
+
+
+func _on_LineEdit_focus_entered():
+	AudioControl.play_audio("menuClick")
