@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://resources/sounds/bgm/menu_bgm.mp3" type="AudioStream" id=1]
 [ext_resource path="res://singletons/AudioControl.gd" type="Script" id=2]
@@ -16,6 +16,8 @@
 [ext_resource path="res://resources/sounds/combat/death_squish2.wav" type="AudioStream" id=14]
 [ext_resource path="res://resources/sounds/combat/level_up.wav" type="AudioStream" id=15]
 [ext_resource path="res://resources/sounds/combat/squish.wav" type="AudioStream" id=16]
+[ext_resource path="res://resources/sounds/map/jump.wav" type="AudioStream" id=17]
+[ext_resource path="res://resources/sounds/menu/typing.wav" type="AudioStream" id=18]
 
 [node name="AudioControl" type="Node"]
 script = ExtResource( 2 )
@@ -42,6 +44,9 @@ bus = "Effects"
 [node name="window_toggle" type="AudioStreamPlayer" parent="menu"]
 stream = ExtResource( 5 )
 bus = "Effects"
+
+[node name="typing" type="AudioStreamPlayer" parent="menu"]
+stream = ExtResource( 18 )
 
 [node name="combat" type="Node" parent="."]
 
@@ -105,3 +110,9 @@ bus = "Effects"
 [node name="loot" type="AudioStreamPlayer" parent="map"]
 stream = ExtResource( 13 )
 bus = "Effects"
+
+[node name="jump" type="AudioStreamPlayer" parent="map"]
+stream = ExtResource( 17 )
+bus = "Effects"
+
+[connection signal="finished" from="map/jump" to="." method="_on_jump_finished"]

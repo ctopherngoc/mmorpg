@@ -10,12 +10,12 @@ var current_res = "1280x720"
 
 
 var Resolutions: Dictionary = {"3840x2160":Vector2(3840,2160),
-								"2560x1080":Vector2(2560,1080),
 								"2560x1440":Vector2(2560,1440),
 								"1920x1080":Vector2(1920,1080),
+								"1280x720":Vector2(1280,720),
+								"2560x1080":Vector2(2560,1080),
 								"1366x768":Vector2(1366,768),
 								"1536x864":Vector2(1536,864),
-								"1280x720":Vector2(1280,720),
 								"1440x900":Vector2(1440,900),
 								"1600x900":Vector2(1600,900),
 								"1024x576":Vector2(1024,576),
@@ -34,7 +34,6 @@ func _ready():
 
 func AddResolutions():
 	var CurrentResolution = get_viewport().get_size()
-
 	var index = 0
 	
 	for r in Resolutions:
@@ -81,7 +80,6 @@ func _on_FxaaToggle_toggled(button_pressed):
 	AudioControl.play_audio("menuClick")
 	get_viewport().set_use_fxaa(button_pressed)
 
-
 func _on_Button_mouse_entered():
 	AudioControl.play_audio("menuHover")
 
@@ -101,3 +99,6 @@ func load_settings(settings: Dictionary) -> void:
 				break
 			else:
 				index += 1
+
+func _on_ResolutionOptionButton_pressed():
+	AudioControl.play_audio("menuClick")

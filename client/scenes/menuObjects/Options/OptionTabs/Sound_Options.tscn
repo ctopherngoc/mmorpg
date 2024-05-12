@@ -44,6 +44,7 @@ margin_bottom = 319.0
 max_value = 0.99
 step = 0.055
 value = 0.99
+scrollable = false
 tick_count = 10
 ticks_on_borders = true
 __meta__ = {
@@ -65,6 +66,7 @@ margin_bottom = 357.0
 max_value = 0.99
 step = 0.055
 value = 0.99
+scrollable = false
 tick_count = 10
 ticks_on_borders = true
 __meta__ = {
@@ -86,6 +88,7 @@ margin_bottom = 395.0
 max_value = 0.99
 step = 0.055
 value = 0.99
+scrollable = false
 tick_count = 10
 ticks_on_borders = true
 __meta__ = {
@@ -99,6 +102,12 @@ margin_bottom = 681.0
 size_flags_horizontal = 3
 custom_styles/separator = SubResource( 3 )
 
+[connection signal="drag_ended" from="Sliders/MasterSlider" to="." method="_on_MasterSlider_drag_ended"]
+[connection signal="mouse_entered" from="Sliders/MasterSlider" to="." method="_on_Slider_mouse_entered"]
 [connection signal="value_changed" from="Sliders/MasterSlider" to="." method="_on_MasterSlider_value_changed"]
+[connection signal="drag_ended" from="Sliders/SoundSlider" to="." method="_on_SoundSlider_drag_ended"]
+[connection signal="mouse_entered" from="Sliders/SoundSlider" to="." method="_on_Slider_mouse_entered"]
 [connection signal="value_changed" from="Sliders/SoundSlider" to="." method="_on_SoundSlider_value_changed"]
+[connection signal="drag_ended" from="Sliders/EffectsSlider" to="." method="_on_EffectsSlider_drag_ended"]
+[connection signal="mouse_entered" from="Sliders/EffectsSlider" to="." method="_on_Slider_mouse_entered"]
 [connection signal="value_changed" from="Sliders/EffectsSlider" to="." method="_on_EffectsSlider_value_changed"]

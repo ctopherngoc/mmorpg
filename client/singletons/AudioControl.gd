@@ -20,11 +20,24 @@ onready var stream_dict = {
 	"portal": $map/portal,
 	"drop": $map/drop,
 	"loot": $map/loot,
+	"jump": $map/jump,
+	"typing": $menu/typing 
 }
 
+var jump_bool: bool = false
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
 
+# added bool check for jump audio
+# can cause unlimited stream plays because of 60 ticks/s on phtiscs
 func play_audio(audio: String) -> void:
-	stream_dict[audio].play()
+	if audio == "jump":
+		if not jump_bool:
+			jump_bool = not jump_bool
+			stream_dict[audio].play()
+	else:
+		stream_dict[audio].play()
+
+func _on_jump_finished():
+	jump_bool = not jump_bool
