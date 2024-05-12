@@ -106,11 +106,13 @@ func get_movement_vector(input):
 	if is_climbing:
 		if (input[1] == 1 or input[3] == 1) and input[4] == 1:
 			moveVector.y = -1
+			AudioControl.play_audio("jump")
 		else:
 			moveVector.y = 0
 	else:
 		if input[4] == 1 && !attacking:
 			moveVector.y = -1
+			AudioControl.play_audio("jump")
 		else:
 			moveVector.y = 0
 	return moveVector
