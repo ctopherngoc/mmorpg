@@ -12,7 +12,7 @@ config_version=4
 
 config/name="gateaway server"
 run/main_scene="res://GatewayServer.tscn"
-config/icon="res://icon.png"
+config/icon="res://Blossom_Logo.png"
 
 [autoload]
 

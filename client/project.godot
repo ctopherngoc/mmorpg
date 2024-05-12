@@ -11,9 +11,9 @@ config_version=4
 [application]
 
 config/name="game client"
-run/main_scene="res://scenes/menuObjects/LoginScreen/LoginScreen.tscn"
+run/main_scene="res://scenes/menuObjects/LoginScreen/LogoScreen.tscn"
 config/use_custom_user_dir=true
-config/icon="res://icon.png"
+config/icon="res://Blossom_Logo.png"
 
 [autoload]
 
