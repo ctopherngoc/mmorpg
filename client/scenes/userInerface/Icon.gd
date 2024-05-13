@@ -21,7 +21,6 @@ func get_drag_data(_pos):
 	# if slot is not null
 	#if Global.player.inventory[tab][slot_index] != null:
 	if item_data.id != null:
-		AudioControl.play_audio("menuClick")
 		var data = {}
 		data["origin_node"] = self
 		data["origin_texture"] = icon.texture
@@ -97,4 +96,9 @@ Server remove func to validate item move request ->
 update server char inventory data -> client remote func to update character data ->
  update inventory window icons (similar to health hud)
 """
-	
+func _gui_input(event):
+	if event is InputEventMouseButton:
+		if event.button_index == BUTTON_LEFT and event.pressed:
+			if item_data.id:
+				AudioControl.play_audio("menuClick")
+
