@@ -12,10 +12,10 @@ addition to Godot 3.5 does not have true deterministic locomotion.
 Install Godot 3.5 on the running machine
 
 ### Installing/Executing
-Current release (v3.0.0) is server authoritative model with server reconciliation and client prediction has been implemented. Although it is implemented, it is not true server authoritative because Godot kinematics are not fully deterministic.<br />
+Current release (v3.0.1) is server authoritative model with server reconciliation and client prediction has been implemented. Although it is implemented, it is not true server authoritative because Godot kinematics are not fully deterministic.<br />
 <br />
 Local Install: <br />
-Download the current release (v3.0.0) .zip from the release section. Unzip the executable.<br />
+Download the current release (v3.0.1) .zip from the release section. Unzip the executable.<br />
 <br />
 Run the Authentication executable.<br />
 <br />
