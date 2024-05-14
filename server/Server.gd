@@ -194,8 +194,7 @@ func _Server_New_Character(new_char: Dictionary):
 	
 	return temp_player
 	
-remote func choose_character(requester, display_name: String) -> void:
-	print("requester: %s" % typeof(requester))
+remote func choose_character(requester: int, display_name: String) -> void:
 	var player_id = get_tree().get_rpc_sender_id()
 	var player_container = _Server_Get_Player_Container(player_id)
 	for character_dict in player_container.characters_info_list:
@@ -205,6 +204,26 @@ remote func choose_character(requester, display_name: String) -> void:
 			ServerData.username_list[str(player_id)] = display_name
 			break
 	var map = player_container.current_character['map']
+	var temp_dict = player_container.current_character.avatar
+	player_container.sprite.append(temp_dict.bcolor + temp_dict.body)
+	player_container.sprite.append(temp_dict.brow)
+	player_container.sprite.append(temp_dict.bcolor + temp_dict.ear)
+	player_container.sprite.append(temp_dict.ecolor + temp_dict.eye)
+	player_container.sprite.append(temp_dict.hcolor + temp_dict.hair)
+	player_container.sprite.append(temp_dict.head)
+	player_container.sprite.append(temp_dict.mouth)
+
+	temp_dict = player_container.current_character.equipment
+	player_container.sprite.append(temp_dict.headgear)
+	player_container.sprite.append(temp_dict.top)
+	player_container.sprite.append(temp_dict.bottom)
+	player_container.sprite.append(temp_dict.rweapon.id)
+	player_container.sprite.append(temp_dict.lweapon)
+	player_container.sprite.append(temp_dict.eyeacc)
+	player_container.sprite.append(temp_dict.earring)
+	player_container.sprite.append(temp_dict.faceacc)
+	player_container.sprite.append(temp_dict.glove)
+	player_container.sprite.append(temp_dict.tattoo)
 	
 	# move user container to the map
 	move_player_container(player_id, player_container, map, 'spawn')
@@ -364,7 +383,8 @@ remote func received_player_state(player_state):
 	var map_id = ServerData.player_location[str(player_id)].replace("/root/Server/World/Maps/", "")
 	map_id = map_id.replace("/YSort/Players", "")
 	player_state['M'] = map_id
-	player_state['A'] = player_container.get_animation()
+	player_state['A'] = (player_container.get_animation()).duplicate(true)
+	player_state['S'] = player_container.sprite
 	if ServerData.player_state_collection.has(player_id):
 		if ServerData.player_state_collection[player_id]["T"] < player_state["T"]:
 			ServerData.player_state_collection[player_id] = player_state
@@ -380,7 +400,7 @@ func send_world_state(world_state):
 
 ###############################################################################
 # server combat functions
-remote func attack(move_id):
+remote func receive_attack(move_id):
 	var player_id = get_tree().get_rpc_sender_id()
 	var player_container = _Server_Get_Player_Container(player_id)
 	# basic attack
@@ -422,36 +442,6 @@ func _on_Button_pressed():
 # function takes current_character
 func _on_Button2_pressed():
 	Global.calculate_stats($Test/PlayerContainer.current_character)
-######################################################################
-
-#func offline_move_item(inv_data: Array):
-#	"""
-#	inv_data=[tab:int, from:int, to:int]
-#	assuming from_item != null (you cant drag and drop empty slots)
-#	"""
-#	var tab = {0: "equip", 1: "use", 2: "etc"}
-#
-#	######################################################################
-#	# test data
-#	var player_container = {
-#		"current_character": {
-#			"inventory": {
-#				"equip": [null, null, null],
-#				"etc": [null, null, null],
-#				"use": [{"i": 300000, "q": 5}, null, {"i": 300002, "q": 100}],}}}
-#
-#	######################################################################
-#
-#	var item1 = player_container.current_character.inventory[tab[inv_data[0]]][inv_data[1]]
-#	# if to_slot != null -> to_slot = from_slot, from_slot = to_slot
-#	if player_container.current_character.inventory[tab[inv_data[0]]][inv_data[2]] != null:
-#		var item2 = player_container.current_character.inventory[tab[inv_data[0]]][inv_data[2]]
-#		player_container.current_character.inventory[tab[inv_data[0]]][inv_data[2]] = item1
-#		player_container.current_character.inventory[tab[inv_data[0]]][inv_data[1]] = item2
-#	# if to_slot = null -> to_slot = from_slot, from_slot = null
-#	else:
-#		player_container.current_character.inventory[tab[inv_data[0]]][inv_data[2]] = item1
-#		player_container.current_character.inventory[tab[inv_data[0]]][inv_data[1]] = null
 
 remote func move_item(inv_data: Array):
 	"""
@@ -461,12 +451,7 @@ remote func move_item(inv_data: Array):
 	var player_id = get_tree().get_rpc_sender_id()
 	var player_container = _Server_Get_Player_Container(player_id)
 	var tab = {0: "equipment", 1: "use", 2: "etc"}
-	#print("in move_item rpc")
-	#print(player_container.current_character.inventory[tab[inv_data[0]]])
 
-	#print(inv_data)
-
-	
 	var item1 = player_container.current_character.inventory[tab[inv_data[0]]][inv_data[1]]
 	# if to_slot != null -> to_slot = from_slot, from_slot = to_slot
 	if player_container.current_character.inventory[tab[inv_data[0]]][inv_data[2]] != null:
