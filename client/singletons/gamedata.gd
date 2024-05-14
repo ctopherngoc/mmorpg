@@ -9,11 +9,12 @@ func _ready():
 	var data_file = File.new()
 	data_file.open("res://data/GameDataTable.json", File.READ)
 	var gamedata_json = JSON.parse(data_file.get_as_text())
-	data_file.close()
 	
 	monsterTable = gamedata_json.result["MonsterTable"]
 	itemTable = gamedata_json.result["ItemTable"]
 	equipmentTable = gamedata_json.result["EquipmentTable"]
+	
+	data_file.close()
 
 onready var bgm_dict = {
 	'menu': preload("res://resources/sounds/bgm/menu_bgm.mp3"),
