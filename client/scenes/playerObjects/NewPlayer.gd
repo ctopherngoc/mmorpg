@@ -92,8 +92,6 @@ func movement_loop(delta, input_arr):
 	if is_climbing:
 		velocity.x = 0
 	update_animation(move_vector)
-	#if recon_arr["input_arr"] != [0,0,0,0,0] and recon_arr["input_arr"] != []:
-		#print(recon_arr)
 	
 func get_movement_vector(input):
 	var moveVector = Vector2.ZERO
@@ -246,7 +244,7 @@ func _unhandled_input(event):
 
 
 func _on_Button_pressed():
-	var temp_pos = self.position
+	var _temp_pos = self.position
 	var temp_input = [0,0,0,1,0]
 	recon_arr["input_arr"] = temp_input
 	movement_loop(temp_delta, temp_input)
@@ -255,7 +253,7 @@ func _on_Button_pressed():
 
 
 func _on_Button2_pressed():
-	var temp_pos = self.position
+	var _temp_pos = self.position
 	var temp_input = [0,1,0,0,0]
 	recon_arr["input_arr"] = temp_input
 	movement_loop(temp_delta, temp_input)
