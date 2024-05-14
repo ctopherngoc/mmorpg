@@ -1,4 +1,5 @@
 extends Node2D
+
 onready var ammo = $Ammo
 onready var body = $Body
 onready var bottom = $Bottom
@@ -29,6 +30,7 @@ onready var top = $Top
 onready var tattoo = $Tattoo
 onready var pocket = $Pocket
 
+# no rfinger
 onready var sprite_dict = {
 	"ammo" : ammo,
 	"body" : body,
@@ -49,6 +51,8 @@ onready var sprite_dict = {
 	"rweapon": rwep,
 	"top": top,
 	"tattoo": tattoo,
+	"rarm": rarm,
+	"larm": larm,
 }
 
 
@@ -74,6 +78,24 @@ func update_avatar(data):
 		#body
 		var sprite = load(GameData.avatar_sprite.body + str(avatar['bcolor']) + str(avatar['body']) + ".png")
 		body.set_texture(sprite)
+		#arms
+		sprite = load(GameData.avatar_sprite.rarm + str(avatar['bcolor']) + ".png")
+		rarm.set_texture(sprite)
+		sprite = load(GameData.avatar_sprite.larm + str(avatar['bcolor']) + ".png")
+		larm.set_texture(sprite)
+		# hand
+		sprite = load(GameData.avatar_sprite.rhand + str(avatar['bcolor']) + ".png")
+		rhand.set_texture(sprite)
+		sprite = load(GameData.avatar_sprite.lhand + str(avatar['bcolor']) + ".png")
+		lhand.set_texture(sprite)
+		# finger
+		sprite = load(GameData.avatar_sprite.lfinger + str(avatar['bcolor']) + ".png")
+		lfinger.set_texture(sprite)
+		# leg
+		sprite = load(GameData.avatar_sprite.rleg + str(avatar['bcolor']) + ".png")
+		rleg.set_texture(sprite)
+		sprite = load(GameData.avatar_sprite.lleg + str(avatar['bcolor']) + ".png")
+		lleg.set_texture(sprite)
 		#brow
 		sprite = load(GameData.avatar_sprite.brow + str(avatar['brow']) + ".png")
 		brow.set_texture(sprite)
