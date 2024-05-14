@@ -41,14 +41,19 @@ var input = [0,0,0,0,0,0]
 var attacking = false
 var hittable = true
 
+# sprite string to put in ws
+onready var sprite = []
+
 #implement animation again
 """
 f: is on floor: 0:no 1: yes
 d: direction 0:L 1:R
+a: attack 0 not 1 is
 """
 onready var animation_state = {
 	"f": 1,
 	"d": 1,
+	"a": 0,
 }
 
 ########
@@ -66,13 +71,19 @@ func _physics_process(delta: float) -> void:
 	if loggedin:
 		if "Map" in str(self.get_path()):
 			movement_loop(delta)
+	if animation_state.a:
+		print("attacking")
 
-func get_animation() -> int:
+func get_animation() -> Dictionary:
 	if self.is_on_floor():
 		animation_state.f = 1
 	else:
 		animation_state.f = 0
 	animation_state.d = direction
+	if attacking:
+		animation_state.a = 1
+	else:
+		animation_state.a = 0
 	return animation_state
 
 func load_player_stats() -> void:
@@ -82,6 +93,7 @@ func load_player_stats() -> void:
 
 func attack(move_id: int) -> void:
 	attacking = true
+	
 	#basic attack
 	if move_id == 0:
 		var equipment = current_character.equipment
@@ -348,3 +360,27 @@ func loot_request() -> void:
 	#print(self.name, " ", "Pressed Loot")
 	var loot_list = loot_node.get_overlapping_areas()
 	Global.lootRequest(self, loot_list)
+
+func update_sprite_array():
+	var temp_dict = current_character.avatar
+	sprite[0] = temp_dict.bcolor + temp_dict.body
+	sprite[1] = temp_dict.brow
+	sprite[2] = temp_dict.bcolor + temp_dict.ear
+	#sprite[3] = temp_dict.bcolor + temp_dict.ear
+	sprite[3] = temp_dict.ecolor + temp_dict.eye
+	sprite[4] = temp_dict.hcolor + temp_dict.hair
+	sprite[5] = temp_dict.head
+	sprite[6] = temp_dict.mouth
+
+	temp_dict = current_character.equipment
+	sprite[7] = temp_dict.headgear
+	sprite[8] = temp_dict.top
+	sprite[9] = temp_dict.bottom
+	sprite[10] = temp_dict.rweapon.id
+	sprite[11] = temp_dict.lweapon
+	sprite[12] = temp_dict.eyeacc
+	sprite[13] = temp_dict.earring
+	sprite[14] = temp_dict.faceacc
+	sprite[15] = temp_dict.glove
+	sprite[16] = temp_dict.tattoo
+	
