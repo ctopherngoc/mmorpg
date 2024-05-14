@@ -36,7 +36,7 @@ var curr_rhand: int = 0
 var bottom: int = 0
 """
 
-func _ready():
+func _ready() -> void:
 	body.texture = composite_sprites.body_spritesheet["00"]
 	head.texture = composite_sprites.head_spritesheet["00"]
 	outfit.texture = composite_sprites.outfit_spritesheet["0"]
@@ -45,7 +45,7 @@ func _ready():
 	eye.texture = composite_sprites.eye_spritesheet["00"]
 	ear.texture = composite_sprites.ear_spritesheet["00"]
 
-func compile_char_data():
+func compile_char_data() -> Dictionary:
 	var data = {
 	"bc" : curr_bcolor,
 	"b": curr_body,
@@ -61,7 +61,7 @@ func compile_char_data():
 	}
 	return data
 
-func createSprite(part):
+func createSprite(part: String) -> void:
 	if part == "body":
 		var key = str(curr_bcolor) + str(curr_body)
 		body.texture = composite_sprites.body_spritesheet[key]
@@ -107,47 +107,47 @@ func createSprite(part):
 	
 	
 
-func _on_Body_pressed():
+func _on_Body_pressed() -> void:
 	curr_body = (curr_body + 1) % 2
 	createSprite("body")
 
 # effects body, head, ears
-func _on_BColor_pressed():
+func _on_BColor_pressed() -> void:
 	curr_bcolor = (curr_bcolor + 1) % 6
 	createSprite("bcolor")
 
-func _on_Head_pressed():
+func _on_Head_pressed() -> void:
 	curr_head = (curr_head + 1) % 8
 	createSprite("head")
 
-func _on_Hair_pressed():
+func _on_Hair_pressed() -> void:
 	curr_hair = (curr_hair + 1) % 4
 	createSprite("hair")
 
-func _on_HColor_pressed():
+func _on_HColor_pressed() -> void:
 	curr_hcolor = (curr_hcolor + 1) % 4
 	createSprite("hair")
 
-func _on_Eyes_pressed():
+func _on_Eyes_pressed() -> void:
 	curr_eye = (curr_eye + 1) % 3
 	createSprite("eye")
 
-func _on_EColor_pressed():
+func _on_EColor_pressed() -> void:
 	curr_ecolor = (curr_ecolor + 1) % 3
 	createSprite("eye")
 
-func _on_Ears_pressed():
+func _on_Ears_pressed() -> void:
 	curr_ear = (curr_ear + 1) % 2
 	createSprite("ear")
 
-func _on_Mouth_pressed():
+func _on_Mouth_pressed() -> void:
 	curr_mouth = (curr_mouth + 1) % 3
 	createSprite("mouth")
 
-func _on_Brow_pressed():
+func _on_Brow_pressed() -> void:
 	curr_brow = (curr_brow + 1) % 4
 	createSprite("brow")
 
-func _on_Outfit_pressed():
+func _on_Outfit_pressed() -> void:
 	curr_outfit = (curr_outfit + 1) % 3
 	createSprite("outfit")
