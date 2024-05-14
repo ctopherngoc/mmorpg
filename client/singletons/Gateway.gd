@@ -14,7 +14,7 @@ var password
 func _ready():
 	pass
 
-func _process(_delta):
+func _process(_delta: float) -> void:
 	
 	if get_custom_multiplayer() == null:
 		return
@@ -22,7 +22,7 @@ func _process(_delta):
 		return
 	custom_multiplayer.poll()
 
-func connect_to_server(_username, _password):
+func connect_to_server(_username: String, _password: String) -> void:
 	print("connecting to gateway")
 	network = NetworkedMultiplayerENet.new()
 	gateway_api = MultiplayerAPI.new()
@@ -40,23 +40,23 @@ func connect_to_server(_username, _password):
 	custom_multiplayer.set_network_peer(network)
 	# start timer to time out login
 
-func _on_connection_failed():
+func _on_connection_failed() -> void:
 	print("Failed to conect to login server")
 	print("Pop-up server offline")
 	Server.email = null
 	Signals.emit_signal("fail_login")
 
-func _on_connection_succeeded():
+func _on_connection_succeeded() -> void:
 	print("Successfully connected to login server")
 	request_login()
 
-remote func request_login():
+remote func request_login() -> void:
 	print("Connecting to gateway to request login")
 	rpc_id(1, "login_request", username, password)
 	username = ""
 	password = ""
 
-remote func return_login_request(results):
+remote func return_login_request(results: Array) -> void:
 	"""
 	results[0] = code
 	results[1] = {token, id}
