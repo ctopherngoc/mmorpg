@@ -6,7 +6,6 @@
 ######################################################################
 
 extends Node
-
 onready var ip = "127.0.0.1"
 
 onready var input_queue = []
@@ -138,6 +137,59 @@ func _physics_process(_delta: float) -> void:
 							var new_position = world_state_buffer[1]["P"][player_state]["P"] + (position_delta * extrapolation_factor)
 							var animation = world_state_buffer[1]["P"][player_state]["A"]
 							get_node("/root/currentScene/OtherPlayers/" + str(player_state)).move_player(new_position, animation)
+				if world_state_buffer[1]["E"][current_map].size() > 0:
+					#spawn monsters function
+					for monster in world_state_buffer[1]["E"][current_map].keys():
+						if not world_state_buffer[0]["E"][current_map].has(monster):
+							continue
+						# monster not dead on client
+						if get_node("/root/currentScene/Monsters").has_node(str(monster)):
+							var monster_node = get_node("/root/currentScene/Monsters/" + str(monster))
+							# monster dead on server
+							if world_state_buffer[1]["E"][current_map][monster]["EnemyHealth"] <= 0:
+								if monster_node.despawn != 0:
+									monster_node.on_death()
+							# monster alive: update monster stats and position
+							else:
+								var new_position = world_state_buffer[1]["E"][current_map][monster]["EnemyLocation"]
+								monster_node.move(new_position)
+								monster_node.health(world_state_buffer[1]["E"][current_map][monster]["EnemyHealth"])
+						else:
+							# if actually alive respawned monster
+							if world_state_buffer[1]["E"][current_map][monster]['time_out'] != 0 && world_state_buffer[1]["E"][current_map][monster]['EnemyState'] != "Dead":
+								spawn_monster(monster, world_state_buffer[1]["E"][current_map][monster])
+				#################################################################
+				if world_state_buffer[1]["I"][current_map].size() > 0:
+					var current_item_nodes = get_node("/root/currentScene/Items").get_children()
+					# remove items if current state has item but future does not have it
+					for item in current_item_nodes:
+						if not item.name in world_state_buffer[1]["I"][current_map].keys():
+							item.queue_free()
+					for item in world_state_buffer[1]["I"][current_map].keys():
+						if not world_state_buffer[0]["I"][current_map].has(item):
+							continue
+						# monster not dead on client
+						if get_node("/root/currentScene/Items").has_node(str(item)):
+							# floor both world state item locations 
+							var ws1 = Vector2(floor(world_state_buffer[0]["I"][current_map][item]["P"].x), floor(world_state_buffer[0]["I"][current_map][item]["P"].y))
+							var ws2 = Vector2(floor(world_state_buffer[1]["I"][current_map][item]["P"].x), floor(world_state_buffer[1]["I"][current_map][item]["P"].y))
+							# if they are equal dont update the location
+							if ws1 != ws2:
+								#print(ws1, ws2)
+								var item_node = get_node("/root/currentScene/Items/" + str(item))
+								var new_position = world_state_buffer[1]["I"][current_map][item]["P"]
+								item_node.position = new_position
+						# spawn item
+						else:
+							# item not looted
+							if world_state_buffer[1]["I"][current_map][item]['D']:
+								AudioControl.play_audio("drop")
+							spawn_item(item, world_state_buffer[1]["I"][current_map][item])
+				# no items in future state -> despawn all
+				else:
+					var current_item_nodes = get_node("/root/currentScene/Items").get_children()
+					for i in current_item_nodes:
+							i.queue_free()
 
 func spawn_new_player(player_id, player_state):
 	print("player_id: %s, player_state: %s" % [typeof(player_id), typeof(player_state)])
