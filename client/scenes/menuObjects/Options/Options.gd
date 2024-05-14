@@ -59,8 +59,9 @@ if Resolutions[r] == CurrentResolution:
 			ResolutionOptionButton._select_int(index)
 """
 
-func _on_back_mouse_entered():
+func _on_back_mouse_entered() -> void:
 	AudioControl.play_audio("menuHover")
 
-func _on_TabContainer_tab_selected(tab):
+func _on_TabContainer_tab_selected(tab) -> void:
+	print("Tab %s" % typeof(tab))
 	AudioControl.play_audio("menuClick")

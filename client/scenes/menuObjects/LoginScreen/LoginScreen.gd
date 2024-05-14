@@ -36,22 +36,22 @@ func _on_Button1_pressed():
 	# warning-ignore:return_value_discarded
 	SceneHandler.change_scene("100000")
 
-func _on_Button2_pressed():
+func _on_Button2_pressed() -> void:
 	AudioControl.play_audio("menuClick")
 	MainMenu.hide()
 	OptionMenu.show()
 
-func _on_back_pressed():
+func _on_back_pressed() -> void:
 	#SoundManager.PlayButtonPressDown()
 	MainMenu.show()
 	#Title.show()
 	OptionMenu.hide()
 
-func _on_RegisterButton_pressed():
+func _on_RegisterButton_pressed() -> void:
 	AudioControl.play_audio("menuClick")
 	SceneHandler.change_scene("register")
 
-func _on_Button_mouse_entered():
+func _on_Button_mouse_entered() -> void:
 	AudioControl.play_audio("menuHover")
 	
 func return_to_login() -> void:
@@ -59,17 +59,17 @@ func return_to_login() -> void:
 	MainMenu.show()
 
 
-func _on_LineEdit_text_entered(new_text):
+func _on_LineEdit_text_entered(_new_text: String) -> void:
 	login_request()
 
 
-func _on_LineEdit_text_changed(new_text):
+func _on_LineEdit_text_changed(_new_text: String) -> void:
 	AudioControl.play_audio("typing")
 
 
-func _on_LineEdit_mouse_entered():
+func _on_LineEdit_mouse_entered() -> void:
 	AudioControl.play_audio("menuHover")
 
 
-func _on_LineEdit_focus_entered():
+func _on_LineEdit_focus_entered() -> void:
 	AudioControl.play_audio("menuClick")
