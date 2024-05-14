@@ -7,13 +7,13 @@
 
 extends Node
 onready var ip = "127.0.0.1"
-
 onready var input_queue = []
 const interpolation_offset = 100
 onready var current_map = ""
 onready var in_game = false
 
 var other_player = preload("res://scenes/playerObjects/PlayerTemplate.tscn")
+var player_template = preload("res://scenes/playerObjects/NewPlayerSprite.tscn")
 var last_world_state = 0
 var world_state_buffer = []
 var ui = null
@@ -59,15 +59,20 @@ func _physics_process(_delta: float) -> void:
 						continue
 					if world_state_buffer[1]["P"][player_state]["M"] == Global.current_map:
 						if get_node("/root/currentScene/OtherPlayers").has_node(str(player_state)):
+							var player_container = get_node("/root/currentScene/OtherPlayers/" + str(player_state))
 							var new_position = lerp(world_state_buffer[1]["P"][player_state]["P"], world_state_buffer[2]["P"][player_state]["P"], interpolation_factor)
 							var animation = world_state_buffer[2]["P"][player_state]["A"]
-							get_node("/root/currentScene/OtherPlayers/" + str(player_state)).move_player(new_position, animation)
+							player_container.move_player(new_position, animation)
+							if world_state_buffer[2]["P"][player_state]["S"] != player_container.sprite:
+								var new_sprite = world_state_buffer[2]["P"][player_state]["S"]
+								player_container.update_sprite(new_sprite)
 						# check if character map == client map
 						else:
 							print("Spawning Player")
 							spawn_new_player(player_state, world_state_buffer[2]["P"][player_state])
 					else:
-						despawn_player(player_state)
+						if get_node("/root/currentScene/OtherPlayers").has_node(str(player_state)):
+							despawn_player(player_state)
 				# map keys can be empty
 				if world_state_buffer[2]["E"][current_map].size() > 0:
 					#spawn monsters function
@@ -133,10 +138,20 @@ func _physics_process(_delta: float) -> void:
 					if world_state_buffer[0]["P"][player_state]["M"] == Global.current_map:
 						# move char if other character scene is in client, this should be later be determined by the server
 						if get_node("/root/currentScene/OtherPlayers").has_node(str(player_state)):
+							var player_container = get_node("/root/currentScene/OtherPlayers/" + str(player_state))
 							var position_delta = (world_state_buffer[1]["P"][player_state]["P"] - world_state_buffer[0]["P"][player_state]["P"])
 							var new_position = world_state_buffer[1]["P"][player_state]["P"] + (position_delta * extrapolation_factor)
 							var animation = world_state_buffer[1]["P"][player_state]["A"]
-							get_node("/root/currentScene/OtherPlayers/" + str(player_state)).move_player(new_position, animation)
+							player_container.move_player(new_position, animation)
+							if world_state_buffer[1]["P"][player_state]["S"] != player_container.sprite:
+								var new_sprite = world_state_buffer[1]["P"][player_state]["S"]
+								player_container.update_sprite(new_sprite)
+						else:
+							print("not spawned")
+							spawn_new_player(player_state, world_state_buffer[1]["P"][player_state])
+					else:
+						if get_node("/root/currentScene/OtherPlayers").has_node(str(player_state)):
+							despawn_player(player_state)
 				if world_state_buffer[1]["E"][current_map].size() > 0:
 					#spawn monsters function
 					for monster in world_state_buffer[1]["E"][current_map].keys():
@@ -191,22 +206,26 @@ func _physics_process(_delta: float) -> void:
 					for i in current_item_nodes:
 							i.queue_free()
 
-func spawn_new_player(player_id, player_state):
-	print("player_id: %s, player_state: %s" % [typeof(player_id), typeof(player_state)])
+func spawn_new_player(player_id: int, player_state: Dictionary) -> void:
 	if player_id == get_tree().get_network_unique_id():
 		pass
 	else:
-		var new_player = other_player.instance()
+		var new_player = player_template.instance()
+		#new_player.sprite = player_state["S"]
+		#var new_player = other_player.instance()
 		new_player.position = get_node("/root/currentScene").spawn_location
 		new_player.name = str(player_id)
 		get_node("/root/currentScene/OtherPlayers").add_child(new_player)
-		get_node("/root/currentScene/OtherPlayers/%s/Label" % player_id).text = player_state["U"]
+		var player_container = get_node("/root/currentScene/OtherPlayers/%s" % str(player_id))
+		player_container.username.text = player_state["U"]
+		player_container.update_sprite(player_state["S"])
 
 func despawn_player(player_id: int) -> void:
-	print("despawn_player: payer_id: %s" % player_id)
 	if get_node("/root/currentScene/OtherPlayers").has_node(str(player_id)):
-		print("despawning %s" % player_id)
-		get_node("/root/currentScene/OtherPlayers/%s" % str(player_id)).queue_free()
+		#print("despawning %s" % player_id)
+		var character_node = get_node("/root/currentScene/OtherPlayers/%s" % str(player_id))
+		character_node.visible = false
+		character_node.queue_free()
 		
 func spawn_monster(monster_id: int, monster_dict: Dictionary) -> void:
 	var monster = get_node("/root/currentScene").monster_list[monster_dict['id']].instance()
