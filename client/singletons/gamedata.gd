@@ -45,6 +45,7 @@ onready var job_dict = {
 	"4": "Thief",
 }
 
+# no rfinger
 onready var avatar_sprite = {
 	"body": "res://assets/character/spritesheet/body/",
 	"brow" : "res://assets/character/spritesheet/brow/",
