@@ -361,11 +361,13 @@ remote func received_player_state(player_state):
 	# takes client tick time and sends it with final position
 	var return_input = {'T': player_state['T'], 'P': player_container.position}
 	return_player_input(player_id, return_input)
+	var map_id = ServerData.player_location[str(player_id)].replace("/root/Server/World/Maps/", "")
+	map_id = map_id.replace("/YSort/Players", "")
+	player_state['M'] = map_id
 	player_state['A'] = player_container.get_animation()
 	if ServerData.player_state_collection.has(player_id):
 		if ServerData.player_state_collection[player_id]["T"] < player_state["T"]:
 			ServerData.player_state_collection[player_id] = player_state
-
 	# just logged in add player state
 	else:
 		 ServerData.player_state_collection[player_id] = player_state
