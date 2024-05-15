@@ -375,7 +375,7 @@ remote func received_player_state(player_state):
 	if  input != [0,0,0,0,0,0]:
 		player_container.input_queue.append(player_state["P"])
 
-	var map_node = get_node(ServerData.player_location[str(player_id)])
+	#var map_node = get_node(ServerData.player_location[str(player_id)])
 
 	player_state["U"] = ServerData.username_list[str(player_id)]
 	player_state["P"] = player_container.position
@@ -394,14 +394,18 @@ remote func received_player_state(player_state):
 	else:
 		 ServerData.player_state_collection[player_id] = player_state
 
-func return_player_input(player_id, server_input_data):
+func return_player_input(player_id: int, server_input_data) -> void:
 	rpc_id(player_id, "return_player_input", server_input_data)
 
-func send_world_state(world_state):
+func send_world_state(player_list: Array, map_state: PoolByteArray):
 	"""
 	reduce packet size
+	
+	#######should be renamed to send_map_state
+	altered to send map chunks to each player in the map
 	"""
-	rpc_unreliable_id(0, "receive_world_state", world_state)
+	for player in player_list:
+		rpc_unreliable_id(int(player), "receive_world_state", map_state)
 
 ###############################################################################
 # server combat functions
