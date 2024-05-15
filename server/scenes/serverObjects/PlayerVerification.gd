@@ -8,7 +8,6 @@ onready var player_container_scene = preload("res://scenes/instances/PlayerConta
 var awaiting_verification = {}
 
 func start(player_id: int) -> void:
-	print("player verification start: player_id: %s" % typeof(player_id))
 	"""
 	authenticate token
 	"""
@@ -16,7 +15,6 @@ func start(player_id: int) -> void:
 	main_interface.fetch_token(player_id)
 	
 func verify(player_id: int, token: Dictionary, email: String) -> void:
-	print("player verification: player_id: %s, token: %s, email: %s" % [typeof(player_id), typeof(token), typeof(email)])
 	var temp_token = token['token'] + str(token['timestamp'])
 	
 	if email in ServerData.logged_emails:
@@ -62,7 +60,6 @@ func _on_VerificationExpiration_timeout() -> void:
 		print("Awaiting verification: %s" % str(awaiting_verification))
 	
 func create_player_container(player_id: int, token: Dictionary, email: String) -> void:
-	print("create_player_container: player_id: %s, token: %s, email: %s" % [typeof(player_id), typeof(token), typeof(email)])
 	var new_player_container = player_container_scene.instance()
 	new_player_container.name = str(player_id)
 	get_node("/root/Server/World/CharacterSelect").add_child(new_player_container, true)
