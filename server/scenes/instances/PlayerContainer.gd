@@ -363,24 +363,24 @@ func loot_request() -> void:
 
 func update_sprite_array():
 	var temp_dict = current_character.avatar
-	sprite[0] = temp_dict.bcolor + temp_dict.body
-	sprite[1] = temp_dict.brow
-	sprite[2] = temp_dict.bcolor + temp_dict.ear
+	sprite[0] = str(temp_dict.bcolor) + str(temp_dict.body)
+	sprite[1] = str(temp_dict.brow)
+	sprite[2] = str(temp_dict.bcolor) + str(temp_dict.ear)
 	#sprite[3] = temp_dict.bcolor + temp_dict.ear
-	sprite[3] = temp_dict.ecolor + temp_dict.eye
-	sprite[4] = temp_dict.hcolor + temp_dict.hair
-	sprite[5] = temp_dict.head
-	sprite[6] = temp_dict.mouth
+	sprite[3] = str(temp_dict.ecolor) + str(temp_dict.eye)
+	sprite[4] = str(temp_dict.hcolor) + str(temp_dict.hair)
+	sprite[5] = str(temp_dict.head)
+	sprite[6] = str(temp_dict.mouth)
 
 	temp_dict = current_character.equipment
-	sprite[7] = temp_dict.headgear
-	sprite[8] = temp_dict.top
-	sprite[9] = temp_dict.bottom
-	sprite[10] = temp_dict.rweapon.id
-	sprite[11] = temp_dict.lweapon
-	sprite[12] = temp_dict.eyeacc
-	sprite[13] = temp_dict.earring
-	sprite[14] = temp_dict.faceacc
-	sprite[15] = temp_dict.glove
-	sprite[16] = temp_dict.tattoo
+	sprite[7] = str(temp_dict.headgear)
+	sprite[8] = str(temp_dict.top)
+	sprite[9] = str(temp_dict.bottom)
+	sprite[10] = str(temp_dict.rweapon.id)
+	sprite[11] = str(temp_dict.lweapon)
+	sprite[12] = str(temp_dict.eyeacc)
+	sprite[13] = str(temp_dict.earring)
+	sprite[14] = str(temp_dict.faceacc)
+	sprite[15] = str(temp_dict.glove)
+	sprite[16] = str(temp_dict.tattoo)
 	

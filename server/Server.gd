@@ -139,6 +139,7 @@ func create_characters():
 			character_array[2].characters.append(character_array[1]["un"])
 			var new_char = character_array[1]
 			var temp_player = _Server_New_Character(new_char)
+			print(temp_player)
 
 			print("creating character")
 			var firebase_call2 = Firebase.update_document("characters/%s" % temp_player["displayname"], character_array[2].http2, character_array[2].db_info["token"], temp_player)
@@ -154,7 +155,8 @@ func create_characters():
 			rpc_id(character_array[0], "return_create_characters", character_array[3], character_array[2].characters_info_list)
 
 func _Server_New_Character(new_char: Dictionary):
-	var temp_player = ServerData.static_data.player_template.duplicate()
+	var temp_player = ServerData.static_data.player_template.duplicate(true)
+	print("temp_player in _server_new_char: %s: " % temp_player)
 	temp_player['displayname'] = new_char["un"]
 	
 	var sprite = temp_player["avatar"]
@@ -205,25 +207,27 @@ remote func choose_character(requester: int, display_name: String) -> void:
 			break
 	var map = player_container.current_character['map']
 	var temp_dict = player_container.current_character.avatar
-	player_container.sprite.append(temp_dict.bcolor + temp_dict.body)
-	player_container.sprite.append(temp_dict.brow)
-	player_container.sprite.append(temp_dict.bcolor + temp_dict.ear)
-	player_container.sprite.append(temp_dict.ecolor + temp_dict.eye)
-	player_container.sprite.append(temp_dict.hcolor + temp_dict.hair)
-	player_container.sprite.append(temp_dict.head)
-	player_container.sprite.append(temp_dict.mouth)
+	player_container.sprite.append(str(temp_dict.bcolor) + str(temp_dict.body))
+	player_container.sprite.append(str(temp_dict.brow))
+	player_container.sprite.append(str(temp_dict.bcolor) + str(temp_dict.ear))
+	player_container.sprite.append(str(temp_dict.ecolor) + str(temp_dict.eye))
+	player_container.sprite.append(str(temp_dict.hcolor) + str(temp_dict.hair))
+	# below is head sprite. Set to bcolor due to issue where headspite # doesnt matter
+	# character creation is front facing while in game is side profile. 
+	player_container.sprite.append(str(temp_dict.bcolor))
+	player_container.sprite.append(str(temp_dict.mouth))
 
 	temp_dict = player_container.current_character.equipment
-	player_container.sprite.append(temp_dict.headgear)
-	player_container.sprite.append(temp_dict.top)
-	player_container.sprite.append(temp_dict.bottom)
-	player_container.sprite.append(temp_dict.rweapon.id)
-	player_container.sprite.append(temp_dict.lweapon)
-	player_container.sprite.append(temp_dict.eyeacc)
-	player_container.sprite.append(temp_dict.earring)
-	player_container.sprite.append(temp_dict.faceacc)
-	player_container.sprite.append(temp_dict.glove)
-	player_container.sprite.append(temp_dict.tattoo)
+	player_container.sprite.append(str(temp_dict.headgear))
+	player_container.sprite.append(str(temp_dict.top))
+	player_container.sprite.append(str(temp_dict.bottom))
+	player_container.sprite.append(str(temp_dict.rweapon.id))
+	player_container.sprite.append(str(temp_dict.lweapon))
+	player_container.sprite.append(str(temp_dict.eyeacc))
+	player_container.sprite.append(str(temp_dict.earring))
+	player_container.sprite.append(str(temp_dict.faceacc))
+	player_container.sprite.append(str(temp_dict.glove))
+	player_container.sprite.append(str(temp_dict.tattoo))
 	
 	# move user container to the map
 	move_player_container(player_id, player_container, map, 'spawn')
@@ -278,7 +282,7 @@ remote func delete_character(requester, display_name: String) -> void:
 
 	var firebase_call = Firebase.update_document("users/%s" % player_container.db_info["id"], player_container.http, player_container.db_info["token"], player_container)
 	yield(firebase_call, "completed")
-# warning-ignore:void_assignment
+	# warning-ignore:void_assignment
 	var firebase_call2 = Firebase.delete_document("characters/%s" % display_name, player_container.http2, player_container.db_info["token"])
 	yield(firebase_call2, "completed")
 	rpc_id(player_id, "return_delete_character", player_container.characters_info_list, requester)
@@ -317,14 +321,12 @@ func move_player_container(player_id: int, player_container: KinematicBody2D, ma
 	var player = get_node("/root/Server/World/Maps/" + str(map_id) + "/YSort/Players/" + str(player_id))
 	var map_node = get_node("/root/Server/World/Maps/%s" % str(map_id))
 	var map_position = map_node.get_global_position()
-	var new_location = Vector2.ZERO
-	#print("move: ", str(map_position))
 
 	if typeof(position) == TYPE_STRING:
 		position = Vector2(map_node.spawn_position.x, map_node.spawn_position.y)
-	#print("new location: ", new_location)
+
 	player.position = position
-	#print("player cur position = ", player.position, " ", player.global_position)
+
 
 func get_player_data(player_id):
 	var player_container = _Server_Get_Player_Container(player_id)
@@ -396,6 +398,9 @@ func return_player_input(player_id, server_input_data):
 	rpc_id(player_id, "return_player_input", server_input_data)
 
 func send_world_state(world_state):
+	"""
+	reduce packet size
+	"""
 	rpc_unreliable_id(0, "receive_world_state", world_state)
 
 ###############################################################################
