@@ -29,7 +29,10 @@ onready var menu_sound_dict = {
 onready var region_dict = {
 	'0001': "Remy",
 }
-
+onready var monster_preload = {
+	"100001" : preload("res://scenes/monsterObjects/100001/100001.tscn"),
+	"100002" : preload("res://scenes/monsterObjects/100002/100002.tscn")
+}
 onready var map_dict = {
 	"100000": {"name": "Grassy Road 1 Test", "path": "res://scenes/maps/100000/100000.tscn", "region": "Remy", "bgm": "Remy"},
 	"100001": {"name": "Grassy Road 1", "path": "res://scenes/maps/100001/100001.tscn", "region": "Remy", "bgm": "Remy"},
