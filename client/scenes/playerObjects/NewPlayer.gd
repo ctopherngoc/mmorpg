@@ -16,6 +16,7 @@ onready var attacking = false
 onready var player_state
 var held_down = false
 onready var sprite = $CompositeSprite/AnimationPlayer
+var floating_text = preload("res://scenes/userInerface/FloatingText.tscn")
 
 #########
 #Temp
@@ -33,6 +34,7 @@ func _ready():
 	# warning-ignore:return_value_discarded
 	Signals.connect("dialog_closed", self, "movable_switch")
 	jump_speed = (Global.player.stats.base.jumpSpeed)
+	Global.player_node = self
 	Global.in_game = true
 
 func _physics_process(delta):
@@ -231,6 +233,13 @@ func change_direction():
 			velocity.x  = 0
 		flip_sprite(true)
 
+
+func heal(heal_value: int) -> void:
+	var text = floating_text.instance()
+	text.type = "Heal"
+	text.amount = str(heal_value)
+	add_child(text)
+	
 func _unhandled_input(event):
 	if event.is_action_pressed("ui_down"):
 		held_down = true

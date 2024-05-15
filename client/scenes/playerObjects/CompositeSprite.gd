@@ -111,7 +111,7 @@ func update_avatar(data):
 		sprite = load(GameData.avatar_sprite.hair + str(avatar['hcolor']) + str(avatar['hair']) + ".png")
 		hair.set_texture(sprite)
 		#head
-		sprite = load(GameData.avatar_sprite.head + str(avatar['head']) + ".png")
+		sprite = load(GameData.avatar_sprite.head + str(avatar['bcolor']) + ".png")
 		head.set_texture(sprite)
 		#mouth
 		sprite = load(GameData.avatar_sprite.mouth + str(avatar['mouth']) + ".png")

@@ -74,9 +74,27 @@ func _physics_process(delta: float) -> void:
 	
 # warning-ignore:unused_argument
 func update_avatar(data: Array) -> void:
+	#print(data)
 	#body
 	var sprite = load(GameData.avatar_sprite.body + str(data[0]) + ".png")
 	body.set_texture(sprite)
+	#arms
+	sprite = load(GameData.avatar_sprite.rarm + str(data[0][0]) + ".png")
+	rarm.set_texture(sprite)
+	sprite = load(GameData.avatar_sprite.larm + str(data[0][0]) + ".png")
+	larm.set_texture(sprite)
+	#legs
+	sprite = load(GameData.avatar_sprite.rleg + str(data[0][0]) + ".png")
+	rleg.set_texture(sprite)
+	sprite = load(GameData.avatar_sprite.lleg + str(data[0][0]) + ".png")
+	lleg.set_texture(sprite)
+	#hands
+	sprite = load(GameData.avatar_sprite.rhand + str(data[0][0]) + ".png")
+	rhand.set_texture(sprite)
+	sprite = load(GameData.avatar_sprite.lhand + str(data[0][0]) + ".png")
+	lhand.set_texture(sprite)
+	sprite = load(GameData.avatar_sprite.lfinger + str(data[0][0]) + ".png")
+	lfinger.set_texture(sprite)
 	#brow
 	sprite = load(GameData.avatar_sprite.brow + str(data[1]) + ".png")
 	brow.set_texture(sprite)
@@ -93,7 +111,6 @@ func update_avatar(data: Array) -> void:
 	hair.set_texture(sprite)
 	#head
 	sprite = load(GameData.avatar_sprite.head + str(data[5]) + ".png")
-	print("head %s" % str(data[5]))
 	head.set_texture(sprite)
 	#mouth
 	sprite = load(GameData.avatar_sprite.mouth + str(data[6]) + ".png")
@@ -102,7 +119,7 @@ func update_avatar(data: Array) -> void:
 	var index = 7
 	while index < 17:
 		if str(data[index]) == "-1":
-			print("update_avatar compositespriteotherplayer")
+			#print("update_avatar compositespriteotherplayer")
 			sprite = load(GameData.equipment_sprite.default + "empty_16_11_spritesheet.png")
 			if item_map[index] == "earring":
 				rearring.set_texture(sprite)
@@ -118,7 +135,7 @@ func update_avatar(data: Array) -> void:
 			else:
 				sprite_dict[item_map[index]].set_texture(sprite)
 				# for now toggle visibility
-				(print("visible off"))
+				#(print("visible off"))
 				sprite_dict[item_map[index]].visible = false
 			index += 1
 

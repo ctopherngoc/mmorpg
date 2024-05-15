@@ -29,10 +29,15 @@ window/size/height=720
 window/vsync/use_vsync=false
 window/stretch/aspect="keep"
 
+[gdnative]
+
+singletons=[  ]
+
 [global]
 
 physc=false
 phys=false
+physics=false
 
 [gui]
 

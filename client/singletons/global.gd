@@ -8,12 +8,14 @@
 extends Node
 onready var ip = "127.0.0.1"
 onready var input_queue = []
-const interpolation_offset = 100
+onready var interpolation_offset = 200
 onready var current_map = ""
 onready var in_game = false
+onready var floating_text = preload("res://scenes/userInerface/FloatingText.tscn")
 
 var other_player = preload("res://scenes/playerObjects/PlayerTemplate.tscn")
 var player_template = preload("res://scenes/playerObjects/NewPlayerSprite.tscn")
+var player_node
 var last_world_state = 0
 var world_state_buffer = []
 var ui = null
@@ -45,6 +47,8 @@ func _physics_process(_delta: float) -> void:
 	# Current turn off client process of other characters and enemy because
 	# working on item drop, data load from json/spreadsheet etc
 	if in_game and !Server.testing:
+		interpolation_offset = OS.get_system_time_msecs() - Server.client_clock
+		#print(OS.get_system_time_msecs(), " ", Server.client_clock, " ", OS.get_system_time_msecs() - Server.client_clock)
 		var render_time = OS.get_system_time_msecs() - interpolation_offset
 		if world_state_buffer.size() > 1 && Server.server_status:
 			while world_state_buffer.size() > 2 and render_time > world_state_buffer[2].T:
@@ -68,7 +72,7 @@ func _physics_process(_delta: float) -> void:
 								player_container.update_sprite(new_sprite)
 						# check if character map == client map
 						else:
-							print("Spawning Player")
+							#print("Spawning Player")
 							spawn_new_player(player_state, world_state_buffer[2]["P"][player_state])
 					else:
 						if get_node("/root/currentScene/OtherPlayers").has_node(str(player_state)):
@@ -84,6 +88,7 @@ func _physics_process(_delta: float) -> void:
 							var monster_node = get_node("/root/currentScene/Monsters/" + str(monster))
 							# monster dead on server
 							if world_state_buffer[2]["E"][current_map][monster]["EnemyHealth"] <= 0:
+								monster_node.health(world_state_buffer[1]["E"][current_map][monster]["EnemyHealth"])
 								if monster_node.despawn != 0:
 									monster_node.on_death()
 							# monster alive: update monster stats and position
@@ -129,6 +134,7 @@ func _physics_process(_delta: float) -> void:
 							i.queue_free()
 			# we have no future world_state
 			elif render_time > world_state_buffer[1].T:
+				#print(float(render_time - world_state_buffer[0]["T"]), " ",(float(world_state_buffer[1]["T"] - world_state_buffer[0]["T"])))
 				var extrapolation_factor = float(render_time - world_state_buffer[0]["T"]) / float(world_state_buffer[1]["T"] - world_state_buffer[0]["T"]) - 1.00
 				for player_state in world_state_buffer[1]["P"].keys():
 					if player_state == get_tree().get_network_unique_id():
@@ -141,11 +147,12 @@ func _physics_process(_delta: float) -> void:
 							var player_container = get_node("/root/currentScene/OtherPlayers/" + str(player_state))
 							var position_delta = (world_state_buffer[1]["P"][player_state]["P"] - world_state_buffer[0]["P"][player_state]["P"])
 							var new_position = world_state_buffer[1]["P"][player_state]["P"] + (position_delta * extrapolation_factor)
+							#print((world_state_buffer[1]["P"][player_state]["P"]), " ", (world_state_buffer[0]["P"][player_state]["P"]), " ", new_position, " ", position_delta, " ", extrapolation_factor)
 							var animation = world_state_buffer[1]["P"][player_state]["A"]
 							player_container.move_player(new_position, animation)
-							if world_state_buffer[1]["P"][player_state]["S"] != player_container.sprite:
-								var new_sprite = world_state_buffer[1]["P"][player_state]["S"]
-								player_container.update_sprite(new_sprite)
+#							if world_state_buffer[1]["P"][player_state]["S"] != player_container.sprite:
+#								var new_sprite = world_state_buffer[1]["P"][player_state]["S"]
+#								player_container.update_sprite(new_sprite)
 						else:
 							print("not spawned")
 							spawn_new_player(player_state, world_state_buffer[1]["P"][player_state])
@@ -162,6 +169,7 @@ func _physics_process(_delta: float) -> void:
 							var monster_node = get_node("/root/currentScene/Monsters/" + str(monster))
 							# monster dead on server
 							if world_state_buffer[1]["E"][current_map][monster]["EnemyHealth"] <= 0:
+								monster_node.health(world_state_buffer[0]["E"][current_map][monster]["EnemyHealth"])
 								if monster_node.despawn != 0:
 									monster_node.on_death()
 							# monster alive: update monster stats and position

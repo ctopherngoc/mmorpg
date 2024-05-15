@@ -84,11 +84,11 @@ func change_scene(scene: String) -> void:
 	else:
 		# if in map
 		Global.current_map = scene
-		print(Global.current_map, " ", GameData.map_dict[scene]["name"])
+		#print(Global.current_map, " ", GameData.map_dict[scene]["name"])
 		
 		# if map different bgm
 		if GameData.map_dict[scene]["bgm"] != current_bgm:
-			print("%s != %s" % [GameData.map_dict[scene]["bgm"], current_bgm])
+			#print("%s != %s" % [GameData.map_dict[scene]["bgm"], current_bgm])
 			current_bgm = GameData.map_dict[scene]["bgm"]
 			AudioControl.bgm.set_stream(GameData.bgm_dict[GameData.map_dict[scene]["bgm"]])
 			AudioControl.bgm.play()

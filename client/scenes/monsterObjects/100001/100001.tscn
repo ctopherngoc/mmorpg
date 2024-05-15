@@ -109,6 +109,7 @@ collision_layer = 32
 collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="take_damage"]
+visible = false
 position = Vector2( 0, 0.333333 )
 scale = Vector2( 0.631579, 0.666667 )
 shape = SubResource( 1 )
@@ -126,7 +127,8 @@ anims/idle = SubResource( 5 )
 anims/walk = SubResource( 6 )
 
 [node name="Timer" type="Timer" parent="."]
-wait_time = 1.5
+wait_time = 3.0
+one_shot = true
 
 [node name="Label" parent="." instance=ExtResource( 4 )]
 

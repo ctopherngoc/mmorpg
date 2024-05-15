@@ -74,7 +74,7 @@ func UpdateItemStateList() -> void:
 	ServerData.items.keys() are item nodes name. Unique 6 len string of Uppercase Chars and Ints
 	"""
 	if  get_node("YSort/Items").get_child_count() > 0:
-		var index  = 0
+		var _index  = 0
 		for item in get_node("YSort/Items").get_children():
 			Global.add_item_to_world_state(item, self.name)
-			index += 1
+			_index += 1

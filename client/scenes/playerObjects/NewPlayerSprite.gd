@@ -60,7 +60,8 @@ func flip_sprite(d):
 				_i.set_flip_h(false)
 				
 func update_sprite(newSprite: Array) -> void:
+	#print(newSprite)
 	if sprite != newSprite:
 		sprite = newSprite
-		print("new sprite update")
+		#print("new sprite update")
 	composite_sprite_node.update_avatar(sprite)
