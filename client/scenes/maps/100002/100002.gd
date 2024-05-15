@@ -5,7 +5,7 @@ var map_name = "Grassy Road 2"
 var other_player_template = preload("res://scenes/playerObjects/PlayerTemplate.tscn")
 #var main_player_template = preload("res://scenes/playerObjects/Player.tscn")
 var spawn_location = Vector2.ZERO
-var main_player = null
+#var main_player = null
 
 var map_bound = {
 	"left": 0,
@@ -14,12 +14,12 @@ var map_bound = {
 	"top": -10000,
 }
 
-var greenGuy = preload("res://scenes/monsterObjects/100001/100001.tscn")
-var blueGuy = preload("res://scenes/monsterObjects/100002/100002.tscn")
-var monster_list = {
-	'100001': greenGuy,
-	'100002': blueGuy,
-}
+#var greenGuy = preload("res://scenes/monsterObjects/100001/100001.tscn")
+#var blueGuy = preload("res://scenes/monsterObjects/100002/100002.tscn")
+#var monster_list = {
+#	'100001': greenGuy,
+#	'100002': blueGuy,
+#}
 
 #teleporter end locations
 onready var teleporter1 : Label = $MapObjects/T1/Label
