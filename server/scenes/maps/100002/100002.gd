@@ -82,8 +82,8 @@ func UpdateItemStateList() -> void:
 #			ServerData.items[self.name][item.name] = {"P": item.position, "I": item.id, "N": item.drop_id}
 #			index += 1
 	if  get_node("YSort/Items").get_child_count() > 0:
-			var index  = 0
+			var _index  = 0
 			for item in get_node("YSort/Items").get_children():
 				Global.add_item_to_world_state(item, self.name)
-				index += 1
+				_index += 1
 
