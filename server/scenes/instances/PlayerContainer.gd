@@ -189,7 +189,7 @@ func experience(experience: int) -> void:
 	print("Level: %s" % current_character.stats.base.level)
 	print("EXP: %s" % current_character.stats.base.experience)
 
-func movement_loop(delta: float) -> Vector2:
+func movement_loop(delta: float) -> void:
 	var move_vector = get_movement_vector()
 	recon_arr["m_vector"] = move_vector
 	change_direction()
@@ -208,7 +208,7 @@ func movement_loop(delta: float) -> Vector2:
 		velocity.x = 0
 	#if recon_arr["input_arr"] != [0,0,0,0,0] and recon_arr["input_arr"] != []:
 		#print(recon_arr)
-	return self.global_position
+	#return self.global_position
 
 func get_movement_vector() -> Vector2:
 	var moveVector = Vector2.ZERO
