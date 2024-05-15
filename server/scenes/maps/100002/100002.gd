@@ -16,6 +16,8 @@ var open_locations = [0,1,2,3]
 
 var occupied_locations = {}
 var enemy_list = {}
+var players = []
+onready var player_ysort = $YSort/Players
 
 func _ready():
 	var timer = Timer.new()
@@ -35,6 +37,8 @@ func _process(_delta):
 				enemy_list[monster_id]['EnemyHealth'] = monster_container.stats.currentHP
 				enemy_list[monster_id]['EnemyState'] = monster_container.state
 	UpdateItemStateList()
+	if player_ysort.get_children() != players:
+		players = player_ysort.get_children()
 # after timer function called
 func SpawnEnemy():
 	# only calculate/spawn monsters when at least 1 player is actively in the map
