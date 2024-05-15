@@ -147,7 +147,7 @@ func _physics_process(_delta: float) -> void:
 							var player_container = get_node("/root/currentScene/OtherPlayers/" + str(player_state))
 							var position_delta = (world_state_buffer[1]["P"][player_state]["P"] - world_state_buffer[0]["P"][player_state]["P"])
 							var new_position = world_state_buffer[1]["P"][player_state]["P"] + (position_delta * extrapolation_factor)
-							print((world_state_buffer[1]["P"][player_state]["P"]), " ", (world_state_buffer[0]["P"][player_state]["P"]), " ", new_position, " ", position_delta, " ", extrapolation_factor)
+							#print((world_state_buffer[1]["P"][player_state]["P"]), " ", (world_state_buffer[0]["P"][player_state]["P"]), " ", new_position, " ", position_delta, " ", extrapolation_factor)
 							var animation = world_state_buffer[1]["P"][player_state]["A"]
 							player_container.move_player(new_position, animation)
 #							if world_state_buffer[1]["P"][player_state]["S"] != player_container.sprite:
