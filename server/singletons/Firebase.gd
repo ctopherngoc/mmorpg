@@ -80,6 +80,7 @@ func update_document(path: String, http: HTTPRequest, token: String, data) -> vo
 func delete_document(path: String, http: HTTPRequest, token: String) -> void:
 	var url := DATABASE_URL + path
 	http.request(url, _get_request_headers(token), false, HTTPClient.METHOD_DELETE)
+	yield(http, "request_completed")
 	
 func firebase_dictionary_converter(database_data: Dictionary, client_data: Array) -> void:
 	"""
