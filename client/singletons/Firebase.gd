@@ -5,7 +5,7 @@ const PROJECT_ID := "godotproject-ef224"
 const REGISTER_URL := "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=%s" % API_KEY
 var current_token = ""
 
-func _ready():
+func _ready() -> void:
 	pass # Replace with function body.
 
 func _get_token_id_from_result(result: Array) -> String:

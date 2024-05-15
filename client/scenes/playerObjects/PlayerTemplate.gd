@@ -49,4 +49,3 @@ func attack():
 			var animation = $AnimationPlayer.play("stab")
 			print("other player attack done")
 			attack_dict.erase(attack)
-			

@@ -43,7 +43,7 @@ func update_document(path: String, http: HTTPRequest, token: String, data) -> vo
 	#path: character: data = dictionary
 	#path: items: data = dictionary
 
-	print("direct update fb from char")
+	#print("direct update fb from char")
 	if 'users/' in path:
 		# convert
 		var character_array = []
@@ -260,7 +260,7 @@ func _server_get_document(path: String, http: HTTPRequest)-> void:
 		
 # warning-ignore:unused_argument
 func _server_update_document(http: HTTPRequest, array, action: String) -> void:
-	print("server update fb")
+	#print("server update fb")
 	#path: user: playerContainer = array
 	#path: character: playerContainer = dictionary
 	if action == "server_user":
@@ -374,7 +374,7 @@ func server_firebase_dictionary_converter(database_data: Dictionary) -> Dictiona
 										temp_dict['inventory'][key][count][key2] = equip_shortcut[key2]['integerValue']
 									else:
 										temp_dict['inventory'][key][count][key2] = equip_shortcut[key2]['stringValue']
-							count += 1
+						count += 1
 				# for use, etc tab
 				else:
 					for item_dict in inventory_shortcut:

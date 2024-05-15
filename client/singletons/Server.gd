@@ -20,12 +20,12 @@ var decimal_collector = 0
 var server_status = false
 var timer = Timer.new()
 
-func _ready():
+func _ready() -> void:
 	timer.wait_time = 0.5
 	timer.connect("timeout", self, "determine_latency")
 	self.add_child(timer)
 
-func _physics_process(delta):
+func _physics_process(delta: float) -> void:
 	client_clock += int(delta*1000) + delta_latency
 	delta_latency = 0
 	decimal_collector += (delta * 1000) - int(delta * 1000)
@@ -35,7 +35,7 @@ func _physics_process(delta):
 
 ######################################################################
 # Server connection/latency functions
-func connect_to_server():
+func connect_to_server() -> void:
 	network = NetworkedMultiplayerENet.new()
 	network.create_client(Global.ip, port)
 	get_tree().set_network_peer(network)
@@ -44,16 +44,16 @@ func connect_to_server():
 	network.connect("connection_succeeded", self, "_on_connection_succeeded")
 	network.connect("server_disconnected", self, "_on_server_disconnect")
 
-func _on_connection_failed():
+func _on_connection_failed() -> void:
 	print("Failed to connected")
 
-func _on_connection_succeeded():
+func _on_connection_succeeded() -> void:
 	server_status = true
 	print("Successfully connected")
 	rpc_id(1, "fetch_server_time", OS.get_system_time_msecs())
 	timer.start()
 
-func _on_server_disconnect():
+func _on_server_disconnect() -> void:
 	server_status = false
 	Global.world_state_buffer.clear()
 	Global.input_queue.clear()
@@ -75,10 +75,12 @@ func determine_latency() -> void:
 
 # sync client clock with server clock
 remote func return_server_time(server_time: int, client_time:int) -> void:
+# warning-ignore:integer_division
 	latency = (OS.get_system_time_msecs() - client_time) / 2
 	client_clock = server_time + latency
 
-remote func return_latency(client_time: int):
+remote func return_latency(client_time: int) -> void:
+# warning-ignore:integer_division
 	latency_array.append((OS.get_system_time_msecs() - client_time) / 2)
 	if latency_array.size() == 9:
 		var total_latency = 0
@@ -96,11 +98,13 @@ remote func return_latency(client_time: int):
 
 #################################################################
 # Character functions
-func check_usernames(requester, username):
+func check_usernames(requester, username: String) -> void:
+	print("check_usernames: %s %s" % [typeof(requester), typeof(username)])
 	print("check_username", typeof(requester), typeof((username)))
 	rpc_id(1, "fetch_usernames", requester, username)
 
-remote func return_fetch_usernames(requester, results):
+remote func return_fetch_usernames(requester, results) -> void:
+	print("return_fetch_usernames: %s %s" % [typeof(requester), typeof(results)])
 	print("server username check: %s" % str(results))
 	instance_from_id(requester).username_check_results(results)
 
@@ -108,27 +112,30 @@ func create_character(requester, char_dict):
 	print("attempting to create character: %s" % char_dict["un"])
 	rpc_id(1, "create_character", requester, char_dict)
 
-remote func return_create_characters(requester, character_array: Array):
+remote func return_create_characters(requester, character_array: Array) -> void:
+	print("return_create_characters: %s %s" % [typeof(requester), typeof(character_array)])
 	print('return_create_characters')
 	Global.character_list = character_array
 	instance_from_id(requester).created_character()
 
-func delete_character(requester, username):
+func delete_character(requester, username: String) -> void:
+	print("delete_character: %s %s" % [typeof(requester), typeof(username)])
 	print("attempting to delete character: %s" % username)
 	rpc_id(1, "delete_character", requester, username)
 
-remote func return_delete_character(player_array, requester):
+remote func return_delete_character(player_array, requester) -> void:
+	print("return_delete_character: %s %s" % [typeof(player_array), typeof(requester)])
 	Global.character_list = player_array
 	instance_from_id(requester).populate_info()
 	instance_from_id(requester).deleted_character()
 	print("deleted character")
 
 func choose_character(requester, player_name):
+	print(typeof(requester), " ", typeof(player_name))
 	rpc_id(1, "choose_character", requester, player_name)
 
 # warning-ignore:unused_argument
-remote func return_choose_character(requester):
-	print("server.gd: return_choose_character")
+remote func return_choose_character(requester: int) -> void:
 	SceneHandler.change_scene(Global.player['map']) 
 	#instance_from_id(requester).load_world()
 
@@ -141,7 +148,7 @@ func fetch_player_stats() -> void:
 remote func fetch_token() -> void:
 	rpc_id(1, "return_token", token, email)
 
-remote func return_token_verification_results(result, array: Array) -> void:
+remote func return_token_verification_results(result: bool, array: Array) -> void:
 	print("server.gd: return_token_verification_results")
 	if result == true:
 		print("token verified")
@@ -174,24 +181,28 @@ remote func despawn_player(player_id: int) -> void:
 			print("matches despawning char")
 			player.queue_free()
 
-func send_player_state(player_state):
+func send_player_state(player_state: Dictionary) -> void:
 	if !testing:
 		if Global.in_game:
 			rpc_unreliable_id(1, "received_player_state", player_state)
 
-remote func receive_world_state(world_state: Dictionary) -> void:
+remote func receive_world_state(world_state: PoolByteArray) -> void:
 	if Global.current_map == "":
 		pass
-	else:	
-		Global.update_world_state(world_state)
+	else:
+		var world_state_dict = bytes2var(world_state)
+		Global.update_world_state(world_state_dict)
 
-remote func receive_despawn_player(player_id):
+remote func receive_despawn_player(player_id) -> void:
+	print("receive_despawn_player: %s" % typeof(player_id))
 	Global.despawn_player(player_id)
 	
-func send_attack(skill_id: int):
+func send_attack(skill_id: int) -> void:
 	#print("server.gd: send_attack")
-	rpc_id(1, "attack", skill_id)
-	
+	rpc_id(1, "receive_attack", skill_id)
+
+########################################################################################################
+#not used
 remote func receive_attack(player_id, attack_time):
 	print("server.gd: recieve_attack")
 	print(typeof(player_id), " ", typeof(attack_time))
@@ -203,6 +214,7 @@ remote func receive_attack(player_id, attack_time):
 		player.attack_dict[attack_time] = {"A": "stab"}
 	else:
 		pass
+########################################################################################################	
 
 remote func update_player_stats(player_stats: Dictionary) -> void:
 	for character in Global.character_list:
@@ -240,16 +252,17 @@ remote func update_player_stats(player_stats: Dictionary) -> void:
 				Signals.emit_signal("update_inventory")
 			break
 
-func portal(portal):
+func portal(portal: String) -> void:
 	AudioControl.play_audio("portal")
 	rpc_id(1, "portal", portal)
-	print("RPC to server for portal")
+	#print("RPC to server for portal")
 
 # warning-ignore:unused_argument
-remote func return_portal(player_id):
+remote func return_portal(player_id: int) -> void:
+	pass
 	print("got return from server portal")
 #
-remote func change_map(map, position):
+remote func change_map(map: String, position: Vector2) -> void:
 	Global.last_portal = position
 	SceneHandler.change_scene(str(map)) 
 
@@ -257,7 +270,7 @@ remote func change_map(map, position):
 remote func return_player_input(server_input_results):
 	Global.server_reconciliation(server_input_results)
 
-remote func receive_climb_data(climb_data):
+remote func receive_climb_data(climb_data: int) -> void:
 	if Global.in_game:
 		var player = get_node("/root/currentScene/Player")
 		if climb_data == 2:
@@ -272,7 +285,7 @@ remote func receive_climb_data(climb_data):
 			player.can_climb = false
 			player.is_climbing = false
 
-func logout():
+func logout() -> void:
 	timer.stop()
 	Global.in_game = false
 	if !Server.testing:
@@ -281,7 +294,7 @@ func logout():
 	Signals.emit_signal("log_out")
 	SceneHandler.change_scene("login")
 	
-func send_inventory_movement(tab: int, from: int, to: int):
+func send_inventory_movement(tab: int, from: int, to: int) -> void:
 	"""
 	tab: 0 = equip, 1 = use, 2 = etc
 	from: 0-31 (slot)
