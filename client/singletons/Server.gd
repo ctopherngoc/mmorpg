@@ -130,8 +130,7 @@ remote func return_delete_character(player_array, requester) -> void:
 	instance_from_id(requester).deleted_character()
 	print("deleted character")
 
-func choose_character(requester, player_name):
-	print(typeof(requester), " ", typeof(player_name))
+func choose_character(requester: int, player_name: String):
 	rpc_id(1, "choose_character", requester, player_name)
 
 # warning-ignore:unused_argument
@@ -229,7 +228,9 @@ remote func update_player_stats(player_stats: Dictionary) -> void:
 					print("Player took %s damage." % str(Global.player["stats"]["base"]["health"] - player_stats["stats"]["base"]["health"]))
 				# gained health
 				else:
-					print("Player healed %s health." % str(abs(Global.player["stats"]["base"]["health"] - player_stats["stats"]["base"]["health"])))
+					var heal_value = abs(Global.player["stats"]["base"]["health"] - player_stats["stats"]["base"]["health"])
+					print("Player healed %s health." % str(heal_value))
+					Global.player_node.heal(heal_value)
 				Global.player["stats"]["base"]["health"] = player_stats["stats"]["base"]["health"]
 				Signals.emit_signal("update_health")
 				
