@@ -8,10 +8,13 @@ onready var login_button : Button = $VBoxContainer/loginButton/Button
 onready var register_button: Button = $VBoxContainer/loginButton/RegisterButton
 onready var MainMenu = $VBoxContainer
 onready var OptionMenu = $Options
+onready var savelogin = false
+onready var login_file_path = "login.bat"
 
 func _ready() -> void:
 	# warning-ignore:return_value_discarded
 	Signals.connect("fail_login", self, "_fail_login")
+	load_settings()
 
 func _on_Button_pressed() -> void:
 	AudioControl.play_audio("menuClick")
@@ -58,18 +61,49 @@ func return_to_login() -> void:
 	OptionMenu.hide()
 	MainMenu.show()
 
-
 func _on_LineEdit_text_entered(_new_text: String) -> void:
 	login_request()
-
 
 func _on_LineEdit_text_changed(_new_text: String) -> void:
 	AudioControl.play_audio("typing")
 
-
 func _on_LineEdit_mouse_entered() -> void:
 	AudioControl.play_audio("menuHover")
 
-
 func _on_LineEdit_focus_entered() -> void:
 	AudioControl.play_audio("menuClick")
+
+func _on_CheckBox_toggled(button_pressed):
+	if $VBoxContainer/loginButton/Label.pressed:
+		savelogin = true
+	else:
+		savelogin = false
+
+func _on_LineEdit_focus_exited():
+	save_settings(savelogin)
+
+func save_settings(save: bool) -> void:
+	var email = $VBoxContainer/username/LineEdit.text
+	var file = File.new()
+	file.open(login_file_path, file.WRITE)
+	var data
+	if save:
+		data ={ "login" : {"email": email,
+					"save": true}}
+	else:
+		data ={ "login" : {"save": true}}	
+	file.store_line(JSON.print(data, "\t"))
+	file.close()
+	
+func load_settings() -> void:
+	var save_file = File.new()
+	if not save_file.file_exists(login_file_path):
+		return
+	save_file.open(login_file_path, File.READ)
+	var settings_data = JSON.parse(save_file.get_as_text())
+	var login_settings = settings_data.result["login"]
+	if login_settings.save:
+		$VBoxContainer/username/LineEdit.text = settings_data.email
+	print("Loaded")
+	save_file.close()
+
