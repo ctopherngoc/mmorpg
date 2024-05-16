@@ -1,7 +1,7 @@
 extends Area2D
 
 func _read():
-	pass
+	$AnimationPlayer.play("portal")
 
 func _input(event):
 	if event.is_action_pressed("up"):
