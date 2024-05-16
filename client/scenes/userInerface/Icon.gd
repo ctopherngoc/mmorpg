@@ -102,3 +102,10 @@ func _gui_input(event):
 			if item_data.id:
 				AudioControl.play_audio("menuClick")
 
+func _on_0_gui_input(event):
+	if event is InputEventMouseButton:
+		if event.button_index == BUTTON_LEFT and event.pressed and event.is_doubleclick():
+			print("double click,use item: %s %s" % [item_data.id, item_data.item])
+			print(GameData.itemTable[item_data.id].description)
+#		elif event.button_index == BUTTON_LEFT and event.pressed:
+#			print("I've been clicked D:")
