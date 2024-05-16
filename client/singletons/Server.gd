@@ -247,12 +247,25 @@ remote func update_player_stats(player_stats: Dictionary) -> void:
 					print("Player gained %s exp." % str(player_stats["stats"]["base"]["experience"] - Global.player["stats"]["base"]["experience"]))
 					Global.player["stats"]["base"]["experience"] = player_stats["stats"]["base"]["experience"]
 					Signals.emit_signal("update_exp")
-
-			if player_stats["inventory"] != Global.player["inventory"]:
+			
+			if not dictionary_comparison(Global.player["inventory"], player_stats["inventory"]):
+			#if player_stats["inventory"].hash() != Global.player["inventory"].hash():
 				Global.player["inventory"] = player_stats["inventory"]
 				Signals.emit_signal("update_inventory")
 			break
 
+func dictionary_comparison(client_dict: Dictionary, server_dict: Dictionary) -> bool:
+	for key in client_dict:
+		if not server_dict.has(key):
+			return false
+		var tv = client_dict[key]
+		if typeof(tv) == TYPE_DICTIONARY:
+			if !dictionary_comparison(tv, server_dict[key]):
+				return false
+		elif tv != server_dict[key]: 
+			return false
+	return true
+	
 func portal(portal: String) -> void:
 	AudioControl.play_audio("portal")
 	rpc_id(1, "portal", portal)
@@ -303,8 +316,8 @@ func send_inventory_movement(tab: int, from: int, to: int) -> void:
 	"""
 	rpc_id(1, "move_item", [tab, from, to])
 
-remote func server_message(message_int: int):
-	print("received messge %s" % message_int)
+remote func server_message(message: String):
+	print("received messge %s" % message)
 	
 remote func loot_data(item_data: Dictionary) -> void:
 	AudioControl.play_audio("loot")
@@ -319,3 +332,6 @@ remote func loot_data(item_data: Dictionary) -> void:
 func update_message(message: String):
 	pass
 	# insert script to edit notification var with message
+
+func use_item(item_id: String):
+	rpc_id(1, "use_item", item_id)

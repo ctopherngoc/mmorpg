@@ -443,15 +443,6 @@ remote func receive_attack(move_id):
 func send_climb_data(player_id: int, climb_data: int):
 	rpc_id(int(player_id), "receive_climb_data", climb_data)
 
-######################################################################
-# Server combat test functions
-func _on_Button_pressed():
-	$Test/PlayerContainer.attack(0)
-
-# function takes current_character
-func _on_Button2_pressed():
-	Global.calculate_stats($Test/PlayerContainer.current_character)
-
 remote func move_item(inv_data: Array):
 	"""
 	inv_data=[tab:int, from:int, to:int]
@@ -480,7 +471,74 @@ func _unhandled_input(event):
 			move_item([1,0,1])
 			#Global.dropSpawn("100001", Vector2(414, -69), {"100000": 5}, "PlayerContainer")
 		
+func transfer_item_ownership():
+	"""
+	this function should be called when item is traded or looted after previous owner drops.
+	"""
+	pass
+
+func delete_item():
+	"""
+	remove item from database. this function should be called when:
+		1. unique item is sold
+		2. when item on floor dispears
+		3. dropping unique item
+	"""
+	pass
+####################################################################################
+
+func send_client_notification(player_id, message: String) -> void:
+	rpc_id(player_id, "server_message", message)
+	
+func send_loot_data(player_id: String, loot_data: Dictionary) -> void:
+	rpc_id(int(player_id), "loot_data", loot_data)
+
+remote func use_item(item_id: String) -> void:
+	# get player container
+	var player_id = get_tree().get_rpc_sender_id()
+	var player_container = _Server_Get_Player_Container(player_id)
+	# if item in inventory
+	if item_id in player_container.current_character.inventory:
+		# if item count > 0 decrement
+		if player_container.current_character.inventory[item_id].q > 0:
+			player_container.current_character.inventory[item_id].q -= 1
+			# get item type and amount
+			var quantity = ServerData.itemTable[item_id].useAmount
+			if ServerData.itemTable.use[item_id]["useType"] == "health":
+				print("health pot")
+				var total_health = player_container.current_character.stats.base.maxHealth + player_container.current_character.stats.equipment.maxHealth  
+				# if over heal -> set max, else +=
+				if player_container.current_character.stats.base.health + quantity > total_health:
+					player_container.current_character.stats.base.health = total_health
+				else:
+					player_container.current_character.stats.base.health += quantity
+				
+			elif ServerData.itemTable.use[item_id]["useType"] == "mana":
+				print("mana pot")
+				var total_mana = player_container.current_character.stats.base.maxMana + player_container.current_character.stats.equipment.maxMana
+				# if over heal -> set max, else +=
+				if player_container.current_character.stats.base.mana + quantity > total_mana:
+					player_container.current_character.stats.base.mana = total_mana
+				else:
+					player_container.current_character.stats.base.mana += quantity
+			# not implemented yet
+			# + stats
+			else:
+				print("status pot")
+			update_player_stats(player_container)
+			send_client_notification(player_id, "used %s" % ServerData.itemTable[item_id].itemName)
+		# amount of pots = 0 should not be in data
+		else:
+			print("not enough pots")
+	
 ######################################################################
+# test buttons
+func _on_Button_pressed():
+	$Test/PlayerContainer.attack(0)
+
+# function takes current_character
+func _on_Button2_pressed():
+	Global.calculate_stats($Test/PlayerContainer.current_character)
 func _on_Button3_pressed():
 #	print("dropping potion")
 #	Global.dropSpawn("100001", Vector2(231, -405), {"300000": 1}, "PlayerContainer")
@@ -528,28 +586,3 @@ func save(var path : String, var thing_to_save):
 	file.close()
 
 ####################################################################################
-func transfer_item_ownership():
-	"""
-	this function should be called when item is traded or looted after previous owner drops.
-	"""
-	pass
-
-func delete_item():
-	"""
-	remove item from database. this function should be called when:
-		1. unique item is sold
-		2. when item on floor dispears
-		3. dropping unique item
-	"""
-	pass
-####################################################################################
-
-func send_client_notification(player_id, message: int) -> void:
-	"""
-	message type:
-		0 = inventory full
-	"""
-	rpc_id(player_id, "server_message", message)
-	
-func send_loot_data(player_id: String, loot_data: Dictionary) -> void:
-	rpc_id(int(player_id), "loot_data", loot_data)

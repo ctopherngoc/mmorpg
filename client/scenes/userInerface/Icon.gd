@@ -106,6 +106,16 @@ func _on_0_gui_input(event):
 	if event is InputEventMouseButton:
 		if event.button_index == BUTTON_LEFT and event.pressed and event.is_doubleclick():
 			print("double click,use item: %s %s" % [item_data.id, item_data.item])
-			print(GameData.itemTable[item_data.id].description)
+			if item_data.id == null:
+				print("empty")
+			elif item_data.id == "use":
+				print("use")
+				var q = int(label.text) -1
+				label.text = str(q)
+				Server.use_item(item_data.id)
+				print(GameData.itemTable[item_data.id].description)
+			else:
+				print("not use")
+				print(GameData.itemTable[item_data.id].description)
 #		elif event.button_index == BUTTON_LEFT and event.pressed:
 #			print("I've been clicked D:")
