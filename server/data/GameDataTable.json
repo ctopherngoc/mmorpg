@@ -51,105 +51,120 @@
       "itemType": "gold",
       "dropRate": 85,
       "stackable": 1,
-      "droppable": 1
+      "droppable": 1,
+      "description": null
     },
     "200000": {
       "itemName": "Training Sword",
       "itemType": "equipment",
       "dropRate": 5,
       "stackable": 0,
-      "droppable": 1
+      "droppable": 1,
+      "description": "sword used for training"
     },
     "200001": {
       "itemName": "Training Dagger",
       "itemType": "equipment",
       "dropRate": 5,
       "stackable": 0,
-      "droppable": 1
+      "droppable": 1,
+      "description": "dagger used for training"
     },
     "200003": {
       "itemName": "Acorn Armor",
       "itemType": "equipment",
       "dropRate": 5,
       "stackable": 0,
-      "droppable": 1
+      "droppable": 1,
+      "description": "armor made out of acorns"
     },
     "200004": {
       "itemName": "Stone Arrow",
       "itemType": "use",
       "dropRate": 30,
       "stackable": 1,
-      "droppable": 1
+      "droppable": 1,
+      "description": "arrows for bow with heads made of stone"
     },
     "300000": {
       "itemName": "Health Potion",
       "itemType": "use",
       "dropRate": 15,
       "stackable": 1,
-      "droppable": 1
+      "droppable": 1,
+      "description": "consuming potion heals 20 heath"
     },
     "300001": {
       "itemName": "Red Apple",
       "itemType": "use",
       "dropRate": 15,
       "stackable": 1,
-      "droppable": 1
+      "droppable": 1,
+      "description": "consuming apple heals 10 health"
     },
     "300002": {
       "itemName": "Cheese",
       "itemType": "use",
       "dropRate": 15,
       "stackable": 1,
-      "droppable": 1
+      "droppable": 1,
+      "description": "consuming cheese recovers 10 mana"
     },
     "300003": {
       "itemName": "Meat",
       "itemType": "use",
       "dropRate": 15,
       "stackable": 1,
-      "droppable": 1
+      "droppable": 1,
+      "description": "consuming meat recovers 10 mana"
     },
     "500000": {
       "itemName": "Cloth Shirt",
       "itemType": "equipment",
       "dropRate": 5,
       "stackable": 0,
-      "droppable": 1
+      "droppable": 1,
+      "description": "shirt made of cloth"
     },
     "500001": {
       "itemName": "Cloth Bottom",
       "itemType": "equipment",
       "dropRate": 5,
       "stackable": 0,
-      "droppable": 1
+      "droppable": 1,
+      "description": "pants made of cloth"
     },
     "500002": {
       "itemName": "Leather Shirt",
       "itemType": "equipment",
       "dropRate": 5,
       "stackable": 0,
-      "droppable": 1
+      "droppable": 1,
+      "description": "shirt made of leather"
     },
     "500003": {
       "itemName": "Leather Bottom",
       "itemType": "equipment",
       "dropRate": 5,
       "stackable": 0,
-      "droppable": 1
+      "droppable": 1,
+      "description": "pants made of leather"
     },
     "500004": {
       "itemName": "Woodcutter Shirt",
       "itemType": "equipment",
       "dropRate": 5,
       "stackable": 0,
-      "droppable": 1
+      "droppable": 1,
+      "description": "shirt woodcutters wear"
     },
     "500005": {
-      "itemName": "Woodcutter Bottom",
+      "itemName": "Woodcuttern Bottom",
       "itemType": "equipment",
       "dropRate": 5,
       "stackable": 0,
-      "droppable": 1
+      "droppable": 1,
+      "description": "pants wood cutters wear"
     }
   },
   "EquipmentTable": {
@@ -346,7 +361,7 @@
       "job": null
     },
     "500005": {
-      "name": "Woodcuttern Bottom",
+      "name": "Woodcutter Bottom",
       "type": "bottom",
       "slot": 7,
       "accuracy": null,
