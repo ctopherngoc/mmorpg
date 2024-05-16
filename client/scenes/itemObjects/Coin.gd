@@ -8,6 +8,7 @@ func _ready():
 	$Area2D.connect("area_entered", self, "on_area_entered")
 # warning-ignore:return_value_discarded
 	$Area2D.connect("area_exited", self, "on_area_exited")
+	self.set_scale(Vector2(.7,.7))
 	
 func on_area_entered(_area2d):
 	player = true

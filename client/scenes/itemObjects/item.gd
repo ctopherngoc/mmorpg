@@ -13,3 +13,4 @@ func _ready() -> void:
 	"""
 	var sprite = load(spite_path[item_type] + str(id) + ".png")
 	sprite_node.set_texture(sprite)
+	self.set_scale(Vector2(0.6,0.6))
