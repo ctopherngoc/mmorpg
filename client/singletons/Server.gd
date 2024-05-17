@@ -320,7 +320,7 @@ func send_inventory_movement(tab: int, from: int, to: int) -> void:
 remote func server_message(message: String):
 	print("received messge %s" % message)
 	
-remote func loot_data(item_data: Dictionary) -> void:
+remote func loot_data(_item_data: Dictionary) -> void:
 	AudioControl.play_audio("loot")
 	# update notification
 	# var string
@@ -330,7 +330,7 @@ remote func loot_data(item_data: Dictionary) -> void:
 		# var string = "Picked up %s" % GameData[item_data.id]"
 	#update_message(string)
 
-func update_message(message: String):
+func update_message(_message: String):
 	pass
 	# insert script to edit notification var with message
 
