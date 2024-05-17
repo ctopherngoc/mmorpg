@@ -108,11 +108,12 @@ func _on_0_gui_input(event):
 			print("double click,use item: %s %s" % [item_data.id, item_data.item])
 			if item_data.id == null:
 				print("empty")
-			elif item_data.id == "use":
+			elif GameData.itemTable[item_data.id].itemType == "use":
 				print("use")
 				var q = int(label.text) -1
+				print(q)
 				label.text = str(q)
-				Server.use_item(item_data.id)
+				Server.use_item(item_data.id, slot_index)
 				print(GameData.itemTable[item_data.id].description)
 			else:
 				print("not use")
