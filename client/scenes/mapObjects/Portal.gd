@@ -1,6 +1,6 @@
 extends Area2D
 
-func _read():
+func _ready():
 	$AnimationPlayer.play("portal")
 
 func _input(event):
