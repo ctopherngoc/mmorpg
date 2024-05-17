@@ -2,6 +2,9 @@ extends CenterContainer
 onready var tab
 onready var slot_index
 
+onready var equip_info = preload("res://scenes/userInerface/ItemInfo/EquipInfo.tscn")
+#onready var equip_info = preload("res://scenes/userInerface/ItemInfo/EquipInfo.tscn")
+
 var tab_dict = {"equipment": 0, "use": 1, "etc": 2}
 
 var item_data = {
@@ -120,3 +123,33 @@ func _on_0_gui_input(event):
 				print(GameData.itemTable[item_data.id].description)
 #		elif event.button_index == BUTTON_LEFT and event.pressed:
 #			print("I've been clicked D:")
+
+
+func _on_0_mouse_entered():
+	if item_data.id == null:
+		pass
+	else:
+		if GameData.itemTable[item_data.id].itemType == "Equipment":
+			var equip_tip = equip_info.instance()
+			equip_tip.origin = "Inventory"
+			equip_tip.slot = slot_index
+			var inventory_origin = get_node("/root/CurrentScene/UI/Control/Inventory").get_global_transform_with_canvas().origin
+			#equip_tip.rect_position.y = get_parent().get_global_transform_with_canvas().origin.y
+			equip_tip.rect_position.y = inventory_origin.x
+			equip_tip.rect_position.x = inventory_origin.y
+			
+			add_child(equip_tip)
+			yield(get_tree().create_timer(0.35), "timeout")
+			if has_node("EquipInfo") and get_node("EquipInfo").valid:
+				get_node("EquipInfo").show()
+		else:
+			pass
+
+
+func _on_0_mouse_exited():
+	if item_data.id == null:
+		pass
+	if item_data.id == "equipment":
+		get_node("EquipInfo").free()
+	else:
+		pass

@@ -1,0 +1,193 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://scenes/userInerface/ItemInfo/EquipInfo.gd" type="Script" id=1]
+[ext_resource path="res://scenes/userInerface/ItemInfo/ItemStatsLine.tscn" type="PackedScene" id=2]
+[ext_resource path="res://assets/itemSprites/equipItems/500000.png" type="Texture" id=3]
+
+[node name="EquipInfo" type="Popup"]
+anchor_right = 1.01094
+anchor_bottom = 1.0625
+margin_right = -981.0
+margin_bottom = -523.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="N" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 2.0
+margin_right = 61.0
+mouse_filter = 2
+
+[node name="ColorRect" type="ColorRect" parent="N"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+color = Color( 0, 0, 0, 1 )
+
+[node name="MarginContainer" type="MarginContainer" parent="N"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 15.0
+margin_top = 15.0
+margin_right = -15.0
+margin_bottom = -15.0
+mouse_filter = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="N/MarginContainer"]
+margin_right = 344.0
+margin_bottom = 210.0
+size_flags_vertical = 0
+
+[node name="Label" type="Label" parent="N/MarginContainer/VBoxContainer"]
+margin_right = 344.0
+margin_bottom = 14.0
+size_flags_vertical = 0
+text = "<itemName>"
+align = 1
+valign = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="N/MarginContainer/VBoxContainer"]
+margin_top = 18.0
+margin_right = 344.0
+margin_bottom = 210.0
+
+[node name="TextureRect" type="TextureRect" parent="N/MarginContainer/VBoxContainer/HBoxContainer"]
+margin_right = 192.0
+margin_bottom = 192.0
+texture = ExtResource( 3 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="N/MarginContainer/VBoxContainer/HBoxContainer"]
+margin_left = 196.0
+margin_right = 327.0
+margin_bottom = 192.0
+
+[node name="LevelJob" type="HBoxContainer" parent="N/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+margin_right = 131.0
+margin_bottom = 14.0
+
+[node name="Level" type="HBoxContainer" parent="N/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/LevelJob"]
+margin_right = 70.0
+margin_bottom = 14.0
+rect_min_size = Vector2( 70, 0 )
+
+[node name="Label" type="Label" parent="N/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/LevelJob/Level"]
+margin_right = 38.0
+margin_bottom = 14.0
+text = "Level:"
+
+[node name="Label2" type="Label" parent="N/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/LevelJob/Level"]
+margin_left = 42.0
+margin_right = 66.0
+margin_bottom = 14.0
+text = "100"
+
+[node name="Job" type="HBoxContainer" parent="N/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/LevelJob"]
+margin_left = 74.0
+margin_right = 118.0
+margin_bottom = 14.0
+
+[node name="Label" type="Label" parent="N/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/LevelJob/Job"]
+margin_right = 23.0
+margin_bottom = 14.0
+text = "Job:"
+
+[node name="Label2" type="Label" parent="N/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/LevelJob/Job"]
+margin_left = 27.0
+margin_right = 44.0
+margin_bottom = 14.0
+text = "All"
+
+[node name="ReqStats" type="VBoxContainer" parent="N/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+margin_top = 18.0
+margin_right = 131.0
+margin_bottom = 50.0
+
+[node name="STRLUK" type="HBoxContainer" parent="N/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ReqStats"]
+margin_right = 131.0
+margin_bottom = 14.0
+
+[node name="Str" type="HBoxContainer" parent="N/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ReqStats/STRLUK"]
+margin_right = 70.0
+margin_bottom = 14.0
+rect_min_size = Vector2( 70, 14 )
+
+[node name="Label" type="Label" parent="N/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ReqStats/STRLUK/Str"]
+margin_right = 26.0
+margin_bottom = 14.0
+text = "STR:"
+
+[node name="Label2" type="Label" parent="N/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ReqStats/STRLUK/Str"]
+margin_left = 30.0
+margin_right = 54.0
+margin_bottom = 14.0
+rect_min_size = Vector2( 24, 14 )
+text = "100"
+
+[node name="Luk" type="HBoxContainer" parent="N/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ReqStats/STRLUK"]
+margin_left = 74.0
+margin_right = 131.0
+margin_bottom = 14.0
+rect_min_size = Vector2( 57, 14 )
+
+[node name="Label" type="Label" parent="N/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ReqStats/STRLUK/Luk"]
+margin_right = 29.0
+margin_bottom = 14.0
+text = "LUK:"
+
+[node name="Label2" type="Label" parent="N/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ReqStats/STRLUK/Luk"]
+margin_left = 33.0
+margin_right = 57.0
+margin_bottom = 14.0
+rect_min_size = Vector2( 24, 14 )
+text = "0"
+
+[node name="DEXWIS" type="HBoxContainer" parent="N/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ReqStats"]
+margin_top = 18.0
+margin_right = 131.0
+margin_bottom = 32.0
+
+[node name="Dex" type="HBoxContainer" parent="N/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ReqStats/DEXWIS"]
+margin_right = 70.0
+margin_bottom = 14.0
+rect_min_size = Vector2( 70, 0 )
+
+[node name="Label" type="Label" parent="N/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ReqStats/DEXWIS/Dex"]
+margin_right = 29.0
+margin_bottom = 14.0
+text = "DEX:"
+
+[node name="Label2" type="Label" parent="N/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ReqStats/DEXWIS/Dex"]
+margin_left = 33.0
+margin_right = 57.0
+margin_bottom = 14.0
+rect_min_size = Vector2( 24, 14 )
+text = "0"
+
+[node name="Wis" type="HBoxContainer" parent="N/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ReqStats/DEXWIS"]
+margin_left = 74.0
+margin_right = 115.0
+margin_bottom = 14.0
+
+[node name="Label" type="Label" parent="N/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ReqStats/DEXWIS/Wis"]
+margin_right = 29.0
+margin_bottom = 14.0
+text = "WIS:"
+
+[node name="Label2" type="Label" parent="N/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ReqStats/DEXWIS/Wis"]
+margin_left = 33.0
+margin_right = 41.0
+margin_bottom = 14.0
+text = "0"
+
+[node name="ItemStats" parent="N/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer" instance=ExtResource( 2 )]
+margin_top = 54.0
+margin_right = 131.0
+margin_bottom = 68.0
