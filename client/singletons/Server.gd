@@ -138,9 +138,9 @@ remote func return_choose_character(requester: int) -> void:
 	SceneHandler.change_scene(Global.player['map']) 
 	#instance_from_id(requester).load_world()
 
-func fetch_player_stats() -> void:
-	if !testing:
-		rpc_id(1, "fetch_player_stats")
+#func fetch_player_stats() -> void:
+#	if !testing:
+#		rpc_id(1, "fetch_player_stats")
 
 ##############################################################################
 # Authentication
@@ -152,7 +152,7 @@ remote func return_token_verification_results(result: bool, array: Array) -> voi
 	if result == true:
 		print("token verified")
 		Global.character_list = array
-		fetch_player_stats()
+#		fetch_player_stats()
 		login_status = 1
 		SceneHandler.change_scene("characterSelect")
 	else:
@@ -219,6 +219,7 @@ remote func update_player_stats(player_stats: Dictionary) -> void:
 	for character in Global.character_list:
 		if character["displayname"] == player_stats["displayname"]:
 			character = player_stats
+			Signals.emit_signal("update_stats")
 
 			# change in health
 			if player_stats["stats"]["base"]["health"] != Global.player["stats"]["base"]["health"]:
@@ -333,5 +334,10 @@ func update_message(message: String):
 	pass
 	# insert script to edit notification var with message
 
-func use_item(item_id: String):
-	rpc_id(1, "use_item", item_id)
+func use_item(item_id: String, slot_index: int):
+	print("in use_item -> server rpc")
+	rpc_id(1, "use_item", [item_id, slot_index])
+	
+func add_stat(stat: String) -> void:
+	print("requesting to add %s" % stat)
+	rpc_id(1, "add_stat", stat)
