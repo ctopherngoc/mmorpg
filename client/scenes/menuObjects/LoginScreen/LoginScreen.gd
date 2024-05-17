@@ -79,7 +79,7 @@ func _on_LineEdit_mouse_entered() -> void:
 func _on_LineEdit_focus_entered() -> void:
 	AudioControl.play_audio("menuClick")
 
-func _on_CheckBox_toggled(button_pressed):
+func _on_CheckBox_toggled(_button_pressed):
 	AudioControl.play_audio("menuClick")
 	if $VBoxContainer/loginButton/CheckBox.pressed:
 		savelogin = true
