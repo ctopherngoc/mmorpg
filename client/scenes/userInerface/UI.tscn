@@ -16,11 +16,17 @@ anchor_bottom = 1.0
 script = ExtResource( 6 )
 
 [node name="PlayerStats" parent="Control" instance=ExtResource( 5 )]
-visible = false
+anchor_left = -0.00546875
+anchor_top = -0.00555556
+anchor_right = -0.00546875
+anchor_bottom = -0.00555556
 margin_left = 8.0
 margin_top = 409.0
 margin_right = 463.0
 margin_bottom = 647.0
+__meta__ = {
+"_edit_use_anchors_": true
+}
 
 [node name="Inventory" parent="Control" instance=ExtResource( 4 )]
 visible = false
