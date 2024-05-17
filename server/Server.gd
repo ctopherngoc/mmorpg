@@ -236,14 +236,14 @@ remote func choose_character(requester: int, display_name: String) -> void:
 	Global.calculate_stats(player_container.current_character)
 	rpc_id(player_id, "return_choose_character", requester)
 
-remote func fetch_player_stats() -> void:
-	var player_id = get_tree().get_rpc_sender_id()
-	var Maps = get_node("World/Maps")
-	for i in Maps.get_children():
-		for l in i.get_children():
-			if l.name == str(player_id):
-				pass
-				#print(l.player_stats)
+#remote func fetch_player_stats() -> void:
+#	var player_id = get_tree().get_rpc_sender_id()
+#	var Maps = get_node("World/Maps")
+#	for i in Maps.get_children():
+#		for l in i.get_children():
+#			if l.name == str(player_id):
+#				pass
+#				#print(l.player_stats)
 
 remote func fetch_usernames(requester, username: String) -> void:
 	print("inside fetch username. Username: %s" % username)
@@ -493,18 +493,24 @@ func send_client_notification(player_id, message: String) -> void:
 func send_loot_data(player_id: String, loot_data: Dictionary) -> void:
 	rpc_id(int(player_id), "loot_data", loot_data)
 
-remote func use_item(item_id: String) -> void:
+remote func use_item(item: Array) -> void:
+	"""
+	item_id[0] = item_id
+	item_id[1] = index slot
+	"""
+	print("in use_item")
 	# get player container
 	var player_id = get_tree().get_rpc_sender_id()
 	var player_container = _Server_Get_Player_Container(player_id)
 	# if item in inventory
-	if item_id in player_container.current_character.inventory:
+	print(item)
+	if item[0] == player_container.current_character.inventory.use[item[1]].id:
 		# if item count > 0 decrement
-		if player_container.current_character.inventory[item_id].q > 0:
-			player_container.current_character.inventory[item_id].q -= 1
+		if player_container.current_character.inventory.use[item[1]].q > 0:
+			player_container.current_character.inventory.use[item[1]].q -= 1
 			# get item type and amount
-			var quantity = ServerData.itemTable[item_id].useAmount
-			if ServerData.itemTable.use[item_id]["useType"] == "health":
+			var quantity = ServerData.itemTable[item[0]].useAmount
+			if ServerData.itemTable[item[0]]["useType"] == "health":
 				print("health pot")
 				var total_health = player_container.current_character.stats.base.maxHealth + player_container.current_character.stats.equipment.maxHealth  
 				# if over heal -> set max, else +=
@@ -513,7 +519,7 @@ remote func use_item(item_id: String) -> void:
 				else:
 					player_container.current_character.stats.base.health += quantity
 				
-			elif ServerData.itemTable.use[item_id]["useType"] == "mana":
+			elif ServerData.itemTable.use[item]["useType"] == "mana":
 				print("mana pot")
 				var total_mana = player_container.current_character.stats.base.maxMana + player_container.current_character.stats.equipment.maxMana
 				# if over heal -> set max, else +=
@@ -526,11 +532,37 @@ remote func use_item(item_id: String) -> void:
 			else:
 				print("status pot")
 			update_player_stats(player_container)
-			send_client_notification(player_id, "used %s" % ServerData.itemTable[item_id].itemName)
+			send_client_notification(player_id, "used %s" % ServerData.itemTable[item[0]].itemName)
 		# amount of pots = 0 should not be in data
 		else:
 			print("not enough pots")
+			update_player_stats(player_container)
+			send_client_notification(player_id, "not enough %s" % ServerData.itemTable[item[0]].itemName)
+
+remote func add_stat(stat: String) -> void:
+	print("in add_stat")
+	# get player container
+	var player_id = get_tree().get_rpc_sender_id()
+	var player_container = _Server_Get_Player_Container(player_id)
 	
+	if player_container.current_character.stats.base.sp > 0:
+		player_container.current_character.stats.base.sp -= 1
+		if stat == "s":
+			print("%s incrase strength" % player_id)
+			player_container.current_character.stats.base.strength += 1
+		elif stat == "w":
+			player_container.current_character.stats.base.wisdom += 1
+			print("%s incrase wisdom" % player_id)
+		elif stat == "d":
+			player_container.current_character.stats.base.dexterity += 1
+			print("%s incrase dexterity" % player_id)
+		else:
+			player_container.current_character.stats.base.luck += 1
+			print("%s incrase luck" % player_id)
+		update_player_stats(player_container)
+		send_client_notification(player_id, "added 1 to %s" % stat)
+	else:
+		send_client_notification(player_id, "not enough sp")
 ######################################################################
 # test buttons
 func _on_Button_pressed():
