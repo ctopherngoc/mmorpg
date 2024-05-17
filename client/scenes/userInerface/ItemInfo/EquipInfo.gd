@@ -1,13 +1,14 @@
 extends Popup
 
 var origin: String
+var tab: String
 var slot: int
 var stats: Dictionary
 var valid: bool = false
 
 var itemStat = preload("res://scenes/userInerface/ItemInfo/ItemStatsLine.tscn")
 
-onready var extraStats = $N/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ReqStats
+onready var extraStats = $N/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer
 onready var itemName = $N/MarginContainer/VBoxContainer/Label
 onready var reqLevel = $N/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/LevelJob/Level/Label2
 onready var reqJob = $N/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/LevelJob/Job/Label2
@@ -19,11 +20,11 @@ onready var itemIcon = $N/MarginContainer/VBoxContainer/HBoxContainer/TextureRec
 onready var item_path = "res://assets/itemSprites/"
 
 func _ready() -> void:
-	var item_id
 	if origin == "Inventory":
 		if Global.player.inventory.equipment[slot] != null:
 			stats = Global.player.inventory.equipment[slot]
 			valid = true
+			print("stats: %s" % stats)
 	else:
 		# if hovering equiped item 
 		# if Global.player.equipment[slot] != null:
@@ -38,11 +39,11 @@ func _ready() -> void:
 		itemIcon.texture = load(temp_item_path)
 		
 		# required stats
-		reqLevel.text = str(GameData.itemTable[stats.id].reqLevel)
-		reqStr.text = str(GameData.itemTable[stats.id].reqStr)
-		reqLuk.text = str(GameData.itemTable[stats.id].reqLuk)
-		reqDex.text = str(GameData.itemTable[stats.id].reqDex)
-		reqWis.text = str(GameData.itemTable[stats.id].reqWis)
+		reqLevel.text = str(GameData.equipmentTable[stats.id].reqLevel)
+		reqStr.text = str(GameData.equipmentTable[stats.id].reqStr)
+		reqLuk.text = str(GameData.equipmentTable[stats.id].reqLuk)
+		reqDex.text = str(GameData.equipmentTable[stats.id].reqDex)
+		reqWis.text = str(GameData.equipmentTable[stats.id].reqWis)
 		if stats.job == null:
 			reqJob.text = "All"
 		else:
@@ -52,121 +53,121 @@ func _ready() -> void:
 		# aditional equip stats 
 		
 		var type = itemStat.instance()
-		type.label = "Type:"
-		type.amount =  str(stats.type)
+		type.get_node("StatLabel").text = "Type: "
+		type.get_node("StatNumber").text =  str(stats.type)
 		extraStats.add_child(type)
 		
 		if stats.type in ["1h_sword", "bow", "gun", "1h_blunt", "2h_blunt", "1h_axe", "2h_axe", "dagger", "wand", "staff"]:
 			var speed = itemStat.instance()
-			speed.label = "Weapon Speed: "
-			speed.amount =  str(stats.attackSpeed)
-			extraStats.add_child(type)
+			speed.get_node("StatLabel").text = "Weapon Speed: "
+			speed.get_node("StatNumber").text =  str(stats.attackSpeed)
+			extraStats.add_child(speed)
 			
 			var attack = itemStat.instance()
-			attack.label = "Attack: "
-			attack.amount =  str(stats.attack)
-			extraStats.add_child(type)
+			attack.get_node("StatLabel").text = "Attack: "
+			attack.get_node("StatNumber").text =  str(stats.attack)
+			extraStats.add_child(attack)
 			
-			if stats.magic != null:
+			if stats.magic != "0":
 				var magic = itemStat.instance()
-				magic.label = "Magic: "
-				magic.amount =  str(stats.magic)
-				extraStats.add_child(type)
+				magic.get_node("StatLabel").text = "Magic: "
+				magic.get_node("StatNumber").text = str(stats.magic)
+				extraStats.add_child(magic)
 		
-		if stats.strength != null:
+		if stats.strength != "0":
 				var strength = itemStat.instance()
-				strength.label = "STR: "
-				strength.amount =  "+ " + str(stats.strength)
-				extraStats.add_child(type)
+				strength.get_node("StatLabel").text = "STR: "
+				strength.get_node("StatNumber").text =  "+" + str(stats.strength)
+				extraStats.add_child(strength)
 		
-		if stats.dexterity != null:
+		if stats.dexterity != "0":
 				var dexterity = itemStat.instance()
-				dexterity.label = "DEX: "
-				dexterity.amount =  "+ " + str(stats.dexterity)
-				extraStats.add_child(type)
+				dexterity.get_node("StatLabel").text = "DEX: "
+				dexterity.get_node("StatNumber").text =  "+" + str(stats.dexterity)
+				extraStats.add_child(dexterity)
 		
-		if stats.wisdom != null:
+		if stats.wisdom != "0":
 				var wisdom = itemStat.instance()
-				wisdom.label = "WIS: "
-				wisdom.amount =  "+ " + str(stats.wisdom)
-				extraStats.add_child(type)
+				wisdom.get_node("StatLabel").text = "WIS: "
+				wisdom.get_node("StatNumber").text =  "+" + str(stats.wisdom)
+				extraStats.add_child(wisdom)
 		
-		if stats.luck != null:
+		if stats.luck != "0":
 				var luck = itemStat.instance()
-				luck.label = "LUK: "
-				luck.amount =  "+ " + str(stats.luck)
-				extraStats.add_child(type)
+				luck.get_node("StatLabel").text = "LUK: "
+				luck.get_node("StatNumber").text =  "+" + str(stats.luck)
+				extraStats.add_child(luck)
 		
-		if stats.critRate != null:
+		if stats.critRate != "0":
 				var critRate = itemStat.instance()
-				critRate.label = "Crit Rate: "
-				critRate.amount =  "+ " + str(stats.critRate) + "%"
-				extraStats.add_child(type)
+				critRate.get_node("StatLabel").text = "Crit Rate: "
+				critRate.get_node("StatNumber").text =  "+" + str(stats.critRate) + "%"
+				extraStats.add_child(critRate)
 				
-		if stats.bossPercent != null:
+		if stats.bossPercent != "0":
 				var bossPercent = itemStat.instance()
-				bossPercent.label = "Boss Damage: "
-				bossPercent.amount =  "+ " + str(stats.bossPercent) + "%"
-				extraStats.add_child(type)
+				bossPercent.get_node("StatLabel").text = "Boss Damage: "
+				bossPercent.get_node("StatNumber").text =  "+" + str(stats.bossPercent) + "%"
+				extraStats.add_child(bossPercent)
 		
-		if stats.damagePercent != null:
+		if stats.damagePercent != "0":
 				var damagePercent = itemStat.instance()
-				damagePercent.label = "Total Damage: "
-				damagePercent.amount =  "+ " + str(stats.damagePercent) + "%"
-				extraStats.add_child(type)
+				damagePercent.get_node("StatLabel").text = "Total Damage: "
+				damagePercent.get_node("StatNumber").text =  "+" + str(stats.damagePercent) + "%"
+				extraStats.add_child(damagePercent)
 				
-		if stats.accuracy != null:
+		if stats.accuracy != "0":
 				var accuracy = itemStat.instance()
-				accuracy.label = "Total Damage: "
-				accuracy.amount =  "+ " + str(stats.accuracy)
-				extraStats.add_child(type)
+				accuracy.get_node("StatLabel").text = "Total Damage: "
+				accuracy.get_node("StatNumber").text =  "+" + str(stats.accuracy)
+				extraStats.add_child(accuracy)
 		
-		if stats.maxHealth != null:
+		if stats.maxHealth != "0":
 				var maxHealth = itemStat.instance()
-				maxHealth.label = "Health: "
-				maxHealth.amount =  "+ " + str(stats.maxHealth)
-				extraStats.add_child(type)
+				maxHealth.get_node("StatLabel").text = "Health: "
+				maxHealth.get_node("StatNumber").text =  "+" + str(stats.maxHealth)
+				extraStats.add_child(maxHealth)
 		
-		if stats.maxMana != null:
+		if stats.maxMana != "0":
 				var maxMana = itemStat.instance()
-				maxMana.label = "Mana: "
-				maxMana.amount =  "+ " + str(stats.maxMana)
-				extraStats.add_child(type)
+				maxMana.get_node("StatLabel").text = "Mana: "
+				maxMana.get_node("StatNumber").text =  "+" + str(stats.maxMana)
+				extraStats.add_child(maxMana)
 				
-		if stats.defense != null:
+		if stats.defense != "0":
 				var defense = itemStat.instance()
-				defense.label = "W.Defense: "
-				defense.amount =  "+ " + str(stats.defense)
-				extraStats.add_child(type)
+				defense.get_node("StatLabel").text = "W.Defense: "
+				defense.get_node("StatNumber").text =  "+" + str(stats.defense)
+				extraStats.add_child(defense)
 		
-		if stats.magicDefense != null:
+		if stats.magicDefense != "0":
 				var magicDefense = itemStat.instance()
-				magicDefense.label = "M.Defense: "
-				magicDefense.amount =  "+ " + str(stats.magicDefense)
-				extraStats.add_child(type)
+				magicDefense.get_node("StatLabel").text = "M.Defense: "
+				magicDefense.get_node("StatNumber").text =  "+" + str(stats.magicDefense)
+				extraStats.add_child(magicDefense)
 		
-		if stats.avoidability != null:
+		if stats.avoidability != "0":
 				var avoidability = itemStat.instance()
-				avoidability.label = "Avoid: "
-				avoidability.amount =  "+ " + str(stats.avoidability)
-				extraStats.add_child(type)
+				avoidability.get_node("StatLabel").text = "Avoid: "
+				avoidability.get_node("StatNumber").text =  "+" + str(stats.avoidability)
+				extraStats.add_child(avoidability)
 		
-		if stats.movementSpeed != null:
+		if stats.movementSpeed != "0":
 				var movementSpeed = itemStat.instance()
-				movementSpeed.label = "Speed: "
-				movementSpeed.amount =  "+ " + str(stats.movementSpeed)
-				extraStats.add_child(type)
+				movementSpeed.get_node("StatLabel").text = "Speed: "
+				movementSpeed.get_node("StatNumber").text =  "+" + str(stats.movementSpeed)
+				extraStats.add_child(movementSpeed)
 				
-		if stats.jumpSpeed != null:
+		if stats.jumpSpeed != "0":
 				var jumpSpeed = itemStat.instance()
-				jumpSpeed.label = "Jump: "
-				jumpSpeed.amount =  "+ " + str(stats.jumpSpeed)
-				extraStats.add_child(type)
+				jumpSpeed.get_node("StatLabel").text = "Jump: "
+				jumpSpeed.get_node("StatNumber").text =  "+" + str(stats.jumpSpeed)
+				extraStats.add_child(jumpSpeed)
 				
 		if stats.slot != null:
-			var slot = itemStat.instance()
-			slot.label = "Slots: "
-			slot.amount =  "+ " + str(stats.slot)
-			extraStats.add_child(type)
+			var scroll_slot = itemStat.instance()
+			scroll_slot.get_node("StatLabel").text = "Slots: "
+			scroll_slot.get_node("StatNumber").text = str(stats.slot)
+			extraStats.add_child(scroll_slot)
 			
 		##########################################################################

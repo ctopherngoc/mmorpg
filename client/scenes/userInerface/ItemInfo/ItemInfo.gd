@@ -1,29 +1,39 @@
 extends Popup
 
 var origin: String
+var tab : String
 var slot: int
 var stats: Dictionary
 var valid: bool = false
 
-onready var item_path= "res://assets/itemSprites/"
 var itemStat = preload("res://scenes/userInerface/ItemInfo/ItemStatsLine.tscn")
 
 onready var itemName = $N/MarginContainer/VBoxContainer/Label
-onready var description = $N/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Label
+onready var description = $N/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/description/Label
 onready var itemIcon = $N/MarginContainer/VBoxContainer/HBoxContainer/TextureRect
+onready var item_path = "res://assets/itemSprites/"
 
 func _ready() -> void:
-	var item_id
-	if Global.player.inventory.equipment[slot] != null:
-		stats = Global.player.inventory.equipment[slot].duplicate()
-		valid = true
+	if origin == "Inventory":
+		if Global.player.inventory[tab][slot] != null:
+			stats = Global.player.inventory[tab][slot]
+			valid = true
+			#print("stats: %s" % stats)
+	else:
+		# if hovering equiped item 
+		# if Global.player.equipment[slot] != null:
+		pass
 	
 	if valid:
-		itemName.text = stats.name
-		description.text = GameData.itemTable[stats.id].description
-		if GameData.itemTable[stats.id].itemType == "use":
+		# equip name
+		itemName.text = GameData.itemTable[stats.id].itemName
+		
+		# texture
+		if tab == "use":
 			var temp_item_path = item_path + "useItems/" + str(stats.id) + ".png"
 			itemIcon.texture = load(temp_item_path)
-		elif GameData.itemTable[stats.id].itemType == "etc":
+		elif tab == "etc":
 			var temp_item_path = item_path + "etcItems/" + str(stats.id) + ".png"
 			itemIcon.texture = load(temp_item_path)
+		# required stats
+		description.text = str(GameData.itemTable[stats.id].description)
