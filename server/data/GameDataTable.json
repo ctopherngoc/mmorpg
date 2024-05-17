@@ -220,7 +220,11 @@
       "movementSpeed": null,
       "strength": null,
       "wisdom": null,
-      "job": null
+      "job": null,
+      "reqLevel": 0,
+      "reqStr": 0,
+      "reqDex": 0,
+      "reqLuk": 0
     },
     "200001": {
       "name": "Training Dagger",
@@ -244,7 +248,11 @@
       "movementSpeed": null,
       "strength": null,
       "wisdom": null,
-      "job": null
+      "job": null,
+      "reqLevel": 0,
+      "reqStr": 0,
+      "reqDex": 0,
+      "reqLuk": 0
     },
     "200003": {
       "name": "Acorn Armor",
@@ -268,7 +276,11 @@
       "movementSpeed": 5,
       "strength": 5,
       "wisdom": null,
-      "job": null
+      "job": null,
+      "reqLevel": 0,
+      "reqStr": 0,
+      "reqDex": 0,
+      "reqLuk": 0
     },
     "500000": {
       "name": "Cloth Shirt",
@@ -292,7 +304,11 @@
       "movementSpeed": null,
       "strength": null,
       "wisdom": null,
-      "job": null
+      "job": null,
+      "reqLevel": 0,
+      "reqStr": 0,
+      "reqDex": 0,
+      "reqLuk": 0
     },
     "500001": {
       "name": "Cloth Bottom",
@@ -316,7 +332,11 @@
       "movementSpeed": null,
       "strength": null,
       "wisdom": null,
-      "job": null
+      "job": null,
+      "reqLevel": 0,
+      "reqStr": 0,
+      "reqDex": 0,
+      "reqLuk": 0
     },
     "500002": {
       "name": "Leather Shirt",
@@ -340,7 +360,11 @@
       "movementSpeed": null,
       "strength": null,
       "wisdom": null,
-      "job": null
+      "job": null,
+      "reqLevel": 0,
+      "reqStr": 0,
+      "reqDex": 0,
+      "reqLuk": 0
     },
     "500003": {
       "name": "Leather Bottom",
@@ -364,7 +388,11 @@
       "movementSpeed": null,
       "strength": null,
       "wisdom": null,
-      "job": null
+      "job": null,
+      "reqLevel": 0,
+      "reqStr": 0,
+      "reqDex": 0,
+      "reqLuk": 0
     },
     "500004": {
       "name": "Woodcutter Shirt",
@@ -388,7 +416,11 @@
       "movementSpeed": null,
       "strength": null,
       "wisdom": null,
-      "job": null
+      "job": null,
+      "reqLevel": 0,
+      "reqStr": 0,
+      "reqDex": 0,
+      "reqLuk": 0
     },
     "500005": {
       "name": "Woodcutter Bottom",
@@ -412,7 +444,11 @@
       "movementSpeed": null,
       "strength": null,
       "wisdom": null,
-      "job": null
+      "job": null,
+      "reqLevel": 0,
+      "reqStr": 0,
+      "reqDex": 0,
+      "reqLuk": 0
     }
   },
   "ExperienceTable": {
