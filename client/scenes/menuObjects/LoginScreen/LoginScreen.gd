@@ -9,7 +9,8 @@ onready var register_button: Button = $VBoxContainer/loginButton/RegisterButton
 onready var MainMenu = $VBoxContainer
 onready var OptionMenu = $Options
 onready var savelogin = false
-onready var login_file_path = "login.bat"
+onready var login_file_path = "user://login.dat"
+onready var logging_in_bool = false
 
 func _ready() -> void:
 	# warning-ignore:return_value_discarded
@@ -18,7 +19,9 @@ func _ready() -> void:
 
 func _on_Button_pressed() -> void:
 	AudioControl.play_audio("menuClick")
-	login_request()
+	if not logging_in_bool:
+		logging_in_bool = true
+		login_request()
 
 func login_request() -> void:
 	if username.text.empty() or password.text.empty():
@@ -30,6 +33,7 @@ func login_request() -> void:
 
 func _fail_login() -> void:
 	login_button.disabled = false
+	logging_in_bool = false
 	print("login failed. Login button clickable")
 
 func _on_Button1_pressed():
@@ -62,7 +66,9 @@ func return_to_login() -> void:
 	MainMenu.show()
 
 func _on_LineEdit_text_entered(_new_text: String) -> void:
-	login_request()
+	if not logging_in_bool:
+		logging_in_bool = true
+		login_request()
 
 func _on_LineEdit_text_changed(_new_text: String) -> void:
 	AudioControl.play_audio("typing")
@@ -74,7 +80,8 @@ func _on_LineEdit_focus_entered() -> void:
 	AudioControl.play_audio("menuClick")
 
 func _on_CheckBox_toggled(button_pressed):
-	if $VBoxContainer/loginButton/Label.pressed:
+	AudioControl.play_audio("menuClick")
+	if $VBoxContainer/loginButton/CheckBox.pressed:
 		savelogin = true
 	else:
 		savelogin = false
@@ -103,7 +110,8 @@ func load_settings() -> void:
 	var settings_data = JSON.parse(save_file.get_as_text())
 	var login_settings = settings_data.result["login"]
 	if login_settings.save:
-		$VBoxContainer/username/LineEdit.text = settings_data.email
+		$VBoxContainer/username/LineEdit.text = login_settings.email
+		$VBoxContainer/loginButton/CheckBox.pressed = true
 	print("Loaded")
 	save_file.close()
 

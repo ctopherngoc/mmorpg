@@ -21,7 +21,7 @@ margin_right = 772.0
 margin_bottom = 497.0
 
 [node name="login" type="HBoxContainer" parent="VBoxContainer"]
-margin_right = 222.0
+margin_right = 243.0
 margin_bottom = 14.0
 
 [node name="loginLabel" type="Label" parent="VBoxContainer/login"]
@@ -33,7 +33,7 @@ align = 1
 
 [node name="username" type="HBoxContainer" parent="VBoxContainer"]
 margin_top = 18.0
-margin_right = 222.0
+margin_right = 243.0
 margin_bottom = 42.0
 
 [node name="usernameLabel" type="Label" parent="VBoxContainer/username"]
@@ -54,7 +54,7 @@ caret_blink_speed = 0.5
 
 [node name="password" type="HBoxContainer" parent="VBoxContainer"]
 margin_top = 46.0
-margin_right = 222.0
+margin_right = 243.0
 margin_bottom = 70.0
 
 [node name="passwordLabel" type="Label" parent="VBoxContainer/password"]
@@ -76,28 +76,26 @@ caret_blink_speed = 0.5
 
 [node name="loginButton" type="HBoxContainer" parent="VBoxContainer"]
 margin_top = 74.0
-margin_right = 222.0
-margin_bottom = 94.0
+margin_right = 243.0
+margin_bottom = 98.0
 
 [node name="Button" type="Button" parent="VBoxContainer/loginButton"]
 margin_right = 46.0
-margin_bottom = 20.0
+margin_bottom = 24.0
 text = "Login"
 
 [node name="RegisterButton" type="Button" parent="VBoxContainer/loginButton"]
 margin_left = 50.0
 margin_right = 114.0
-margin_bottom = 20.0
+margin_bottom = 24.0
 text = "Register"
 
 [node name="CheckBox" type="CheckBox" parent="VBoxContainer/loginButton"]
-visible = false
 margin_left = 118.0
 margin_right = 142.0
 margin_bottom = 24.0
 
 [node name="Label" type="Label" parent="VBoxContainer/loginButton"]
-visible = false
 margin_left = 146.0
 margin_top = 5.0
 margin_right = 243.0
@@ -106,17 +104,17 @@ custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Save username"
 
 [node name="notification" type="HBoxContainer" parent="VBoxContainer"]
-margin_top = 98.0
-margin_right = 222.0
-margin_bottom = 112.0
+margin_top = 102.0
+margin_right = 243.0
+margin_bottom = 116.0
 
 [node name="Label" type="Label" parent="VBoxContainer/notification"]
 margin_bottom = 14.0
 
 [node name="options" type="HBoxContainer" parent="VBoxContainer"]
-margin_top = 116.0
-margin_right = 222.0
-margin_bottom = 136.0
+margin_top = 120.0
+margin_right = 243.0
+margin_bottom = 140.0
 
 [node name="Button2" type="Button" parent="VBoxContainer/options"]
 margin_right = 56.0
@@ -124,9 +122,9 @@ margin_bottom = 20.0
 text = "Option"
 
 [node name="Testing" type="HBoxContainer" parent="VBoxContainer"]
-margin_top = 140.0
-margin_right = 222.0
-margin_bottom = 140.0
+margin_top = 144.0
+margin_right = 243.0
+margin_bottom = 144.0
 
 [node name="Button1" type="Button" parent="VBoxContainer/Testing"]
 visible = false
