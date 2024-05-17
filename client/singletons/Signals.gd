@@ -19,6 +19,8 @@ signal dialog_closed
 signal update_inventory
 # warning-ignore:unused_signal
 signal log_out
+# warning-ignore:unused_signal
+signal update_stats
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
