@@ -14,7 +14,7 @@ onready var current_map = ""
 onready var in_game = false
 onready var floating_text = preload("res://scenes/userInerface/FloatingText.tscn")
 
-var other_player = preload("res://scenes/playerObjects/PlayerTemplate.tscn")
+#var other_player = preload("res://scenes/playerObjects/PlayerTemplate.tscn")
 var player_template = preload("res://scenes/playerObjects/NewPlayerSprite.tscn")
 var player_node
 var last_world_state = 0
@@ -31,6 +31,7 @@ var player_position = null
 
 # loads player info
 func _ready() -> void:
+# warning-ignore:return_value_discarded
 	Signals.connect("log_out", self, "log_out")
 
 func update_lastmap(map: String) -> void:
@@ -245,7 +246,7 @@ func despawn_player(player_id: int) -> void:
 		
 func spawn_monster(monster_id: int, monster_dict: Dictionary) -> void:
 	#var monster = get_node("/root/currentScene").monster_list[monster_dict['id']].instance()
-	print(monster_dict)
+	#print(monster_dict)
 	var monster = GameData.monster_preload[monster_dict['id']].instance()
 	monster.position = monster_dict["EnemyLocation"]
 	#monster.max_hp = GameData.monsterTable["MaxHP"]
@@ -311,6 +312,6 @@ func log_out() -> void:
 func despawn_players(world_state_players: Array) -> void:
 	var player_nodes = get_node("/root/currentScene/OtherPlayers").get_children()
 	#print(typeof(world_state_players[0]))
-	for player_node in player_nodes:
-		if not int(player_node.name) in world_state_players:
-			player_node.queue_free()
+	for temp_player_node in player_nodes:
+		if not int(temp_player_node.name) in world_state_players:
+			temp_player_node.queue_free()
