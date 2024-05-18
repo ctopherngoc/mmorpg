@@ -65,7 +65,8 @@ func _ready() -> void:
 	equipment = Global.player.equipment
 	update_avatar("avatar")
 	update_avatar("equipment")
-	Signals.connect("update_level", self, "play_level_up")
+# warning-ignore:return_value_discarded
+	Signals.connect("level_up", self, "play_level_up")
 
 # warning-ignore:unused_argument
 func _physics_process(delta: float) -> void:
@@ -168,6 +169,9 @@ func change_equipment(equipment_slot, item_id):
 func _on_AnimationPlayer_animation_finished(anim_name: String) -> void:
 	if anim_name == "slash":
 		self.get_parent().attacking = false
+	elif anim_name == "update_level":
+		print("level up finished")
 
 func play_level_up() -> void:
-	$AnimationPlayer.play("level_up")
+	AudioControl.play_audio("levelUp")
+	$AnimationPlayer2.play("level_up")

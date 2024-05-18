@@ -237,11 +237,12 @@ remote func update_player_stats(player_stats: Dictionary) -> void:
 				
 			# level check -> exp check
 			if player_stats["stats"]["base"]["level"] != Global.player["stats"]["base"]["level"]:
-				AudioControl.play_audio("levelUp")
+				#AudioControl.play_audio("levelUp")
 				print("Level up")
 				Global.player["stats"]["base"]["experience"] = player_stats["stats"]["base"]["experience"]
 				Global.player["stats"]["base"]["level"] = player_stats["stats"]["base"]["level"]
 				Signals.emit_signal("update_level")
+				Signals.emit_signal("level_up")
 				Signals.emit_signal("update_exp")
 
 			if player_stats["stats"]["base"]["experience"] != Global.player["stats"]["base"]["experience"]:
