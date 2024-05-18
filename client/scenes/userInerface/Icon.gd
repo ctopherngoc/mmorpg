@@ -69,6 +69,8 @@ func drop_data(_pos,data):
 	"""
 	Server.send_inventory_movement(tab_dict[tab], data["from_slot"], slot_index)
 	AudioControl.play_audio("itemSwap")
+	data.origin_node.dragging = false
+	data.origin_node.item_info_free()
 	
 	# update beginning slot with destination slot info
 	data.origin_node.icon.texture = icon.texture
@@ -93,8 +95,6 @@ func drop_data(_pos,data):
 	else:
 		label.text = ""
 		#slot has null
-	data.origin_node.dragging = false
-	data.origin_node.item_info_free()
 	
 # create function that gets call from rpc return update slots/inv
 """
@@ -118,10 +118,10 @@ func _on_0_gui_input(event):
 			elif GameData.itemTable[item_data.id].itemType == "use":
 				#print("use")
 				var q = int(label.text) -1
-				print(q)
+				#print(q)
 				label.text = str(q)
 				Server.use_item(item_data.id, slot_index)
-				print(GameData.itemTable[item_data.id].description)
+				#print(GameData.itemTable[item_data.id].description)
 			else:
 				pass
 				#print("not use")

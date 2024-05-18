@@ -8,10 +8,12 @@ margin_bottom = 50.0
 [node name="StatLabel" type="Label" parent="."]
 margin_right = 43.0
 margin_bottom = 14.0
+custom_colors/font_color = Color( 1, 1, 1, 1 )
 text = "Speed:"
 
 [node name="StatNumber" type="Label" parent="."]
 margin_left = 47.0
 margin_right = 79.0
 margin_bottom = 14.0
+custom_colors/font_color = Color( 1, 1, 1, 1 )
 text = "+900"
