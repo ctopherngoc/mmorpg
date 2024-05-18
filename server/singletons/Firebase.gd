@@ -502,10 +502,13 @@ func save(var path : String, var thing_to_save: Dictionary):
 
 func item_data_converter(before: Dictionary, after: Dictionary) -> Dictionary:
 	for stat in before.keys():
-		if typeof(before[stat]) == TYPE_STRING:
-			after[stat]["stringValue"] = before[stat]
-		else:
-			after[stat]["integerValue"] = before[stat]
+		if stat in ["reqLevel", "reqStr", "reqWis", "reqDex", "reqLuk"]:
+			pass
+		else:	
+			if typeof(before[stat]) == TYPE_STRING:
+				after[stat]["stringValue"] = before[stat]
+			else:
+				after[stat]["integerValue"] = before[stat]
 	return{'mapValue':{'fields': after}}
 
 func test_update_document(path: String, data_dict: Dictionary) -> void:
