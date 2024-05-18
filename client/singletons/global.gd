@@ -7,7 +7,6 @@
 
 extends Node
 onready var ip = "127.0.0.1"
-#onready var ip = "107.173.199.113"
 onready var input_queue = []
 onready var interpolation_offset = 200
 onready var current_map = ""
