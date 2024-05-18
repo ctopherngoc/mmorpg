@@ -112,6 +112,6 @@ func load_settings() -> void:
 	if login_settings.save:
 		$VBoxContainer/username/LineEdit.text = login_settings.email
 		$VBoxContainer/loginButton/CheckBox.pressed = true
-	print("Loaded")
+	print("Email Loaded")
 	save_file.close()
 

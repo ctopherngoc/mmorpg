@@ -33,7 +33,7 @@ func load_settings() -> void:
 	sound_node.musicValue = float(sound_settings.music)
 	video_node.load_settings(video_settings)
 	sound_node.set_sound_values()
-	print("Loaded")
+	print("Options Loaded")
 	save_file.close()
 
 func save_settings() -> void:
