@@ -31,7 +31,7 @@ func login(email: String, password: String, http: HTTPRequest, results: Array):
 		'returnSecureToken': true
 	}
 	
-	print("login %s" % body)
+	#print("login %s" % body)
 	
 # warning-ignore:return_value_discarded
 	http.request(LOGIN_URL, [], false, HTTPClient.METHOD_POST, to_json(body))
