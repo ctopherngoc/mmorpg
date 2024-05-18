@@ -10,6 +10,7 @@ const max_int = 9223372036854775807
 const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 onready var http = $HTTPRequest
 onready var http_requests = []
+onready var maps
 
 ######################################################################
 # testing variables

@@ -51,105 +51,150 @@
       "itemType": "gold",
       "dropRate": 85,
       "stackable": 1,
-      "droppable": 1
+      "droppable": 1,
+      "description": null,
+      "useType": null,
+      "useAmount": null
     },
     "200000": {
       "itemName": "Training Sword",
       "itemType": "equipment",
       "dropRate": 5,
       "stackable": 0,
-      "droppable": 1
+      "droppable": 1,
+      "description": "sword used for training",
+      "useType": null,
+      "useAmount": null
     },
     "200001": {
       "itemName": "Training Dagger",
       "itemType": "equipment",
       "dropRate": 5,
       "stackable": 0,
-      "droppable": 1
+      "droppable": 1,
+      "description": "dagger used for training",
+      "useType": null,
+      "useAmount": null
     },
     "200003": {
       "itemName": "Acorn Armor",
       "itemType": "equipment",
       "dropRate": 5,
       "stackable": 0,
-      "droppable": 1
+      "droppable": 1,
+      "description": "armor made out of acorns",
+      "useType": null,
+      "useAmount": null
     },
     "200004": {
       "itemName": "Stone Arrow",
       "itemType": "use",
       "dropRate": 30,
       "stackable": 1,
-      "droppable": 1
+      "droppable": 1,
+      "description": "arrows for bow with heads made of stone",
+      "useType": null,
+      "useAmount": null
     },
     "300000": {
       "itemName": "Health Potion",
       "itemType": "use",
       "dropRate": 15,
       "stackable": 1,
-      "droppable": 1
+      "droppable": 1,
+      "description": "consuming potion heals 20 heath",
+      "useType": "health",
+      "useAmount": 20
     },
     "300001": {
       "itemName": "Red Apple",
       "itemType": "use",
       "dropRate": 15,
       "stackable": 1,
-      "droppable": 1
+      "droppable": 1,
+      "description": "consuming apple heals 10 health",
+      "useType": "health",
+      "useAmount": 10
     },
     "300002": {
       "itemName": "Cheese",
       "itemType": "use",
       "dropRate": 15,
       "stackable": 1,
-      "droppable": 1
+      "droppable": 1,
+      "description": "consuming cheese recovers 10 mana",
+      "useType": "mana",
+      "useAmount": 10
     },
     "300003": {
       "itemName": "Meat",
       "itemType": "use",
       "dropRate": 15,
       "stackable": 1,
-      "droppable": 1
+      "droppable": 1,
+      "description": "consuming meat recovers 20 mana",
+      "useType": "mana",
+      "useAmount": 20
     },
     "500000": {
       "itemName": "Cloth Shirt",
       "itemType": "equipment",
       "dropRate": 5,
       "stackable": 0,
-      "droppable": 1
+      "droppable": 1,
+      "description": "shirt made of cloth",
+      "useType": null,
+      "useAmount": null
     },
     "500001": {
       "itemName": "Cloth Bottom",
       "itemType": "equipment",
       "dropRate": 5,
       "stackable": 0,
-      "droppable": 1
+      "droppable": 1,
+      "description": "pants made of cloth",
+      "useType": null,
+      "useAmount": null
     },
     "500002": {
       "itemName": "Leather Shirt",
       "itemType": "equipment",
       "dropRate": 5,
       "stackable": 0,
-      "droppable": 1
+      "droppable": 1,
+      "description": "shirt made of leather",
+      "useType": null,
+      "useAmount": null
     },
     "500003": {
       "itemName": "Leather Bottom",
       "itemType": "equipment",
       "dropRate": 5,
       "stackable": 0,
-      "droppable": 1
+      "droppable": 1,
+      "description": "pants made of leather",
+      "useType": null,
+      "useAmount": null
     },
     "500004": {
       "itemName": "Woodcutter Shirt",
       "itemType": "equipment",
       "dropRate": 5,
       "stackable": 0,
-      "droppable": 1
+      "droppable": 1,
+      "description": "shirt woodcutters wear",
+      "useType": null,
+      "useAmount": null
     },
     "500005": {
-      "itemName": "Woodcutter Bottom",
+      "itemName": "Woodcuttern Bottom",
       "itemType": "equipment",
       "dropRate": 5,
       "stackable": 0,
-      "droppable": 1
+      "droppable": 1,
+      "description": "pants wood cutters wear",
+      "useType": null,
+      "useAmount": null
     }
   },
   "EquipmentTable": {
@@ -158,7 +203,7 @@
       "type": "1h_sword",
       "slot": 7,
       "accuracy": 15,
-      "attack": null,
+      "attack": 15,
       "bossPercent": null,
       "critRate": null,
       "damagePercent": null,
@@ -175,14 +220,19 @@
       "movementSpeed": null,
       "strength": null,
       "wisdom": null,
-      "job": null
+      "job": null,
+      "reqLevel": 0,
+      "reqStr": 0,
+      "reqWis": 0,
+      "reqDex": 0,
+      "reqLuk": 0
     },
     "200001": {
       "name": "Training Dagger",
       "type": "dagger",
       "slot": 7,
       "accuracy": 10,
-      "attack": null,
+      "attack": 10,
       "bossPercent": null,
       "critRate": null,
       "damagePercent": null,
@@ -199,7 +249,12 @@
       "movementSpeed": null,
       "strength": null,
       "wisdom": null,
-      "job": null
+      "job": null,
+      "reqLevel": 0,
+      "reqStr": 0,
+      "reqWis": 0,
+      "reqDex": 0,
+      "reqLuk": 0
     },
     "200003": {
       "name": "Acorn Armor",
@@ -223,7 +278,12 @@
       "movementSpeed": 5,
       "strength": 5,
       "wisdom": null,
-      "job": null
+      "job": null,
+      "reqLevel": 0,
+      "reqStr": 0,
+      "reqWis": 0,
+      "reqDex": 0,
+      "reqLuk": 0
     },
     "500000": {
       "name": "Cloth Shirt",
@@ -247,7 +307,12 @@
       "movementSpeed": null,
       "strength": null,
       "wisdom": null,
-      "job": null
+      "job": null,
+      "reqLevel": 0,
+      "reqStr": 0,
+      "reqWis": 0,
+      "reqDex": 0,
+      "reqLuk": 0
     },
     "500001": {
       "name": "Cloth Bottom",
@@ -271,7 +336,12 @@
       "movementSpeed": null,
       "strength": null,
       "wisdom": null,
-      "job": null
+      "job": null,
+      "reqLevel": 0,
+      "reqStr": 0,
+      "reqWis": 0,
+      "reqDex": 0,
+      "reqLuk": 0
     },
     "500002": {
       "name": "Leather Shirt",
@@ -295,7 +365,12 @@
       "movementSpeed": null,
       "strength": null,
       "wisdom": null,
-      "job": null
+      "job": null,
+      "reqLevel": 0,
+      "reqStr": 0,
+      "reqWis": 0,
+      "reqDex": 0,
+      "reqLuk": 0
     },
     "500003": {
       "name": "Leather Bottom",
@@ -319,7 +394,12 @@
       "movementSpeed": null,
       "strength": null,
       "wisdom": null,
-      "job": null
+      "job": null,
+      "reqLevel": 0,
+      "reqStr": 0,
+      "reqWis": 0,
+      "reqDex": 0,
+      "reqLuk": 0
     },
     "500004": {
       "name": "Woodcutter Shirt",
@@ -343,10 +423,15 @@
       "movementSpeed": null,
       "strength": null,
       "wisdom": null,
-      "job": null
+      "job": null,
+      "reqLevel": 0,
+      "reqStr": 0,
+      "reqWis": 0,
+      "reqDex": 0,
+      "reqLuk": 0
     },
     "500005": {
-      "name": "Woodcuttern Bottom",
+      "name": "Woodcutter Bottom",
       "type": "bottom",
       "slot": 7,
       "accuracy": null,
@@ -367,7 +452,12 @@
       "movementSpeed": null,
       "strength": null,
       "wisdom": null,
-      "job": null
+      "job": null,
+      "reqLevel": 0,
+      "reqStr": 0,
+      "reqWis": 0,
+      "reqDex": 0,
+      "reqLuk": 0
     }
   },
   "ExperienceTable": {
@@ -460,208 +550,6 @@
     },
     "30": {
       "experience": 65462
-    }
-  },
-  "InventoryTable": {
-    "0": {
-      "itemID": null,
-      "amount": null
-    },
-    "1": {
-      "itemID": null,
-      "amount": null
-    },
-    "2": {
-      "itemID": null,
-      "amount": null
-    },
-    "3": {
-      "itemID": null,
-      "amount": null
-    },
-    "4": {
-      "itemID": null,
-      "amount": null
-    },
-    "5": {
-      "itemID": null,
-      "amount": null
-    },
-    "6": {
-      "itemID": null,
-      "amount": null
-    },
-    "7": {
-      "itemID": null,
-      "amount": null
-    },
-    "8": {
-      "itemID": null,
-      "amount": null
-    },
-    "9": {
-      "itemID": null,
-      "amount": null
-    },
-    "10": {
-      "itemID": null,
-      "amount": null
-    },
-    "11": {
-      "itemID": null,
-      "amount": null
-    },
-    "12": {
-      "itemID": null,
-      "amount": null
-    },
-    "13": {
-      "itemID": null,
-      "amount": null
-    },
-    "14": {
-      "itemID": null,
-      "amount": null
-    },
-    "15": {
-      "itemID": null,
-      "amount": null
-    },
-    "16": {
-      "itemID": null,
-      "amount": null
-    },
-    "17": {
-      "itemID": null,
-      "amount": null
-    },
-    "18": {
-      "itemID": null,
-      "amount": null
-    },
-    "19": {
-      "itemID": null,
-      "amount": null
-    },
-    "20": {
-      "itemID": null,
-      "amount": null
-    },
-    "21": {
-      "itemID": null,
-      "amount": null
-    },
-    "22": {
-      "itemID": null,
-      "amount": null
-    },
-    "23": {
-      "itemID": null,
-      "amount": null
-    },
-    "24": {
-      "itemID": null,
-      "amount": null
-    },
-    "25": {
-      "itemID": null,
-      "amount": null
-    },
-    "26": {
-      "itemID": null,
-      "amount": null
-    },
-    "27": {
-      "itemID": null,
-      "amount": null
-    },
-    "28": {
-      "itemID": null,
-      "amount": null
-    },
-    "29": {
-      "itemID": null,
-      "amount": null
-    },
-    "30": {
-      "itemID": null,
-      "amount": null
-    },
-    "31": {
-      "itemID": null,
-      "amount": null
-    },
-    "32": {
-      "itemID": null,
-      "amount": null
-    },
-    "33": {
-      "itemID": null,
-      "amount": null
-    },
-    "34": {
-      "itemID": null,
-      "amount": null
-    },
-    "35": {
-      "itemID": null,
-      "amount": null
-    },
-    "36": {
-      "itemID": null,
-      "amount": null
-    },
-    "37": {
-      "itemID": null,
-      "amount": null
-    },
-    "38": {
-      "itemID": null,
-      "amount": null
-    },
-    "39": {
-      "itemID": null,
-      "amount": null
-    },
-    "40": {
-      "itemID": null,
-      "amount": null
-    },
-    "41": {
-      "itemID": null,
-      "amount": null
-    },
-    "42": {
-      "itemID": null,
-      "amount": null
-    },
-    "43": {
-      "itemID": null,
-      "amount": null
-    },
-    "44": {
-      "itemID": null,
-      "amount": null
-    },
-    "45": {
-      "itemID": null,
-      "amount": null
-    },
-    "46": {
-      "itemID": null,
-      "amount": null
-    },
-    "47": {
-      "itemID": null,
-      "amount": null
-    },
-    "48": {
-      "itemID": null,
-      "amount": null
-    },
-    "49": {
-      "itemID": null,
-      "amount": null
     }
   }
 }

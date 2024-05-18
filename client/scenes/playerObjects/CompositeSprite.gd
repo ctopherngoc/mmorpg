@@ -58,22 +58,24 @@ onready var sprite_dict = {
 
 var avatar = null
 var equipment = null
-func _ready():
+func _ready() -> void:
 	#avatar = GameData.test_player.avatar
 	#equipment = GameData.test_player.equipment
 	avatar = Global.player.avatar
 	equipment = Global.player.equipment
 	update_avatar("avatar")
 	update_avatar("equipment")
+# warning-ignore:return_value_discarded
+	Signals.connect("level_up", self, "play_level_up")
 
 # warning-ignore:unused_argument
-func _physics_process(delta):
+func _physics_process(delta: float) -> void:
 	#update_avatar("equipment")
 	pass
 	#avatar_check()
 	
 # warning-ignore:unused_argument
-func update_avatar(data):
+func update_avatar(data: String) -> void:
 	if data == "avatar":
 		#body
 		var sprite = load(GameData.avatar_sprite.body + str(avatar['bcolor']) + str(avatar['body']) + ".png")
@@ -152,7 +154,7 @@ func update_avatar(data):
 						sprite = load(GameData.equipment_sprite[key] + str(equipment[key])+".png")
 					sprite_dict[key].set_texture(sprite)
 
-func avatar_check():
+func avatar_check() -> void:
 	if avatar != Global.player.avatar:
 		avatar = Global.player.avatar
 		update_avatar(avatar)
@@ -164,6 +166,12 @@ func avatar_check():
 func change_equipment(equipment_slot, item_id):
 	pass
 
-func _on_AnimationPlayer_animation_finished(anim_name):
+func _on_AnimationPlayer_animation_finished(anim_name: String) -> void:
 	if anim_name == "slash":
 		self.get_parent().attacking = false
+	elif anim_name == "update_level":
+		print("level up finished")
+
+func play_level_up() -> void:
+	AudioControl.play_audio("levelUp")
+	$AnimationPlayer2.play("level_up")

@@ -217,7 +217,7 @@ func movable_switch():
 	
 func flip_sprite(d):
 	for _i in $CompositeSprite.get_children():
-		if _i.name != "AnimationPlayer":
+		if _i.get_class() != "AnimationPlayer":
 			if d:
 				_i.set_flip_h(true)
 			else:
@@ -250,6 +250,9 @@ func _unhandled_input(event):
 			return
 		else:
 			print("cannot attack")
+	elif event.is_action_pressed("ui_accept"):
+		print("testing level up animation")
+		Signals.emit_signal("level_up")
 
 
 func _on_Button_pressed():

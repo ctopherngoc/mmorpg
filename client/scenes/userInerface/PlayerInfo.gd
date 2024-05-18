@@ -8,7 +8,6 @@ func _ready():
 	Signals.connect("update_mana", self, "update_mana")
 # warning-ignore:return_value_discarded
 	Signals.connect("update_level", self, "update_level")
-# warning-ignore:return_value_discardeds
 # warning-ignore:return_value_discarded
 	Signals.connect("update_exp", self, "update_exp")
 # warning-ignore:return_value_discarded

@@ -30,8 +30,8 @@ var node_list = {
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+# warning-ignore:return_value_discarded
 	Signals.connect("update_inventory", self, "update_inventory")
-	#test_setup()
 	poplulate_inventory()
 	"""
 	update to own function instead of _Ready so it can be called by
@@ -58,7 +58,7 @@ func poplulate_inventory():
 				
 				if inv_ref[tab][count] != null:
 					var item = inv_ref[tab][count]
-					var item_name = GameData.itemTable[str(item['id'])]["itemName"]
+					var _item_name = GameData.itemTable[str(item['id'])]["itemName"]
 					inv_slot_new.item_data["id"] = str(item['id'])
 					inv_slot_new.item_data["item"] = GameData.itemTable[str(item['id'])]["itemName"]
 					# if stackable exit number on iventory slot
@@ -105,7 +105,7 @@ func update_inventory():
 					var item = inv_ref[tab][count]
 					var item_node = node_list[tab][count]
 					#print("in update inventory, item: %s" % item)
-					var item_name = GameData.itemTable[str(item['id'])]["itemName"]
+					var _item_name = GameData.itemTable[str(item['id'])]["itemName"]
 					item_node.item_data["id"] = str(item['id'])
 					item_node.item_data["item"] = GameData.itemTable[str(item['id'])]["itemName"]
 					# if stackable exit number on iventory slot

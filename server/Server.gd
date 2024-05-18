@@ -236,14 +236,14 @@ remote func choose_character(requester: int, display_name: String) -> void:
 	Global.calculate_stats(player_container.current_character)
 	rpc_id(player_id, "return_choose_character", requester)
 
-remote func fetch_player_stats() -> void:
-	var player_id = get_tree().get_rpc_sender_id()
-	var Maps = get_node("World/Maps")
-	for i in Maps.get_children():
-		for l in i.get_children():
-			if l.name == str(player_id):
-				pass
-				#print(l.player_stats)
+#remote func fetch_player_stats() -> void:
+#	var player_id = get_tree().get_rpc_sender_id()
+#	var Maps = get_node("World/Maps")
+#	for i in Maps.get_children():
+#		for l in i.get_children():
+#			if l.name == str(player_id):
+#				pass
+#				#print(l.player_stats)
 
 remote func fetch_usernames(requester, username: String) -> void:
 	print("inside fetch username. Username: %s" % username)
@@ -375,7 +375,7 @@ remote func received_player_state(player_state):
 	if  input != [0,0,0,0,0,0]:
 		player_container.input_queue.append(player_state["P"])
 
-	var map_node = get_node(ServerData.player_location[str(player_id)])
+	#var map_node = get_node(ServerData.player_location[str(player_id)])
 
 	player_state["U"] = ServerData.username_list[str(player_id)]
 	player_state["P"] = player_container.position
@@ -394,14 +394,18 @@ remote func received_player_state(player_state):
 	else:
 		 ServerData.player_state_collection[player_id] = player_state
 
-func return_player_input(player_id, server_input_data):
+func return_player_input(player_id: int, server_input_data) -> void:
 	rpc_id(player_id, "return_player_input", server_input_data)
 
-func send_world_state(world_state):
+func send_world_state(player_list: Array, map_state: PoolByteArray):
 	"""
 	reduce packet size
+	
+	#######should be renamed to send_map_state
+	altered to send map chunks to each player in the map
 	"""
-	rpc_unreliable_id(0, "receive_world_state", world_state)
+	for player in player_list:
+		rpc_unreliable_id(int(player), "receive_world_state", map_state)
 
 ###############################################################################
 # server combat functions
@@ -439,15 +443,6 @@ remote func receive_attack(move_id):
 func send_climb_data(player_id: int, climb_data: int):
 	rpc_id(int(player_id), "receive_climb_data", climb_data)
 
-######################################################################
-# Server combat test functions
-func _on_Button_pressed():
-	$Test/PlayerContainer.attack(0)
-
-# function takes current_character
-func _on_Button2_pressed():
-	Global.calculate_stats($Test/PlayerContainer.current_character)
-
 remote func move_item(inv_data: Array):
 	"""
 	inv_data=[tab:int, from:int, to:int]
@@ -476,7 +471,106 @@ func _unhandled_input(event):
 			move_item([1,0,1])
 			#Global.dropSpawn("100001", Vector2(414, -69), {"100000": 5}, "PlayerContainer")
 		
+func transfer_item_ownership():
+	"""
+	this function should be called when item is traded or looted after previous owner drops.
+	"""
+	pass
+
+func delete_item():
+	"""
+	remove item from database. this function should be called when:
+		1. unique item is sold
+		2. when item on floor dispears
+		3. dropping unique item
+	"""
+	pass
+####################################################################################
+
+func send_client_notification(player_id, message: String) -> void:
+	rpc_id(player_id, "server_message", message)
+	
+func send_loot_data(player_id: String, loot_data: Dictionary) -> void:
+	rpc_id(int(player_id), "loot_data", loot_data)
+
+remote func use_item(item: Array) -> void:
+	"""
+	item_id[0] = item_id
+	item_id[1] = index slot
+	"""
+	print("in use_item")
+	# get player container
+	var player_id = get_tree().get_rpc_sender_id()
+	var player_container = _Server_Get_Player_Container(player_id)
+	# if item in inventory
+	print(item)
+	if item[0] == player_container.current_character.inventory.use[item[1]].id:
+		# if item count > 0 decrement
+		if player_container.current_character.inventory.use[item[1]].q > 0:
+			player_container.current_character.inventory.use[item[1]].q -= 1
+			# get item type and amount
+			var quantity = ServerData.itemTable[item[0]].useAmount
+			if ServerData.itemTable[item[0]]["useType"] == "health":
+				print("health pot")
+				var total_health = player_container.current_character.stats.base.maxHealth + player_container.current_character.stats.equipment.maxHealth  
+				# if over heal -> set max, else +=
+				if player_container.current_character.stats.base.health + quantity > total_health:
+					player_container.current_character.stats.base.health = total_health
+				else:
+					player_container.current_character.stats.base.health += quantity
+				
+			elif ServerData.itemTable.use[item]["useType"] == "mana":
+				print("mana pot")
+				var total_mana = player_container.current_character.stats.base.maxMana + player_container.current_character.stats.equipment.maxMana
+				# if over heal -> set max, else +=
+				if player_container.current_character.stats.base.mana + quantity > total_mana:
+					player_container.current_character.stats.base.mana = total_mana
+				else:
+					player_container.current_character.stats.base.mana += quantity
+			# not implemented yet
+			# + stats
+			else:
+				print("status pot")
+			update_player_stats(player_container)
+			send_client_notification(player_id, "used %s" % ServerData.itemTable[item[0]].itemName)
+		# amount of pots = 0 should not be in data
+		else:
+			print("not enough pots")
+			update_player_stats(player_container)
+			send_client_notification(player_id, "not enough %s" % ServerData.itemTable[item[0]].itemName)
+
+remote func add_stat(stat: String) -> void:
+	print("in add_stat")
+	# get player container
+	var player_id = get_tree().get_rpc_sender_id()
+	var player_container = _Server_Get_Player_Container(player_id)
+	
+	if player_container.current_character.stats.base.sp > 0:
+		player_container.current_character.stats.base.sp -= 1
+		if stat == "s":
+			print("%s incrase strength" % player_id)
+			player_container.current_character.stats.base.strength += 1
+		elif stat == "w":
+			player_container.current_character.stats.base.wisdom += 1
+			print("%s incrase wisdom" % player_id)
+		elif stat == "d":
+			player_container.current_character.stats.base.dexterity += 1
+			print("%s incrase dexterity" % player_id)
+		else:
+			player_container.current_character.stats.base.luck += 1
+			print("%s incrase luck" % player_id)
+		update_player_stats(player_container)
+		send_client_notification(player_id, "added 1 to %s" % stat)
+	else:
+		send_client_notification(player_id, "not enough sp")
 ######################################################################
+# test buttons
+func _on_Button_pressed():
+	$Test/PlayerContainer.attack(0)
+
+# function takes current_character
+func _on_Button2_pressed():
+	Global.calculate_stats($Test/PlayerContainer.current_character)
 func _on_Button3_pressed():
 #	print("dropping potion")
 #	Global.dropSpawn("100001", Vector2(231, -405), {"300000": 1}, "PlayerContainer")
@@ -524,28 +618,3 @@ func save(var path : String, var thing_to_save):
 	file.close()
 
 ####################################################################################
-func transfer_item_ownership():
-	"""
-	this function should be called when item is traded or looted after previous owner drops.
-	"""
-	pass
-
-func delete_item():
-	"""
-	remove item from database. this function should be called when:
-		1. unique item is sold
-		2. when item on floor dispears
-		3. dropping unique item
-	"""
-	pass
-####################################################################################
-
-func send_client_notification(player_id, message: int) -> void:
-	"""
-	message type:
-		0 = inventory full
-	"""
-	rpc_id(player_id, "server_message", message)
-	
-func send_loot_data(player_id: String, loot_data: Dictionary) -> void:
-	rpc_id(int(player_id), "loot_data", loot_data)
