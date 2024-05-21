@@ -618,3 +618,27 @@ func save(var path : String, var thing_to_save):
 	file.close()
 
 ####################################################################################
+
+remote func send_chat(text: String, chat_type: int) -> void:
+	var player_id = get_tree().get_rpc_sender_id()
+	var player_container = _Server_Get_Player_Container(player_id)
+	ServerData.chat_logs.append({"email": player_container.email, "ign": player_container.current_character.displayname, "time": OS.get_unix_time(), "msg": text, "chatType": chat_type})
+	# in map
+	if chat_type == 0:
+		var map_player_list = get_node(ServerData.player_location[str(player_id)].replace("YSort/Players", "")).players
+		for player in map_player_list:
+			rpc_id(player, "update_messages", player_container.current_character.displayname, text, chat_type)
+	# in friends
+	elif chat_type == 1:
+		pass
+	# in party
+	elif chat_type == 2:
+		pass
+	# in guild
+	elif chat_type == 3:
+		pass
+#	#in whisper
+#	elif chat_type == 1:
+#		pass
+	
+		
