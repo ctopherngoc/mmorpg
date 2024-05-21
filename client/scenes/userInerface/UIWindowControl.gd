@@ -3,11 +3,11 @@ extends Control
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
-
-var non_movable_windows = ["InGameMenu", "PlayerHUD"]
+var non_movable_windows = ["InGameMenu", "PlayerHUD", "ChatBox"]
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	Global.ui = self
 	for window in get_children():
 		if not window.name in non_movable_windows:
 			print(window.name)
