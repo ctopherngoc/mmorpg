@@ -1,5 +1,6 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
+[ext_resource path="res://resources/Fonts/ui_font.tres" type="DynamicFont" id=1]
 [ext_resource path="res://scenes/userInerface/PlayerInfo.gd" type="Script" id=2]
 [ext_resource path="res://assets/UI/Bar Progression/bg.png" type="Texture" id=3]
 [ext_resource path="res://assets/UI/Bar Progression/green.png" type="Texture" id=4]
@@ -14,135 +15,230 @@ mouse_filter = 2
 theme = ExtResource( 7 )
 script = ExtResource( 2 )
 
-[node name="PlayerInfo" type="ColorRect" parent="."]
-margin_top = 648.0
-margin_right = 1289.0
-margin_bottom = 732.0
+[node name="Control" type="Control" parent="."]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -80.0
+
+[node name="PlayerInfo" type="ColorRect" parent="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
 mouse_filter = 2
+color = Color( 0.207031, 0.207031, 0.207031, 1 )
 
-[node name="level" type="Label" parent="."]
-margin_left = 88.0
-margin_top = 688.0
-margin_right = 128.0
-margin_bottom = 711.0
-custom_colors/font_color = Color( 0, 0, 0, 1 )
-custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
-text = "lvl: "
+[node name="HBoxContainer" type="HBoxContainer" parent="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="level"]
-margin_left = 20.0
-margin_right = 60.0
-margin_bottom = 14.0
-custom_colors/font_color = Color( 0, 0, 0, 1 )
-custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
+[node name="MarginContainer" type="MarginContainer" parent="Control/HBoxContainer"]
+margin_right = 8.0
+margin_bottom = 80.0
 
-[node name="job" type="Label" parent="."]
-margin_left = 80.0
-margin_top = 672.0
-margin_right = 165.0
-margin_bottom = 695.0
-custom_colors/font_color = Color( 0, 0, 0, 1 )
-custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
-text = " job:"
+[node name="characterInfo" type="VBoxContainer" parent="Control/HBoxContainer"]
+margin_left = 12.0
+margin_right = 102.0
+margin_bottom = 80.0
+rect_min_size = Vector2( 80, 0 )
+size_flags_vertical = 3
 
-[node name="Label" type="Label" parent="job"]
-margin_left = 26.0
-margin_right = 93.0
-margin_bottom = 23.0
-custom_colors/font_color = Color( 0, 0, 0, 1 )
-custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
+[node name="MarginContainer" type="MarginContainer" parent="Control/HBoxContainer/characterInfo"]
+margin_right = 90.0
 
-[node name="displayname" type="Label" parent="."]
-margin_left = 32.0
-margin_top = 656.0
-margin_right = 117.0
-margin_bottom = 679.0
-custom_colors/font_color = Color( 0, 0, 0, 1 )
-custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
-text = "displayname:"
-
-[node name="Label" type="Label" parent="displayname"]
-margin_left = 76.0
-margin_right = 116.0
-margin_bottom = 23.0
-custom_colors/font_color = Color( 0, 0, 0, 1 )
-custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
-
-[node name="exp" type="Label" parent="."]
-margin_left = 824.0
-margin_top = 680.0
-margin_right = 864.0
-margin_bottom = 703.0
-custom_colors/font_color = Color( 0, 0, 0, 1 )
-custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
-text = "XP:"
-
-[node name="Label" type="Label" parent="exp"]
-margin_left = 56.0
-margin_top = -24.0
-margin_right = 104.0
+[node name="username" type="Label" parent="Control/HBoxContainer/characterInfo"]
+margin_top = 4.0
+margin_right = 90.0
 margin_bottom = 25.0
-custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "
-"
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
+custom_fonts/font = ExtResource( 1 )
+text = "Dumachris"
 
-[node name="TextureProgress" type="TextureProgress" parent="exp"]
-margin_left = 27.0
-margin_top = -11.0
-margin_right = 283.0
-margin_bottom = 37.0
+[node name="job" type="Label" parent="Control/HBoxContainer/characterInfo"]
+margin_top = 29.0
+margin_right = 90.0
+margin_bottom = 50.0
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
+custom_fonts/font = ExtResource( 1 )
+text = "Beginner"
+
+[node name="LVLHBox" type="HBoxContainer" parent="Control/HBoxContainer/characterInfo"]
+margin_top = 54.0
+margin_right = 90.0
+margin_bottom = 75.0
+size_flags_horizontal = 3
+
+[node name="LVL" type="Label" parent="Control/HBoxContainer/characterInfo/LVLHBox"]
+margin_right = 40.0
+margin_bottom = 21.0
+custom_fonts/font = ExtResource( 1 )
+text = "LVL:"
+
+[node name="Number" type="Label" parent="Control/HBoxContainer/characterInfo/LVLHBox"]
+margin_left = 44.0
+margin_right = 90.0
+margin_bottom = 21.0
+size_flags_horizontal = 3
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
+custom_fonts/font = ExtResource( 1 )
+text = "100"
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="ColorRect" type="ColorRect" parent="Control/HBoxContainer/characterInfo"]
+margin_top = 79.0
+margin_right = 90.0
+margin_bottom = 79.0
+
+[node name="fillBars" type="VBoxContainer" parent="Control/HBoxContainer"]
+margin_left = 106.0
+margin_right = 616.0
+margin_bottom = 80.0
+
+[node name="hpmpBar" type="HBoxContainer" parent="Control/HBoxContainer/fillBars"]
+margin_right = 510.0
+margin_bottom = 38.0
+rect_min_size = Vector2( 510, 0 )
+size_flags_vertical = 3
+
+[node name="HealthVBar" type="VBoxContainer" parent="Control/HBoxContainer/fillBars/hpmpBar"]
+margin_right = 253.0
+margin_bottom = 38.0
+size_flags_horizontal = 3
+
+[node name="Control" type="Control" parent="Control/HBoxContainer/fillBars/hpmpBar/HealthVBar"]
+margin_right = 253.0
+
+[node name="TextureProgress" type="TextureProgress" parent="Control/HBoxContainer/fillBars/hpmpBar/HealthVBar/Control"]
+margin_right = 256.0
+margin_bottom = 52.0
 value = 50.0
 texture_under = ExtResource( 3 )
-texture_progress = ExtResource( 4 )
+texture_progress = ExtResource( 6 )
 
-[node name="mana" type="Label" parent="."]
-margin_left = 504.0
-margin_top = 680.0
-margin_right = 559.0
-margin_bottom = 703.0
-custom_colors/font_color = Color( 0, 0, 0, 1 )
-custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
-text = "Mana:"
+[node name="HP" type="Label" parent="Control/HBoxContainer/fillBars/hpmpBar/HealthVBar/Control"]
+margin_left = 20.0
+margin_top = 12.0
+margin_right = 252.0
+margin_bottom = 65.0
+size_flags_vertical = 0
+theme = ExtResource( 7 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_fonts/font = ExtResource( 1 )
+text = "HP:
+"
 
-[node name="Label" type="Label" parent="mana"]
-margin_left = 72.0
-margin_top = -24.0
-margin_right = 112.0
-margin_bottom = -1.0
-custom_colors/font_color = Color( 0, 0, 0, 1 )
+[node name="Number" type="Label" parent="Control/HBoxContainer/fillBars/hpmpBar/HealthVBar/Control"]
+margin_left = 100.0
+margin_top = 12.0
+margin_right = 156.0
+margin_bottom = 39.0
+theme = ExtResource( 7 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_fonts/font = ExtResource( 1 )
+text = "100/100"
 
-[node name="TextureProgress" type="TextureProgress" parent="mana"]
-margin_left = 45.0
-margin_top = -13.0
-margin_right = 301.0
-margin_bottom = 35.0
+[node name="MPVBar" type="VBoxContainer" parent="Control/HBoxContainer/fillBars/hpmpBar"]
+margin_left = 257.0
+margin_right = 510.0
+margin_bottom = 38.0
+size_flags_horizontal = 3
+
+[node name="Control" type="Control" parent="Control/HBoxContainer/fillBars/hpmpBar/MPVBar"]
+margin_right = 253.0
+
+[node name="TextureProgress" type="TextureProgress" parent="Control/HBoxContainer/fillBars/hpmpBar/MPVBar/Control"]
+margin_right = 256.0
+margin_bottom = 48.0
 value = 50.0
 texture_under = ExtResource( 3 )
 texture_progress = ExtResource( 5 )
 
-[node name="health" type="Label" parent="."]
-margin_left = 176.0
-margin_top = 680.0
-margin_right = 241.0
-margin_bottom = 729.0
-custom_colors/font_color = Color( 0, 0, 0, 1 )
+[node name="MP" type="Label" parent="Control/HBoxContainer/fillBars/hpmpBar/MPVBar/Control"]
+margin_left = 16.0
+margin_top = 12.0
+margin_right = 314.0
+margin_bottom = 39.0
+theme = ExtResource( 7 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
-custom_colors/font_color_shadow = Color( 1, 1, 1, 1 )
-text = "Health:
+custom_fonts/font = ExtResource( 1 )
+text = "MP:"
+
+[node name="Number" type="Label" parent="Control/HBoxContainer/fillBars/hpmpBar/MPVBar/Control"]
+margin_left = 104.0
+margin_top = 12.0
+size_flags_vertical = 0
+theme = ExtResource( 7 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_fonts/font = ExtResource( 1 )
+text = "100/100
 "
 
-[node name="Label" type="Label" parent="health"]
-margin_left = 80.0
-margin_top = -24.0
-margin_right = 135.0
-margin_bottom = -1.0
-custom_colors/font_color = Color( 0, 0, 0, 1 )
+[node name="EXPVBar" type="HBoxContainer" parent="Control/HBoxContainer/fillBars"]
+margin_top = 42.0
+margin_right = 510.0
+margin_bottom = 80.0
+size_flags_vertical = 3
 
-[node name="TextureProgress" type="TextureProgress" parent="health"]
-margin_left = 49.0
-margin_top = -14.0
-margin_right = 305.0
-margin_bottom = 34.0
+[node name="Control" type="Control" parent="Control/HBoxContainer/fillBars/EXPVBar"]
+margin_bottom = 38.0
+
+[node name="TextureProgress" type="TextureProgress" parent="Control/HBoxContainer/fillBars/EXPVBar/Control"]
+margin_left = 4.0
+margin_top = -4.0
+margin_right = 262.0
+margin_bottom = 44.0
+rect_scale = Vector2( 2, 0.8 )
+size_flags_horizontal = 3
 value = 50.0
 texture_under = ExtResource( 3 )
-texture_progress = ExtResource( 6 )
+texture_progress = ExtResource( 4 )
+
+[node name="exp" type="Label" parent="Control/HBoxContainer/fillBars/EXPVBar/Control"]
+margin_left = 48.4211
+margin_top = 3.0
+margin_right = 280.421
+margin_bottom = 56.0
+size_flags_vertical = 0
+theme = ExtResource( 7 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
+custom_colors/font_color_shadow = Color( 1, 1, 1, 1 )
+custom_fonts/font = ExtResource( 1 )
+text = "EXP:
+"
+
+[node name="Number" type="Label" parent="Control/HBoxContainer/fillBars/EXPVBar/Control"]
+margin_left = 233.684
+margin_top = 3.0
+margin_right = 289.684
+margin_bottom = 30.0
+theme = ExtResource( 7 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_fonts/font = ExtResource( 1 )
+text = "100/100"
+
+[node name="Container" type="Container" parent="Control/HBoxContainer"]
+margin_left = 620.0
+margin_right = 620.0
+margin_bottom = 80.0
+
+[node name="ColorRect" type="ColorRect" parent="Control/HBoxContainer/Container"]
+margin_left = 8.0
+margin_right = 660.0
+margin_bottom = 80.0
+rect_min_size = Vector2( 652, 80 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/HBoxContainer/Container"]
+margin_left = -660.0
+margin_right = -4.0
+margin_bottom = 80.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
