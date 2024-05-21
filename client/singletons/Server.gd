@@ -331,14 +331,17 @@ remote func loot_data(_item_data: Dictionary) -> void:
 		# var string = "Picked up %s" % GameData[item_data.id]"
 	#update_message(string)
 
-func update_message(_message: String):
-	pass
+remote func update_message(player_name: int, message: String ,group: int) -> void:
+	Global.ui.ui_nodes.chat_box.update_message(player_name, message,  group) 
 	# insert script to edit notification var with message
 
-func use_item(item_id: String, slot_index: int):
+func use_item(item_id: String, slot_index: int) -> void:
 	print("in use_item -> server rpc")
 	rpc_id(1, "use_item", [item_id, slot_index])
 	
 func add_stat(stat: String) -> void:
 	print("requesting to add %s" % stat)
 	rpc_id(1, "add_stat", stat)
+
+remote func send_chat(text: String, chat_type: int) -> void:
+	rpc_id(1, "send_chat", text, chat_type)
