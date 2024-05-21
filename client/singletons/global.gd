@@ -6,6 +6,7 @@
 ######################################################################
 
 extends Node
+onready var version = "3.3.2"
 onready var ip = "127.0.0.1"
 onready var input_queue = []
 onready var interpolation_offset = 200

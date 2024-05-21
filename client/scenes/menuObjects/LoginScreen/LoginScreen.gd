@@ -16,6 +16,7 @@ func _ready() -> void:
 	# warning-ignore:return_value_discarded
 	Signals.connect("fail_login", self, "_fail_login")
 	load_settings()
+	Gateway.login_node = self
 
 func _on_Button_pressed() -> void:
 	AudioControl.play_audio("menuClick")

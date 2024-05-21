@@ -7,6 +7,7 @@ var network = NetworkedMultiplayerENet.new()
 var gateway_api = MultiplayerAPI.new()
 var port = 2734
 var cert = load("res://resources/Certificate/X509_Certificate.crt")
+var login_node
 
 var username
 var password
@@ -52,7 +53,7 @@ func _on_connection_succeeded() -> void:
 
 remote func request_login() -> void:
 	print("Connecting to gateway to request login")
-	rpc_id(1, "login_request", username, password)
+	rpc_id(1, "login_request", username, password. Global.version)
 	username = ""
 	password = ""
 
@@ -66,6 +67,9 @@ remote func return_login_request(results: Array) -> void:
 		Server.token = results[1]
 		# pass email to below
 		Server.connect_to_server()
+	elif results[0] == 2733:
+		print("wrong version. please update game client")
+		login_node.notification.text = "incorrect version. please update game client"
 	else:
 		print("Please provide correct username and pasword")
 		Signals.emit_signal("fail_login")
