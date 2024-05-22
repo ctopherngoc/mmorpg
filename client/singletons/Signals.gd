@@ -27,6 +27,16 @@ signal level_up
 signal toggle_inventory
 # warning-ignore:unused_signal
 signal toggle_stats
+# warning-ignore:unused_signal
+signal toggle_options
+# warning-ignore:unused_signal
+signal toggle_chat_group
+# warning-ignore:unused_signal
+signal send_message
+# warning-ignore:unused_signal
+signal toggle_option_bool
+
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
