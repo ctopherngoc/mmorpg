@@ -2,7 +2,7 @@
 # Client-Gateway Singleton interface. Netcode to connect client to gateway server to login
 ######################################################################
 extends Node
-
+var version = "3.3.2"
 var network = NetworkedMultiplayerENet.new()
 var gateway_api = MultiplayerAPI.new()
 var port = 2734
@@ -51,9 +51,9 @@ func _on_connection_succeeded() -> void:
 	print("Successfully connected to login server")
 	request_login()
 
-remote func request_login() -> void:
+func request_login() -> void:
 	print("Connecting to gateway to request login")
-	rpc_id(1, "login_request", username, password. Global.version)
+	rpc_id(1, "login_request", username, password, Global.version)
 	username = ""
 	password = ""
 
