@@ -11,6 +11,7 @@ const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 onready var http = $HTTPRequest
 onready var http_requests = []
 onready var maps
+onready var fb_loaded = false
 
 ######################################################################
 # testing variables
