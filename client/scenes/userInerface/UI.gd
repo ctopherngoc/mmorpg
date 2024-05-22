@@ -9,11 +9,6 @@ onready var MenuMenu = $Control/InGameMenu
 func _ready() -> void:
 	pass
 
-func _input(_event) -> void:
-	if Input.is_action_just_pressed("ui_cancel"):
-		AudioControl.play_audio("windowToggle")
-		MenuMenu.visible = not MenuMenu.visible
-
 func focus_entered() -> void:
 	pass
 	

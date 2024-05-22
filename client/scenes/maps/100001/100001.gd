@@ -3,7 +3,6 @@ var map_id = "100001"
 var map_name = "Grassy Road 1"
 
 var other_player_template = preload("res://scenes/playerObjects/PlayerTemplate.tscn")
-#var main_player_template = preload("res://scenes/playerObjects/Player.tscn")
 var spawn_location = Vector2.ZERO
 #var main_player = null
 
@@ -20,14 +19,18 @@ var map_bound = {
 #}
 
 func _ready():
-	self.name = "currentScene"
+	#self.name = "Map"
+	var gameWorld = self.get_parent().get_parent()
+	
 	if str(Global.player.map) != get_filename():
 		Global.update_lastmap(get_filename())
 	spawn_location = Vector2(113,-275)
-	$Player/Camera2D.limit_left = map_bound["left"]
-	$Player/Camera2D.limit_right = map_bound["right"]
-	$Player/Camera2D.limit_bottom = map_bound["bottom"]
-	$Player/Camera2D.limit_top = map_bound["top"]
+	gameWorld.player.camera.limit_left = map_bound["left"]
+	gameWorld.player.camera.limit_right = map_bound["right"]
+	gameWorld.player.camera.limit_bottom = map_bound["bottom"]
+	gameWorld.player.camera.limit_top = map_bound["top"]
 
 	if Global.last_portal:
-		$Player.global_position = Global.last_portal
+		gameWorld.player.global_position = Global.last_portal
+	else:
+		gameWorld.player.global_position = spawn_location

@@ -1,16 +1,14 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=8 format=2]
 
-[ext_resource path="res://scenes/playerObjects/NewPlayer.tscn" type="PackedScene" id=1]
 [ext_resource path="res://resources/background/maps/BaseLevel.jpg" type="Texture" id=2]
 [ext_resource path="res://assets/tiles/0001/tile.tscn" type="PackedScene" id=3]
-[ext_resource path="res://scenes/userInerface/UI.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scenes/maps/100001/100001.gd" type="Script" id=5]
 [ext_resource path="res://scenes/npcObjects/000001/000001.tscn" type="PackedScene" id=6]
 [ext_resource path="res://assets/tiles/0001/platform.tscn" type="PackedScene" id=7]
 [ext_resource path="res://scenes/mapObjects/Portal.tscn" type="PackedScene" id=8]
 [ext_resource path="res://scenes/mapObjects/Ladder.tscn" type="PackedScene" id=10]
 
-[node name="Map" type="Node2D"]
+[node name="100001" type="Node2D"]
 script = ExtResource( 5 )
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
@@ -47,15 +45,7 @@ position = Vector2( 356, -409 )
 
 [node name="OtherPlayers" type="YSort" parent="."]
 
-[node name="Player" parent="." instance=ExtResource( 1 )]
-position = Vector2( 113, -275 )
-
 [node name="Portals" type="Node2D" parent="."]
 
 [node name="P1" parent="Portals" instance=ExtResource( 8 )]
 position = Vector2( 833, -89 )
-
-[node name="UI" parent="." instance=ExtResource( 4 )]
-layer = 2
-
-[editable path="UI"]

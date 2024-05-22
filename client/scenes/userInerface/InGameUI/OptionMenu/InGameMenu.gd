@@ -18,6 +18,7 @@ func _ready():
 	ConfirmMenu.get_cancel().connect("pressed", self, "button_click")
 	ConfirmMenu.get_cancel().connect("mouse_entered", self, "button_hover")
 	ConfirmMenu.get_cancel().focus_mode = Control.FOCUS_NONE
+	Signals.conncect("toggle_options", self, "toggle_options")
 	#Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 func _input(_event):
@@ -94,3 +95,6 @@ func button_click() -> void:
 
 func button_hover() -> void:
 	AudioControl.play_audio("menuHover")
+
+func toggle_options() -> void:
+	self.visible = not self.visible

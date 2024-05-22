@@ -47,7 +47,7 @@ func _ready() -> void:
 		if stats.job == null:
 			reqJob.text = "All"
 		else:
-			reqJob.text = stats.job
+			reqJob.text = GameData.job_dict[str(stats.job)]
 		
 		##########################################################################
 		# aditional equip stats 
@@ -74,7 +74,7 @@ func _ready() -> void:
 				attack.get_node("StatNumber").set("custom_colors/font_color", Color("db0000"))
 			extraStats.add_child(attack)
 			
-			if stats.magic != "0":
+			if stats.magic != 0:
 				var magic = itemStat.instance()
 				magic.get_node("StatLabel").text = "Magic: "
 				magic.get_node("StatNumber").text = str(stats.magic)
@@ -86,7 +86,7 @@ func _ready() -> void:
 					magic.get_node("StatNumber").set("custom_colors/font_color", Color("db0000"))
 				extraStats.add_child(magic)
 		
-		if stats.strength != "0":
+		if stats.strength != 0:
 				var strength = itemStat.instance()
 				strength.get_node("StatLabel").text = "STR: "
 				strength.get_node("StatNumber").text =  "+" + str(stats.strength)
@@ -98,7 +98,7 @@ func _ready() -> void:
 					strength.get_node("StatNumber").set("custom_colors/font_color", Color("db0000"))
 				extraStats.add_child(strength)
 		
-		if stats.dexterity != "0":
+		if stats.dexterity != 0:
 				var dexterity = itemStat.instance()
 				dexterity.get_node("StatLabel").text = "DEX: "
 				dexterity.get_node("StatNumber").text =  "+" + str(stats.dexterity)
@@ -110,7 +110,7 @@ func _ready() -> void:
 					dexterity.get_node("StatNumber").set("custom_colors/font_color", Color("db0000"))
 				extraStats.add_child(dexterity)
 		
-		if stats.wisdom != "0":
+		if stats.wisdom != 0:
 				var wisdom = itemStat.instance()
 				wisdom.get_node("StatLabel").text = "WIS: "
 				wisdom.get_node("StatNumber").text =  "+" + str(stats.wisdom)
@@ -122,7 +122,7 @@ func _ready() -> void:
 					wisdom.get_node("StatNumber").set("custom_colors/font_color", Color("db0000"))
 				extraStats.add_child(wisdom)
 		
-		if stats.luck != "0":
+		if stats.luck != 0:
 				var luck = itemStat.instance()
 				luck.get_node("StatLabel").text = "LUK: "
 				luck.get_node("StatNumber").text =  "+" + str(stats.luck)
@@ -134,7 +134,7 @@ func _ready() -> void:
 					luck.get_node("StatNumber").set("custom_colors/font_color", Color("db0000"))
 				extraStats.add_child(luck)
 		
-		if stats.critRate != "0":
+		if stats.critRate != 0:
 				var critRate = itemStat.instance()
 				critRate.get_node("StatLabel").text = "Crit Rate: "
 				critRate.get_node("StatNumber").text =  "+" + str(stats.critRate) + "%"
@@ -146,7 +146,7 @@ func _ready() -> void:
 					critRate.get_node("StatNumber").set("custom_colors/font_color", Color("db0000"))
 				extraStats.add_child(critRate)
 				
-		if stats.bossPercent != "0":
+		if stats.bossPercent != 0:
 				var bossPercent = itemStat.instance()
 				bossPercent.get_node("StatLabel").text = "Boss Damage: "
 				bossPercent.get_node("StatNumber").text =  "+" + str(stats.bossPercent) + "%"
@@ -158,7 +158,7 @@ func _ready() -> void:
 					bossPercent.get_node("StatNumber").set("custom_colors/font_color", Color("db0000"))
 				extraStats.add_child(bossPercent)
 		
-		if stats.damagePercent != "0":
+		if stats.damagePercent != 0:
 				var damagePercent = itemStat.instance()
 				damagePercent.get_node("StatLabel").text = "Total Damage: "
 				damagePercent.get_node("StatNumber").text =  "+" + str(stats.damagePercent) + "%"
@@ -170,7 +170,7 @@ func _ready() -> void:
 					damagePercent.get_node("StatNumber").set("custom_colors/font_color", Color("db0000"))
 				extraStats.add_child(damagePercent)
 				
-		if stats.accuracy != "0":
+		if stats.accuracy != 0:
 				var accuracy = itemStat.instance()
 				accuracy.get_node("StatLabel").text = "Total Damage: "
 				accuracy.get_node("StatNumber").text =  "+" + str(stats.accuracy)
@@ -182,7 +182,7 @@ func _ready() -> void:
 					accuracy.get_node("StatNumber").set("custom_colors/font_color", Color("db0000"))
 				extraStats.add_child(accuracy)
 		
-		if stats.maxHealth != "0":
+		if stats.maxHealth != 0:
 				var maxHealth = itemStat.instance()
 				maxHealth.get_node("StatLabel").text = "Health: "
 				maxHealth.get_node("StatNumber").text =  "+" + str(stats.maxHealth)
@@ -194,7 +194,7 @@ func _ready() -> void:
 					maxHealth.get_node("StatNumber").set("custom_colors/font_color", Color("db0000"))
 				extraStats.add_child(maxHealth)
 		
-		if stats.maxMana != "0":
+		if stats.maxMana != 0:
 				var maxMana = itemStat.instance()
 				maxMana.get_node("StatLabel").text = "Mana: "
 				maxMana.get_node("StatNumber").text =  "+" + str(stats.maxMana)
@@ -206,7 +206,7 @@ func _ready() -> void:
 					maxMana.get_node("StatNumber").set("custom_colors/font_color", Color("db0000"))
 				extraStats.add_child(maxMana)
 				
-		if stats.defense != "0":
+		if stats.defense != 0:
 				var defense = itemStat.instance()
 				defense.get_node("StatLabel").text = "W.Defense: "
 				defense.get_node("StatNumber").text =  "+" + str(stats.defense)
@@ -218,7 +218,7 @@ func _ready() -> void:
 					defense.get_node("StatNumber").set("custom_colors/font_color", Color("db0000"))
 				extraStats.add_child(defense)
 		
-		if stats.magicDefense != "0":
+		if stats.magicDefense != 0:
 				var magicDefense = itemStat.instance()
 				magicDefense.get_node("StatLabel").text = "M.Defense: "
 				magicDefense.get_node("StatNumber").text =  "+" + str(stats.magicDefense)
@@ -230,7 +230,7 @@ func _ready() -> void:
 					magicDefense.get_node("StatNumber").set("custom_colors/font_color", Color("db0000"))
 				extraStats.add_child(magicDefense)
 		
-		if stats.avoidability != "0":
+		if stats.avoidability != 0:
 				var avoidability = itemStat.instance()
 				avoidability.get_node("StatLabel").text = "Avoid: "
 				avoidability.get_node("StatNumber").text =  "+" + str(stats.avoidability)
@@ -242,7 +242,7 @@ func _ready() -> void:
 					avoidability.get_node("StatNumber").text.set("custom_colors/font_color", Color("db0000"))
 				extraStats.add_child(avoidability)
 		
-		if stats.movementSpeed != "0":
+		if stats.movementSpeed != 0:
 				var movementSpeed = itemStat.instance()
 				movementSpeed.get_node("StatLabel").text = "Speed: "
 				movementSpeed.get_node("StatNumber").text =  "+" + str(stats.movementSpeed)
@@ -254,7 +254,7 @@ func _ready() -> void:
 					movementSpeed.get_node("StatNumber").text.set("custom_colors/font_color", Color("db0000"))
 				extraStats.add_child(movementSpeed)
 				
-		if stats.jumpSpeed != "0":
+		if stats.jumpSpeed != 0:
 				var jumpSpeed = itemStat.instance()
 				jumpSpeed.get_node("StatLabel").text = "Jump: "
 				jumpSpeed.get_node("StatNumber").text =  "+" + str(stats.jumpSpeed)

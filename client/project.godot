@@ -25,7 +25,6 @@ GameData="*res://singletons/gamedata.gd"
 SceneHandler="*res://singletons/SceneHandler.tscn"
 Firebase="*res://singletons/Firebase.gd"
 AudioControl="*res://singletons/AudioControl.tscn"
-UI="*res://scenes/userInerface/UI.tscn"
 
 [display]
 

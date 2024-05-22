@@ -19,7 +19,7 @@ script = ExtResource( 2 )
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_top = -80.0
+margin_top = -40.0
 
 [node name="PlayerInfo" type="ColorRect" parent="Control"]
 anchor_right = 1.0
@@ -30,16 +30,18 @@ color = Color( 0.207031, 0.207031, 0.207031, 1 )
 [node name="HBoxContainer" type="HBoxContainer" parent="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_bottom = 39.0
+rect_scale = Vector2( 0.5, 0.5 )
 size_flags_horizontal = 3
 
 [node name="MarginContainer" type="MarginContainer" parent="Control/HBoxContainer"]
 margin_right = 8.0
-margin_bottom = 80.0
+margin_bottom = 79.0
 
 [node name="characterInfo" type="VBoxContainer" parent="Control/HBoxContainer"]
 margin_left = 12.0
 margin_right = 102.0
-margin_bottom = 80.0
+margin_bottom = 79.0
 rect_min_size = Vector2( 80, 0 )
 size_flags_vertical = 3
 
@@ -97,17 +99,17 @@ margin_bottom = 79.0
 [node name="fillBars" type="VBoxContainer" parent="Control/HBoxContainer"]
 margin_left = 106.0
 margin_right = 616.0
-margin_bottom = 80.0
+margin_bottom = 79.0
 
 [node name="hpmpBar" type="HBoxContainer" parent="Control/HBoxContainer/fillBars"]
 margin_right = 510.0
-margin_bottom = 38.0
+margin_bottom = 37.0
 rect_min_size = Vector2( 510, 0 )
 size_flags_vertical = 3
 
 [node name="HealthVBar" type="VBoxContainer" parent="Control/HBoxContainer/fillBars/hpmpBar"]
 margin_right = 253.0
-margin_bottom = 38.0
+margin_bottom = 37.0
 size_flags_horizontal = 3
 
 [node name="Control" type="Control" parent="Control/HBoxContainer/fillBars/hpmpBar/HealthVBar"]
@@ -145,7 +147,7 @@ text = "100/100"
 [node name="MPVBar" type="VBoxContainer" parent="Control/HBoxContainer/fillBars/hpmpBar"]
 margin_left = 257.0
 margin_right = 510.0
-margin_bottom = 38.0
+margin_bottom = 37.0
 size_flags_horizontal = 3
 
 [node name="Control" type="Control" parent="Control/HBoxContainer/fillBars/hpmpBar/MPVBar"]
@@ -180,9 +182,9 @@ text = "100/100
 "
 
 [node name="EXPVBar" type="HBoxContainer" parent="Control/HBoxContainer/fillBars"]
-margin_top = 42.0
+margin_top = 41.0
 margin_right = 510.0
-margin_bottom = 80.0
+margin_bottom = 79.0
 size_flags_vertical = 3
 
 [node name="Control" type="Control" parent="Control/HBoxContainer/fillBars/EXPVBar"]
@@ -200,10 +202,10 @@ texture_under = ExtResource( 3 )
 texture_progress = ExtResource( 4 )
 
 [node name="exp" type="Label" parent="Control/HBoxContainer/fillBars/EXPVBar/Control"]
-margin_left = 48.4211
-margin_top = 3.0
+margin_left = 48.421
+margin_top = 4.0
 margin_right = 280.421
-margin_bottom = 56.0
+margin_bottom = 57.0
 size_flags_vertical = 0
 theme = ExtResource( 7 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
@@ -215,30 +217,10 @@ text = "EXP:
 
 [node name="Number" type="Label" parent="Control/HBoxContainer/fillBars/EXPVBar/Control"]
 margin_left = 233.684
-margin_top = 3.0
-margin_right = 289.684
-margin_bottom = 30.0
+margin_top = 4.0
+margin_right = 303.684
+margin_bottom = 31.0
 theme = ExtResource( 7 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_fonts/font = ExtResource( 1 )
 text = "100/100"
-
-[node name="Container" type="Container" parent="Control/HBoxContainer"]
-margin_left = 620.0
-margin_right = 620.0
-margin_bottom = 80.0
-
-[node name="ColorRect" type="ColorRect" parent="Control/HBoxContainer/Container"]
-margin_left = 8.0
-margin_right = 660.0
-margin_bottom = 80.0
-rect_min_size = Vector2( 652, 80 )
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="VBoxContainer" type="VBoxContainer" parent="Control/HBoxContainer/Container"]
-margin_left = -660.0
-margin_right = -4.0
-margin_bottom = 80.0
-size_flags_horizontal = 3
-size_flags_vertical = 3

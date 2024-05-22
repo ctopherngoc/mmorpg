@@ -4,6 +4,12 @@ extends Control
 # var a = 2
 # var b = "text"
 var non_movable_windows = ["InGameMenu", "PlayerHUD", "ChatBox"]
+onready var ui_nodes = {
+	'player_stats': get_node("PlayerStats"),
+	'inventory': get_node("Inventory"),
+	'chat_box': get_node("ChatBox"),
+	'player_hud':  get_node("PlayerHUD")
+}
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

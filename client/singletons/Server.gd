@@ -138,10 +138,6 @@ remote func return_choose_character(requester: int) -> void:
 	SceneHandler.change_scene(Global.player['map']) 
 	#instance_from_id(requester).load_world()
 
-#func fetch_player_stats() -> void:
-#	if !testing:
-#		rpc_id(1, "fetch_player_stats")
-
 ##############################################################################
 # Authentication
 remote func fetch_token() -> void:
@@ -173,7 +169,7 @@ remote func already_logged_in() -> void:
 # Player functions
 remote func despawn_player(player_id: int) -> void:
 	print("server.gd: despawn player")
-	var other_players = get_node("/root/currentScene/OtherPlayers")
+	var other_players = get_node("/root/GameWorld/MapNode/Map/OtherPlayers")
 	for player in other_players.get_children():
 		print(str(player) + str(player_id))
 		if player.name == str(player_id):
@@ -207,9 +203,9 @@ remote func receive_attack(player_id, attack_time):
 	print(typeof(player_id), " ", typeof(attack_time))
 	if player_id == get_tree().get_network_unique_id():
 		print("self attack: pass")
-	elif get_node("/root/currentScene/OtherPlayers").has_node(str(player_id)):
+	elif get_node("/root/GameWorld/MapNode/Map/OtherPlayers").has_node(str(player_id)):
 		print(str(player_id) + " attack")
-		var player = get_node("/root/currentScene/OtherPlayers/%s" % player_id)
+		var player = get_node("/root/GameWorld/MapNode/Map/OtherPlayers/%s" % player_id)
 		player.attack_dict[attack_time] = {"A": "stab"}
 	else:
 		pass
@@ -288,7 +284,7 @@ remote func return_player_input(server_input_results):
 
 remote func receive_climb_data(climb_data: int) -> void:
 	if Global.in_game:
-		var player = get_node("/root/currentScene/Player")
+		var player = get_node("/root/GameWorld/Player")
 		if climb_data == 2:
 			#print("server: is climbing")
 			player.can_climb = true
@@ -331,7 +327,8 @@ remote func loot_data(_item_data: Dictionary) -> void:
 		# var string = "Picked up %s" % GameData[item_data.id]"
 	#update_message(string)
 
-remote func update_message(player_name: int, message: String ,group: int) -> void:
+remote func update_messages(player_name: String, message: String ,group: int) -> void:
+	print("%s said %s in %s" % [player_name, message, group])
 	Global.ui.ui_nodes.chat_box.update_message(player_name, message,  group) 
 	# insert script to edit notification var with message
 
@@ -343,5 +340,5 @@ func add_stat(stat: String) -> void:
 	print("requesting to add %s" % stat)
 	rpc_id(1, "add_stat", stat)
 
-remote func send_chat(text: String, chat_type: int) -> void:
+func send_chat(text: String, chat_type: int) -> void:
 	rpc_id(1, "send_chat", text, chat_type)

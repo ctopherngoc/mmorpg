@@ -5,6 +5,7 @@ onready var velocity_multiplier = 1
 onready var jump_speed
 onready var max_horizontal_speed
 onready var velocity = Vector2.ZERO
+onready var camera = $Camera2D
 
 # static player varaibles
 onready var gravity = 800
@@ -240,19 +241,16 @@ func heal(heal_value: int) -> void:
 	text.amount = str(heal_value)
 	add_child(text)
 	
-func _unhandled_input(event):
-	if event.is_action_pressed("ui_down"):
-		held_down = true
-	elif event.is_action_released("ui_down"):
-		held_down = false
-	elif event.is_action_pressed("attack"):
-		if Global.movable:
-			return
-		else:
-			print("cannot attack")
-	elif event.is_action_pressed("ui_accept"):
-		print("testing level up animation")
-		Signals.emit_signal("level_up")
+#func _unhandled_input(event):
+#	if event.is_action_pressed("ui_down"):
+#		held_down = true
+#	elif event.is_action_released("ui_down"):
+#		held_down = false
+#	elif event.is_action_pressed("attack"):
+#		if Global.movable:
+#			return
+#		else:
+#			print("cannot attack")
 
 
 func _on_Button_pressed():
@@ -271,3 +269,4 @@ func _on_Button2_pressed():
 	movement_loop(temp_delta, temp_input)
 	define_player_state(temp_input)
 	#print(temp_pos, " ", self.position)
+	
