@@ -3,7 +3,6 @@ onready var label = $VBoxContainer/HBoxContainer/Label
 onready var line_edit = $VBoxContainer/HBoxContainer/LineEdit
 onready var chat_log = $VBoxContainer/RichTextLabel
 onready var focus_bool = false
-onready var timer = $Timer
 
 var groups: Array = [
 	{"name": "all", "color": "#ffffff"},
@@ -26,6 +25,7 @@ func _input(event) -> void:
 				if line_edit.get_focus_owner() == line_edit:
 					if line_edit.text.length() > 0:
 						print("send server entered text")
+						send_message(line_edit.text, group_index)
 						line_edit.text = ""
 					else:
 						print("line edit will unfocus")
@@ -58,4 +58,5 @@ func update_message(username:String, text: String,  group:int = 0) -> void:
 	chat_log.bbcode_text += "[/color]"
 
 func send_message(text: String, group: int = 0) -> void:
-	pass
+	print(text, " ", group)
+	Server.send_chat(text, group)
