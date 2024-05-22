@@ -24,6 +24,7 @@ func _ready() -> void:
 	load_player_stats(Global.player.stats)
 	# warning-ignore:return_value_discarded
 	Signals.connect("update_stats", self, "update_display")
+# warning-ignore:return_value_discarded
 	Signals.connect("toggle_stats", self, "toggle_stats")
 
 func load_player_stats(stats: Dictionary) -> void:
