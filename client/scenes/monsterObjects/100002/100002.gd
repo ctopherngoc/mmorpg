@@ -27,7 +27,7 @@ func _ready():
 ####################################################
 # new functions
 func move(new_position):
-	var curr_position = self.get_global_position()
+	var curr_position = self.get_position()
 	#turn right
 	if new_position.x > curr_position.x:
 		$Sprite.scale.x = xScale * -1
