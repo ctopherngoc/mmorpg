@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://scenes/userInerface/InGameUI/PlayerHUD.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/userInerface/UI.gd" type="Script" id=2]
@@ -8,6 +8,8 @@
 [ext_resource path="res://scenes/userInerface/UIWindowControl.gd" type="Script" id=6]
 [ext_resource path="res://scenes/userInerface/InGameUI/ChatBox.tscn" type="PackedScene" id=7]
 
+[sub_resource type="Theme" id=1]
+
 [node name="UI" type="CanvasLayer"]
 script = ExtResource( 2 )
 
@@ -15,6 +17,29 @@ script = ExtResource( 2 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 6 )
+
+[node name="Control" type="Control" parent="Control"]
+anchor_right = 1.0
+anchor_bottom = 0.893
+margin_right = 1.0
+margin_bottom = 0.039978
+
+[node name="Control2" type="Panel" parent="Control/Control"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -674.0
+margin_top = -57.0
+margin_bottom = -3.0
+theme = SubResource( 1 )
+
+[node name="ChatBox" parent="Control/Control" instance=ExtResource( 7 )]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_top = -57.0
+margin_right = 607.0
+margin_bottom = -1.0
 
 [node name="PlayerStats" parent="Control" instance=ExtResource( 5 )]
 visible = false
@@ -35,21 +60,11 @@ anchor_right = 1.0
 anchor_bottom = 0.0
 margin_left = -296.0
 margin_bottom = 432.0
-
-[node name="ChatBox" parent="Control" instance=ExtResource( 7 )]
-anchor_left = -0.00078125
-anchor_top = 0.0652778
-anchor_right = 0.480219
-anchor_bottom = 0.199556
-margin_left = 1.0
-margin_top = 533.0
-margin_right = 12.3199
-margin_bottom = 536.32
-__meta__ = {
-"_edit_use_anchors_": true
-}
+rect_scale = Vector2( 0.7, 0.7 )
 
 [node name="PlayerHUD" parent="Control" instance=ExtResource( 1 )]
+anchor_left = 0.00078125
+anchor_right = 1.00078
 __meta__ = {
 "_edit_use_anchors_": true
 }
