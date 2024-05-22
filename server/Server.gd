@@ -16,7 +16,6 @@ onready var player_verification_process = get_node("PlayerVerification")
 onready var character_creation_queue = []
 const username: String = "server@server.com"
 const password: String = "server123"
-
 #######################################################
 # server netcode
 #server start 
