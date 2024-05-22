@@ -32,6 +32,7 @@ var node_list = {
 func _ready():
 # warning-ignore:return_value_discarded
 	Signals.connect("update_inventory", self, "update_inventory")
+# warning-ignore:return_value_discarded
 	Signals.connect("toggle_inventory", self, "toggle_inventory")
 	poplulate_inventory()
 	"""

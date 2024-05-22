@@ -53,8 +53,10 @@ func can_drop_data(_pos, data):
 		return true
 	else:
 		if data.tab == tab:
+			#data['origin_node'].get_node("ItemInfo").free()
 			return true
 		else:
+			#data['origin_node'].get_node("ItemInfo").free()
 			return false
 
 func drop_data(_pos,data):
@@ -141,7 +143,7 @@ func _on_0_mouse_entered():
 			equip_tip.slot = slot_index
 			equip_tip.tab = tab
 			#var inventory_origin = get_node("/root/currentScene/UI/Control/Inventory").get_global_transform_with_canvas().origin
-			var inventory_origin = get_node("/root/currentScene/UI/Control/Inventory").rect_global_position
+			var inventory_origin = get_node("/root/GameWorld/UI/Control/Inventory").rect_global_position
 			equip_tip.rect_position.x = inventory_origin.x - (equip_tip.rect_size.x) + 100
 			equip_tip.rect_position.y = inventory_origin.y
 			add_child(equip_tip)
@@ -156,7 +158,7 @@ func _on_0_mouse_entered():
 			item_tip.slot = slot_index
 			item_tip.tab = tab
 			#var inventory_origin = get_node("/root/currentScene/UI/Control/Inventory").get_global_transform_with_canvas().origin
-			var inventory_origin = get_node("/root/currentScene/UI/Control/Inventory").rect_global_position
+			var inventory_origin = get_node("/root/GameWorld/UI/Control/Inventory").rect_global_position
 			item_tip.rect_position.x = inventory_origin.x - (item_tip.rect_size.x) + 100
 			item_tip.rect_position.y = inventory_origin.y
 			add_child(item_tip)
