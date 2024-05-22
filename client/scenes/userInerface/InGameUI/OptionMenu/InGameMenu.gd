@@ -18,7 +18,8 @@ func _ready():
 	ConfirmMenu.get_cancel().connect("pressed", self, "button_click")
 	ConfirmMenu.get_cancel().connect("mouse_entered", self, "button_hover")
 	ConfirmMenu.get_cancel().focus_mode = Control.FOCUS_NONE
-	Signals.conncect("toggle_options", self, "toggle_options")
+# warning-ignore:return_value_discarded
+	Signals.connect("toggle_options", self, "toggle_options")
 	#Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 func _input(_event):
@@ -75,6 +76,7 @@ func _on_back_pressed():
 
 func _on_resume_pressed():
 	play_button_pressed()
+	Signals.emit_signal("toggle_option_bool")
 	self.hide()
 	#Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	#get_tree().set_pause(false)
