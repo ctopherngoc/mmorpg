@@ -4,6 +4,8 @@ onready var line_edit = $VBoxContainer/HBoxContainer/LineEdit
 onready var chat_log = $VBoxContainer/RichTextLabel
 onready var focus_bool = false
 
+var origin: Vector2 = Vector2(0,586)
+
 var groups: Array = [
 	{"name": "all", "color": "#ffffff"},
 	{"name": "friends", "color": "#fffb00"},
@@ -16,31 +18,13 @@ var group_index: int = 0
 var user_name: String
 
 func _ready():
+	#origin = self.rect_position
+	InputManager.line_edit = $VBoxContainer/HBoxContainer/LineEdit
+# warning-ignore:return_value_discarded
+	Signals.connect("toggle_chat_group", self, "toggle_chat_group")
+# warning-ignore:return_value_discarded
+	Signals.connect("send_message", self, "send_message")
 	change_group(0)
-
-func _input(event) -> void:
-	if Global.in_game:
-		if event is InputEventKey:
-			if event.pressed and event.scancode == KEY_ENTER:
-				if line_edit.get_focus_owner() == line_edit:
-					if line_edit.text.length() > 0:
-						print("send server entered text")
-						send_message(line_edit.text, group_index)
-						line_edit.text = ""
-					else:
-						print("line edit will unfocus")
-						line_edit.release_focus()
-				else:
-					print("lineedit will be focused")
-					line_edit.grab_focus()
-			elif event.pressed and event.scancode == KEY_ESCAPE:
-				if line_edit.get_focus_owner() == line_edit:
-					print("escape pressed lineedit unfocused")
-					line_edit.release_focus()
-				else:
-					print("escape pressed but chat not focused")
-			elif event.pressed and event.scancode == KEY_TAB and line_edit.get_focus_owner() == line_edit:
-				change_group(1)
 			
 func change_group(value: int) -> void:
 	group_index += value
@@ -57,6 +41,41 @@ func update_message(username:String, text: String,  group:int = 0) -> void:
 	chat_log.bbcode_text += text
 	chat_log.bbcode_text += "[/color]"
 
-func send_message(text: String, group: int = 0) -> void:
-	print(text, " ", group)
-	Server.send_chat(text, group)
+func send_message() -> void:
+	#print(line_edit.text, " ", group_index)
+	Server.send_chat(line_edit.text, group_index)
+	line_edit.text = ""
+	
+func toggle_chat_group() -> void:
+	change_group(1)
+
+func _input(event) -> void:
+	if event is InputEventMouseButton:
+		pass
+		#print(get_global_mouse_position())
+		
+		# as y decraeases (mouse goes higher) window size should go up in y and position should go down for y
+# warning-ignore:unused_argument
+func mouse_drag_management(event: InputEvent) -> void:
+	if Input.is_action_pressed("click"):
+
+		#print(self.rect_position.y, " ", get_global_mouse_position().y, " ", self.rect_size.y, " ", self.rect_min_size.y)
+		var difference = self.rect_position.y - get_global_mouse_position().y
+		if self.rect_size.y > self.rect_min_size.y:
+			if get_global_mouse_position().y > 0:
+				self.rect_size.y += difference
+				self.rect_position.y = get_global_mouse_position().y
+			else:
+				pass
+		else:
+			if difference > 0:
+				self.rect_size.y += difference
+				self.rect_position.y = get_global_mouse_position().y
+				
+			else:
+				self.rect_position = origin
+		#self.rect_position.y = get_global_mouse_position().y
+		#resize_area.rect_position = panel.rect_size - resize_area.rect_min_size / 2
+
+func _on_Control_gui_input(event):
+	mouse_drag_management(event)
