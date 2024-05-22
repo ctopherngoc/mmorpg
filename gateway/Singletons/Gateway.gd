@@ -6,6 +6,7 @@ var port = 2734
 var max_players = 100
 var cert = load("res://Resources/Certificate/X509_Certificate.crt")
 var key = load("res://Resources/Certificate/x509_Key.key")
+onready var game_version = "3.3.2"
 
 func _ready():
 	start_server()
@@ -34,11 +35,13 @@ func _Peer_Connected(player_id):
 func _Peer_Disconnected(player_id):
 	print("User " + str(player_id) + " Disconnected")
 	
-remote func login_request(username, password):
+remote func login_request(username: String, password: String, version: String):
 	print("login request recieved")
-	
 	var player_id = custom_multiplayer.get_rpc_sender_id()
-	Authenticate.authenticate_player(username, password, player_id)
+	if version == game_version:
+		Authenticate.authenticate_player(username, password, player_id)
+	else:
+		return_login_request([2733], player_id)
 
 func return_login_request(result, player_id):
 	print("gateway returnloginrequest back to main login")

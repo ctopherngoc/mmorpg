@@ -10,6 +10,8 @@ var monsterTable
 var itemTable
 var equipmentTable
 
+var chat_logs = []
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	var data_file = File.new()

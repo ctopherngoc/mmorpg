@@ -11,11 +11,13 @@ onready var OptionMenu = $Options
 onready var savelogin = false
 onready var login_file_path = "user://login.dat"
 onready var logging_in_bool = false
+onready var loaded = false
 
 func _ready() -> void:
 	# warning-ignore:return_value_discarded
 	Signals.connect("fail_login", self, "_fail_login")
 	load_settings()
+	Gateway.login_node = self
 
 func _on_Button_pressed() -> void:
 	AudioControl.play_audio("menuClick")
@@ -80,11 +82,12 @@ func _on_LineEdit_focus_entered() -> void:
 	AudioControl.play_audio("menuClick")
 
 func _on_CheckBox_toggled(_button_pressed):
-	AudioControl.play_audio("menuClick")
-	if $VBoxContainer/loginButton/CheckBox.pressed:
-		savelogin = true
-	else:
-		savelogin = false
+	if loaded:
+		AudioControl.play_audio("menuClick")
+		if $VBoxContainer/loginButton/CheckBox.pressed:
+			savelogin = true
+		else:
+			savelogin = false
 
 func _on_LineEdit_focus_exited():
 	save_settings(savelogin)
@@ -114,4 +117,5 @@ func load_settings() -> void:
 		$VBoxContainer/loginButton/CheckBox.pressed = true
 	print("Email Loaded")
 	save_file.close()
+	loaded = true
 

@@ -24,6 +24,8 @@ func _ready() -> void:
 	load_player_stats(Global.player.stats)
 	# warning-ignore:return_value_discarded
 	Signals.connect("update_stats", self, "update_display")
+# warning-ignore:return_value_discarded
+	Signals.connect("toggle_stats", self, "toggle_stats")
 
 func load_player_stats(stats: Dictionary) -> void:
 	strength.set_text(str(stats.base.strength + stats.equipment.strength))
@@ -42,12 +44,6 @@ func update_display() -> void:
 		turn_on_buttons()
 	else:
 		turn_off_buttons()
-
-func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("stats"):
-		AudioControl.play_audio("windowToggle")
-		self.visible = not self.visible
-		print("toggle stats")
 
 func turn_on_buttons() -> void:
 	for i in sp_buttons:
@@ -97,3 +93,6 @@ func _on_Button4_pressed() -> void:
 		Global.player.stats.base.sp -= 1
 		Global.player.stats.base.luck += 1
 		Server.add_stat("l")
+
+func toggle_stats() -> void:
+	self.visible = not self.visible

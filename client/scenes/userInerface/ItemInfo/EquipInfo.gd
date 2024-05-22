@@ -47,8 +47,7 @@ func _ready() -> void:
 		if stats.job == null:
 			reqJob.text = "All"
 		else:
-			reqJob.text = str(stats.job)
-		
+			reqJob.text = GameData.job_dict[str(stats.job)]
 		##########################################################################
 		# aditional equip stats 
 		

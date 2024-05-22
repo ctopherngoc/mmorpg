@@ -16,7 +16,6 @@ onready var player_verification_process = get_node("PlayerVerification")
 onready var character_creation_queue = []
 const username: String = "server@server.com"
 const password: String = "server123"
-
 #######################################################
 # server netcode
 #server start 
@@ -35,6 +34,7 @@ func start_server() -> void:
 
 func _process(_delta: float) -> void:
 	create_characters()
+	#print(typeof(ServerData.characters_data.scrubaduck.inventory.equipment[0].magic))
 
 # Player connect
 func _Peer_Connected(player_id: int) -> void:
@@ -236,15 +236,6 @@ remote func choose_character(requester: int, display_name: String) -> void:
 	Global.calculate_stats(player_container.current_character)
 	rpc_id(player_id, "return_choose_character", requester)
 
-#remote func fetch_player_stats() -> void:
-#	var player_id = get_tree().get_rpc_sender_id()
-#	var Maps = get_node("World/Maps")
-#	for i in Maps.get_children():
-#		for l in i.get_children():
-#			if l.name == str(player_id):
-#				pass
-#				#print(l.player_stats)
-
 remote func fetch_usernames(requester, username: String) -> void:
 	print("inside fetch username. Username: %s" % username)
 	var player_id = get_tree().get_rpc_sender_id()
@@ -326,7 +317,6 @@ func move_player_container(player_id: int, player_container: KinematicBody2D, ma
 		position = Vector2(map_node.spawn_position.x, map_node.spawn_position.y)
 
 	player.position = position
-
 
 func get_player_data(player_id):
 	var player_container = _Server_Get_Player_Container(player_id)
@@ -618,3 +608,28 @@ func save(var path : String, var thing_to_save):
 	file.close()
 
 ####################################################################################
+
+remote func send_chat(text: String, chat_type: int) -> void:
+	var player_id = get_tree().get_rpc_sender_id()
+	print("%s said %s" % [player_id, text])
+	var player_container = _Server_Get_Player_Container(player_id)
+	ServerData.chat_logs.append({"email": player_container.email, "ign": player_container.current_character.displayname, "time": OS.get_unix_time(), "msg": text, "chatType": chat_type})
+	# in map
+	if chat_type == 0:
+		var map_player_list = get_node(ServerData.player_location[str(player_id)].replace("YSort/Players", "")).players
+		for player in map_player_list:
+			rpc_id(int(player.name), "update_messages", player_container.current_character.displayname, text, chat_type)
+	# in friends
+	elif chat_type == 1:
+		pass
+	# in party
+	elif chat_type == 2:
+		pass
+	# in guild
+	elif chat_type == 3:
+		pass
+#	#in whisper
+#	elif chat_type == 1:
+#		pass
+	
+		

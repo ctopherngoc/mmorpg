@@ -32,6 +32,8 @@ var node_list = {
 func _ready():
 # warning-ignore:return_value_discarded
 	Signals.connect("update_inventory", self, "update_inventory")
+# warning-ignore:return_value_discarded
+	Signals.connect("toggle_inventory", self, "toggle_inventory")
 	poplulate_inventory()
 	"""
 	update to own function instead of _Ready so it can be called by
@@ -127,12 +129,6 @@ func update_inventory():
 					item_node.icon.set_texture(null)
 				count += 1
 
-func _input(event):
-	if event.is_action_pressed("inventory"):
-		self.visible = not self.visible
-		AudioControl.play_audio("windowToggle")
-		print("toggle inventory")
-
 func _on_Header_gui_input(event):
 	if event is InputEventMouseButton:
 		# left mouse button
@@ -175,3 +171,6 @@ func test_setup():
 
 func _on_TabContainer_tab_selected(_tab):
 	AudioControl.play_audio("menuClick")
+	
+func toggle_inventory():
+	self.visible = not self.visible

@@ -11,6 +11,7 @@ const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 onready var http = $HTTPRequest
 onready var http_requests = []
 onready var maps
+onready var fb_loaded = false
 
 ######################################################################
 # testing variables
@@ -433,7 +434,7 @@ func lootDrop(player: KinematicBody2D, item_container: KinematicBody2D) -> void:
 					# update map itemlist
 					ServerData.items[item_container.map].erase(item_container.name)
 					# add item to index and update client
-					inventory_ref[index] = {"id": str(item_container), "q": 1}
+					inventory_ref[index] = {"id": str(item_container.id), "q": 1}
 					server.send_loot_data(player.name, {"id": item_container.id})
 					server.update_player_stats(player)
 					# remove item node from map

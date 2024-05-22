@@ -3,12 +3,12 @@
 [ext_resource path="res://scenes/userInerface/PlayerStats.gd" type="Script" id=2]
 
 [node name="PlayerStats" type="Control"]
-anchor_top = 0.5
-anchor_bottom = 0.5
-margin_top = -94.5
+anchor_top = 0.554167
+anchor_bottom = 0.500694
+margin_top = -95.0
 margin_right = 225.0
 margin_bottom = 94.5
-rect_min_size = Vector2( 225, 189 )
+rect_min_size = Vector2( 225, 151 )
 rect_scale = Vector2( 1.00723, 0.998023 )
 size_flags_horizontal = 0
 size_flags_vertical = 0
