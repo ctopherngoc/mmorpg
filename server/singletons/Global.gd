@@ -235,6 +235,25 @@ func dropGeneration(monster_id: String) -> Dictionary:
 				item_list[item_id] = 1
 	#print(item_list)
 	return item_list
+
+func player_drop_item(player_container: KinematicBody2D, position: Vector2, map: String, tab: String, slot: int, quantity: int) -> void:
+	pass
+	# get item data
+	# create dictionary with item_id: item_dict -> dropspawn requires hashmap of items.keys() dropped
+	var item_data = {player_container.current_character.inventory[tab][slot].id: player_container.current_character.inventory[tab][slot]}
+	if quantity > 1:
+		pass
+		# reduce item count
+		player_container.current_character.inventory[tab][slot].q -= quantity
+		dropSpawn(map, position, item_data, quantity)
+		# call drop item -> pass map, location, drop_dict, quantity
+	# equipment or drop quantity 1
+	else:
+		pass
+		# call drop item -> pass map, location, drop_dict
+		player_container.current_character.inventory[tab][slot] = null
+		dropSpawn(map, position, item_data)
+	server.update_player_stats(player_container)
 	
 func dropDetermine(item_id: String) -> bool:
 	"""
@@ -248,7 +267,7 @@ func dropDetermine(item_id: String) -> bool:
 	else:
 		return false
 
-func dropSpawn(map: String, location: Vector2, item_dict: Dictionary, user_id) -> void:
+func dropSpawn(map: String, location: Vector2, item_dict: Dictionary, quantity: int = 1, user_id = null) -> void:
 	# user_id could be string or null
 	var map_path = "/root/Server/World/Maps/" + str(map) + "/YSort/Items"
 	var items = item_dict.keys()
@@ -258,7 +277,8 @@ func dropSpawn(map: String, location: Vector2, item_dict: Dictionary, user_id) -
 		var new_item = item_scene.instance()
 		new_item.position = location
 		#new_item.position.y = new_item.position.y
-		new_item.player_owner = user_id
+		if user_id != null:
+			new_item.player_owner = user_id
 		new_item.id = item
 		new_item.map = str(map)
 		var node_name = ""
