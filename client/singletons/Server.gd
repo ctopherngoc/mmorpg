@@ -342,3 +342,6 @@ func add_stat(stat: String) -> void:
 
 func send_chat(text: String, chat_type: int) -> void:
 	rpc_id(1, "send_chat", text, chat_type)
+
+func drop_request(slot: int, tab: String, quantity: int = 1) -> void:
+	rpc_id(1, "drop_request", slot, tab, quantity)

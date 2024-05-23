@@ -21,3 +21,42 @@ func _ready():
 
 func move_window_to_top(node):
 	move_child(node, get_child_count() - 3)
+
+
+"""
+data["origin_node"] = self
+		data["origin_texture"] = icon.texture
+		data["item_data"] = item_data
+		data["from_slot"] = slot_index
+		data["tab"] = tab
+		"""
+func drop_data(_pos,data):
+	pass
+	# dropping item from inventory
+	"""
+	if data.item_data.unique:
+		-> popup are you sure
+	else:
+		if data.item_data.item.type != equipment and data.item_data.q > 1:
+			-> how many you wanna drop
+				-> grab quantity Q
+			Server.drop_request(data.item_data, data.tab, data.tab, Q)
+		# if equipment or quantity of 1
+		else:
+			Server.drop_request(data.item_data, data.tab, data.tab)
+			
+	"""
+	
+func can_drop_data(_pos, data):
+	pass
+	# check if we can drop item into slow
+	# if slot is null -> move item
+#	if item_data.id == null:
+#		return true
+#	else:
+#		if data.tab == tab:
+#			#data['origin_node'].get_node("ItemInfo").free()
+#			return true
+#		else:
+#			#data['origin_node'].get_node("ItemInfo").free()
+#			return false
