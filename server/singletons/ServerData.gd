@@ -55,12 +55,12 @@ var player_id_emails = {}
 var static_data = {
 	"job_skills" : 
 		{
-		"0": [],
-		"1": [],
-		"2": [],
-		"3": [],
-		"4": [],
-		"5": [],
+		0: [],
+		1: [],
+		2: [],
+		3: [],
+		4: [],
+		5: [],
 	},
 	"player_info" : {
 		"displayname": {'stringValue': null},
@@ -312,12 +312,12 @@ var static_data = {
 		6 : null,
 		},
 	"job_dict" : {
-		"0": {"job": "Beginner", "Weapon": [], "Range": 0, "HealthMin": 15, "HealthMax": 20},
-		"1": {"job": "Warrior", "Weapon": ["sword", "hammer", "axe"], "Range": 0, "HealthMin":30, "HealthMax": 35,
-		"2": {"job": "Rouge", "Weapon" : ["dagger"], "Range": 0, "HealthMin":20, "HealthMax": 25},
-		"3": {"job": "Archer", "Weapon" : ["bow"], "Range": 1, "HealthMin":15, "HealthMax": 20},
-		"4": {"job": "Magician", "Weapon" : [], "Range": 0, "HealthMin":15, "HealthMax": 20},
-		"5": {"job": "Gunner", "Weapon" : ["gun"], "Range": 1, "HealthMin":15, "HealthMax": 20},
+		0: {"job": "Beginner", "Weapon": [], "Range": 0, "HealthMin": 15, "HealthMax": 20},
+		1: {"job": "Warrior", "Weapon": ["sword", "hammer", "axe"], "Range": 0, "HealthMin":30, "HealthMax": 35},
+		2: {"job": "Rouge", "Weapon" : ["dagger"], "Range": 0, "HealthMin":20, "HealthMax": 25},
+		3: {"job": "Archer", "Weapon" : ["bow"], "Range": 1, "HealthMin":15, "HealthMax": 20},
+		4: {"job": "Magician", "Weapon" : [], "Range": 0, "HealthMin":15, "HealthMax": 20},
+		5: {"job": "Gunner", "Weapon" : ["gun"], "Range": 1, "HealthMin":15, "HealthMax": 20},
 		},
 	"experience_table" : {
 		'1': 20,
