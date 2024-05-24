@@ -177,15 +177,16 @@ func experience(experience: int) -> void:
 			current_character.stats.base.sp += 5
 			
 			# insert hp increase here
-			var new_hp = int(round(Global.rng.randi_range(ServerData.job_dict[current_character.stats.base.job].HealthMin, ServerData.job_dict[current_character.stats.base.job].HealthMax)))
+			var new_hp = int(round(Global.rng.randi_range(ServerData.static_data.job_dict[current_character.stats.base.job].HealthMin, ServerData.static_data.job_dict[current_character.stats.base.job].HealthMax)))
 			if current_character.stats.base.job in [9999999]:
 				# look up skill level add more hp based on skill level
 				pass
 			# set new health -> set health to max
-			current_character.stats.base.maxHeath += new_hp
-			current_character.stats.base.health = current_character.stats.base.maxHeath
+			current_character.stats.base.maxHealth += new_hp
+			current_character.stats.base.health = current_character.stats.base.maxHealth
 			# insert mp increase here
-			var new_mana = int(round(current_character.stats.base.maxMana + 20 + (current_character.stats.base.wisdom * 0.4)))
+			var new_mana = int(round( 20 + (current_character.stats.base.wisdom * 0.4)))
+			print("new mana: %s" % new_mana)
 			if current_character.stats.base.job in [888888888]:
 				# look up skill level add more mp based on skill level
 				pass
