@@ -19,7 +19,11 @@ var dragging = false
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	Signals.connect("toggle_inventory", self, "item_info_free")
-
+	
+func _notification(what):
+	if what == 22:
+		if get_node_or_null("ItemInfo"):
+			get_node("ItemInfo").free()
 
 func get_drag_data(_pos):
 	dragging = true
@@ -145,7 +149,9 @@ func _on_0_mouse_entered():
 			equip_tip.tab = tab
 			#var inventory_origin = get_node("/root/currentScene/UI/Control/Inventory").get_global_transform_with_canvas().origin
 			var inventory_origin = get_node("/root/GameWorld/UI/Control/Inventory").rect_global_position
-			equip_tip.rect_position.x = inventory_origin.x - (equip_tip.rect_size.x * equip_tip.rect_scale.x)
+			#equip_tip.rect_position.x = inventory_origin.x - (equip_tip.rect_size.x * equip_tip.rect_scale.x)
+			equip_tip.rect_position.x = inventory_origin.x - (equip_tip.rect_size.x * .72)
+			#print((equip_tip.rect_size.x * .7))
 			equip_tip.rect_position.y = inventory_origin.y
 			add_child(equip_tip)
 			yield(get_tree().create_timer(0.35), "timeout")

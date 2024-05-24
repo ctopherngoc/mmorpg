@@ -21,6 +21,7 @@ script = ExtResource( 6 )
 [node name="Control" type="Control" parent="Control"]
 anchor_right = 1.0
 anchor_bottom = 0.893
+margin_top = 583.0
 margin_right = 1.0
 margin_bottom = 0.039978
 
@@ -64,7 +65,7 @@ rect_scale = Vector2( 0.7, 0.7 )
 
 [node name="PlayerHUD" parent="Control" instance=ExtResource( 1 )]
 anchor_left = 0.00078125
-anchor_right = 1.00078
+anchor_right = 0.00703125
 __meta__ = {
 "_edit_use_anchors_": true
 }

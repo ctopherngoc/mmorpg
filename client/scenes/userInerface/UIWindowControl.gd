@@ -31,7 +31,7 @@ data["origin_node"] = self
 		data["tab"] = tab
 		"""
 func drop_data(_pos,data):
-	pass
+	print("dropped item")
 	# dropping item from inventory
 	"""
 	if data.item_data.unique:
@@ -48,7 +48,8 @@ func drop_data(_pos,data):
 	"""
 	
 func can_drop_data(_pos, data):
-	pass
+	print("in can drop data")
+	return true
 	# check if we can drop item into slow
 	# if slot is null -> move item
 #	if item_data.id == null:
