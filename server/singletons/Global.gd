@@ -188,7 +188,7 @@ func npc_hit(dmg: int, npc: KinematicBody2D, player: String):
 				else:
 					player_container.experience(int(round(damage_percent * npc.stats.experience)))
 				var drop_list = dropGeneration(npc.id)
-				dropSpawn(npc.map_id, npc.position, drop_list, highest_attacker)
+				dropSpawn(npc.map_id, npc.position, drop_list, int(highest_attacker))
 		# drop items from npc location
 		npc.die()
 	print("monster: " + npc.name + " health: " + str(npc.stats.currentHP))
