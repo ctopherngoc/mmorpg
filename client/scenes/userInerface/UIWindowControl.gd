@@ -30,11 +30,39 @@ data["origin_node"] = self
 		data["from_slot"] = slot_index
 		data["tab"] = tab
 		"""
-func drop_data(_pos,data):
+func drop_data(_pos, data):
 	print("dropped item")
 	# dropping item from inventory
+	if not GameData.itemTable[data.item_data.id].droppable:
+		print("are you sure you want to drop?")
+		var drop_bool = true
+		
+		if drop_bool:
+			Server.drop_request(data.from_slot, data.tab)
+			# maybe add quantity check here for stackable
+		else:
+			print("no drop unique item")
+	else:
+		if data.q != 1:
+			if data.q > 1:
+				print("popup more than 1 dropped")
+				var quantity = 10
+				Server.drop_request(data.from_slot, data.tab, quantity)
+			else:
+				print("dropping 0 quantity do nothing")
+		else:
+			print("dropping 1 quantity of item")
+			"""
+			data["origin_node"] = self
+			data["origin_texture"] = icon.texture
+			data["item_data"] = item_data
+			data["from_slot"] = slot_index
+			data["tab"] = tab
+			"""
+			Server.drop_request(data.from_slot, data.tab)
+			
 	"""
-	if data.item_data.unique:
+	
 		-> popup are you sure
 	else:
 		if data.item_data.item.type != equipment and data.item_data.q > 1:
