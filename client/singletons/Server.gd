@@ -43,6 +43,7 @@ func connect_to_server() -> void:
 	network.connect("connection_failed", self, "_on_connection_failed")
 	network.connect("connection_succeeded", self, "_on_connection_succeeded")
 	network.connect("server_disconnected", self, "_on_server_disconnect")
+	Signals.connect("drop_quantity", self, "drop_request")
 
 func _on_connection_failed() -> void:
 	print("Failed to connected")

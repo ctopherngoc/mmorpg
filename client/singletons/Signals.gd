@@ -35,6 +35,8 @@ signal toggle_chat_group
 signal send_message
 # warning-ignore:unused_signal
 signal toggle_option_bool
+# warning-ignore:unused_signal
+signal drop_quantity
 
 
 
