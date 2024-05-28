@@ -48,7 +48,6 @@ func _ready() -> void:
 			reqJob.text = "All"
 		else:
 			reqJob.text = GameData.job_dict[str(stats.job)]
-		
 		##########################################################################
 		# aditional equip stats 
 		
@@ -66,10 +65,10 @@ func _ready() -> void:
 			var attack = itemStat.instance()
 			attack.get_node("StatLabel").text = "Attack: "
 			attack.get_node("StatNumber").text =  str(stats.attack)
-			if int(stats.attack) > GameData.equipmentTable[stats.id].attack:
+			if stats.attack > GameData.equipmentTable[stats.id].attack:
 				attack.get_node("StatLabel").set("custom_colors/font_color", Color("00ff15"))
 				attack.get_node("StatNumber").set("custom_colors/font_color", Color("00ff15"))
-			elif int(stats.attack) < GameData.equipmentTable[stats.id].attack:
+			elif stats.attack < GameData.equipmentTable[stats.id].attack:
 				attack.get_node("StatLabel").set("custom_colors/font_color", Color("db0000"))
 				attack.get_node("StatNumber").set("custom_colors/font_color", Color("db0000"))
 			extraStats.add_child(attack)
@@ -78,10 +77,10 @@ func _ready() -> void:
 				var magic = itemStat.instance()
 				magic.get_node("StatLabel").text = "Magic: "
 				magic.get_node("StatNumber").text = str(stats.magic)
-				if int(stats.magic) > GameData.equipmentTable[stats.id].magic:
+				if stats.magic > GameData.equipmentTable[stats.id].magic:
 					magic.get_node("StatLabel").set("custom_colors/font_color", Color("00ff15"))
 					magic.get_node("StatNumber").set("custom_colors/font_color", Color("00ff15"))
-				elif int(stats.magic) < GameData.equipmentTable[stats.id].magic:
+				elif stats.magic < GameData.equipmentTable[stats.id].magic:
 					magic.get_node("StatLabel").set("custom_colors/font_color", Color("db0000"))
 					magic.get_node("StatNumber").set("custom_colors/font_color", Color("db0000"))
 				extraStats.add_child(magic)
@@ -90,10 +89,10 @@ func _ready() -> void:
 				var strength = itemStat.instance()
 				strength.get_node("StatLabel").text = "STR: "
 				strength.get_node("StatNumber").text =  "+" + str(stats.strength)
-				if int(stats.strength) > GameData.equipmentTable[stats.id].strength:
+				if stats.strength > GameData.equipmentTable[stats.id].strength:
 					strength.get_node("StatLabel").set("custom_colors/font_color", Color("00ff15"))
 					strength.get_node("StatNumber").set("custom_colors/font_color", Color("00ff15"))
-				elif int(stats.strength) < GameData.equipmentTable[stats.id].strength:
+				elif stats.strength < GameData.equipmentTable[stats.id].strength:
 					strength.get_node("StatLabel").set("custom_colors/font_color", Color("db0000"))
 					strength.get_node("StatNumber").set("custom_colors/font_color", Color("db0000"))
 				extraStats.add_child(strength)
@@ -102,10 +101,10 @@ func _ready() -> void:
 				var dexterity = itemStat.instance()
 				dexterity.get_node("StatLabel").text = "DEX: "
 				dexterity.get_node("StatNumber").text =  "+" + str(stats.dexterity)
-				if int(stats.dexterity) > GameData.equipmentTable[stats.id].dexterity:
+				if stats.dexterity > GameData.equipmentTable[stats.id].dexterity:
 					dexterity.get_node("StatLabel").set("custom_colors/font_color", Color("00ff15"))
 					dexterity.get_node("StatNumber").set("custom_colors/font_color", Color("00ff15"))
-				elif int(stats.dexterity) < GameData.equipmentTable[stats.id].dexterity:
+				elif stats.dexterity < GameData.equipmentTable[stats.id].dexterity:
 					dexterity.get_node("StatLabel").set("custom_colors/font_color", Color("db0000"))
 					dexterity.get_node("StatNumber").set("custom_colors/font_color", Color("db0000"))
 				extraStats.add_child(dexterity)
@@ -114,10 +113,10 @@ func _ready() -> void:
 				var wisdom = itemStat.instance()
 				wisdom.get_node("StatLabel").text = "WIS: "
 				wisdom.get_node("StatNumber").text =  "+" + str(stats.wisdom)
-				if int(stats.wisdom) > GameData.equipmentTable[stats.id].wisdom:
+				if stats.wisdom > GameData.equipmentTable[stats.id].wisdom:
 					wisdom.get_node("StatLabel").set("custom_colors/font_color", Color("00ff15"))
 					wisdom.get_node("StatNumber").set("custom_colors/font_color", Color("00ff15"))
-				elif int(stats.wisdom) < GameData.equipmentTable[stats.id].wisdom:
+				elif stats.wisdom < GameData.equipmentTable[stats.id].wisdom:
 					wisdom.get_node("StatLabel").set("custom_colors/font_color", Color("db0000"))
 					wisdom.get_node("StatNumber").set("custom_colors/font_color", Color("db0000"))
 				extraStats.add_child(wisdom)
@@ -126,10 +125,10 @@ func _ready() -> void:
 				var luck = itemStat.instance()
 				luck.get_node("StatLabel").text = "LUK: "
 				luck.get_node("StatNumber").text =  "+" + str(stats.luck)
-				if int(stats.luck) > GameData.equipmentTable[stats.id].luck:
+				if stats.luck > GameData.equipmentTable[stats.id].luck:
 					luck.get_node("StatLabel").set("custom_colors/font_color", Color("00ff15"))
 					luck.get_node("StatNumber").set("custom_colors/font_color", Color("00ff15"))
-				elif int(stats.luck) < GameData.equipmentTable[stats.id].luck:
+				elif stats.luck < GameData.equipmentTable[stats.id].luck:
 					luck.get_node("StatLabel").set("custom_colors/font_color", Color("db0000"))
 					luck.get_node("StatNumber").set("custom_colors/font_color", Color("db0000"))
 				extraStats.add_child(luck)
@@ -138,10 +137,10 @@ func _ready() -> void:
 				var critRate = itemStat.instance()
 				critRate.get_node("StatLabel").text = "Crit Rate: "
 				critRate.get_node("StatNumber").text =  "+" + str(stats.critRate) + "%"
-				if int(stats.critRate) > GameData.equipmentTable[stats.id].critRate:
+				if stats.critRate > GameData.equipmentTable[stats.id].critRate:
 					critRate.get_node("StatLabel").set("custom_colors/font_color", Color("00ff15"))
 					critRate.get_node("StatNumber").set("custom_colors/font_color", Color("00ff15"))
-				elif int(stats.critRate) < GameData.equipmentTable[stats.id].critRate:
+				elif stats.critRate < GameData.equipmentTable[stats.id].critRate:
 					critRate.get_node("StatLabel").set("custom_colors/font_color", Color("db0000"))
 					critRate.get_node("StatNumber").set("custom_colors/font_color", Color("db0000"))
 				extraStats.add_child(critRate)
@@ -150,10 +149,10 @@ func _ready() -> void:
 				var bossPercent = itemStat.instance()
 				bossPercent.get_node("StatLabel").text = "Boss Damage: "
 				bossPercent.get_node("StatNumber").text =  "+" + str(stats.bossPercent) + "%"
-				if int(stats.bossPercent) > GameData.equipmentTable[stats.id].bossPercent:
+				if stats.bossPercent > GameData.equipmentTable[stats.id].bossPercent:
 					bossPercent.get_node("StatLabel").set("custom_colors/font_color", Color("00ff15"))
 					bossPercent.get_node("StatNumber").set("custom_colors/font_color", Color("00ff15"))
-				elif int(stats.bossPercent) < GameData.equipmentTable[stats.id].bossPercent:
+				elif stats.bossPercent < GameData.equipmentTable[stats.id].bossPercent:
 					bossPercent.get_node("StatLabel").set("custom_colors/font_color", Color("db0000"))
 					bossPercent.get_node("StatNumber").set("custom_colors/font_color", Color("db0000"))
 				extraStats.add_child(bossPercent)
@@ -162,10 +161,10 @@ func _ready() -> void:
 				var damagePercent = itemStat.instance()
 				damagePercent.get_node("StatLabel").text = "Total Damage: "
 				damagePercent.get_node("StatNumber").text =  "+" + str(stats.damagePercent) + "%"
-				if int(stats.damagePercent) > GameData.equipmentTable[stats.id].damagePercent:
+				if stats.damagePercent > GameData.equipmentTable[stats.id].damagePercent:
 					damagePercent.get_node("StatLabel").set("custom_colors/font_color", Color("00ff15"))
 					damagePercent.get_node("StatNumber").set("custom_colors/font_color", Color("00ff15"))
-				elif int(stats.damagePercent) < GameData.equipmentTable[stats.id].damagePercent:
+				elif stats.damagePercent < GameData.equipmentTable[stats.id].damagePercent:
 					damagePercent.get_node("StatLabel").set("custom_colors/font_color", Color("db0000"))
 					damagePercent.get_node("StatNumber").set("custom_colors/font_color", Color("db0000"))
 				extraStats.add_child(damagePercent)
@@ -174,10 +173,10 @@ func _ready() -> void:
 				var accuracy = itemStat.instance()
 				accuracy.get_node("StatLabel").text = "Total Damage: "
 				accuracy.get_node("StatNumber").text =  "+" + str(stats.accuracy)
-				if int(stats.accuracy) > GameData.equipmentTable[stats.id].accuracy:
+				if stats.accuracy > GameData.equipmentTable[stats.id].accuracy:
 					accuracy.get_node("StatLabel").set("custom_colors/font_color", Color("00ff15"))
 					accuracy.get_node("StatNumber").set("custom_colors/font_color", Color("00ff15"))
-				elif int(stats.accuracy) < GameData.equipmentTable[stats.id].accuracy:
+				elif stats.accuracy < GameData.equipmentTable[stats.id].accuracy:
 					accuracy.get_node("StatLabel").set("custom_colors/font_color", Color("db0000"))
 					accuracy.get_node("StatNumber").set("custom_colors/font_color", Color("db0000"))
 				extraStats.add_child(accuracy)
@@ -186,10 +185,10 @@ func _ready() -> void:
 				var maxHealth = itemStat.instance()
 				maxHealth.get_node("StatLabel").text = "Health: "
 				maxHealth.get_node("StatNumber").text =  "+" + str(stats.maxHealth)
-				if int(stats.maxHealth) > GameData.equipmentTable[stats.id].maxHealth:
+				if stats.maxHealth > GameData.equipmentTable[stats.id].maxHealth:
 					maxHealth.get_node("StatLabel").set("custom_colors/font_color", Color("00ff15"))
 					maxHealth.get_node("StatNumber").set("custom_colors/font_color", Color("00ff15"))
-				elif int(stats.maxHealth) < GameData.equipmentTable[stats.id].maxHealth:
+				elif stats.maxHealth < GameData.equipmentTable[stats.id].maxHealth:
 					maxHealth.get_node("StatLabel").set("custom_colors/font_color", Color("db0000"))
 					maxHealth.get_node("StatNumber").set("custom_colors/font_color", Color("db0000"))
 				extraStats.add_child(maxHealth)
@@ -198,10 +197,10 @@ func _ready() -> void:
 				var maxMana = itemStat.instance()
 				maxMana.get_node("StatLabel").text = "Mana: "
 				maxMana.get_node("StatNumber").text =  "+" + str(stats.maxMana)
-				if int(stats.maxMana) > GameData.equipmentTable[stats.id].maxMana:
+				if stats.maxMana > GameData.equipmentTable[stats.id].maxMana:
 					maxMana.get_node("StatLabel").set("custom_colors/font_color", Color("00ff15"))
 					maxMana.get_node("StatNumber").set("custom_colors/font_color", Color("00ff15"))
-				elif int(stats.maxMana) < GameData.equipmentTable[stats.id].maxMana:
+				elif stats.maxMana < GameData.equipmentTable[stats.id].maxMana:
 					maxMana.get_node("StatLabel").set("custom_colors/font_color", Color("db0000"))
 					maxMana.get_node("StatNumber").set("custom_colors/font_color", Color("db0000"))
 				extraStats.add_child(maxMana)
@@ -210,10 +209,10 @@ func _ready() -> void:
 				var defense = itemStat.instance()
 				defense.get_node("StatLabel").text = "W.Defense: "
 				defense.get_node("StatNumber").text =  "+" + str(stats.defense)
-				if int(stats.defense) > GameData.equipmentTable[stats.id].defense:
+				if stats.defense > GameData.equipmentTable[stats.id].defense:
 					defense.get_node("StatLabel").set("custom_colors/font_color", Color("00ff15"))
 					defense.get_node("StatNumber").set("custom_colors/font_color", Color("00ff15"))
-				elif int(stats.defense) < GameData.equipmentTable[stats.id].defense:
+				elif stats.defense < GameData.equipmentTable[stats.id].defense:
 					defense.get_node("StatLabel").set("custom_colors/font_color", Color("db0000"))
 					defense.get_node("StatNumber").set("custom_colors/font_color", Color("db0000"))
 				extraStats.add_child(defense)
@@ -222,10 +221,10 @@ func _ready() -> void:
 				var magicDefense = itemStat.instance()
 				magicDefense.get_node("StatLabel").text = "M.Defense: "
 				magicDefense.get_node("StatNumber").text =  "+" + str(stats.magicDefense)
-				if int(stats.magicDefense) > GameData.equipmentTable[stats.id].magicDefense:
+				if stats.magicDefense > GameData.equipmentTable[stats.id].magicDefense:
 					magicDefense.get_node("StatLabel").set("custom_colors/font_color", Color("00ff15"))
 					magicDefense.get_node("StatNumber").set("custom_colors/font_color", Color("00ff15"))
-				elif int(stats.magicDefense) < GameData.equipmentTable[stats.id].magicDefense:
+				elif stats.magicDefense < GameData.equipmentTable[stats.id].magicDefense:
 					magicDefense.get_node("StatLabel").set("custom_colors/font_color", Color("db0000"))
 					magicDefense.get_node("StatNumber").set("custom_colors/font_color", Color("db0000"))
 				extraStats.add_child(magicDefense)
@@ -234,10 +233,10 @@ func _ready() -> void:
 				var avoidability = itemStat.instance()
 				avoidability.get_node("StatLabel").text = "Avoid: "
 				avoidability.get_node("StatNumber").text =  "+" + str(stats.avoidability)
-				if int(stats.avoidability) > GameData.equipmentTable[stats.id].avoidability:
+				if stats.avoidability > GameData.equipmentTable[stats.id].avoidability:
 					avoidability.get_node("StatLabel").text.set("custom_colors/font_color", Color("00ff15"))
 					avoidability.get_node("StatNumber").text.set("custom_colors/font_color", Color("00ff15"))
-				elif int(stats.avoidability) < GameData.equipmentTable[stats.id].avoidability:
+				elif stats.avoidability < GameData.equipmentTable[stats.id].avoidability:
 					avoidability.get_node("StatLabel").text.set("custom_colors/font_color", Color("db0000"))
 					avoidability.get_node("StatNumber").text.set("custom_colors/font_color", Color("db0000"))
 				extraStats.add_child(avoidability)
@@ -246,10 +245,10 @@ func _ready() -> void:
 				var movementSpeed = itemStat.instance()
 				movementSpeed.get_node("StatLabel").text = "Speed: "
 				movementSpeed.get_node("StatNumber").text =  "+" + str(stats.movementSpeed)
-				if int(stats.movementSpeed) > GameData.equipmentTable[stats.id].movementSpeed:
+				if stats.movementSpeed > GameData.equipmentTable[stats.id].movementSpeed:
 					movementSpeed.get_node("StatLabel").text.set("custom_colors/font_color", Color("00ff15"))
 					movementSpeed.get_node("StatNumber").text.set("custom_colors/font_color", Color("00ff15"))
-				elif int(stats.movementSpeed) < GameData.equipmentTable[stats.id].movementSpeed:
+				elif stats.movementSpeed < GameData.equipmentTable[stats.id].movementSpeed:
 					movementSpeed.get_node("StatLabel").text.set("custom_colors/font_color", Color("db0000"))
 					movementSpeed.get_node("StatNumber").text.set("custom_colors/font_color", Color("db0000"))
 				extraStats.add_child(movementSpeed)
@@ -258,10 +257,10 @@ func _ready() -> void:
 				var jumpSpeed = itemStat.instance()
 				jumpSpeed.get_node("StatLabel").text = "Jump: "
 				jumpSpeed.get_node("StatNumber").text =  "+" + str(stats.jumpSpeed)
-				if int(stats.jumpSpeed) > GameData.equipmentTable[stats.id].jumpSpeed:
+				if stats.jumpSpeed > GameData.equipmentTable[stats.id].jumpSpeed:
 					jumpSpeed.get_node("StatLabel").text.set("custom_colors/font_color", Color("00ff15"))
 					jumpSpeed.get_node("StatNumber").text.set("custom_colors/font_color", Color("00ff15"))
-				elif int(stats.jumpSpeed) < GameData.equipmentTable[stats.id].jumpSpeed:
+				elif stats.jumpSpeed < GameData.equipmentTable[stats.id].jumpSpeed:
 					jumpSpeed.get_node("StatLabel").text.set("custom_colors/font_color", Color("db0000"))
 					jumpSpeed.get_node("StatNumber").text.set("custom_colors/font_color", Color("db0000"))
 				extraStats.add_child(jumpSpeed)
