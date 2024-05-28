@@ -13,6 +13,8 @@ var item_data = {
 	"q": null,
 }
 
+onready var item_info_child_list: Array
+
 onready var icon = $Icon
 onready var label = $VBoxContainer/Label
 var dragging = false
@@ -22,8 +24,7 @@ func _ready():
 	
 func _notification(what):
 	if what == 22:
-		if get_node_or_null("ItemInfo"):
-			get_node("ItemInfo").free()
+		item_info_free()
 
 func get_drag_data(_pos):
 	dragging = true
@@ -185,9 +186,9 @@ func _on_0_mouse_exited():
 #		#print("equipment tip queue_free")
 #		get_node("EquipInfo").free()
 #	else:
-	if get_node_or_null("ItemInfo"):
-		get_node("ItemInfo").free()
+	item_info_free()
 	
 func item_info_free():
-	if get_node_or_null("ItemInfo"):
-		get_node("ItemInfo").free()
+	for node in self.get_children():
+		if "ItemInfo" in node.name:
+			node.queue_free()
