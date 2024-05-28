@@ -28,7 +28,7 @@ func move_window_to_top(node):
 """
 data["origin_node"] = self
 		data["origin_texture"] = icon.texture
-		data["item_data"] = item_data
+		data["item_data"] = item_data {id, name, q}
 		data["from_slot"] = slot_index
 		data["tab"] = tab
 		"""
@@ -40,17 +40,21 @@ func drop_data(_pos, data):
 		var drop_confirm =  drop_confirm_popup.instance()
 		drop_confirm.data = data
 		self.add_child(drop_confirm)
-	elif data.item_data.q != 1:
+	elif data.item_data.q:
+		print(data.item_data)
 		if data.item_data.q > 1:
 			print("popup more than 1 dropped")
 			var new_quantity_popup = quantity_popup.instance()
-			new_quantity_popup.item_data = data
+			new_quantity_popup.data = data
 			self.add_child(new_quantity_popup)
 			#Server.drop_request(data.from_slot, data.tab, quantity)
-		else:
+		elif data.item_data.q == 0:
+			print(data.item_data.q)
 			print("dropping 0 quantity do nothing")
+		else:
+			Server.drop_request(data.from_slot, data.tab)
 	else:
-		print("dropping 1 quantity of item")
+		print("dropping equipment")
 		"""
 		data["origin_node"] = self
 		data["origin_texture"] = icon.texture
@@ -61,6 +65,6 @@ func drop_data(_pos, data):
 		Server.drop_request(data.from_slot, data.tab)
 	
 func can_drop_data(_pos, data):
-	print("in can drop data")
+	#print("in can drop data")
 	return true
 
