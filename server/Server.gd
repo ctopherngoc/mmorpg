@@ -638,9 +638,9 @@ remote func send_chat(text: String, chat_type: int) -> void:
 
 remote func drop_request(slot: int, tab: String, quantity: int) -> void:
 	var player_id = get_tree().get_rpc_sender_id()
-	print("%s requesting to drop %s %s" % [player_id, quantity, player_id.current_character.inventory[tab][slot]])
 	var player_container = _Server_Get_Player_Container(player_id)
-	var player_position = player_container.position()
+	#print("%s requesting to drop %s %s" % [player_id, quantity, player_container.current_character.inventory[(tab)][slot]])
+	var player_position = player_container.position
 	var map_id = _Server_Get_Player_Map(player_id)
 	Global.player_drop_item(player_container, player_position, map_id, tab, slot, quantity)
 	
