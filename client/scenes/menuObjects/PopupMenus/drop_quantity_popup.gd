@@ -1,4 +1,4 @@
-extends Popup
+extends Panel
 
 onready var drop_button = $ColorRect/VBoxContainer/HBoxContainer2/Button
 onready var quantity_error = $IncorrectQuantity
@@ -13,7 +13,7 @@ onready var data
 onready var button = $ColorRect/VBoxContainer/HBoxContainer2/Button
 func _ready():
 	$IncorrectQuantity.window_title = ""
-	$IncorrectQuantity.align = HALIGN_CENTER
+	$IncorrectQuantity.get_child(1).align = HALIGN_CENTER
 	
 # drop_request(slot: int, tab: String, quantity: int = 1) 
 func _on_Button_pressed():
