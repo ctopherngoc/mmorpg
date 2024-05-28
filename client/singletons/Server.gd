@@ -170,7 +170,7 @@ remote func already_logged_in() -> void:
 # Player functions
 remote func despawn_player(player_id: int) -> void:
 	print("server.gd: despawn player")
-	var other_players = get_node("/root/GameWorld/MapNode/Map/OtherPlayers")
+	var other_players = get_node("/root/GameWorld/MapNode/%s/OtherPlayers"% Global.current_map) 
 	for player in other_players.get_children():
 		print(str(player) + str(player_id))
 		if player.name == str(player_id):
@@ -204,9 +204,9 @@ remote func receive_attack(player_id, attack_time):
 	print(typeof(player_id), " ", typeof(attack_time))
 	if player_id == get_tree().get_network_unique_id():
 		print("self attack: pass")
-	elif get_node("/root/GameWorld/MapNode/Map/OtherPlayers").has_node(str(player_id)):
+	elif get_node("/root/GameWorld/MapNode/%s/OtherPlayers" % Global.current_map).has_node(str(player_id)):
 		print(str(player_id) + " attack")
-		var player = get_node("/root/GameWorld/MapNode/Map/OtherPlayers/%s" % player_id)
+		var player = get_node("/root/GameWorld/MapNode/%s/OtherPlayers/%s" % [Global.current_map,player_id])
 		player.attack_dict[attack_time] = {"A": "stab"}
 	else:
 		pass
@@ -292,7 +292,8 @@ remote func return_player_input(server_input_results):
 
 remote func receive_climb_data(climb_data: int) -> void:
 	if Global.in_game:
-		var player = get_node("/root/GameWorld/Player")
+		#var player = get_node("/root/GameWorld/Player")
+		var player = get_node("/root/GameWorld/MapNode/%s/Player" % Global.current_map)
 		if climb_data == 2:
 			#print("server: is climbing")
 			player.can_climb = true
