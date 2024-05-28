@@ -7,8 +7,7 @@
 [ext_resource path="res://scenes/userInerface/PlayerStats.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scenes/userInerface/UIWindowControl.gd" type="Script" id=6]
 [ext_resource path="res://scenes/userInerface/InGameUI/ChatBox.tscn" type="PackedScene" id=7]
-
-[sub_resource type="Theme" id=1]
+[ext_resource path="res://scenes/userInerface/InGameUI/KeyBinds.tscn" type="PackedScene" id=8]
 
 [node name="UI" type="CanvasLayer"]
 script = ExtResource( 2 )
@@ -25,15 +24,7 @@ margin_top = 583.0
 margin_right = 1.0
 margin_bottom = 0.039978
 
-[node name="Control2" type="Panel" parent="Control/Control"]
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = -674.0
-margin_top = -57.0
-margin_bottom = -3.0
-theme = SubResource( 1 )
+[node name="KeyBinds" parent="Control/Control" instance=ExtResource( 8 )]
 
 [node name="ChatBox" parent="Control/Control" instance=ExtResource( 7 )]
 anchor_top = 1.0

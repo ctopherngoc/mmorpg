@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://resources/Fonts/ui_font.tres" type="DynamicFont" id=1]
 [ext_resource path="res://scenes/userInerface/PlayerInfo.gd" type="Script" id=2]
@@ -7,6 +7,11 @@
 [ext_resource path="res://assets/UI/Bar Progression/blue.png" type="Texture" id=5]
 [ext_resource path="res://assets/UI/Bar Progression/red.png" type="Texture" id=6]
 [ext_resource path="res://scenes/menuObjects/Options/godot-simpleTheme-master/simpleTheme.tres" type="Theme" id=7]
+[ext_resource path="res://assets/fonts/xolonium/xolonium-fonts-4.1/ttf/Xolonium-Regular.ttf" type="DynamicFontData" id=8]
+
+[sub_resource type="DynamicFont" id=1]
+size = 10
+font_data = ExtResource( 8 )
 
 [node name="PlayerInfo" type="Control"]
 anchor_top = 1.0
@@ -33,17 +38,16 @@ color = Color( 0.207031, 0.207031, 0.207031, 1 )
 [node name="HBoxContainer" type="HBoxContainer" parent="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_bottom = -1.0
 size_flags_horizontal = 3
 
 [node name="MarginContainer" type="MarginContainer" parent="Control/HBoxContainer"]
 margin_right = 8.0
-margin_bottom = 82.0
+margin_bottom = 80.0
 
 [node name="characterInfo" type="VBoxContainer" parent="Control/HBoxContainer"]
 margin_left = 12.0
 margin_right = 92.0
-margin_bottom = 82.0
+margin_bottom = 80.0
 rect_min_size = Vector2( 80, 0 )
 size_flags_vertical = 3
 
@@ -93,25 +97,20 @@ __meta__ = {
 "_edit_use_anchors_": true
 }
 
-[node name="ColorRect" type="ColorRect" parent="Control/HBoxContainer/characterInfo"]
-margin_top = 82.0
-margin_right = 80.0
-margin_bottom = 82.0
-
 [node name="fillBars" type="VBoxContainer" parent="Control/HBoxContainer"]
 margin_left = 96.0
 margin_right = 606.0
-margin_bottom = 82.0
+margin_bottom = 80.0
 
 [node name="hpmpBar" type="HBoxContainer" parent="Control/HBoxContainer/fillBars"]
 margin_right = 510.0
-margin_bottom = 39.0
+margin_bottom = 38.0
 rect_min_size = Vector2( 510, 0 )
 size_flags_vertical = 3
 
 [node name="HealthVBar" type="VBoxContainer" parent="Control/HBoxContainer/fillBars/hpmpBar"]
 margin_right = 253.0
-margin_bottom = 39.0
+margin_bottom = 38.0
 size_flags_horizontal = 3
 
 [node name="Control" type="Control" parent="Control/HBoxContainer/fillBars/hpmpBar/HealthVBar"]
@@ -128,7 +127,7 @@ texture_progress = ExtResource( 6 )
 margin_left = 20.0
 margin_top = 12.0
 margin_right = 252.0
-margin_bottom = 65.0
+margin_bottom = 59.0
 size_flags_vertical = 0
 theme = ExtResource( 7 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
@@ -149,7 +148,7 @@ text = "100/100"
 [node name="MPVBar" type="VBoxContainer" parent="Control/HBoxContainer/fillBars/hpmpBar"]
 margin_left = 257.0
 margin_right = 510.0
-margin_bottom = 39.0
+margin_bottom = 38.0
 size_flags_horizontal = 3
 
 [node name="Control" type="Control" parent="Control/HBoxContainer/fillBars/hpmpBar/MPVBar"]
@@ -184,13 +183,13 @@ text = "100/100
 "
 
 [node name="EXPVBar" type="HBoxContainer" parent="Control/HBoxContainer/fillBars"]
-margin_top = 43.0
+margin_top = 42.0
 margin_right = 510.0
-margin_bottom = 82.0
+margin_bottom = 80.0
 size_flags_vertical = 3
 
 [node name="Control" type="Control" parent="Control/HBoxContainer/fillBars/EXPVBar"]
-margin_bottom = 39.0
+margin_bottom = 38.0
 
 [node name="TextureProgress" type="TextureProgress" parent="Control/HBoxContainer/fillBars/EXPVBar/Control"]
 margin_left = 4.0
@@ -204,10 +203,10 @@ texture_under = ExtResource( 3 )
 texture_progress = ExtResource( 4 )
 
 [node name="exp" type="Label" parent="Control/HBoxContainer/fillBars/EXPVBar/Control"]
-margin_left = 48.421
+margin_left = 48.0
 margin_top = 4.0
-margin_right = 280.421
-margin_bottom = 57.0
+margin_right = 80.0
+margin_bottom = 51.0
 size_flags_vertical = 0
 theme = ExtResource( 7 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
@@ -226,3 +225,659 @@ theme = ExtResource( 7 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_fonts/font = ExtResource( 1 )
 text = "100/100"
+
+[node name="MarginContainer2" type="MarginContainer" parent="Control/HBoxContainer"]
+margin_left = 610.0
+margin_right = 618.0
+margin_bottom = 80.0
+
+[node name="KeybindShortcut" type="VBoxContainer" parent="Control/HBoxContainer"]
+margin_left = 622.0
+margin_right = 1268.0
+margin_bottom = 80.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/HBoxContainer/KeybindShortcut"]
+margin_right = 646.0
+margin_bottom = 2.0
+rect_min_size = Vector2( 0, 2 )
+size_flags_horizontal = 3
+
+[node name="GridContainer" type="GridContainer" parent="Control/HBoxContainer/KeybindShortcut"]
+margin_top = 6.0
+margin_right = 646.0
+margin_bottom = 74.0
+size_flags_horizontal = 3
+columns = 16
+
+[node name="shift" type="ColorRect" parent="Control/HBoxContainer/KeybindShortcut/GridContainer"]
+margin_right = 32.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="SkillIcon" type="Control" parent="Control/HBoxContainer/KeybindShortcut/GridContainer/shift"]
+margin_right = 32.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="Label" type="Label" parent="Control/HBoxContainer/KeybindShortcut/GridContainer/shift"]
+margin_left = 1.0
+margin_right = 32.0
+margin_bottom = 32.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 1 )
+text = "shift"
+
+[node name="insert" type="ColorRect" parent="Control/HBoxContainer/KeybindShortcut/GridContainer"]
+margin_left = 36.0
+margin_right = 68.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="SkillIcon" type="Control" parent="Control/HBoxContainer/KeybindShortcut/GridContainer/insert"]
+margin_right = 32.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="Label" type="Label" parent="Control/HBoxContainer/KeybindShortcut/GridContainer/insert"]
+margin_left = 1.0
+margin_right = 32.0
+margin_bottom = 32.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 1 )
+text = "ins"
+
+[node name="home" type="ColorRect" parent="Control/HBoxContainer/KeybindShortcut/GridContainer"]
+margin_left = 72.0
+margin_right = 104.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="SkillIcon" type="Control" parent="Control/HBoxContainer/KeybindShortcut/GridContainer/home"]
+margin_right = 32.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="Label" type="Label" parent="Control/HBoxContainer/KeybindShortcut/GridContainer/home"]
+margin_left = 1.0
+margin_right = 32.0
+margin_bottom = 32.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 1 )
+text = "home"
+
+[node name="pgup" type="ColorRect" parent="Control/HBoxContainer/KeybindShortcut/GridContainer"]
+margin_left = 108.0
+margin_right = 140.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="SkillIcon" type="Control" parent="Control/HBoxContainer/KeybindShortcut/GridContainer/pgup"]
+margin_right = 32.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="Label" type="Label" parent="Control/HBoxContainer/KeybindShortcut/GridContainer/pgup"]
+margin_left = 1.0
+margin_right = 32.0
+margin_bottom = 32.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 1 )
+text = "pgup"
+
+[node name="1" type="ColorRect" parent="Control/HBoxContainer/KeybindShortcut/GridContainer"]
+margin_left = 144.0
+margin_right = 176.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="SkillIcon" type="Control" parent="Control/HBoxContainer/KeybindShortcut/GridContainer/1"]
+margin_right = 32.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="Label" type="Label" parent="Control/HBoxContainer/KeybindShortcut/GridContainer/1"]
+margin_left = 1.0
+margin_right = 32.0
+margin_bottom = 32.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 1 )
+text = "1"
+
+[node name="2" type="ColorRect" parent="Control/HBoxContainer/KeybindShortcut/GridContainer"]
+margin_left = 180.0
+margin_right = 212.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="SkillIcon" type="Control" parent="Control/HBoxContainer/KeybindShortcut/GridContainer/2"]
+margin_right = 32.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="Label" type="Label" parent="Control/HBoxContainer/KeybindShortcut/GridContainer/2"]
+margin_left = 1.0
+margin_right = 32.0
+margin_bottom = 32.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 1 )
+text = "2"
+
+[node name="3" type="ColorRect" parent="Control/HBoxContainer/KeybindShortcut/GridContainer"]
+margin_left = 216.0
+margin_right = 248.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="SkillIcon" type="Control" parent="Control/HBoxContainer/KeybindShortcut/GridContainer/3"]
+margin_right = 32.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="Label" type="Label" parent="Control/HBoxContainer/KeybindShortcut/GridContainer/3"]
+margin_left = 1.0
+margin_right = 32.0
+margin_bottom = 32.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 1 )
+text = "3"
+
+[node name="4" type="ColorRect" parent="Control/HBoxContainer/KeybindShortcut/GridContainer"]
+margin_left = 252.0
+margin_right = 284.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="SkillIcon" type="Control" parent="Control/HBoxContainer/KeybindShortcut/GridContainer/4"]
+margin_right = 32.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="Label" type="Label" parent="Control/HBoxContainer/KeybindShortcut/GridContainer/4"]
+margin_left = 1.0
+margin_right = 32.0
+margin_bottom = 32.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 1 )
+text = "4"
+
+[node name="5" type="ColorRect" parent="Control/HBoxContainer/KeybindShortcut/GridContainer"]
+margin_left = 288.0
+margin_right = 320.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="SkillIcon" type="Control" parent="Control/HBoxContainer/KeybindShortcut/GridContainer/5"]
+margin_right = 32.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="Label" type="Label" parent="Control/HBoxContainer/KeybindShortcut/GridContainer/5"]
+margin_left = 1.0
+margin_right = 32.0
+margin_bottom = 32.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 1 )
+text = "5"
+
+[node name="6" type="ColorRect" parent="Control/HBoxContainer/KeybindShortcut/GridContainer"]
+margin_left = 324.0
+margin_right = 356.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="SkillIcon" type="Control" parent="Control/HBoxContainer/KeybindShortcut/GridContainer/6"]
+margin_right = 32.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="Label" type="Label" parent="Control/HBoxContainer/KeybindShortcut/GridContainer/6"]
+margin_left = 1.0
+margin_right = 32.0
+margin_bottom = 32.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 1 )
+text = "6"
+
+[node name="7" type="ColorRect" parent="Control/HBoxContainer/KeybindShortcut/GridContainer"]
+margin_left = 360.0
+margin_right = 392.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="SkillIcon" type="Control" parent="Control/HBoxContainer/KeybindShortcut/GridContainer/7"]
+margin_right = 32.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="Label" type="Label" parent="Control/HBoxContainer/KeybindShortcut/GridContainer/7"]
+margin_left = 1.0
+margin_right = 32.0
+margin_bottom = 32.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 1 )
+text = "7"
+
+[node name="8" type="ColorRect" parent="Control/HBoxContainer/KeybindShortcut/GridContainer"]
+margin_left = 396.0
+margin_right = 428.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="SkillIcon" type="Control" parent="Control/HBoxContainer/KeybindShortcut/GridContainer/8"]
+margin_right = 32.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="Label" type="Label" parent="Control/HBoxContainer/KeybindShortcut/GridContainer/8"]
+margin_left = 1.0
+margin_right = 32.0
+margin_bottom = 32.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 1 )
+text = "8"
+
+[node name="9" type="ColorRect" parent="Control/HBoxContainer/KeybindShortcut/GridContainer"]
+margin_left = 432.0
+margin_right = 464.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="SkillIcon" type="Control" parent="Control/HBoxContainer/KeybindShortcut/GridContainer/9"]
+margin_right = 32.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="Label" type="Label" parent="Control/HBoxContainer/KeybindShortcut/GridContainer/9"]
+margin_left = 1.0
+margin_right = 32.0
+margin_bottom = 32.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 1 )
+text = "9"
+
+[node name="0" type="ColorRect" parent="Control/HBoxContainer/KeybindShortcut/GridContainer"]
+margin_left = 468.0
+margin_right = 500.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="SkillIcon" type="Control" parent="Control/HBoxContainer/KeybindShortcut/GridContainer/0"]
+margin_right = 32.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="Label" type="Label" parent="Control/HBoxContainer/KeybindShortcut/GridContainer/0"]
+margin_left = 1.0
+margin_right = 32.0
+margin_bottom = 32.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 1 )
+text = "0"
+
+[node name="-" type="ColorRect" parent="Control/HBoxContainer/KeybindShortcut/GridContainer"]
+margin_left = 504.0
+margin_right = 536.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="SkillIcon" type="Control" parent="Control/HBoxContainer/KeybindShortcut/GridContainer/-"]
+margin_right = 32.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="Label" type="Label" parent="Control/HBoxContainer/KeybindShortcut/GridContainer/-"]
+margin_left = 1.0
+margin_right = 32.0
+margin_bottom = 32.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 1 )
+text = "-"
+
+[node name="=" type="ColorRect" parent="Control/HBoxContainer/KeybindShortcut/GridContainer"]
+margin_left = 540.0
+margin_right = 572.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="SkillIcon" type="Control" parent="Control/HBoxContainer/KeybindShortcut/GridContainer/="]
+margin_right = 32.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="Label" type="Label" parent="Control/HBoxContainer/KeybindShortcut/GridContainer/="]
+margin_left = 1.0
+margin_right = 32.0
+margin_bottom = 32.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 1 )
+text = "="
+
+[node name="ctrl" type="ColorRect" parent="Control/HBoxContainer/KeybindShortcut/GridContainer"]
+margin_top = 36.0
+margin_right = 32.0
+margin_bottom = 68.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="SkillIcon" type="Control" parent="Control/HBoxContainer/KeybindShortcut/GridContainer/ctrl"]
+margin_right = 32.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="Label" type="Label" parent="Control/HBoxContainer/KeybindShortcut/GridContainer/ctrl"]
+margin_left = 1.0
+margin_right = 32.0
+margin_bottom = 32.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 1 )
+text = "ctrl
+"
+
+[node name="del" type="ColorRect" parent="Control/HBoxContainer/KeybindShortcut/GridContainer"]
+margin_left = 36.0
+margin_top = 36.0
+margin_right = 68.0
+margin_bottom = 68.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="SkillIcon" type="Control" parent="Control/HBoxContainer/KeybindShortcut/GridContainer/del"]
+margin_right = 32.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="Label" type="Label" parent="Control/HBoxContainer/KeybindShortcut/GridContainer/del"]
+margin_left = 1.0
+margin_right = 32.0
+margin_bottom = 32.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 1 )
+text = "del"
+
+[node name="end" type="ColorRect" parent="Control/HBoxContainer/KeybindShortcut/GridContainer"]
+margin_left = 72.0
+margin_top = 36.0
+margin_right = 104.0
+margin_bottom = 68.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="SkillIcon" type="Control" parent="Control/HBoxContainer/KeybindShortcut/GridContainer/end"]
+margin_right = 32.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="Label" type="Label" parent="Control/HBoxContainer/KeybindShortcut/GridContainer/end"]
+margin_left = 1.0
+margin_right = 32.0
+margin_bottom = 32.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 1 )
+text = "end"
+
+[node name="pgdn" type="ColorRect" parent="Control/HBoxContainer/KeybindShortcut/GridContainer"]
+margin_left = 108.0
+margin_top = 36.0
+margin_right = 140.0
+margin_bottom = 68.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="SkillIcon" type="Control" parent="Control/HBoxContainer/KeybindShortcut/GridContainer/pgdn"]
+margin_right = 32.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="Label" type="Label" parent="Control/HBoxContainer/KeybindShortcut/GridContainer/pgdn"]
+margin_left = 1.0
+margin_right = 32.0
+margin_bottom = 32.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 1 )
+text = "pgdn"
+
+[node name="F1" type="ColorRect" parent="Control/HBoxContainer/KeybindShortcut/GridContainer"]
+margin_left = 144.0
+margin_top = 36.0
+margin_right = 176.0
+margin_bottom = 68.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="SkillIcon" type="Control" parent="Control/HBoxContainer/KeybindShortcut/GridContainer/F1"]
+margin_right = 32.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="Label" type="Label" parent="Control/HBoxContainer/KeybindShortcut/GridContainer/F1"]
+margin_left = 1.0
+margin_right = 32.0
+margin_bottom = 32.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 1 )
+text = "f1"
+
+[node name="F2" type="ColorRect" parent="Control/HBoxContainer/KeybindShortcut/GridContainer"]
+margin_left = 180.0
+margin_top = 36.0
+margin_right = 212.0
+margin_bottom = 68.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="SkillIcon" type="Control" parent="Control/HBoxContainer/KeybindShortcut/GridContainer/F2"]
+margin_right = 32.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="Label" type="Label" parent="Control/HBoxContainer/KeybindShortcut/GridContainer/F2"]
+margin_left = 1.0
+margin_right = 32.0
+margin_bottom = 32.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 1 )
+text = "f2"
+
+[node name="F3" type="ColorRect" parent="Control/HBoxContainer/KeybindShortcut/GridContainer"]
+margin_left = 216.0
+margin_top = 36.0
+margin_right = 248.0
+margin_bottom = 68.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="SkillIcon" type="Control" parent="Control/HBoxContainer/KeybindShortcut/GridContainer/F3"]
+margin_right = 32.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="Label" type="Label" parent="Control/HBoxContainer/KeybindShortcut/GridContainer/F3"]
+margin_left = 1.0
+margin_right = 32.0
+margin_bottom = 32.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 1 )
+text = "f3"
+
+[node name="F4" type="ColorRect" parent="Control/HBoxContainer/KeybindShortcut/GridContainer"]
+margin_left = 252.0
+margin_top = 36.0
+margin_right = 284.0
+margin_bottom = 68.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="SkillIcon" type="Control" parent="Control/HBoxContainer/KeybindShortcut/GridContainer/F4"]
+margin_right = 32.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="Label" type="Label" parent="Control/HBoxContainer/KeybindShortcut/GridContainer/F4"]
+margin_left = 1.0
+margin_right = 32.0
+margin_bottom = 32.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 1 )
+text = "f4"
+
+[node name="F5" type="ColorRect" parent="Control/HBoxContainer/KeybindShortcut/GridContainer"]
+margin_left = 288.0
+margin_top = 36.0
+margin_right = 320.0
+margin_bottom = 68.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="SkillIcon" type="Control" parent="Control/HBoxContainer/KeybindShortcut/GridContainer/F5"]
+margin_right = 32.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="Label" type="Label" parent="Control/HBoxContainer/KeybindShortcut/GridContainer/F5"]
+margin_left = 1.0
+margin_right = 32.0
+margin_bottom = 32.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 1 )
+text = "f5"
+
+[node name="F6" type="ColorRect" parent="Control/HBoxContainer/KeybindShortcut/GridContainer"]
+margin_left = 324.0
+margin_top = 36.0
+margin_right = 356.0
+margin_bottom = 68.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="SkillIcon" type="Control" parent="Control/HBoxContainer/KeybindShortcut/GridContainer/F6"]
+margin_right = 32.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="Label" type="Label" parent="Control/HBoxContainer/KeybindShortcut/GridContainer/F6"]
+margin_left = 1.0
+margin_right = 32.0
+margin_bottom = 32.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 1 )
+text = "f6
+"
+
+[node name="F7" type="ColorRect" parent="Control/HBoxContainer/KeybindShortcut/GridContainer"]
+margin_left = 360.0
+margin_top = 36.0
+margin_right = 392.0
+margin_bottom = 68.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="SkillIcon" type="Control" parent="Control/HBoxContainer/KeybindShortcut/GridContainer/F7"]
+margin_right = 32.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="Label" type="Label" parent="Control/HBoxContainer/KeybindShortcut/GridContainer/F7"]
+margin_left = 1.0
+margin_right = 32.0
+margin_bottom = 32.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 1 )
+text = "f7"
+
+[node name="F8" type="ColorRect" parent="Control/HBoxContainer/KeybindShortcut/GridContainer"]
+margin_left = 396.0
+margin_top = 36.0
+margin_right = 428.0
+margin_bottom = 68.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="SkillIcon" type="Control" parent="Control/HBoxContainer/KeybindShortcut/GridContainer/F8"]
+margin_right = 32.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="Label" type="Label" parent="Control/HBoxContainer/KeybindShortcut/GridContainer/F8"]
+margin_left = 1.0
+margin_right = 32.0
+margin_bottom = 32.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 1 )
+text = "f8"
+
+[node name="F9" type="ColorRect" parent="Control/HBoxContainer/KeybindShortcut/GridContainer"]
+margin_left = 432.0
+margin_top = 36.0
+margin_right = 464.0
+margin_bottom = 68.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="SkillIcon" type="Control" parent="Control/HBoxContainer/KeybindShortcut/GridContainer/F9"]
+margin_right = 32.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="Label" type="Label" parent="Control/HBoxContainer/KeybindShortcut/GridContainer/F9"]
+margin_left = 1.0
+margin_right = 32.0
+margin_bottom = 32.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 1 )
+text = "f9
+"
+
+[node name="F10" type="ColorRect" parent="Control/HBoxContainer/KeybindShortcut/GridContainer"]
+margin_left = 468.0
+margin_top = 36.0
+margin_right = 500.0
+margin_bottom = 68.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="SkillIcon" type="Control" parent="Control/HBoxContainer/KeybindShortcut/GridContainer/F10"]
+margin_right = 32.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="Label" type="Label" parent="Control/HBoxContainer/KeybindShortcut/GridContainer/F10"]
+margin_left = 1.0
+margin_right = 32.0
+margin_bottom = 32.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 1 )
+text = "f10
+"
+
+[node name="F11" type="ColorRect" parent="Control/HBoxContainer/KeybindShortcut/GridContainer"]
+margin_left = 504.0
+margin_top = 36.0
+margin_right = 536.0
+margin_bottom = 68.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="SkillIcon" type="Control" parent="Control/HBoxContainer/KeybindShortcut/GridContainer/F11"]
+margin_right = 32.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="Label" type="Label" parent="Control/HBoxContainer/KeybindShortcut/GridContainer/F11"]
+margin_left = 1.0
+margin_right = 32.0
+margin_bottom = 32.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 1 )
+text = "f11"
+
+[node name="F12" type="ColorRect" parent="Control/HBoxContainer/KeybindShortcut/GridContainer"]
+margin_left = 540.0
+margin_top = 36.0
+margin_right = 572.0
+margin_bottom = 68.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="SkillIcon" type="Control" parent="Control/HBoxContainer/KeybindShortcut/GridContainer/F12"]
+margin_right = 32.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="Label" type="Label" parent="Control/HBoxContainer/KeybindShortcut/GridContainer/F12"]
+margin_left = 1.0
+margin_right = 32.0
+margin_bottom = 32.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 1 )
+text = "f12"
+
+[node name="MarginContainer3" type="MarginContainer" parent="Control/HBoxContainer"]
+margin_left = 1272.0
+margin_right = 1280.0
+margin_bottom = 80.0
