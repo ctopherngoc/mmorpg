@@ -460,11 +460,6 @@ remote func move_item(inv_data: Array):
 	# update client
 	update_player_stats(player_container)
 
-func _unhandled_input(event):
-	if event is InputEventKey:if event.pressed and event.scancode == KEY_SPACE:
-			move_item([1,0,1])
-			#Global.dropSpawn("100001", Vector2(414, -69), {"100000": 5}, "PlayerContainer")
-		
 func transfer_item_ownership():
 	"""
 	this function should be called when item is traded or looted after previous owner drops.
@@ -646,6 +641,9 @@ remote func drop_request(slot: int, tab: String, quantity: int) -> void:
 	
 	# check if has item
 	
-	
-	
-		
+func _unhandled_input(event):
+	if event is InputEventKey:if event.pressed and event.scancode == KEY_SPACE:
+		var test_dict = ServerData.static_data.player_info.duplicate(true)
+		Firebase.server_dictionary_converter(ServerData.characters_data["1111111"], test_dict)
+		#print(test_dict)
+		print(test_dict.skills)
