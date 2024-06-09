@@ -156,6 +156,18 @@ var static_data = {
 				}#fields
 			}#mapvalue
 		}, #equipment
+		"skills" : {"mapValue" :
+			{"fields" : { "0" : {"mapValue":
+							{"fields":
+								{"0": {"integerValue" : null},
+								"1": {"integerValue": null},
+								"2": {"integerValue": null},
+								} # beginner class skillls
+					} # classes fields
+				} # mapvalue
+			} # fields
+		} # skills-mapvalue
+		}, # skills
 		"inventory" : {"mapValue":
 			{"fields": 
 				{"100000": {'integerValue': null},
@@ -217,6 +229,12 @@ var static_data = {
 				"attack": 0,
 		},
 		}, #stats
+		"skills": {
+			"0" : {"0": 0,
+					"1": 0,
+					"2": 0,
+				},
+		}, # skills
 		"avatar" : {
 			"head": null,
 			"hair": null,
