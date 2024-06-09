@@ -260,37 +260,6 @@ func _server_get_document(path: String, http: HTTPRequest)-> void:
 			for document in document_list:
 				var character = document["name"].replace("projects/godotproject-ef224/databases/(default)/documents/characters/", "")
 				ServerData.characters_data[character] = server_firebase_dictionary_converter(document["fields"])
-		
-## warning-ignore:unused_argument
-#func _server_update_document(http: HTTPRequest, array, action: String) -> void:
-#	#print("server update fb")
-#	#path: user: playerContainer = array
-#	#path: character: playerContainer = dictionary
-#	if action == "server_user":
-#	#if 'users/' in path:
-#		# convert
-#		var user_dict = {}
-#		for user in ServerData.user_characters.keys():
-#			var character_array = []
-#			for character in ServerData.user_characters[user]:
-#				character_array.append({'stringValue':str(character)})
-#			user_dict[str(user)] = {"document": {"fields": {'characters':{'arrayValue':{'values': character_array}}}}}
-#		var body := to_json(user_dict)
-#		var url := DATABASE_URL + "/users"
-#		# warning-ignore:return_value_discarded
-#		http.request(url, _get_request_headers(server_token), false, HTTPClient.METHOD_PATCH, body)
-#		yield(http, "request_completed")
-#	else:
-#		for character in ServerData.username_list.keys():
-#			var fb_data = ServerData.static_data.player_info.duplicate(true)
-#			var ign: String = str(ServerData.username_list[character])
-#			server_dictionary_converter(Global.characters_data[ign], fb_data)
-#			var document := {"fields": fb_data}
-#			var body := to_json(document)
-#			var url := DATABASE_URL + "/characters/" + ign
-#			# warning-ignore:return_value_discarded
-#			http.request(url, _get_request_headers(server_token), false, HTTPClient.METHOD_PATCH, body)
-#			yield(http, "request_completed")
 
 func server_firebase_dictionary_converter(database_data: Dictionary) -> Dictionary:
 	"""
@@ -323,6 +292,20 @@ func server_firebase_dictionary_converter(database_data: Dictionary) -> Dictiona
 	for key in keys:
 		# added situation if value saved as integervalue
 		temp_dict['avatar'][key] = str(shortcut[key]['stringValue'])
+	
+	# skills
+	if database_data.has("skills"):
+		shortcut = database_data["skills"]["mapValue"]["fields"]
+		keys = shortcut.keys()
+		temp_dict['skills'] = {}
+		var job_skills = {}
+		for jobs in keys:
+			var skill_shortcut = shortcut[jobs]["mapValue"]["fields"]
+			job_skills[jobs] = {}
+			for skill in skill_shortcut.keys():
+				# added situation if value saved as integervalue
+				job_skills[jobs][skill] = int(skill_shortcut[skill]['integerValue'])
+		temp_dict['skills'] = job_skills.duplicate(true)
 
 	# equipment
 	shortcut = database_data["equipment"]["mapValue"]["fields"] 
@@ -425,6 +408,24 @@ func server_dictionary_converter(server_data: Dictionary, firebase_data: Diction
 	fb_shortcut = firebase_data['avatar']['mapValue']['fields']
 	for key in shortcut.keys():
 		fb_shortcut[key]['stringValue'] = str(shortcut[key])
+	
+	# skills
+	shortcut = server_data["skills"]
+	fb_shortcut = firebase_data['skills']['mapValue']['fields']
+
+	# skills dictionary
+	var fb_skill_dict = {}
+	# list if job skills dicts
+	#print(shortcut.keys())
+	for job in shortcut.keys():
+		var skill_dict = {}
+		# for each skill in job skills dict
+		for skill in shortcut[job].keys():
+			skill_dict[skill] = {}
+			skill_dict[skill]['integerValue'] = shortcut[job][skill]
+		fb_skill_dict[job] = {"mapValue": {'fields': {}}}
+		fb_skill_dict[job]["mapValue"]["fields"] = skill_dict.duplicate(true)
+	firebase_data['skills']['mapValue']['fields'] = fb_skill_dict.duplicate(true)
 	#################################################################################################
 	# equipment
 	shortcut = server_data["equipment"]
