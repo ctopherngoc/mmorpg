@@ -64,37 +64,43 @@ func poplulate_skills():
 		count += 1
 			
 func update_skills():
-	# inventory_tabs can be changed to global.player.inventory
-	skill_tab_ref = Global.player.skills
-	for tab in skill_tab_data:
-		for skill in tab:
-			var update_skill_container = tab_container.get_node("%s/CenterContainer/GridContainer/%s" % [tab, skill])
-			pass
-#			if inv_ref[tab][count] != null:
-#				# get item node from node_list
-#				var item = inv_ref[tab][count]
-#				var item_node = node_list[tab][count]
-#				#print("in update inventory, item: %s" % item)
-#				var _item_name = GameData.itemTable[str(item['id'])]["itemName"]
-#				item_node.item_data["id"] = str(item['id'])
-#				item_node.item_data["item"] = GameData.itemTable[str(item['id'])]["itemName"]
-#				# if stackable exit number on iventory slot
-#				if tab in stackable_tabs:
-#					item_node.label.text = str(item["q"])
-#					item_node.item_data["q"]= item["q"]
-#				if tab == "equipment":
-#					var temp_item_path = item_path + "equipItems/" + inv_ref[tab][count]["id"] + ".png"
-#					item_node.icon.texture = load(temp_item_path)
-#				elif tab == "use":
-#					var temp_item_path = item_path + "useItems/" + inv_ref[tab][count]["id"] + ".png"
-#					item_node.icon.texture = load(temp_item_path)
-#				elif tab == "etc":
-#					var temp_item_path = item_path + "etcItems/" + inv_ref[tab][count]["id"] + ".png"
-#					item_node.icon.texture = load(temp_item_path)
-#			else:
-#				var item_node = node_list[tab][count]
-#				item_node.item_data = {"id": null,"item": null, "q": null}
-#				item_node.icon.set_texture(null)
+	for job in Global.player.skills.keys():
+		
+		# add into array and create tab
+		if not job in skill_tab_data:
+			skill_tab_data.append(job)
+			
+			var skill_tab_new = tab_container.instance()
+			
+			# change tab name
+			skill_tab_new.name = skill_tab_data.length() - 1
+			var skills_ref = Global.player.skills[job].keys()
+			
+			var skill_count = 0
+			while skill_count < skills_ref.length():
+				var skill_container_new = skill_container_instance.instance()
+				
+				# get skill icon
+				# change to tab number and skill id
+				skill_container_new.get_child("HBoxContainer/NinePatchRect/Icon").texture = load("res://assets/skillSprites/0/icon.png")
+				# get skill name
+				skill_container_new.get_child("HBoxContainer/VBoxContainer/HBoxContainer/Label").text = GameData.skill_data[job][skill_count].name
+				# get skill level
+				skill_container_new.get_child("HBoxContainer/VBoxContainer/HBoxContainer2/Label2").text = str(Global.player.skills[job][skill_count])
+				# if character ap > 1
+				if Global.player.stats.base.ap == 0:
+					skill_container_new.get_child("HBoxContainer/VBoxContainer/HBoxContainer2/Button").visible = false
+				skill_tab_new.add_child(skill_container_new)
+				skill_count += 1
+			tab_container.add_child(skill_tab_new)
+			
+		else:
+			for tab in skill_tab_data:
+				for skill in GameData.skill_data:
+					var update_skill_container = tab_container.get_node("%s/CenterContainer/GridContainer/%s" % [tab, skill])
+					if skill_tab_ref[tab][skill].level != int(update_skill_container.skill_level.text):
+						update_skill_container.skill_level.text = str(skill_tab_ref[tab][skill].level)
+#		
 
 func _on_Header_gui_input(event):
 	if event is InputEventMouseButton:
