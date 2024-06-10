@@ -16,9 +16,9 @@ func drop_data(_pos, data):
 		quantity_label.text = str(data.item_data.q) + " "
 		icon.texture = data["origin_texture"]
 		
-	elif data.has("skill_id"):
-		print("hotkey skill %s" % data.skill_id)
-		pass
+	elif data.has("skill_data"):
+		print("hotkey skill %s" % data.skill_data.id)
+		icon.texture = data["origin_texture"]
 	
 func can_drop_data(_pos, data):
 	print("in %s hotkey" % self.name)
