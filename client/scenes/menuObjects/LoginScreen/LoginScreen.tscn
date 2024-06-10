@@ -32,6 +32,7 @@ align = 1
 margin_top = 18.0
 margin_right = 243.0
 margin_bottom = 42.0
+size_flags_horizontal = 3
 
 [node name="usernameLabel" type="Label" parent="VBoxContainer/username"]
 margin_top = 5.0
@@ -42,9 +43,10 @@ text = "username:"
 
 [node name="LineEdit" type="LineEdit" parent="VBoxContainer/username"]
 margin_left = 72.0
-margin_right = 222.0
+margin_right = 243.0
 margin_bottom = 24.0
 rect_min_size = Vector2( 150, 0 )
+size_flags_horizontal = 3
 placeholder_text = "email"
 caret_blink = true
 caret_blink_speed = 0.5
@@ -53,6 +55,7 @@ caret_blink_speed = 0.5
 margin_top = 46.0
 margin_right = 243.0
 margin_bottom = 70.0
+size_flags_horizontal = 3
 
 [node name="passwordLabel" type="Label" parent="VBoxContainer/password"]
 margin_top = 5.0
@@ -63,9 +66,10 @@ text = "password:"
 
 [node name="LineEdit" type="LineEdit" parent="VBoxContainer/password"]
 margin_left = 68.0
-margin_right = 218.0
+margin_right = 243.0
 margin_bottom = 24.0
 rect_min_size = Vector2( 150, 0 )
+size_flags_horizontal = 3
 secret = true
 placeholder_text = "password"
 caret_blink = true
@@ -75,16 +79,19 @@ caret_blink_speed = 0.5
 margin_top = 74.0
 margin_right = 243.0
 margin_bottom = 98.0
+size_flags_horizontal = 3
 
 [node name="Button" type="Button" parent="VBoxContainer/loginButton"]
 margin_right = 46.0
 margin_bottom = 24.0
+size_flags_horizontal = 3
 text = "Login"
 
 [node name="RegisterButton" type="Button" parent="VBoxContainer/loginButton"]
 margin_left = 50.0
 margin_right = 114.0
 margin_bottom = 24.0
+size_flags_horizontal = 3
 text = "Register"
 
 [node name="CheckBox" type="CheckBox" parent="VBoxContainer/loginButton"]
