@@ -16,49 +16,61 @@ var drag_position = null
 # Called when the node enters the scene tree for the first time.
 func _ready():
 # warning-ignore:return_value_discarded
-	Signals.connect("update_inventory", self, "update_skills")
+	Signals.connect("update_skills", self, "update_skills")
 # warning-ignore:return_value_discarded
-	Signals.connect("toggle_inventory", self, "toggle_skills")
+	Signals.connect("toggle_skills", self, "toggle_skills")
+	
 	poplulate_skills()
 
 	# scroll through tabs (equip, use, etc) notmade yet
 func poplulate_skills():
 	# inventory_tabs can be changed to global.player.inventory
 	skill_tab_ref = Global.player.skills
+	#print(skill_tab_ref)
 	var tabs = skill_tab_ref.keys()
+	#print("keys: %s" % tabs)
+	#print("typeof: %s" % typeof(tabs[0]))
 	
 	# for job tab
 	var count = 0
 	var tab_count = 0
 	while count < 10:
-		if count in tabs:
+		if str(count) in tabs:
+			#print(count)
 			# reference to tab order of character
 			skill_tab_data.append(count)
 			
 			# create tab instance
-			var skill_tab_new = tab_container.instance()
+			var skill_tab_new = skill_tabs.instance()
 			
 			# change tab name
-			skill_tab_new.name = tab_count
-			var skills_ref = skill_tab_ref[tab_count].keys()
-			
+			skill_tab_new.name = str(tab_count)
+			var skills_ref = skill_tab_ref[str(tab_count)].keys()
+			skills_ref.sort()
+			#print("skills_ref: ", skills_ref)
 			tab_count += 1
-			
 			var skill_count = 0
-			while skill_count < skills_ref.length():
+			
+			while skill_count < skills_ref.size():
 				var skill_container_new = skill_container_instance.instance()
+				
+				# get skill name
+				skill_container_new.get_node("HBoxContainer/VBoxContainer/HBoxContainer/Label").text = GameData.skill_data[tab_count-1][skill_count].name
+				skill_container_new.skill_data.id = GameData.skill_data[tab_count-1][skill_count].name
+				# get skill level
+				skill_container_new.get_node("HBoxContainer/VBoxContainer/HBoxContainer2/Label2").text = str(skill_tab_ref[str(tab_count-1)][str(skill_count)])
+				skill_container_new.skill_data.level = skill_tab_ref[str(tab_count-1)][str(skill_count)]
 				
 				# get skill icon
 				# change to tab number and skill id
-				skill_container_new.get_child("HBoxContainer/NinePatchRect/Icon").texture = load("res://assets/skillSprites/0/icon.png")
-				# get skill name
-				skill_container_new.get_child("HBoxContainer/VBoxContainer/HBoxContainer/Label").text = GameData.skill_data[tab_count-1][skill_count].name
-				# get skill level
-				skill_container_new.get_child("HBoxContainer/VBoxContainer/HBoxContainer2/Label2").text = str(skill_tab_ref[tab_count-1][skill_count])
+				if skill_container_new.skill_data.level > 0:
+					skill_container_new.get_node("HBoxContainer/NinePatchRect/Icon").texture = load("res://assets/skillSprites/0/icon.png")
+				else:
+					skill_container_new.get_node("HBoxContainer/NinePatchRect/Icon").texture = skill_container_new.to_gray_scale(load("res://assets/skillSprites/0/icon.png"))
 				# if character ap > 1
 				if Global.player.stats.base.ap == 0:
-					skill_container_new.get_child("HBoxContainer/VBoxContainer/HBoxContainer2/Button").visible = false
-				skill_tab_new.add_child(skill_container_new)
+					skill_container_new.get_node("HBoxContainer/VBoxContainer/HBoxContainer2/Button").visible = false
+				skill_tab_new.get_node("ScrollContainer/GridContainer").add_child(skill_container_new)
 				skill_count += 1
 			tab_container.add_child(skill_tab_new)
 		count += 1
@@ -70,27 +82,27 @@ func update_skills():
 		if not job in skill_tab_data:
 			skill_tab_data.append(job)
 			
-			var skill_tab_new = tab_container.instance()
+			var skill_tab_new = skill_tabs.instance()
 			
 			# change tab name
 			skill_tab_new.name = skill_tab_data.length() - 1
 			var skills_ref = Global.player.skills[job].keys()
 			
 			var skill_count = 0
-			while skill_count < skills_ref.length():
+			while skill_count < skills_ref.size():
 				var skill_container_new = skill_container_instance.instance()
 				
 				# get skill icon
 				# change to tab number and skill id
-				skill_container_new.get_child("HBoxContainer/NinePatchRect/Icon").texture = load("res://assets/skillSprites/0/icon.png")
+				skill_container_new.get_node("HBoxContainer/NinePatchRect/Icon").texture = load("res://assets/skillSprites/0/icon.png")
 				# get skill name
-				skill_container_new.get_child("HBoxContainer/VBoxContainer/HBoxContainer/Label").text = GameData.skill_data[job][skill_count].name
+				skill_container_new.get_node("HBoxContainer/VBoxContainer/HBoxContainer/Label").text = GameData.skill_data[int(job)][skill_count].name
 				# get skill level
-				skill_container_new.get_child("HBoxContainer/VBoxContainer/HBoxContainer2/Label2").text = str(Global.player.skills[job][skill_count])
+				skill_container_new.get_node("HBoxContainer/VBoxContainer/HBoxContainer2/Label2").text = str(skill_tab_ref[job][str(skill_count)])
 				# if character ap > 1
 				if Global.player.stats.base.ap == 0:
-					skill_container_new.get_child("HBoxContainer/VBoxContainer/HBoxContainer2/Button").visible = false
-				skill_tab_new.add_child(skill_container_new)
+					skill_container_new.get_node("HBoxContainer/VBoxContainer/HBoxContainer2/Button").visible = false
+				skill_tab_new.get_node("ScrollContainer/GridContainer").add_child(skill_container_new)
 				skill_count += 1
 			tab_container.add_child(skill_tab_new)
 			
@@ -113,37 +125,6 @@ func _on_Header_gui_input(event):
 			drag_position = null
 	if event is InputEventMouseMotion and drag_position:
 		rect_global_position = get_global_mouse_position() - drag_position
-			
 
-"""
-func update inventory
-
-Required to add rpc calls to server to swap inventory data.
-Server remove func to validate item move request -> 
-update server char inventory data -> client remote func to update character data ->
- update inventory window icons (similar to health hud)
-"""
-
-#func test_setup():
-#	inventory_tabs = inv_ref.keys()
-#	for key in inventory_tabs:
-#		if key != "100000":
-#			var count = 0
-#			while count < max_slots:
-#				inv_ref[key].append(null)
-#				count += 1
-#	#var inventory_tabs = Global.player.inventory.keys()
-#	#var inv_ref = Global.player.inventory
-#	inv_ref["use"][0] = {'id': "300001", 'q': 5}
-#	inv_ref["use"][1] = {'id': "300002", 'q': 500}
-#	inv_ref["use"][6] = {'id': "300003", 'q': 420}
-#	inv_ref["equipment"][1] = {'id': "500004"}
-#	inv_ref["equipment"][6] = {'id': "500005"}
-#	inv_ref["100000"] = 123456789
-#
-#
-#func _on_TabContainer_tab_selected(_tab):
-#	AudioControl.play_audio("menuClick")
-#
-#func toggle_inventory():
-#	self.visible = not self.visible
+func toggle_skills():
+	self.visible = not self.visible

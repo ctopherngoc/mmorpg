@@ -187,6 +187,7 @@ func _on_0_mouse_exited():
 #		get_node("EquipInfo").free()
 #	else:
 	item_info_free()
+	#print("mouse exited item slot")
 	
 func item_info_free():
 	for node in self.get_children():
