@@ -4,9 +4,9 @@ onready var DATABASE_URL: String
 onready var LOGIN_URL: String
 onready var REGISTER_URL: String
 
-var auth_token = ""
-onready var username = "auth@server.com"
-onready var password = "authserver"
+var auth_token: String = ""
+onready var username: String
+onready var password: String
 onready var account_id_list = []
 onready var fb_http
 
@@ -17,6 +17,8 @@ func _ready():
 	REGISTER_URL = "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=%s" % server_json.result["API_KEY"]
 	DATABASE_URL = "https://firestore.googleapis.com/v1/projects/%s/databases/(default)/documents/" % server_json.result["PROJECT_ID"]
 	LOGIN_URL = "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=%s" % server_json.result["API_KEY"]
+	username = server_json.result["USERNAME"]
+	password = server_json.result["PASSWORD"]
 	data_file.close()
 
 #func _get_token_id_from_result(result: Array) -> String:
