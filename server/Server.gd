@@ -529,7 +529,7 @@ remote func use_item(item: Array) -> void:
 			send_client_notification(player_id, "not enough %s" % ServerData.itemTable[item[0]].itemName)
 
 remote func add_stat(stat: String) -> void:
-	print("in add_stat")
+	#print("in add_stat")
 	# get player container
 	var player_id = get_tree().get_rpc_sender_id()
 	var player_container = _Server_Get_Player_Container(player_id)
@@ -537,17 +537,17 @@ remote func add_stat(stat: String) -> void:
 	if player_container.current_character.stats.base.sp > 0:
 		player_container.current_character.stats.base.sp -= 1
 		if stat == "s":
-			print("%s incrase strength" % player_id)
+			#print("%s incrase strength" % player_id)
 			player_container.current_character.stats.base.strength += 1
 		elif stat == "w":
 			player_container.current_character.stats.base.wisdom += 1
-			print("%s incrase wisdom" % player_id)
+			#print("%s incrase wisdom" % player_id)
 		elif stat == "d":
 			player_container.current_character.stats.base.dexterity += 1
-			print("%s incrase dexterity" % player_id)
+			#print("%s incrase dexterity" % player_id)
 		else:
 			player_container.current_character.stats.base.luck += 1
-			print("%s incrase luck" % player_id)
+			#print("%s incrase luck" % player_id)
 		update_player_stats(player_container)
 		send_client_notification(player_id, "added 1 to %s" % stat)
 	else:
@@ -576,7 +576,7 @@ func _on_Button3_pressed():
 	#print("cuurent gold: %s" % Global.testplayer.current_character.inventory["100000"])
 
 func _on_Button4_pressed():
-	print("testing loot request")
+	#print("testing loot request")
 	var test_player = $Test/PlayerContainer
 	test_player.loot_request()
 	#print("cuurent gold: %s" % Global.testplayer.current_character.inventory["100000"])
