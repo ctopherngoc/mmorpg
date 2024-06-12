@@ -11,7 +11,8 @@ export_presets.cfg
 
 # Mono-specific ignores
 .mono/
-data_*/
 mono_crash.*.json
 
 **server.json
+**x509_Key.key
+**X509_Certificate.crt
