@@ -6,8 +6,8 @@
 ######################################################################
 
 extends Node
-onready var version: String = "3.3.2"
-onready var local: bool = true
+onready var version: String = "3.3.3"
+onready var local: bool = false
 onready var ip: String
 onready var input_queue: Array = []
 onready var interpolation_offset: int = 200
@@ -15,7 +15,6 @@ onready var current_map: String = ""
 onready var in_game = false
 onready var floating_text = preload("res://scenes/userInerface/FloatingText.tscn")
 
-#var other_player = preload("res://scenes/playerObjects/PlayerTemplate.tscn")
 var player_template = preload("res://scenes/playerObjects/NewPlayerSprite.tscn")
 var player_node
 var last_world_state: int = 0
