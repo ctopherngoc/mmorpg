@@ -8,6 +8,10 @@ func _ready() -> void:
 	data_file.open("res://data/server.json", File.READ)
 	var server_json = JSON.parse(data_file.get_as_text())
 	REGISTER_URL = "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=%s" % server_json.result["API_KEY"]
+	if Global.local:
+		Global.ip = server_json.result["LOCAL_IP"]
+	else:
+		Global.ip = server_json.result["SERVER_IP"]
 	data_file.close()
 
 func _get_token_id_from_result(result: Array) -> String:
