@@ -56,8 +56,13 @@ anims/attack = SubResource( 5 )
 
 [node name="idle_timer" type="Timer" parent="."]
 
+[node name="loot_timer" type="Timer" parent="."]
+wait_time = 0.5
+
 [node name="Timer" type="Timer" parent="."]
 wait_time = 3.0
+
+[node name="DamageTimer" type="Timer" parent="."]
 
 [node name="rope" type="CollisionShape2D" parent="."]
 position = Vector2( 6.5, -2.75 )
@@ -98,8 +103,6 @@ collision_mask = 1024
 [node name="noCol" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource( 4 )
 
-[node name="DamageTimer" type="Timer" parent="."]
-
 [node name="ColorRect" type="ColorRect" parent="."]
 margin_left = -11.0
 margin_top = -33.0
@@ -107,4 +110,5 @@ margin_right = 32.0
 margin_bottom = 27.0
 
 [connection signal="timeout" from="idle_timer" to="." method="_on_idle_timer_timeout"]
+[connection signal="timeout" from="loot_timer" to="." method="_on_loot_timer_timeout"]
 [connection signal="timeout" from="DamageTimer" to="." method="_on_DamageTimer_timeout"]

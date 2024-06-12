@@ -97,7 +97,7 @@ func damage_formula(type: bool, player_dict: Dictionary, target_stats: Dictionar
 	var crit_rate = stats.base.critRate + stats.equipment.critRate
 	var crit_ratio = calculate_crit(crit_rate)
 	var final_damage = int(damage * crit_ratio)
-	print("final damage: %s" % final_damage)
+	#print("final damage: %s" % final_damage)
 	return final_damage
 
 func calculate_crit(crit_rate: int) -> float:
@@ -327,6 +327,7 @@ func lootRequest(player: KinematicBody2D, loot_list: Array) -> void:
 				if player.name == item_container.player_owner and item_container.looted == false:
 					#item_container.looted = true
 					self.lootDrop(player, item_container)
+					player.loot_timer.start()
 					# add item to players inventory
 					break
 				else:
@@ -335,6 +336,7 @@ func lootRequest(player: KinematicBody2D, loot_list: Array) -> void:
 			else:
 				#item_container.looted = true
 				self.lootDrop(player, item_container)
+				player.loot_timer.start()
 				break
 
 func lootDrop(player: KinematicBody2D, item_container: KinematicBody2D) -> void:
@@ -468,7 +470,6 @@ func lootDrop(player: KinematicBody2D, item_container: KinematicBody2D) -> void:
 					server.send_client_notification(int(player.name), 0)
 					#print("player: %s's inventory full not stackable", player.name)
 	#ServerData.items[item_container.map].erase(item_container.name)
-	player.looting = false
 	
 # placeholder functions for item ownership and unique item tracking
 func add_item_database(data_dict: Dictionary, player_container: KinematicBody2D = null) -> void:
