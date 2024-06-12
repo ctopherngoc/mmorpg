@@ -35,7 +35,12 @@ signal toggle_chat_group
 signal send_message
 # warning-ignore:unused_signal
 signal toggle_option_bool
-
+# warning-ignore:unused_signal
+signal drop_quantity
+# warning-ignore:unused_signal
+signal toggle_skills
+# warning-ignore:unused_signal
+signal update_skills
 
 
 # Called when the node enters the scene tree for the first time.

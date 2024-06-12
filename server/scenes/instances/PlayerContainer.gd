@@ -114,7 +114,7 @@ func attack(move_id: int) -> void:
 		# there are mobs overlap
 		else:
 			# physical mobbing auto attack class
-			if current_character.stats.base.class == 10:
+			if current_character.stats.base.job == 10:
 				if mobs_hit.size() < 6:
 					for mob in mobs_hit:
 						var mob_parent = mob.get_parent()
@@ -170,16 +170,37 @@ func experience(experience: int) -> void:
 	if current_exp >= exp_limit:
 		# multiple levels
 		while current_exp >= exp_limit:
-			print("current xp: %s, exp max: %s, ending xp: %s" % [current_exp, exp_limit,  current_exp - exp_limit])
+			print("current xp: %s, exp max: %s, ending xp: %s" % [current_exp, exp_limit,   current_exp - exp_limit])
 			current_exp %= exp_limit
 			print("new current xp: %s" % current_exp)
 			current_character.stats.base.level += 1
 			current_character.stats.base.sp += 5
+			
+			# insert hp increase here
+			var new_hp = int(round(Global.rng.randi_range(ServerData.static_data.job_dict[current_character.stats.base.job].HealthMin, ServerData.static_data.job_dict[current_character.stats.base.job].HealthMax)))
+			if current_character.stats.base.job in [9999999]:
+				# look up skill level add more hp based on skill level
+				pass
+			# set new health -> set health to max
+			current_character.stats.base.maxHealth += new_hp
+			current_character.stats.base.health = current_character.stats.base.maxHealth
+			# insert mp increase here
+			var new_mana = int(round( 20 + (current_character.stats.base.wisdom * 0.4)))
+			print("new mana: %s" % new_mana)
+			if current_character.stats.base.job in [888888888]:
+				# look up skill level add more mp based on skill level
+				pass
+			# set new maxmp -> set mana to max
+			current_character.stats.base.maxMana += new_mana
+			current_character.stats.base.mana = current_character.stats.base.maxMana
+			# heal to full hp and mp
 			print("%s Level Up" % current_character.displayname)
 			
 			# add ability point skill points
-			if current_character.stats.base.class != 0:
+			if current_character.stats.base.job != 0:
 				current_character.stats.base.ap += 3
+			else:
+				current_character.stats.base.ap += 1
 			# update exp_limit for multiple levels
 			get_node("/root/Server").update_player_stats(self)
 			exp_limit = ServerData.static_data.experience_table[str(current_character.stats.base.level)]

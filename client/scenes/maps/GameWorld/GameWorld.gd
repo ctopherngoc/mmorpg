@@ -6,7 +6,7 @@ var map: Node2D
 
 func _ready() -> void:
 	map_node = $MapNode
-	player = $Player
+	#player = $Player
 	ui = $UI
 	var new_map = load(GameData.map_dict[Global.current_map].path).instance()
 	#new_map.name = "Map"

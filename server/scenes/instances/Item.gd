@@ -1,7 +1,7 @@
 extends KinematicBody2D
 var id
 var stats
-var player_owner
+var player_owner = null
 var amount
 var gravity = 800
 var velocity = Vector2(0, 0)

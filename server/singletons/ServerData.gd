@@ -53,14 +53,14 @@ var player_id_emails = {}
 
 #firebase used to create new chracters
 var static_data = {
-	"class_skills" : 
+	"job_skills" : 
 		{
-		"0": [],
-		"1": [],
-		"2": [],
-		"3": [],
-		"4": [],
-		"5": [],
+		0: [],
+		1: [],
+		2: [],
+		3: [],
+		4: [],
+		5: [],
 	},
 	"player_info" : {
 		"displayname": {'stringValue': null},
@@ -78,7 +78,7 @@ var static_data = {
 							"mana": {'integerValue': null},
 							"level": {'integerValue': null},
 							"experience": {'integerValue': null},
-							"class": {'integerValue': null},
+							#"class": {'integerValue': null},
 							"job": {'integerValue': null},
 							"sp": {'integerValue': null},
 							"ap": {'integerValue': null},
@@ -156,6 +156,18 @@ var static_data = {
 				}#fields
 			}#mapvalue
 		}, #equipment
+		"skills" : {"mapValue" :
+			{"fields" : { "0" : {"mapValue":
+							{"fields":
+								{"0": {"integerValue" : null},
+								"1": {"integerValue": null},
+								"2": {"integerValue": null},
+								} # beginner class skillls
+					} # classes fields
+				} # mapvalue
+			} # fields
+		} # skills-mapvalue
+		}, # skills
 		"inventory" : {"mapValue":
 			{"fields": 
 				{"100000": {'integerValue': null},
@@ -179,7 +191,7 @@ var static_data = {
 				"maxMana": 50,
 				"level": 1,
 				"experience": 0,
-				"class": 0,
+				#"class": 0,
 				"job": 0,
 				"sp": 0,
 				"ap": 0,
@@ -217,6 +229,12 @@ var static_data = {
 				"attack": 0,
 		},
 		}, #stats
+		"skills": {
+			"0" : {"0": 0,
+					"1": 0,
+					"2": 0,
+				},
+		}, # skills
 		"avatar" : {
 			"head": null,
 			"hair": null,
@@ -311,13 +329,13 @@ var static_data = {
 		5 : 2.2,
 		6 : null,
 		},
-	"class_dict" : {
-		"0": {"job": "Beginner", "Weapon": [], "Range": 0},
-		"1": {"job": "Warrior", "Weapon": ["sword", "hammer", "axe"], "Range": 0},
-		"2": {"job": "Rouge", "Weapon" : ["dagger"], "Range": 0},
-		"3": {"job": "Archer", "Weapon" : ["bow"], "Range": 1},
-		"4": {"job": "Magician", "Weapon" : [], "Range": 0},
-		"5": {"job": "Gunner", "Weapon" : ["gun"], "Range": 1},
+	"job_dict" : {
+		0: {"job": "Beginner", "Weapon": [], "Range": 0, "HealthMin": 15, "HealthMax": 20},
+		1: {"job": "Warrior", "Weapon": ["sword", "hammer", "axe"], "Range": 0, "HealthMin":30, "HealthMax": 35},
+		2: {"job": "Rouge", "Weapon" : ["dagger"], "Range": 0, "HealthMin":20, "HealthMax": 25},
+		3: {"job": "Archer", "Weapon" : ["bow"], "Range": 1, "HealthMin":15, "HealthMax": 20},
+		4: {"job": "Magician", "Weapon" : [], "Range": 0, "HealthMin":15, "HealthMax": 20},
+		5: {"job": "Gunner", "Weapon" : ["gun"], "Range": 1, "HealthMin":15, "HealthMax": 20},
 		},
 	"experience_table" : {
 		'1': 20,

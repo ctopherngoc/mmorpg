@@ -45,3 +45,11 @@ func load_info() -> void:
 	update_exp()
 	update_level()
 	update_job()
+	
+func _can_drop_data(pos: Vector2, data) -> bool:
+	print("in ui can drop")
+	return true
+	
+func _drop_data(pos: Vector2, data) -> void:
+	print("in ui drop_data")
+

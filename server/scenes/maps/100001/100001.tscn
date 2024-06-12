@@ -35,6 +35,6 @@ position = Vector2( 356, -409 )
 
 [node name="Players" type="YSort" parent="YSort"]
 
-[node name="Monsters" type="YSort" parent="YSort"]
-
 [node name="Items" type="YSort" parent="YSort"]
+
+[node name="Monsters" type="YSort" parent="YSort"]

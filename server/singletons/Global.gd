@@ -188,7 +188,7 @@ func npc_hit(dmg: int, npc: KinematicBody2D, player: String):
 				else:
 					player_container.experience(int(round(damage_percent * npc.stats.experience)))
 				var drop_list = dropGeneration(npc.id)
-				dropSpawn(npc.map_id, npc.position, drop_list, highest_attacker)
+				dropSpawn(npc.map_id, npc.position, drop_list, int(highest_attacker))
 		# drop items from npc location
 		npc.die()
 	print("monster: " + npc.name + " health: " + str(npc.stats.currentHP))
@@ -235,6 +235,27 @@ func dropGeneration(monster_id: String) -> Dictionary:
 				item_list[item_id] = 1
 	#print(item_list)
 	return item_list
+
+func player_drop_item(player_container: KinematicBody2D, position: Vector2, map: String, tab: String, slot: int, quantity: int) -> void:
+	# get item data
+	# create dictionary with item_id: item_dict -> dropspawn requires hashmap of items.keys() dropped
+	print("player drop %s and in map %s" % [player_container.name, map])
+	var item_data = {player_container.current_character.inventory[tab][slot].id: player_container.current_character.inventory[tab][slot]}
+	var item_dict = player_container.current_character.inventory[tab][slot]
+	if ServerData.itemTable[item_dict.id].itemType != "equipment":
+		# reduce item count
+		player_container.current_character.inventory[tab][slot].q -= quantity
+		dropSpawn(map, position, item_data, quantity)
+		# call drop item -> pass map, location, drop_dict, quantity
+	# equipment or drop quantity 1
+	else:
+		# call drop item -> pass map, location, drop_dict
+		player_container.current_character.inventory[tab][slot] = null
+		item_dict.owner = player_container.name
+		http_requests.append([item_dict, player_container])
+		#add_item_database(item_data)
+		dropSpawn(map, position, item_data)
+	server.update_player_stats(player_container)
 	
 func dropDetermine(item_id: String) -> bool:
 	"""
@@ -248,7 +269,7 @@ func dropDetermine(item_id: String) -> bool:
 	else:
 		return false
 
-func dropSpawn(map: String, location: Vector2, item_dict: Dictionary, user_id) -> void:
+func dropSpawn(map: String, location: Vector2, item_dict: Dictionary, quantity: int = 1, user_id = null) -> void:
 	# user_id could be string or null
 	var map_path = "/root/Server/World/Maps/" + str(map) + "/YSort/Items"
 	var items = item_dict.keys()
@@ -258,7 +279,8 @@ func dropSpawn(map: String, location: Vector2, item_dict: Dictionary, user_id) -
 		var new_item = item_scene.instance()
 		new_item.position = location
 		#new_item.position.y = new_item.position.y
-		new_item.player_owner = user_id
+		if user_id != null:
+			new_item.player_owner = user_id
 		new_item.id = item
 		new_item.map = str(map)
 		var node_name = ""
@@ -302,7 +324,7 @@ func lootRequest(player: KinematicBody2D, loot_list: Array) -> void:
 				# mark item looted, get player container, queuefree item
 				# warning-ignore:unused_variable
 				var player_id = player.name
-				if player.name== item_container.player_owner and item_container.looted == false:
+				if player.name == item_container.player_owner and item_container.looted == false:
 					#item_container.looted = true
 					self.lootDrop(player, item_container)
 					# add item to players inventory
@@ -359,6 +381,7 @@ func lootDrop(player: KinematicBody2D, item_container: KinematicBody2D) -> void:
 				server.update_player_stats(player)
 				# remove item node from map
 				var item_dict = item_container.stats
+				item_dict.owner = player.name
 				#print("item_dict: \n %s" % item_dict)
 				http_requests.append([item_dict, player])
 				server.send_loot_data(player.name, {"id": item_container.id})
@@ -447,7 +470,8 @@ func lootDrop(player: KinematicBody2D, item_container: KinematicBody2D) -> void:
 	#ServerData.items[item_container.map].erase(item_container.name)
 	
 # placeholder functions for item ownership and unique item tracking
-func add_item_database(data_dict: Dictionary, player_container: KinematicBody2D) -> void:
+func add_item_database(data_dict: Dictionary, player_container: KinematicBody2D = null) -> void:
+	#print(data_dict)
 	"""
 	this function should be called on new item drop is looted. Primarily for equipments to keep track of item ownership
 	unique item ownership is important in case of trading.
@@ -455,11 +479,16 @@ func add_item_database(data_dict: Dictionary, player_container: KinematicBody2D)
 	#print("inside add_item_database")
 	#print(data_dict)
 	#print(player_container)
-	data_dict["owner"] = player_container.current_character.displayname
+#	if player_container:
+#		data_dict["owner"] = player_container.current_character.displayname
+#	else:
+#		data_dict["owner"] = null
 	var path = "items/%s" % (data_dict.id + str(data_dict.uniqueID)) 
 	#print(data_dict)
+
 	var firebase = Firebase.update_document(path, player_container.http, player_container.db_info["token"], data_dict)
 	yield(firebase, 'completed')
+
 	#print("added %s to firebase. owner is %s" % [data_dict.name, player_container.name])
 	
 func add_item():
@@ -467,6 +496,7 @@ func add_item():
 		#print("adding item to database")
 		var item_argument_array = http_requests[0]
 		http_requests.remove(0)
+		# [item_dict, player]
 		var request = add_item_database(item_argument_array[0], item_argument_array[1])
 		yield(request, "completed")
 

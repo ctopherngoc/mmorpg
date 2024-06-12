@@ -52,6 +52,9 @@ func _input(event) -> void:
 							Signals.emit_signal("toggle_inventory")
 							AudioControl.play_audio("windowToggle")
 							print("toggle inventory")
+						elif event.scancode == KEY_K:
+							Signals.emit_signal("toggle_skills")
+							AudioControl.play_audio("windowToggle")
 
 func toggle_options() -> void:
 	options_toggled = not options_toggled

@@ -13,13 +13,18 @@ var item_data = {
 	"q": null,
 }
 
+onready var item_info_child_list: Array
+
 onready var icon = $Icon
 onready var label = $VBoxContainer/Label
 var dragging = false
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
-
+	Signals.connect("toggle_inventory", self, "item_info_free")
+	
+func _notification(what):
+	if what == 22:
+		item_info_free()
 
 func get_drag_data(_pos):
 	dragging = true
@@ -73,6 +78,7 @@ func drop_data(_pos,data):
 	AudioControl.play_audio("itemSwap")
 	data.origin_node.dragging = false
 	data.origin_node.item_info_free()
+	self.item_info_free()
 	
 	# update beginning slot with destination slot info
 	data.origin_node.icon.texture = icon.texture
@@ -144,7 +150,9 @@ func _on_0_mouse_entered():
 			equip_tip.tab = tab
 			#var inventory_origin = get_node("/root/currentScene/UI/Control/Inventory").get_global_transform_with_canvas().origin
 			var inventory_origin = get_node("/root/GameWorld/UI/Control/Inventory").rect_global_position
-			equip_tip.rect_position.x = inventory_origin.x - (equip_tip.rect_size.x) + 100
+			#equip_tip.rect_position.x = inventory_origin.x - (equip_tip.rect_size.x * equip_tip.rect_scale.x)
+			equip_tip.rect_position.x = inventory_origin.x - (equip_tip.rect_size.x * .72)
+			#print((equip_tip.rect_size.x * .7))
 			equip_tip.rect_position.y = inventory_origin.y
 			add_child(equip_tip)
 			yield(get_tree().create_timer(0.35), "timeout")
@@ -159,7 +167,7 @@ func _on_0_mouse_entered():
 			item_tip.tab = tab
 			#var inventory_origin = get_node("/root/currentScene/UI/Control/Inventory").get_global_transform_with_canvas().origin
 			var inventory_origin = get_node("/root/GameWorld/UI/Control/Inventory").rect_global_position
-			item_tip.rect_position.x = inventory_origin.x - (item_tip.rect_size.x) + 100
+			item_tip.rect_position.x = inventory_origin.x - (item_tip.rect_size.x * item_tip.rect_scale.x)
 			item_tip.rect_position.y = inventory_origin.y
 			add_child(item_tip)
 			yield(get_tree().create_timer(0.35), "timeout")
@@ -178,9 +186,10 @@ func _on_0_mouse_exited():
 #		#print("equipment tip queue_free")
 #		get_node("EquipInfo").free()
 #	else:
-	if get_node_or_null("ItemInfo"):
-		get_node("ItemInfo").free()
+	item_info_free()
+	#print("mouse exited item slot")
 	
 func item_info_free():
-	if get_node_or_null("ItemInfo"):
-		get_node("ItemInfo").free()
+	for node in self.get_children():
+		if "ItemInfo" in node.name:
+			node.queue_free()

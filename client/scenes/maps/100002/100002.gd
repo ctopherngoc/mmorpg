@@ -25,15 +25,25 @@ func _ready():
 	if Global.player.map != get_filename():
 		Global.update_lastmap(get_filename())
 		spawn_location = Vector2(234, -437)
-	gameWorld.player.camera.limit_left = map_bound["left"]
-	gameWorld.player.camera.limit_right = map_bound["right"]
-	gameWorld.player.camera.limit_bottom = map_bound["bottom"]
-	gameWorld.player.camera.limit_top = map_bound["top"]
+#	gameWorld.player.camera.limit_left = map_bound["left"]
+#	gameWorld.player.camera.limit_right = map_bound["right"]
+#	gameWorld.player.camera.limit_bottom = map_bound["bottom"]
+#	gameWorld.player.camera.limit_top = map_bound["top"]
+	
+	$Player.camera.limit_left = map_bound["left"]
+	$Player.camera.limit_right = map_bound["right"]
+	$Player.camera.limit_bottom = map_bound["bottom"]
+	$Player.camera.limit_top = map_bound["top"]
+	
+#	if Global.last_portal:
+#		gameWorld.player.global_position = Global.last_portal
+#	else:
+#		gameWorld.player.global_position = spawn_location
 	
 	if Global.last_portal:
-		gameWorld.player.global_position = Global.last_portal
+		$Player.global_position = Global.last_portal
 	else:
-		gameWorld.player.global_position = spawn_location
+		$Player.global_position = spawn_location
 
 ###############################################################################################
 func _on_teleport_zone_body_entered(body):

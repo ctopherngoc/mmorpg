@@ -33,6 +33,8 @@ rect_min_size = Vector2( 602, 10 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
 bbcode_enabled = true
+bbcode_text = "[color=#bb00ff] Welcome to Blossom! [/color]"
+text = " Welcome to Blossom! "
 scroll_following = true
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]

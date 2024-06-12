@@ -43,6 +43,7 @@ func connect_to_server() -> void:
 	network.connect("connection_failed", self, "_on_connection_failed")
 	network.connect("connection_succeeded", self, "_on_connection_succeeded")
 	network.connect("server_disconnected", self, "_on_server_disconnect")
+	Signals.connect("drop_quantity", self, "drop_request")
 
 func _on_connection_failed() -> void:
 	print("Failed to connected")
@@ -169,7 +170,7 @@ remote func already_logged_in() -> void:
 # Player functions
 remote func despawn_player(player_id: int) -> void:
 	print("server.gd: despawn player")
-	var other_players = get_node("/root/GameWorld/MapNode/Map/OtherPlayers")
+	var other_players = get_node("/root/GameWorld/MapNode/%s/OtherPlayers"% Global.current_map) 
 	for player in other_players.get_children():
 		print(str(player) + str(player_id))
 		if player.name == str(player_id):
@@ -203,9 +204,9 @@ remote func receive_attack(player_id, attack_time):
 	print(typeof(player_id), " ", typeof(attack_time))
 	if player_id == get_tree().get_network_unique_id():
 		print("self attack: pass")
-	elif get_node("/root/GameWorld/MapNode/Map/OtherPlayers").has_node(str(player_id)):
+	elif get_node("/root/GameWorld/MapNode/%s/OtherPlayers" % Global.current_map).has_node(str(player_id)):
 		print(str(player_id) + " attack")
-		var player = get_node("/root/GameWorld/MapNode/Map/OtherPlayers/%s" % player_id)
+		var player = get_node("/root/GameWorld/MapNode/%s/OtherPlayers/%s" % [Global.current_map,player_id])
 		player.attack_dict[attack_time] = {"A": "stab"}
 	else:
 		pass
@@ -231,13 +232,20 @@ remote func update_player_stats(player_stats: Dictionary) -> void:
 				Global.player["stats"]["base"]["health"] = player_stats["stats"]["base"]["health"]
 				Signals.emit_signal("update_health")
 				
+				# mana
+				Global.player["stats"]["base"]["mana"] = player_stats["stats"]["base"]["mana"]
+				
 			# level check -> exp check
 			if player_stats["stats"]["base"]["level"] != Global.player["stats"]["base"]["level"]:
 				#AudioControl.play_audio("levelUp")
 				print("Level up")
 				Global.player["stats"]["base"]["experience"] = player_stats["stats"]["base"]["experience"]
 				Global.player["stats"]["base"]["level"] = player_stats["stats"]["base"]["level"]
+				Global.player["stats"]["base"]["maxHealth"] = player_stats["stats"]["base"]["maxHealth"]
+				Global.player["stats"]["base"]["maxMana"] = player_stats["stats"]["base"]["maxMana"]
 				Signals.emit_signal("update_level")
+				Signals.emit_signal("update_health")
+				Signals.emit_signal("update_mana")
 				Signals.emit_signal("level_up")
 				Signals.emit_signal("update_exp")
 
@@ -284,7 +292,8 @@ remote func return_player_input(server_input_results):
 
 remote func receive_climb_data(climb_data: int) -> void:
 	if Global.in_game:
-		var player = get_node("/root/GameWorld/Player")
+		#var player = get_node("/root/GameWorld/Player")
+		var player = get_node("/root/GameWorld/MapNode/%s/Player" % Global.current_map)
 		if climb_data == 2:
 			#print("server: is climbing")
 			player.can_climb = true
@@ -342,3 +351,6 @@ func add_stat(stat: String) -> void:
 
 func send_chat(text: String, chat_type: int) -> void:
 	rpc_id(1, "send_chat", text, chat_type)
+
+func drop_request(slot: int, tab: String, quantity: int = 1) -> void:
+	rpc_id(1, "drop_request", slot, tab, quantity)

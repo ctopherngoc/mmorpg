@@ -21,6 +21,7 @@ margin_bottom = 79.0
 [node name="CharacterName" type="HBoxContainer" parent="Container"]
 margin_right = 168.0
 margin_bottom = 24.0
+size_flags_horizontal = 3
 
 [node name="NameLabel" type="Label" parent="Container/CharacterName"]
 margin_top = 5.0
@@ -43,6 +44,7 @@ caret_blink_speed = 0.5
 margin_top = 28.0
 margin_right = 168.0
 margin_bottom = 52.0
+size_flags_horizontal = 3
 
 [node name="LevelLabel" type="Label" parent="Container/Level"]
 margin_top = 5.0
@@ -53,9 +55,10 @@ text = "Level: "
 
 [node name="LineEdit" type="LineEdit" parent="Container/Level"]
 margin_left = 46.0
-margin_right = 146.0
+margin_right = 168.0
 margin_bottom = 24.0
 rect_min_size = Vector2( 100, 0 )
+size_flags_horizontal = 3
 editable = false
 selecting_enabled = false
 caret_blink = true

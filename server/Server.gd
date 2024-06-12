@@ -119,6 +119,10 @@ remote func determine_latency(client_time):
 
 func _Server_Get_Player_Container(player_id):
 	return get_node(ServerData.player_location[str(player_id)] + "/%s" % player_id)
+
+func _Server_Get_Player_Map(player_id):
+	#eturn get_node(ServerData.player_location[str(player_id)].get_parent().get_parent())
+	return get_node(ServerData.player_location[str(player_id)].replace("YSort/Players", "")).map_id
 ######################################################################
 # pre-spawn server functions
 
@@ -407,8 +411,8 @@ remote func receive_attack(move_id):
 		player_container.attack(0)
 	#uses skill
 	else:
-		if move_id in ServerData.class_skills[player_container.current_character.stats.class]:
-			if player_container.current_character.equipment.rweapon in ServerData.class_dict[player_container.current_character.stats.class]["Weapon"]:
+		if move_id in ServerData.job_skills[player_container.current_character.stats.job]:
+			if player_container.current_character.equipment.rweapon in ServerData.cl_dict[player_container.current_character.stats.job]["Weapon"]:
 				if player_container.skill_id_cd:
 					print("skill on cd")
 				if player_container.current_character.stats.mana > 0:
@@ -417,7 +421,7 @@ remote func receive_attack(move_id):
 						#player_container.buff(move_id)
 					# move == attack
 					else:
-						if ServerData.class_dict[player_container.current_character.stats.class]["Range"] == 1 && ServerData.class_dict[player_container.current_character.equipment.ammo["quantity"]] == 0:
+						if ServerData.job_dict[player_container.current_character.stats.job]["Range"] == 1 && ServerData.job_dict[player_container.current_character.equipment.ammo["quantity"]] == 0:
 							return "no ammo"
 						else:
 							player_container.attack(move_id)
@@ -456,11 +460,6 @@ remote func move_item(inv_data: Array):
 	# update client
 	update_player_stats(player_container)
 
-func _unhandled_input(event):
-	if event is InputEventKey:if event.pressed and event.scancode == KEY_SPACE:
-			move_item([1,0,1])
-			#Global.dropSpawn("100001", Vector2(414, -69), {"100000": 5}, "PlayerContainer")
-		
 func transfer_item_ownership():
 	"""
 	this function should be called when item is traded or looted after previous owner drops.
@@ -567,7 +566,7 @@ func _on_Button3_pressed():
 #	print("testcase 1")
 #	print("dropping leather pants")
 	var bottom = {"500003": 1, "accuracy":0, "attack":15, "avoidability":0, "bossPercent":5, "critRate":0, "damagePercent":0, "defense":0, "dexterity":4, "job":0, "jumpSpeed":0, "luck":5, "magic":0, "magicDefense":0, "maxHealth":0, "maxMana":0, "movementSpeed":0, "name":"Leather Bottom", "slot":7, "speed":5, "strength":5, "type":"bottom", "wisdom":5, "uniqueID": 100000000}
-	Global.dropSpawn("100001",  Vector2(231, -405), {"500003": bottom}, "testing123")
+	Global.dropSpawn("100001",  Vector2(231, -405), {"500003": bottom},  1, "testing123")
 	#print("dropping  200 gold")
 	#Global.dropSpawn("100001",  Vector2(231, -405), {"100000": 200}, "testing123")
 #	print("cuurent gold: %s" % Global.testplayer.current_character.inventory["100000"])
@@ -631,5 +630,20 @@ remote func send_chat(text: String, chat_type: int) -> void:
 #	#in whisper
 #	elif chat_type == 1:
 #		pass
+
+remote func drop_request(slot: int, tab: String, quantity: int) -> void:
+	var player_id = get_tree().get_rpc_sender_id()
+	var player_container = _Server_Get_Player_Container(player_id)
+	#print("%s requesting to drop %s %s" % [player_id, quantity, player_container.current_character.inventory[(tab)][slot]])
+	var player_position = player_container.position
+	var map_id = _Server_Get_Player_Map(player_id)
+	Global.player_drop_item(player_container, player_position, map_id, tab, slot, quantity)
 	
-		
+	# check if has item
+	
+func _unhandled_input(event):
+	if event is InputEventKey:if event.pressed and event.scancode == KEY_SPACE:
+		var test_dict = ServerData.static_data.player_info.duplicate(true)
+		Firebase.server_dictionary_converter(ServerData.characters_data["1111111"], test_dict)
+		#print(test_dict)
+		print(test_dict.skills)
