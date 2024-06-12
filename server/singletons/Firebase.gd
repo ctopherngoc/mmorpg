@@ -1,9 +1,9 @@
 extends Node
 
-#onready var API_KEY: String
-#const PROJECT_ID := "godotproject-ef224"
 onready var DATABASE_URL: String
 onready var LOGIN_URL: String
+onready var FB_USERNAME: String
+onready var FB_PASSWORD: String
 var user_info := {}
 var httprequest = null
 var server_token = ""
@@ -14,6 +14,8 @@ func _ready():
 	var server_json = JSON.parse(data_file.get_as_text())
 	DATABASE_URL = "https://firestore.googleapis.com/v1/projects/%s/databases/(default)/documents/" % server_json.result["PROJECT_ID"]
 	LOGIN_URL = "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=%s" % server_json.result["API_KEY"]
+	FB_USERNAME = server_json.result["USERNAME"]
+	FB_PASSWORD = server_json.result["PASSWORD"]
 	data_file.close()
 
 func _get_request_headers(token_id: String) -> PoolStringArray:
