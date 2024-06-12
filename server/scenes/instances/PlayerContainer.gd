@@ -40,6 +40,7 @@ var direction = 0
 var input = [0,0,0,0,0,0]
 var attacking = false
 var hittable = true
+var looting = false
 
 # sprite string to put in ws
 onready var sprite = []
@@ -239,7 +240,9 @@ func get_movement_vector() -> Vector2:
 		# [up, down, left, right, jump, loot]
 		input = [0,0,0,0,0,0]
 	if input[5]:
-		self.loot_request()
+		if not looting:
+			looting = true
+			self.loot_request()
 	recon_arr["input_arr"] = input
 	# calculating x vector, allow x-axis jump off ropes or idle on floor
 	if (!attacking && is_on_floor()) or (input[1] == 1 or input[3] == 1) and input[4] == 1:

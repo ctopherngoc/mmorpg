@@ -307,7 +307,7 @@ func dropSpawn(map: String, location: Vector2, item_dict: Dictionary, quantity: 
 func lootRequest(player: KinematicBody2D, loot_list: Array) -> void:
 	#print("processing loot for %s" % player)
 	if loot_list.empty():
-		pass
+		player.looting = false
 		#print("no items")
 	else:
 		#print(loot_list)
@@ -468,6 +468,7 @@ func lootDrop(player: KinematicBody2D, item_container: KinematicBody2D) -> void:
 					server.send_client_notification(int(player.name), 0)
 					#print("player: %s's inventory full not stackable", player.name)
 	#ServerData.items[item_container.map].erase(item_container.name)
+	player.looting = false
 	
 # placeholder functions for item ownership and unique item tracking
 func add_item_database(data_dict: Dictionary, player_container: KinematicBody2D = null) -> void:
