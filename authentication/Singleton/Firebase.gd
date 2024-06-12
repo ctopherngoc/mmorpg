@@ -1,10 +1,9 @@
 extends Node
 
-const API_KEY := ""
-const PROJECT_ID := "godotproject-ef224"
-const REGISTER_URL := "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=%s" % API_KEY
-const LOGIN_URL := "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=%s" % API_KEY
-const DATABASE_URL := "https://firestore.googleapis.com/v1/projects/%s/databases/(default)/documents/" % PROJECT_ID 
+onready var DATABASE_URL: String
+onready var LOGIN_URL: String
+onready var REGISTER_URL: String
+
 var auth_token = ""
 onready var username = "auth@server.com"
 onready var password = "authserver"
@@ -12,7 +11,13 @@ onready var account_id_list = []
 onready var fb_http
 
 func _ready():
-	pass
+	var data_file = File.new()
+	data_file.open("res://data/server.json", File.READ)
+	var server_json = JSON.parse(data_file.get_as_text())
+	REGISTER_URL = "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=%s" % server_json.result["API_KEY"]
+	DATABASE_URL = "https://firestore.googleapis.com/v1/projects/%s/databases/(default)/documents/" % server_json.result["PROJECT_ID"]
+	LOGIN_URL = "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=%s" % server_json.result["API_KEY"]
+	data_file.close()
 
 #func _get_token_id_from_result(result: Array) -> String:
 func _get_user_info(result: Array) -> Dictionary:
