@@ -14,6 +14,7 @@ config/name="game client"
 run/main_scene="res://scenes/menuObjects/LoginScreen/LogoScreen.tscn"
 config/use_custom_user_dir=true
 config/icon="res://Blossom_Logo.png"
+config/windows_native_icon="res://icons/icon256.ico"
 
 [autoload]
 
