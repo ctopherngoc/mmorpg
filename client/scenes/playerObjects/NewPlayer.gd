@@ -6,6 +6,7 @@ onready var jump_speed
 onready var max_horizontal_speed
 onready var velocity = Vector2.ZERO
 onready var camera = $Camera2D
+onready var last_input = null
 
 # static player varaibles
 onready var gravity = 800
@@ -15,7 +16,6 @@ onready var can_climb = false
 onready var is_climbing = false
 onready var attacking = false
 onready var player_state
-var held_down = false
 onready var sprite = $CompositeSprite/AnimationPlayer
 var floating_text = preload("res://scenes/userInerface/FloatingText.tscn")
 
@@ -64,16 +64,22 @@ func get_input():
 	var input = [0,0,0,0,0,0]
 	if Input.is_action_pressed("ui_up"):
 		input[0] = 1
+		last_input = "up"
 	if Input.is_action_pressed("ui_left"):
 		input[1] = 1
+		last_input = "left"
 	if Input.is_action_pressed("ui_down"):
 		input[2] = 1
+		last_input = "right"
 	if Input.is_action_pressed("ui_right"):
 		input[3] = 1
+		last_input = "right"
 	if Input.is_action_pressed("jump"):
 		input [4] = 1
-	if Input.is_action_pressed("loot"):
+		last_input = "jump"
+	if Input.is_action_pressed("loot") and recon_arr["input_arr"][5] != 1:
 		input [5] = 1
+		
 	recon_arr["input_arr"] = input
 	return input
 
@@ -242,15 +248,7 @@ func heal(heal_value: int) -> void:
 	add_child(text)
 	
 #func _unhandled_input(event):
-#	if event.is_action_pressed("ui_down"):
-#		held_down = true
-#	elif event.is_action_released("ui_down"):
-#		held_down = false
-#	elif event.is_action_pressed("attack"):
-#		if Global.movable:
-#			return
-#		else:
-#			print("cannot attack")
+# pass
 
 
 func _on_Button_pressed():

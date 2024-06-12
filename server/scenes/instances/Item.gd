@@ -20,12 +20,12 @@ func _process(delta: float) -> void:
 
 # player owner looting timer
 func _on_Timer_timeout() -> void:
-	print(self.name, " no owner")
+	#print(self.name, " no owner")
 	player_owner = null
 
 # existance timer
 func _on_Timer2_timeout() -> void:
-	print(self.name, " discard item")
+	#print(self.name, " discard item")
 	#ServerData.items[item_container.map].erase(item_container.name)
 	#ServerData.items[map].erase(self.name)
 	just_dropped = -1
@@ -33,11 +33,12 @@ func _on_Timer2_timeout() -> void:
 
 
 func _on_Area2D_area_entered(area: Area2D) -> void:
-	print("detect player")
-	print(area)
+	#print("detect player")
+	#print(area)
 	if player_owner:
-		print(area.get_parent().name)
+		#print(area.get_parent().name)
 		if area.get_parent().name == player_owner:
-			print("drop owner")
+			#print("drop owner")
+			pass
 	else:
 		pass

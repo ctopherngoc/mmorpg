@@ -7,6 +7,7 @@ onready var idle_timer =$Timers/idle_timer
 onready var damage_timer = $Timers/DamageTimer
 onready var animation = $AnimationPlayer
 onready var loot_node = $loot_box
+onready var loot_timer = $Timers/loot_timer
 #contains token and id
 var db_info = {}
 onready var loggedin = true
@@ -40,6 +41,7 @@ var direction = 0
 var input = [0,0,0,0,0,0]
 var attacking = false
 var hittable = true
+var looting = false
 
 # sprite string to put in ws
 onready var sprite = []
@@ -89,7 +91,7 @@ func get_animation() -> Dictionary:
 func load_player_stats() -> void:
 	max_horizontal_speed = current_character.stats.base.movementSpeed
 	jump_speed = current_character.stats.base.jumpSpeed
-	print(typeof(current_character.inventory["100000"]))
+	#print(typeof(current_character.inventory["100000"]))
 
 func attack(move_id: int) -> void:
 	attacking = true
@@ -140,15 +142,15 @@ func overlapping_bodies() -> void:
 	mobs_hit.clear()
 	# multi hit based on class currently
 	for body in $attack_range.get_overlapping_areas():
-		print(body.get_parent())
+		#print(body.get_parent())
 		mobs_hit.append(body)
 
 func take_damage(take_damage: int) -> void:
 	if hittable:
 		hittable = false
-		print(self.name + " takes %s damage" % str(take_damage))
+		#print(self.name + " takes %s damage" % str(take_damage))
 		current_character.stats.base.health -= take_damage
-		print("Current HP: %s" % current_character.stats.base.health)
+		#print("Current HP: %s" % current_character.stats.base.health)
 		
 		# WIP 
 		if current_character.stats.base.health <= 0:
@@ -161,7 +163,7 @@ func take_damage(take_damage: int) -> void:
 		pass
 
 func experience(experience: int) -> void:
-	print(self.name + " gain %s exp" % str(experience))
+	#print(self.name + " gain %s exp" % str(experience))
 	var current_exp = current_character.stats.base.experience
 	var exp_limit = ServerData.static_data.experience_table[str(current_character.stats.base.level)]
 	current_exp += experience
@@ -170,9 +172,9 @@ func experience(experience: int) -> void:
 	if current_exp >= exp_limit:
 		# multiple levels
 		while current_exp >= exp_limit:
-			print("current xp: %s, exp max: %s, ending xp: %s" % [current_exp, exp_limit,   current_exp - exp_limit])
+			#print("current xp: %s, exp max: %s, ending xp: %s" % [current_exp, exp_limit,   current_exp - exp_limit])
 			current_exp %= exp_limit
-			print("new current xp: %s" % current_exp)
+			#("new current xp: %s" % current_exp)
 			current_character.stats.base.level += 1
 			current_character.stats.base.sp += 5
 			
@@ -186,7 +188,7 @@ func experience(experience: int) -> void:
 			current_character.stats.base.health = current_character.stats.base.maxHealth
 			# insert mp increase here
 			var new_mana = int(round( 20 + (current_character.stats.base.wisdom * 0.4)))
-			print("new mana: %s" % new_mana)
+			#print("new mana: %s" % new_mana)
 			if current_character.stats.base.job in [888888888]:
 				# look up skill level add more mp based on skill level
 				pass
@@ -194,7 +196,7 @@ func experience(experience: int) -> void:
 			current_character.stats.base.maxMana += new_mana
 			current_character.stats.base.mana = current_character.stats.base.maxMana
 			# heal to full hp and mp
-			print("%s Level Up" % current_character.displayname)
+			#print("%s Level Up" % current_character.displayname)
 			
 			# add ability point skill points
 			if current_character.stats.base.job != 0:
@@ -207,8 +209,8 @@ func experience(experience: int) -> void:
 	current_character.stats.base.experience = current_exp
 	get_node("/root/Server").update_player_stats(self)
 	Global.store_character_data(self.name, current_character.displayname)
-	print("Level: %s" % current_character.stats.base.level)
-	print("EXP: %s" % current_character.stats.base.experience)
+	#print("Level: %s" % current_character.stats.base.level)
+	#print("EXP: %s" % current_character.stats.base.experience)
 
 func movement_loop(delta: float) -> void:
 	var move_vector = get_movement_vector()
@@ -239,7 +241,8 @@ func get_movement_vector() -> Vector2:
 		# [up, down, left, right, jump, loot]
 		input = [0,0,0,0,0,0]
 	if input[5]:
-		self.loot_request()
+		if not looting:
+			self.loot_request()
 	recon_arr["input_arr"] = input
 	# calculating x vector, allow x-axis jump off ropes or idle on floor
 	if (!attacking && is_on_floor()) or (input[1] == 1 or input[3] == 1) and input[4] == 1:
@@ -345,7 +348,7 @@ func _on_DamageTimer_timeout() -> void:
 
 func start_idle_timer() -> void:
 	idle_timer.start(1.0)
-	print("idle timer start")
+	#print("idle timer start")
 
 # regen 5hp every 5 seconds if idle
 func _on_idle_timer_timeout() -> void:
@@ -379,6 +382,7 @@ func _on_Timer_timeout() -> void:
 
 func loot_request() -> void:
 	#print(self.name, " ", "Pressed Loot")
+	looting = true
 	var loot_list = loot_node.get_overlapping_areas()
 	Global.lootRequest(self, loot_list)
 
@@ -405,3 +409,7 @@ func update_sprite_array():
 	sprite[15] = str(temp_dict.glove)
 	sprite[16] = str(temp_dict.tattoo)
 	
+
+
+func _on_loot_timer_timeout():
+	looting = false

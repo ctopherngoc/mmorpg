@@ -1,12 +1,18 @@
 extends Node
 
-const API_KEY := ""
-const PROJECT_ID := "godotproject-ef224"
-const REGISTER_URL := "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=%s" % API_KEY
-var current_token = ""
+onready var REGISTER_URL: String
+var current_token: String = ""
 
 func _ready() -> void:
-	pass # Replace with function body.
+	var data_file = File.new()
+	data_file.open("res://data/server.json", File.READ)
+	var server_json = JSON.parse(data_file.get_as_text())
+	REGISTER_URL = "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=%s" % server_json.result["API_KEY"]
+	if Global.local:
+		Global.ip = server_json.result["LOCAL_IP"]
+	else:
+		Global.ip = server_json.result["SERVER_IP"]
+	data_file.close()
 
 func _get_token_id_from_result(result: Array) -> String:
 	var result_body := JSON.parse(result[3].get_string_from_ascii()).result as Dictionary

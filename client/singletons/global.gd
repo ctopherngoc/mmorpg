@@ -6,24 +6,25 @@
 ######################################################################
 
 extends Node
-onready var version = "3.3.2"
-onready var ip = "127.0.0.1"
-onready var input_queue = []
-onready var interpolation_offset = 200
-onready var current_map = ""
+onready var version: String = "3.3.2"
+onready var local: bool = true
+onready var ip: String
+onready var input_queue: Array = []
+onready var interpolation_offset: int = 200
+onready var current_map: String = ""
 onready var in_game = false
 onready var floating_text = preload("res://scenes/userInerface/FloatingText.tscn")
 
 #var other_player = preload("res://scenes/playerObjects/PlayerTemplate.tscn")
 var player_template = preload("res://scenes/playerObjects/NewPlayerSprite.tscn")
 var player_node
-var last_world_state = 0
-var world_state_buffer = []
+var last_world_state: int = 0
+var world_state_buffer: Array = []
 var ui = null
-var movable = true
+var movable: bool = true
 var rng = RandomNumberGenerator.new()
 
-var character_list = []
+var character_list: Array = []
 var player = null
 var last_portal = null
 var last_map = null
