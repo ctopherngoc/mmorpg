@@ -54,8 +54,10 @@ func load_window_settings():
 		file.close()
 	save_file.open(option_path, File.READ)
 	var settings_data = JSON.parse(save_file.get_as_text())
-	video_settings = settings_data.result["video"]
-	load_video_settings(SceneHandler.video_settings)
+	print(typeof(settings_data.result))
+	if "video" in settings_data.result.keys():
+		video_settings = settings_data.result["video"]
+		load_video_settings(SceneHandler.video_settings)
 	save_file.close()
 
 func load_video_settings(settings: Dictionary) -> void:

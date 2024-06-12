@@ -26,13 +26,17 @@ func load_settings() -> void:
 		return
 	save_file.open(option_path, File.READ)
 	var settings_data = JSON.parse(save_file.get_as_text())
-	var sound_settings = settings_data.result["sound"]
-	var video_settings =settings_data.result["video"]
-	sound_node.masterValue = float(sound_settings.master)
-	sound_node.effectValue = float(sound_settings.effect)
-	sound_node.musicValue = float(sound_settings.music)
-	video_node.load_settings(video_settings)
-	sound_node.set_sound_values()
+	
+	if "video" in settings_data.result.keys():
+		var video_settings =settings_data.result["video"]
+		video_node.load_settings(video_settings)
+	if "sound" in settings_data.result.keys():
+		var sound_settings = settings_data.result["sound"]
+		sound_node.masterValue = float(sound_settings.master)
+		sound_node.effectValue = float(sound_settings.effect)
+		sound_node.musicValue = float(sound_settings.music)
+		sound_node.set_sound_values()
+		
 	print("Options Loaded")
 	save_file.close()
 
