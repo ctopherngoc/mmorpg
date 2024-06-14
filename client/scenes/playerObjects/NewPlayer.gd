@@ -182,7 +182,8 @@ func update_animation(move_vector):
 		pass
 
 	# send rpc to server
-	elif(Input.is_action_pressed("attack") && !is_climbing && Global.movable):
+	#elif(Input.is_action_pressed("attack") && !is_climbing && Global.movable):
+	elif(Global.default_keybind[Input.as_text()] == "attack" && !is_climbing && Global.movable):
 		attacking = true
 		#sprite.play("slash",-1, GameData.weapon_speed[str(Global.player.equipment.rweapon.speed)])
 		sprite.play("slash",-1, GameData.weapon_speed[str(Global.player.equipment.rweapon.attackSpeed)])
@@ -192,7 +193,7 @@ func update_animation(move_vector):
 		can insert determine_weapon_noise into compositesprite animations
 		determine attack speed -> adjust when sound is played (delay for slower wep)
 		"""
-		Server.send_attack(0)
+		Server.send_input(0)
 	else:
 		if(!is_on_floor()):
 			pass
