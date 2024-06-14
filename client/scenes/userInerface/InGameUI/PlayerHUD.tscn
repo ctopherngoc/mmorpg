@@ -7,7 +7,8 @@
 [ext_resource path="res://assets/UI/Bar Progression/blue.png" type="Texture" id=5]
 [ext_resource path="res://assets/UI/Bar Progression/red.png" type="Texture" id=6]
 [ext_resource path="res://scenes/menuObjects/Options/godot-simpleTheme-master/simpleTheme.tres" type="Theme" id=7]
-[ext_resource path="res://scenes/userInerface/KeybindShortcut.tscn" type="PackedScene" id=8]
+[ext_resource path="res://scenes/userInerface/HotKeyShortcut.tscn" type="PackedScene" id=8]
+
 
 [node name="PlayerInfo" type="Control"]
 anchor_top = 1.0

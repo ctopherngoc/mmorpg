@@ -11,7 +11,8 @@ onready var ui_nodes = {
 	'player_stats': get_node("PlayerStats"),
 	'inventory': get_node("Inventory"),
 	'chat_box': $Control/ChatBox,
-	'player_hud':  get_node("PlayerHUD")
+	'player_hud':  get_node("PlayerHUD"),
+	"key_binds": get_node("KeyBinds")
 }
 
 # Called when the node enters the scene tree for the first time.

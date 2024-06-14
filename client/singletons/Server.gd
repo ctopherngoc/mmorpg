@@ -193,9 +193,9 @@ remote func receive_despawn_player(player_id) -> void:
 	print("receive_despawn_player: %s" % typeof(player_id))
 	Global.despawn_player(player_id)
 	
-func send_attack(skill_id: int) -> void:
+func send_input(skill_id: int) -> void:
 	#print("server.gd: send_attack")
-	rpc_id(1, "receive_attack", skill_id)
+	rpc_id(1, "receive_input", skill_id)
 
 ########################################################################################################
 #not used
@@ -258,6 +258,12 @@ remote func update_player_stats(player_stats: Dictionary) -> void:
 			#if player_stats["inventory"].hash() != Global.player["inventory"].hash():
 				Global.player["inventory"] = player_stats["inventory"]
 				Signals.emit_signal("update_inventory")
+			
+			if not dictionary_comparison(Global.player["keybind"], player_stats["keybind"]):
+			#if player_stats["inventory"].hash() != Global.player["inventory"].hash():
+				Global.player["keybind"] = player_stats["keybind"]
+				Signals.emit_signal("update_keybind")
+			
 			break
 
 func dictionary_comparison(client_dict: Dictionary, server_dict: Dictionary) -> bool:
@@ -354,3 +360,7 @@ func send_chat(text: String, chat_type: int) -> void:
 
 func drop_request(slot: int, tab: String, quantity: int = 1) -> void:
 	rpc_id(1, "drop_request", slot, tab, quantity)
+	
+func update_keybind(key: String, type: String, id: String) -> void:
+	print("%s: %s" % [type,id])
+	rpc_id(1, "update_keybind", key, type, id)

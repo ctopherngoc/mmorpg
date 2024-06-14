@@ -190,6 +190,19 @@ func firebase_dictionary_converter(database_data: Dictionary, client_data: Array
 								else:
 									temp_item_dict[data] = str(item_slot[data]['stringValue'])
 							temp_dict['inventory'][item].append(temp_item_dict)
+	
+	#keybinds
+	if "keybind" in database_data.keys():
+		shortcut = database_data["keybind"]["mapValue"]["fields"]
+		var keys = shortcut.keys()
+		temp_dict['keybind'] = {}
+		for key in keys:
+			if 'nullValue' in shortcut[key].keys():
+				temp_dict['keybind'][key] = null
+			else:
+				temp_dict['keybind'][key] = str(shortcut[key]['stringValue'])
+	else:
+		temp_dict['keybind'] = ServerData.static_data.default_keybind.duplicate(true)
 	client_data.append(temp_dict)
 
 # used only by server (server user)
@@ -389,6 +402,20 @@ func server_firebase_dictionary_converter(database_data: Dictionary) -> Dictiona
 								else:
 									temp_item_dict[data] = str(item_slot[data]['stringValue'])
 							temp_dict['inventory'][key].append(temp_item_dict)
+	
+	#keybinds
+	if "keybind" in database_data.keys():
+		shortcut = database_data["keybind"]["mapValue"]["fields"]
+		keys = shortcut.keys()
+		temp_dict['keybind'] = {}
+		for key in keys:
+			if 'nullValue' in shortcut[key].keys():
+				temp_dict['keybind'][key] = null
+			else:
+				temp_dict['keybind'][key] = str(shortcut[key]['stringValue'])
+	else:
+		temp_dict['keybind'] = ServerData.static_data.default_keybind.duplicate(true)
+
 	return temp_dict
 
 func server_dictionary_converter(server_data: Dictionary, firebase_data: Dictionary) -> void:
@@ -457,8 +484,8 @@ func server_dictionary_converter(server_data: Dictionary, firebase_data: Diction
 			fb_shortcut[key] = {'mapValue':{'fields': temp_dict}}
 #####################################################################################################
 	#inventory
-	shortcut = server_data["inventory"]
-	fb_shortcut = firebase_data['inventory']['mapValue']['fields']
+	shortcut = server_data["keybind"]
+	fb_shortcut = firebase_data['keybind']['mapValue']['fields']
 	for key in shortcut.keys():
 		# inventory gold
 		if key == "100000":
@@ -482,12 +509,6 @@ func server_dictionary_converter(server_data: Dictionary, firebase_data: Diction
 							else:
 								temp_dict[stat] = {'integerValue': int(equip[stat])}
 						fb_equip_shortcut[count] = {'mapValue':{'fields': temp_dict}}
-#						for stat in equip.keys():
-#							if typeof(equip[stat]) == TYPE_STRING:
-#								temp_dict[stat] = {'stringValue' : equip[stat]}
-#							else:
-#								temp_dict[stat] = {'integerValue': equip[stat]}
-#						fb_equip_shortcut[count] = {'mapValue':{'fields': temp_dict}}
 					count += 1
 			# etc, use
 			else:
@@ -513,7 +534,16 @@ func server_dictionary_converter(server_data: Dictionary, firebase_data: Diction
 					else:
 						item_shortcut[count] = {'nullValue': null}
 					count += 1
-
+	
+	# keybinds
+	shortcut = server_data["keybind"]
+	fb_shortcut = firebase_data['keybind']['mapValue']['fields']
+	for key in shortcut.keys():
+		if shortcut[key] == null:
+			fb_shortcut[key] = {"nullValue": null}
+		else:
+			fb_shortcut[key] = {"stringValue": shortcut[key]}
+	
 func save(var path : String, var thing_to_save: Dictionary):
 	var file = File.new()
 	file.open(path, File.WRITE)

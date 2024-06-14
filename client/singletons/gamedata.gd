@@ -186,12 +186,12 @@ onready var test_player = {
 }
 
 onready var weapon_speed = {
-	"1" : null,
-	"2" : null,
-	"3" : null,
+	"1" : 1.4,
+	"2" : 1.6,
+	"3" : 1.8,
 	"4" : 2.0,
 	"5" : 2.2,
-	"6" : null,
+	"6" : 2.4,
 }
 
 onready var experience_table = {
@@ -234,11 +234,18 @@ onready var item_preload = {
 
 onready var skill_data = {
 	0 : {
-		0: {"name": "temp_skill 1"},
-		1: {"name": "temp_skill 2"},
-		2: {"name": "temp_skill 3"},},
+		0: {"name": "Godot Ball", "id": "600000",  "maxLevel": 3, "description": "Throw a projectile forward", stat = [1.3, 1.5, 1.7], mana = [25, 20, 15], "cooldown": [0, 0, 0]},
+		1: {"name": "Tenacious Heal", "id": "600001",  "maxLevel": 3, "description": "Heals for a small amount", stat = [25, 50, 100], mana = [30,20,10], "cooldown": [180, 120, 60]},
+		2: {"name": "Swift Speed", "id": "600002", "maxLevel": 3, "description": "Incrase speed for a short time", stat = [1.1, 1.2, 1.3], mana = [30,20,10], "cooldown": [180, 120, 60]},
+		},
 	1 : {},
 	2 : {},
 	3 : {},
 	4 : {},
+}
+
+onready var skill_class_dictionary = {
+	"600000" : {"class":[0,1,2,3,4], "location": [0,0]},
+	"600001" : {"class":[0,1,2,3,4], "location": [0,1]},
+	"600002" : {"class":[0,1,2,3,4], "location": [0,2]},
 }

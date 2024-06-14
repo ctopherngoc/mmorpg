@@ -41,6 +41,8 @@ signal drop_quantity
 signal toggle_skills
 # warning-ignore:unused_signal
 signal update_skills
+# warning-ignore:unused_signal
+signal update_keybinds
 
 
 # Called when the node enters the scene tree for the first time.

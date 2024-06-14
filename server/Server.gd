@@ -646,3 +646,42 @@ func _unhandled_input(event):
 		Firebase.server_dictionary_converter(ServerData.characters_data["1111111"], test_dict)
 		#print(test_dict)
 		print(test_dict.skills)
+
+remote func update_keybind(key: String, type: String, id: String) -> void:
+	var player_id = get_tree().get_rpc_sender_id()
+	var player_container = _Server_Get_Player_Container(player_id)
+	print("items should be 3XXXXX, skills should be 6XXXXX")
+	print(type, "and", id)
+	
+	if type == "item":
+		# check item is in inventory
+		for item in player_container.current_character.inventory.use:
+			if not item == null:
+				# if item is in inventory
+				if item.id == id:
+					# if item bind to different keybind
+					for keybind in player_container.current_character.keybind.keys():
+						if player_container.current_character.keybind[keybind] == id:
+							player_container.current_character.keybind[keybind] = null
+							break
+					# assign item to new keybind
+					player_container.current_character.keybind[key] = id
+					update_player_stats(player_container)
+					print("update %s keybind: key with %s %s" % [player_id, key, type, id])
+					break
+					
+	elif type == "skill":
+		# if character id has skill
+		if id in ServerData.skill_class_dictionary.keys():
+			# get skill location in dictionary
+			var location = ServerData.skill_class_dictionary[id].location
+			# if skill level > 1
+			if player_container.current_character.skills[location[0]][location[1]] != 0:
+				# check if skill bound to different keybind
+				for keybind in player_container.current_character.keybind.keys():
+					if player_container.current_character.keybind[keybind] == id:
+						player_container.current_character.keybind[keybind] = null
+						break
+				player_container.current_character.keybind[key] = id
+				update_player_stats(player_container)
+				print("update %s keybind: key with %s %s" % [player_id, key, type, id])
