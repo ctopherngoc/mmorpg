@@ -113,8 +113,9 @@ func load_settings() -> void:
 	var settings_data = JSON.parse(save_file.get_as_text())
 	var login_settings = settings_data.result["login"]
 	if login_settings.save:
-		$VBoxContainer/username/LineEdit.text = login_settings.email
-		$VBoxContainer/loginButton/CheckBox.pressed = true
+		if login_settings.has("email"):
+			$VBoxContainer/username/LineEdit.text = login_settings.email
+			$VBoxContainer/loginButton/CheckBox.pressed = true
 	print("Email Loaded")
 	save_file.close()
 	loaded = true
