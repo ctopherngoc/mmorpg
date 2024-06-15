@@ -484,8 +484,8 @@ func server_dictionary_converter(server_data: Dictionary, firebase_data: Diction
 			fb_shortcut[key] = {'mapValue':{'fields': temp_dict}}
 #####################################################################################################
 	#inventory
-	shortcut = server_data["keybind"]
-	fb_shortcut = firebase_data['keybind']['mapValue']['fields']
+	shortcut = server_data["inventory"]
+	fb_shortcut = firebase_data['inventory']['mapValue']['fields']
 	for key in shortcut.keys():
 		# inventory gold
 		if key == "100000":
