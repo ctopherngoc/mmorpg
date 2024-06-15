@@ -2,8 +2,6 @@ extends Node
 var map_id = "100001"
 var map_name = "Grassy Road 1"
 
-var other_player_template = preload("res://scenes/playerObjects/PlayerTemplate.tscn")
-#var main_player_template = preload("res://scenes/playerObjects/Player.tscn")
 var spawn_location = Vector2.ZERO
 var main_player = null
 
@@ -31,4 +29,3 @@ func _ready():
 
 	if Global.last_portal:
 		$Player.global_position = Global.last_portal
-	#print("Player: ", $Player.global_position, " Portal1: ", $MapObjects/P1.global_position)
