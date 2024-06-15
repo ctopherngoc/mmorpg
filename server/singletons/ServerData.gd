@@ -46,9 +46,9 @@ onready var skill_data = {
 }
 
 onready var skill_class_dictionary = {
-	"600000" : {"class":[0,1,2,3,4], "location": [0,0]},
-	"600001" : {"class":[0,1,2,3,4], "location": [0,1]},
-	"600002" : {"class":[0,1,2,3,4], "location": [0,2]},
+	"600000" : {"class":[0,1,2,3,4], "location": ["0","0"]},
+	"600001" : {"class":[0,1,2,3,4], "location": ["0","1"]},
+	"600002" : {"class":[0,1,2,3,4], "location": ["0","2"]},
 }
 
 var monsters = {
