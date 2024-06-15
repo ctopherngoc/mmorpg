@@ -18,6 +18,7 @@ onready var attacking = false
 onready var player_state
 onready var sprite = $CompositeSprite/AnimationPlayer
 var floating_text = preload("res://scenes/userInerface/FloatingText.tscn")
+onready var input
 
 #########
 #Temp
@@ -183,17 +184,18 @@ func update_animation(move_vector):
 
 	# send rpc to server
 	#elif(Input.is_action_pressed("attack") && !is_climbing && Global.movable):
-	elif(Global.default_keybind[Input.as_text()] == "attack" && !is_climbing && Global.movable):
-		attacking = true
-		#sprite.play("slash",-1, GameData.weapon_speed[str(Global.player.equipment.rweapon.speed)])
-		sprite.play("slash",-1, GameData.weapon_speed[str(Global.player.equipment.rweapon.attackSpeed)])
-		#### insert sound play
-		determine_weapon_noise()
-		"""
-		can insert determine_weapon_noise into compositesprite animations
-		determine attack speed -> adjust when sound is played (delay for slower wep)
-		"""
-		Server.send_input(0)
+	elif input:
+		if(input == "attack" && !is_climbing && Global.movable):
+			attacking = true
+			#sprite.play("slash",-1, GameData.weapon_speed[str(Global.player.equipment.rweapon.speed)])
+			sprite.play("slash",-1, GameData.weapon_speed[str(Global.player.equipment.rweapon.attackSpeed)])
+			#### insert sound play
+			determine_weapon_noise()
+			"""
+			can insert determine_weapon_noise into compositesprite animations
+			determine attack speed -> adjust when sound is played (delay for slower wep)
+			"""
+			Server.send_input(0)
 	else:
 		if(!is_on_floor()):
 			pass
@@ -205,6 +207,7 @@ func update_animation(move_vector):
 	#		$AnimationPlayer.play("ready")
 		else:
 			sprite.play("idle")
+	input = null
 
 func determine_weapon_noise() -> void:
 	if Global.player.equipment.rweapon.type in ["dagger", "1h_sword", "1h_axe", "staff", "wand"]:
