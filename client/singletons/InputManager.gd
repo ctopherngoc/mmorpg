@@ -2,14 +2,6 @@ extends Node
 
 var line_edit: LineEdit
 var options_toggled = false
-#var keybind_dict = {"KEY_SHIFT": 'shift', "KEY_INSERT": 'ins', "KEY_HOME": 'home',"KEY_PAGEUP": 'pgup',"KEY_CONTROL": 'ctrl', "KEY_DELETE": 'del',"KEY_END": 'end',"KEY_PAGEDOWN": 'pgdn',
-#	"KEY_QUOTELEFT ": '`', "KEY_1": '1', "KEY_2": '2', "KEY_3": '3', "KEY_4": '4', "KEY_5": '5', "KEY_6": '6', "KEY_7": '7', "KEY_8": '8', "KEY_9": '9', "KEY_0": '0', "KEY_MINUS": '-', "KEY_EQUAL": '=',
-#	 "KEY_F1": 'f1', "KEY_F2": 'f2', "KEY_F3": 'f3', "KEY_F4": 'f4', "KEY_F5": 'f5', "KEY_F6": 'f6', "KEY_F7": 'f7', "KEY_F8": 'f8', "KEY_F9": 'f9', "KEY_F10": 'f10', "KEY_F11": 'f11', "KEY_F12": 'f12',
-#	"KEY_Q": 'q', "KEY_W": 'w', "KEY_E": 'e', "KEY_R": 'r', "KEY_T": 't', "KEY_Y": 'y', "KEY_U": 'u', "KEY_I": 'i', "KEY_O": "o", "KEY_P": 'p', "KEY_BRACKETLEFT": '[', "KEY_BRACKETRIGHT": ']',
-#	"KEY_A": 'a', "KEY_S": 's', "KEY_D": 'd', "KEY_F": 'f', "KEY_G": 'g', "KEY_H": 'h', "KEY_J": 'j', "KEY_K": 'k', "KEY_L": 'l', "KEY_SEMICOLON": ';', "KEY_APOSTROPHE": "'",
-#	"KEY_Z": 'z', "KEY_X": 'x', "KEY_C": 'c', "KEY_V": 'v', "KEY_B": 'b', "KEY_N": 'n', "KEY_M": 'm', "KEY_COMMA": ',', "KEY_PERIOD": '.', "KEY_SLASH": '/',
-#
-#}
 
 var keybind_dict = {"Shift": 'shift', "Insert": 'ins', "Home": 'home',"PageUp": 'pgup',"Control": 'ctrl', "Delete": 'del',"End": 'end',"PageDown": 'pgdn',
 	"QuoteLeft": '`', "1": '1', "2": '2', "3": '3', "4": '4', "5": '5', "7": '7', "8": '8', "9": '9', "0": '0', "Minus": '-', "Equal": '=',
@@ -63,17 +55,6 @@ func _input(event) -> void:
 ####################################################################################################
 						else:
 							parse_keybind(event)
-#							if event.is_action_pressed("stats"):
-#								AudioControl.play_audio("windowToggle")
-#								Signals.emit_signal("toggle_stats")
-#								print("toggle stats")
-#							elif event.is_action_pressed("inventory"):
-#								Signals.emit_signal("toggle_inventory")
-#								AudioControl.play_audio("windowToggle")
-#								print("toggle inventory")
-#							elif event.scancode == KEY_K:
-#								Signals.emit_signal("toggle_skills")
-#								AudioControl.play_audio("windowToggle")
 	else:
 		pass
 #		if event is InputEventKey:
@@ -85,7 +66,7 @@ func _input(event) -> void:
 func toggle_options() -> void:
 	options_toggled = not options_toggled
 
-func parse_keybind(input) -> void:
+func parse_keybind(input: InputEventKey) -> void:
 	print(input.as_text())
 	if keybind_dict.has(input.as_text()):
 		print("parse keybind %s in keybind_dict" % input.as_text())
@@ -101,11 +82,25 @@ func parse_keybind(input) -> void:
 			Signals.emit_signal("toggle_skills")
 			AudioControl.play_audio("windowToggle")
 		else:
-			print("%s else" % input.as_text())
-			Global.player_node.input = keybind
+			# skill
+			if GameData.skill_class_dictionary.has(str(keybind)):
+				Server.use_skill(str(keybind))
+				Global.player_node.input = keybind
+			# item
+			elif GameData.itemTable.has(keybind):
+				Server.use_item(keybind,find_item(keybind))
+			else:
+				print("inputmanager.gd -> parse_keybind else: %s input" % input.as_text())
 	else:
 		if input.as_text() == "BackSlash":
 			Signals.emit_signal("toggle_keybinds")
 		
-	#print(Global.player.keybind[input.as_text()])
-	#print(keybind_dict[str(input.scancode)])
+func find_item(id: String) -> int:
+	var inv_ref = Global.player.inventory
+	var count = 0
+	for item in inv_ref:
+		if item.id == id:
+			break
+		else:
+			count += 1
+	return count
