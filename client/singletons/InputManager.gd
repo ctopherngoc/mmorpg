@@ -63,41 +63,49 @@ func _input(event) -> void:
 ####################################################################################################
 						else:
 							parse_keybind(event)
-							if event.is_action_pressed("stats"):
-								AudioControl.play_audio("windowToggle")
-								Signals.emit_signal("toggle_stats")
-								print("toggle stats")
-							elif event.is_action_pressed("inventory"):
-								Signals.emit_signal("toggle_inventory")
-								AudioControl.play_audio("windowToggle")
-								print("toggle inventory")
-							elif event.scancode == KEY_K:
-								Signals.emit_signal("toggle_skills")
-								AudioControl.play_audio("windowToggle")
+#							if event.is_action_pressed("stats"):
+#								AudioControl.play_audio("windowToggle")
+#								Signals.emit_signal("toggle_stats")
+#								print("toggle stats")
+#							elif event.is_action_pressed("inventory"):
+#								Signals.emit_signal("toggle_inventory")
+#								AudioControl.play_audio("windowToggle")
+#								print("toggle inventory")
+#							elif event.scancode == KEY_K:
+#								Signals.emit_signal("toggle_skills")
+#								AudioControl.play_audio("windowToggle")
 	else:
-		if event is InputEventKey:
-			parse_keybind(event)
-			#print(event.scancode)
-		else:
-			pass
+		pass
+#		if event is InputEventKey:
+#			parse_keybind(event)
+#			#print(event.scancode)
+#		else:
+#			pass
 
 func toggle_options() -> void:
 	options_toggled = not options_toggled
 
 func parse_keybind(input) -> void:
 	print(input.as_text())
-	if not input.as_text() in ["Up", "Left", "Down", "Right", "Alt"]:
-		var keybind = Global.default_keybind[input.as_text()]
+	if keybind_dict.has(input.as_text()):
+		print("parse keybind %s in keybind_dict" % input.as_text())
+		var keybind = Global.player.keybind[keybind_dict[input.as_text()]]
 		if keybind == "stat":
 			AudioControl.play_audio("windowToggle")
 			Signals.emit_signal("toggle_stats")
 		elif keybind == "inventory":
+			print("inventory")
 			Signals.emit_signal("toggle_inventory")
 			AudioControl.play_audio("windowToggle")
 		elif keybind == "skill":
 			Signals.emit_signal("toggle_skills")
 			AudioControl.play_audio("windowToggle")
+		else:
+			print("%s else" % input.as_text())
+			Global.player_node.input = keybind
 	else:
-		print("movement: %s" % input.as_text())
+		if input.as_text() == "BackSlash":
+			Signals.emit_signal("toggle_keybinds")
+		
 	#print(Global.player.keybind[input.as_text()])
 	#print(keybind_dict[str(input.scancode)])
