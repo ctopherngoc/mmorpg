@@ -15,7 +15,7 @@ onready var current_map: String = ""
 onready var in_game = false
 onready var floating_text = preload("res://scenes/userInerface/FloatingText.tscn")
 
-var player_template = preload("res://scenes/playerObjects/NewPlayerSprite.tscn")
+var player_template = preload("res://scenes/playerObjects/OtherPlayerSprite.tscn")
 var player_node
 var last_world_state: int = 0
 var world_state_buffer: Array = []
