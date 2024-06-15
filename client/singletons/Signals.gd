@@ -42,6 +42,8 @@ signal toggle_skills
 # warning-ignore:unused_signal
 signal update_skills
 # warning-ignore:unused_signal
+signal toggle_keybinds
+# warning-ignore:unused_signal
 signal update_keybinds
 
 

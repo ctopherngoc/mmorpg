@@ -1,7 +1,7 @@
 extends CenterContainer
 onready var tab
 onready var slot_index
-
+onready var type = "inventory"
 onready var equip_info = preload("res://scenes/userInerface/ItemInfo/EquipInfo.tscn")
 onready var item_info = preload("res://scenes/userInerface/ItemInfo/ItemInfo.tscn")
 

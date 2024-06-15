@@ -1,9 +1,10 @@
 extends Control
 
+signal move_to_top
 
 func _ready():
 	# warning-ignore:return_value_discarded
-	Signals.connect("update_keybinds", self, "update_keybinds")
+	Signals.connect("toggle_keybinds", self, "toggle_keybinds")
 
-func update_keybinds() -> void:
-	print("update keybinds")
+func toggle_keybinds() -> void:
+	self.visible = not self.visible

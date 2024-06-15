@@ -5,6 +5,7 @@ onready var skill_name = $HBoxContainer/VBoxContainer/HBoxContainer/Label
 onready var skill_level = $HBoxContainer/VBoxContainer/HBoxContainer2/Label2
 
 var skill_data = {"id": null,
+				"name": null,
 				"level": null}
 
 func _ready():

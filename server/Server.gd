@@ -142,7 +142,7 @@ func create_characters():
 			character_array[2].characters.append(character_array[1]["un"])
 			var new_char = character_array[1]
 			var temp_player = _Server_New_Character(new_char)
-			print(temp_player)
+			#print(temp_player)
 
 			print("creating character")
 			var firebase_call2 = Firebase.update_document("characters/%s" % temp_player["displayname"], character_array[2].http2, character_array[2].db_info["token"], temp_player)
@@ -322,6 +322,7 @@ func move_player_container(player_id: int, player_container: KinematicBody2D, ma
 	player.position = position
 
 func get_player_data(player_id):
+	
 	var player_container = _Server_Get_Player_Container(player_id)
 	# warning-ignore:unused_variable
 	var character_count = player_container.db_info
@@ -402,7 +403,7 @@ func send_world_state(player_list: Array, map_state: PoolByteArray):
 
 ###############################################################################
 # server combat functions
-remote func receive_attack(move_id):
+remote func receive_input(move_id):
 	var player_id = get_tree().get_rpc_sender_id()
 	var player_container = _Server_Get_Player_Container(player_id)
 	# basic attack
@@ -486,12 +487,12 @@ remote func use_item(item: Array) -> void:
 	item_id[0] = item_id
 	item_id[1] = index slot
 	"""
-	print("in use_item")
+	#print("in use_item")
 	# get player container
 	var player_id = get_tree().get_rpc_sender_id()
 	var player_container = _Server_Get_Player_Container(player_id)
 	# if item in inventory
-	print(item)
+	#print(item)
 	if item[0] == player_container.current_character.inventory.use[item[1]].id:
 		# if item count > 0 decrement
 		if player_container.current_character.inventory.use[item[1]].q > 0:
@@ -651,9 +652,9 @@ remote func update_keybind(key: String, type: String, id: String) -> void:
 	var player_id = get_tree().get_rpc_sender_id()
 	var player_container = _Server_Get_Player_Container(player_id)
 	print("items should be 3XXXXX, skills should be 6XXXXX")
-	print(type, "and", id)
+	print(type, " and ", id)
 	
-	if type == "item":
+	if type == "use":
 		# check item is in inventory
 		for item in player_container.current_character.inventory.use:
 			if not item == null:
@@ -667,7 +668,7 @@ remote func update_keybind(key: String, type: String, id: String) -> void:
 					# assign item to new keybind
 					player_container.current_character.keybind[key] = id
 					update_player_stats(player_container)
-					print("update %s keybind: key with %s %s" % [player_id, key, type, id])
+					print("update %s keybind: key %s with %s %s" % [player_id, key, type, id])
 					break
 					
 	elif type == "skill":
@@ -684,4 +685,22 @@ remote func update_keybind(key: String, type: String, id: String) -> void:
 						break
 				player_container.current_character.keybind[key] = id
 				update_player_stats(player_container)
-				print("update %s keybind: key with %s %s" % [player_id, key, type, id])
+				print("update %s keybind: key %s with %s %s" % [player_id, key, type, id])
+
+remote func swap_keybind(key1: String, key2: String) -> void:
+	var player_id = get_tree().get_rpc_sender_id()
+	var player_container = _Server_Get_Player_Container(player_id)
+	
+	var temp_key = player_container.current_character.keybind[key1]
+	player_container.current_character.keybind[key1] = player_container.current_character.keybind[key2]
+	player_container.current_character.keybind[key2] = temp_key
+	update_player_stats(player_container)
+	print("player %s swap key %s and key %s" % [player_id, key1, key2])
+
+remote func remove_keybind(key: String) -> void:
+	var player_id = get_tree().get_rpc_sender_id()
+	var player_container = _Server_Get_Player_Container(player_id)
+	
+	player_container.current_character.keybind[key] = null
+	update_player_stats(player_container)
+	print("player %s remove keybind %s" % [player_id,key])

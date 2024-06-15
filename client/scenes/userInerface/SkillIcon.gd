@@ -1,12 +1,12 @@
 extends TextureRect
 
-var dragging = false
+onready var type = "skill"
 
 func _ready():
 	pass
 
 func get_drag_data(_pos):
-	dragging = true
+	#dragging = true
 	# if slot is not null
 	#if Global.player.inventory[tab][slot_index] != null:
 	var skill_node = self.get_parent().get_parent().get_parent()

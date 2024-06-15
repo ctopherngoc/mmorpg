@@ -15,8 +15,11 @@ func _ready():
 		hotkey.get_node("Label").text = " " + key
 		var icon_path: String
 		
-		if Global.player.has("hotkey"):
-			pass
+#		if Global.player.keybind[self.name]:
+#			if GameData.skill_class_dictionary.has(Global.player.keybind[self.name]):
+#				pass
+#			else:
+#				pass
 		"""
 		get hotkey data from character data -> item / skill 
 			item
@@ -30,3 +33,4 @@ func _ready():
 		"""
 		grid.add_child(hotkey)
 		node_list.append(hotkey)
+	Signals.emit_signal("update_keybinds")

@@ -56,7 +56,10 @@ func poplulate_skills():
 				
 				# get skill name
 				skill_container_new.get_node("HBoxContainer/VBoxContainer/HBoxContainer/Label").text = GameData.skill_data[tab_count-1][skill_count].name
-				skill_container_new.skill_data.id = GameData.skill_data[tab_count-1][skill_count].name
+				skill_container_new.skill_data.name = GameData.skill_data[tab_count-1][skill_count].name
+				# get skill id
+				skill_container_new.skill_data.id = GameData.skill_data[tab_count-1][skill_count].id
+				
 				# get skill level
 				skill_container_new.get_node("HBoxContainer/VBoxContainer/HBoxContainer2/Label2").text = str(skill_tab_ref[str(tab_count-1)][str(skill_count)])
 				skill_container_new.skill_data.level = skill_tab_ref[str(tab_count-1)][str(skill_count)]

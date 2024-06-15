@@ -36,7 +36,14 @@ data["origin_node"] = self
 func drop_data(_pos, data):
 	print("attempt dropped item")
 	# dropping item from inventory
-	if data.has("item_data"):
+	if data.origin_node.type == "keybind":
+		data.origin_node.icon.texture = null
+		data.origin_node.quantity_label.text = ""
+		data.origin_node.hotkey_data = null
+		data.origin_node.bg.texture = load(data.origin_node.active_bg)
+		Server.remove_keybind(data.origin_node.name)
+		
+	elif data.has("item_data"):
 		if not GameData.itemTable[data.item_data.id].droppable:
 			print("are you sure you want to drop?")
 			var drop_confirm =  drop_confirm_popup.instance()

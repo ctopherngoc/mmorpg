@@ -213,6 +213,7 @@ remote func receive_attack(player_id, attack_time):
 ########################################################################################################	
 
 remote func update_player_stats(player_stats: Dictionary) -> void:
+	print("update player stats")
 	for character in Global.character_list:
 		if character["displayname"] == player_stats["displayname"]:
 			character = player_stats
@@ -261,8 +262,9 @@ remote func update_player_stats(player_stats: Dictionary) -> void:
 			
 			if not dictionary_comparison(Global.player["keybind"], player_stats["keybind"]):
 			#if player_stats["inventory"].hash() != Global.player["inventory"].hash():
+				print("update keybinds")
 				Global.player["keybind"] = player_stats["keybind"]
-				Signals.emit_signal("update_keybind")
+				Signals.emit_signal("update_keybinds")
 			
 			break
 
@@ -364,3 +366,9 @@ func drop_request(slot: int, tab: String, quantity: int = 1) -> void:
 func update_keybind(key: String, type: String, id: String) -> void:
 	print("%s: %s" % [type,id])
 	rpc_id(1, "update_keybind", key, type, id)
+
+func swap_keybind(key1, key2) -> void:
+	rpc_id(1, "swap_keybind", key1, key2)
+
+func remove_keybind(key) -> void:
+	rpc_id(1, "remove_keybind", key)
