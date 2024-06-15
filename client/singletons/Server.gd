@@ -300,7 +300,6 @@ remote func return_player_input(server_input_results):
 
 remote func receive_climb_data(climb_data: int) -> void:
 	if Global.in_game:
-		#var player = get_node("/root/GameWorld/Player")
 		var player = get_node("/root/GameWorld/MapNode/%s/Player" % Global.current_map)
 		if climb_data == 2:
 			#print("server: is climbing")
@@ -346,7 +345,7 @@ remote func loot_data(_item_data: Dictionary) -> void:
 
 remote func update_messages(player_name: String, message: String ,group: int) -> void:
 	print("%s said %s in %s" % [player_name, message, group])
-	Global.ui.ui_nodes.chat_box.update_message(player_name, message,  group) 
+	Global.ui.ui_nodes.chat_box.update_message(player_name, message, group) 
 	# insert script to edit notification var with message
 
 func use_item(item_id: String, slot_index: int) -> void:
@@ -372,3 +371,6 @@ func swap_keybind(key1, key2) -> void:
 
 func remove_keybind(key) -> void:
 	rpc_id(1, "remove_keybind", key)
+	
+func use_skill(id: String) -> void:
+	print("attempt to use skill %s" % id)
