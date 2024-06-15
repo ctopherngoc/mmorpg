@@ -6,8 +6,8 @@
 ######################################################################
 
 extends Node
-onready var version: String = "3.3.3"
-onready var local: bool = false
+onready var version: String = "3.3.4"
+onready var local: bool = true
 onready var ip: String
 onready var input_queue: Array = []
 onready var interpolation_offset: int = 200
