@@ -38,3 +38,5 @@ position = Vector2( 356, -409 )
 [node name="Items" type="YSort" parent="YSort"]
 
 [node name="Monsters" type="YSort" parent="YSort"]
+
+[node name="Projectiles" type="YSort" parent="YSort"]

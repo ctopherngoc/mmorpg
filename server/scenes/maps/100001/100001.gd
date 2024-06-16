@@ -35,6 +35,7 @@ func _process(_delta):
 				enemy_list[monster_id]['EnemyHealth'] = monster_container.stats.currentHP
 				enemy_list[monster_id]['EnemyState'] = monster_container.state
 	UpdateItemStateList()
+	UpdateProjectileStateList()
 	if player_ysort.get_children() != players:
 		players = player_ysort.get_children()
 	
@@ -82,4 +83,15 @@ func UpdateItemStateList() -> void:
 		var _index  = 0
 		for item in get_node("YSort/Items").get_children():
 			Global.add_item_to_world_state(item, self.name)
+			_index += 1
+
+func UpdateProjectileStateList() -> void:
+	"""
+	gets a list of children nodes in ysort: items -> updates/add item dict
+	ServerData.items.keys() are item nodes name. Unique 6 len string of Uppercase Chars and Ints
+	"""
+	if  get_node("YSort/Projectiles").get_child_count() > 0:
+		var _index  = 0
+		for projectile in get_node("YSort/Projectiles").get_children():
+			Global.add_projectile_to_world_state(projectile, self.name)
 			_index += 1
