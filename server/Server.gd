@@ -718,9 +718,9 @@ remote func skill_request(skill: String) -> void:
 		# not on cd
 		if not player_container.cooldowns.has(skill):
 			# if beginner skill or player job in job skills
-			if skill_class.location[0] == 0 or player_container.current_player.stats.job in skill_class.class:
+			if skill_class.location[0] == "0" or player_container.current_player.stats.job in skill_class.class:
 				
-				skill_data = Global.skill_data[skill_class.location[0]][skill_class.location[1]]
+				skill_data = ServerData.skill_data[skill_class.location[0]][skill_class.location[1]]
 				# get skill level
 				var player_skill_data = player_container.current_character.skills[skill_class.location[0]][skill_class.location[1]]
 				
@@ -773,3 +773,24 @@ remote func skill_request(skill: String) -> void:
 			print("%s has %s is on cooldown" % [player_id, skill])
 	else:
 		print("%s not in skill data")
+
+remote func increase_skill(skill_id: String, level: int) -> void:
+	var player_id = get_tree().get_rpc_sender_id()
+	var player_container = _Server_Get_Player_Container(player_id)
+	var skill_class = ServerData.skill_class_dictionary[skill_id]
+	
+	if skill_class.location[0] == "0" or player_container.current_player.stats.job in skill_class.class:
+		print("inside")
+				
+		var skill_data = ServerData.skill_data[skill_class.location[0]][skill_class.location[1]]
+		var player_skill_level = player_container.current_character.skills[skill_class.location[0]][skill_class.location[1]]
+		print("maxLevel %s, player skill level: %s" % [skill_data.maxLevel, player_skill_level])
+		
+		if player_skill_level == level and player_container.current_character.stats.base.ap > 0 and player_skill_level < skill_data.maxLevel:
+			print("inside 2")
+			print("before %s %s lvl %s" %[player_container.current_character.stats.base.ap, skill_id, player_skill_level])
+			player_container.current_character.stats.base.ap -= 1
+			player_container.current_character.skills[skill_class.location[0]][skill_class.location[1]] += 1
+			print("after %s %s lvl %s" %[player_container.current_character.stats.base.ap, skill_id, player_container.current_character.skills[skill_class.location[0]][skill_class.location[1]]])
+			
+			update_player_stats(player_container)

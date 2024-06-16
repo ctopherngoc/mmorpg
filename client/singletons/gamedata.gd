@@ -233,15 +233,15 @@ onready var item_preload = {
 }
 
 onready var skill_data = {
-	0 : {
-		0: {"name": "Godot Ball", "id": "600000",  "maxLevel": 3, "description": "Throw a projectile forward", "stat": {"damagePercent": [1.3, 1.5, 1.7]}, "mana": [25, 20, 15], "cooldown": [0, 0, 0], "type": "attack"},
-		1: {"name": "Tenacious Heal", "id": "600001",  "maxLevel": 3, "description": "Heals for a small amount", "stat": {"health": [25, 50, 100]}, "mana": [30,20,10], "cooldown": [180, 120, 60], "type": "heal"},
-		2: {"name": "Swift Speed", "id": "600002", "maxLevel": 3, "description": "Incrase speed for a short time", "stat": {"movementSpeed": [10, 20, 30]}, "mana":[30,20,10], "duration": [30,30,30], "cooldown": [180, 120, 60], "type": "buff"},
+	"0" : {
+		"0": {"name": "Godot Ball", "id": "600000",  "maxLevel": 3, "description": "Throw a projectile forward", "stat": {"damagePercent": [1.3, 1.5, 1.7]}, "mana": [25, 20, 15], "cooldown": [0, 0, 0], "type": "attack"},
+		"1": {"name": "Tenacious Heal", "id": "600001",  "maxLevel": 3, "description": "Heals for a small amount", "stat": {"health": [25, 50, 100]}, "mana": [30,20,10], "cooldown": [180, 120, 60], "type": "heal"},
+		"2": {"name": "Swift Speed", "id": "600002", "maxLevel": 3, "description": "Incrase speed for a short time", "stat": {"movementSpeed": [10, 20, 30]}, "mana":[30,20,10], "duration": [30,30,30], "cooldown": [180, 120, 60], "type": "buff"},
 		},
-	1 : {},
-	2 : {},
-	3 : {},
-	4 : {},
+	"1" : {},
+	"2" : {},
+	"3" : {},
+	"4" : {},
 }
 
 onready var skill_class_dictionary = {

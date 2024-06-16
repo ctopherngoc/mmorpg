@@ -21,8 +21,8 @@ var email = ""
 var characters = []
 var characters_info_list = []
 var current_character
-var cooldowns: Dictionary = {}
-var buffs: Dictionary = {}
+onready var cooldowns: Dictionary = {}
+onready var buffs: Dictionary = {}
 #################
 
 var mobs_hit = []
@@ -46,7 +46,7 @@ var input = [0,0,0,0,0,0]
 var attacking = false
 var hittable = true
 var looting = false
-var buff_stats = {
+onready var buff_stats = {
 				"maxHealth": 0,
 				"maxMana": 0,
 				"strength": 0,
@@ -93,12 +93,13 @@ func _physics_process(delta: float) -> void:
 	if loggedin:
 		if "Map" in str(self.get_path()):
 			movement_loop(delta)
-	if animation_state.a:
-		print("attacking")
-	if not cooldowns.empty() and CDTimer.is_stopped():
-		CDTimer.start()
-	if not current_character.buffs.empty() and BuffTimer.is_stopped():
-		BuffTimer.start()
+			
+			if animation_state.a:
+				print("attacking")
+			if not cooldowns.empty() and CDTimer.is_stopped():
+				CDTimer.start()
+			if not buffs.empty() and BuffTimer.is_stopped():
+				BuffTimer.start()
 
 func get_animation() -> Dictionary:
 	if self.is_on_floor():

@@ -260,6 +260,12 @@ remote func update_player_stats(player_stats: Dictionary) -> void:
 				Global.player["inventory"] = player_stats["inventory"]
 				Signals.emit_signal("update_inventory")
 			
+			if not dictionary_comparison(Global.player["skills"], player_stats["skills"]):
+			#if player_stats["inventory"].hash() != Global.player["inventory"].hash():
+				Global.player.stats = player_stats["stats"]
+				Global.player["skills"] = player_stats["skills"]
+				Signals.emit_signal("update_skills")
+			
 			if not dictionary_comparison(Global.player["keybind"], player_stats["keybind"]):
 			#if player_stats["inventory"].hash() != Global.player["inventory"].hash():
 				print("update keybinds")
@@ -374,3 +380,6 @@ func remove_keybind(key) -> void:
 	
 func use_skill(id: String) -> void:
 	print("attempt to use skill %s" % id)
+
+func increase_skill(id: String, level: int) -> void:
+	rpc_id(1, "increase_skill", id, level)
