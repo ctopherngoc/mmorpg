@@ -433,9 +433,10 @@ func server_dictionary_converter(server_data: Dictionary, firebase_data: Diction
 	# base, equipment
 	for key in shortcut.keys():
 		var shortcut_keys2 = shortcut[key].keys()
-		# stats
-		for key2 in shortcut_keys2:
-			fb_shortcut[key]['mapValue']['fields'][key2]['integerValue'] = int(shortcut[key][key2])
+		if not key == "buff":
+			# stats
+			for key2 in shortcut_keys2:
+				fb_shortcut[key]['mapValue']['fields'][key2]['integerValue'] = int(shortcut[key][key2])
 	
 	# avatar
 	shortcut = server_data["avatar"]
