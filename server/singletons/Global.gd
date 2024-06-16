@@ -510,3 +510,34 @@ func add_item_to_world_state(item: KinematicBody2D, map_id: String) -> void:
 	elif item.just_dropped == -1:
 		ServerData.items[map_id].erase(item.name)
 		item.queue_free()
+
+func add_projectile_to_world_state(projectile: KinematicBody2D, map_id: String) -> void:
+	# N = drop_id client node name
+	ServerData.projectiles[map_id][projectile.name] = {"P": projectile.position, "I": projectile.id}
+	if projectile.ready == 1:
+		projectile.ready = 0
+	elif projectile.ready == -1:
+		ServerData.projectile[map_id].erase(projectile.name)
+		projectile.queue_free()
+
+func cancel_buff(player_container: KinematicBody2D, skill_id: String):
+	# get skill level
+	var player_skill_data = player_container.current_character.skills[ServerData.skill_class_dictionary[skill_id].location[0]][ServerData.skill_class_dictionary[skill_id].location[1]]
+	var skill_data = ServerData.skill_data[ServerData.skill_class_dictionary[skill_id].location[0]][ServerData.skill_class_dictionary[skill_id].location[1]]
+	var keys = skill_data.stat.keys()
+	for key in keys:
+		if "Percent" in key and "strength" in key:
+			player_container.buff_stats["strength"] -= floor(player_container.current_character.stats.base.strength * skill_data.stat[key][player_skill_data - 1])
+		elif "Percent" in key and "dexterity" in key:
+			player_container.buff_stats["dexterity"] -= floor(player_container.current_character.stats.base.dexterity * skill_data.stat[key][player_skill_data - 1])
+		elif "Percent" in key and "wisdom" in key:
+			player_container.buff_stats["wisdom"] -= floor(player_container.current_character.stats.base.wisdom * skill_data.stat[key][player_skill_data - 1])
+		elif "Percent" in key and "luck" in key:
+			player_container.buff_stats["luck"] -= floor(player_container.current_character.stats.base.luck * skill_data.stat[key][player_skill_data - 1])
+		elif "Percent" in key and "health" in key:
+			player_container.buff_stats["maxHealth"] -= floor(player_container.current_character.stats.base.maxHealth * skill_data.stat[key][player_skill_data - 1])
+		elif "Percent" in key and "mana" in key:
+			player_container.buff_stats["maxMana"] -= floor(player_container.current_character.stats.base.maxMana * skill_data.stat[key][player_skill_data - 1])
+		else:
+			player_container.buff_stats[key] -= floor(player_container.current_character.stats.base[key] * skill_data.stat[key][player_skill_data - 1])
+	server.update_player_stats(player_container)
