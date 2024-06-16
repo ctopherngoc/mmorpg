@@ -205,6 +205,7 @@ remote func choose_character(requester: int, display_name: String) -> void:
 	for character_dict in player_container.characters_info_list:
 		if  display_name == character_dict['displayname']:
 			player_container.current_character = ServerData.characters_data[display_name]
+			player_container.current_character.stats["buff"] = player_container.buff_stats
 			#print(player_container.current_character.inventory)
 			ServerData.username_list[str(player_id)] = display_name
 			break
@@ -704,3 +705,71 @@ remote func remove_keybind(key: String) -> void:
 	player_container.current_character.keybind[key] = null
 	update_player_stats(player_container)
 	print("player %s remove keybind %s" % [player_id,key])
+
+remote func skill_request(skill: String) -> void:
+	var player_id = get_tree().get_rpc_sender_id()
+	var player_container = _Server_Get_Player_Container(player_id)
+	var skill_class
+	var skill_data
+	
+	if ServerData.skill_class_dictionary.has(skill):
+		skill_class = ServerData.skill_class_dictionary[skill]
+		
+		# not on cd
+		if not player_container.cooldowns.has(skill):
+			# if beginner skill or player job in job skills
+			if skill_class.location[0] == 0 or player_container.current_player.stats.job in skill_class.class:
+				
+				skill_data = Global.skill_data[skill_class.location[0]][skill_class.location[1]]
+				# get skill level
+				var player_skill_data = player_container.current_character.skills[skill_class.location[0]][skill_class.location[1]]
+				
+				# check mana cost
+				if player_container.current_character.stats.base.mana >= skill_data.mana[player_skill_data - 1]:
+					# update mana
+					player_container.current_character.stats.base.mana - skill_data.mana[player_skill_data - 1]
+					
+					# if buff
+					if skill_data.type == "buff": 
+						if not player_container.buffs.has(skill):
+							var keys = skill_data.stat.keys()
+							for key in keys:
+								if "Percent" in key and "strength" in key:
+										player_container.buff_stats["strength"] += floor(player_container.current_character.stats.base.strength * skill_data.stat[key][player_skill_data - 1])
+								elif "Percent" in key and "dexterity" in key:
+									player_container.buff_stats["dexterity"] += floor(player_container.current_character.stats.base.dexterity * skill_data.stat[key][player_skill_data - 1])
+								elif "Percent" in key and "wisdom" in key:
+									player_container.buff_stats["wisdom"] += floor(player_container.current_character.stats.base.wisdom * skill_data.stat[key][player_skill_data - 1])
+								elif "Percent" in key and "luck" in key:
+									player_container.buff_stats["luck"] += floor(player_container.current_character.stats.base.luck * skill_data.stat[key][player_skill_data - 1])
+								elif "Percent" in key and "health" in key:
+									player_container.buff_stats["maxHealth"] += floor(player_container.current_character.stats.base.maxHealth * skill_data.stat[key][player_skill_data - 1])
+								elif "Percent" in key and "mana" in key:
+									player_container.buff_stats["maxMana"] += floor(player_container.current_character.stats.base.maxMana * skill_data.stat[key][player_skill_data - 1])
+								else:
+									player_container.buff_stats[key] += skill_data.stat[key][player_skill_data - 1]
+							#player_container.current_character.stats.buff[skill] = {"stat": skill_data.statType, "A": skill_data.type, "D": skill_data.duration[player_skill_data - 1]}
+						player_container.buffs[skill] = skill_data.duration[player_skill_data - 1]
+						update_player_stats(player_container)
+						
+					elif skill_data.type == "heal":
+						var keys = skill_data.stat.keys()
+						for key in keys:
+							player_container.current_character.stats.base[key] += skill_data.stat[key][player_skill_data - 1]
+						update_player_stats(player_container)
+						
+					# if attack
+					elif skill_data.type == "attack":
+						pass
+						# create projectile
+						
+					# set cd
+					var cooldown = skill_data[player_skill_data - 1]
+					if cooldown > 0:
+						player_container.cooldowns[skill] = int(cooldown)
+					else:
+						print("%s does not have cooldown limit")
+		else:
+			print("%s has %s is on cooldown" % [player_id, skill])
+	else:
+		print("%s not in skill data")
