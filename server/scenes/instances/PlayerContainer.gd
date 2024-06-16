@@ -8,6 +8,8 @@ onready var damage_timer = $Timers/DamageTimer
 onready var animation = $AnimationPlayer
 onready var loot_node = $loot_box
 onready var loot_timer = $Timers/loot_timer
+onready var CDTimer = get_node("Timers/CDTimer")
+onready var BuffTimer = get_node("Timers/BuffTimer")
 #contains token and id
 var db_info = {}
 onready var loggedin = true
@@ -19,6 +21,8 @@ var email = ""
 var characters = []
 var characters_info_list = []
 var current_character
+var cooldowns: Dictionary = {}
+var buffs: Dictionary = {}
 #################
 
 var mobs_hit = []
@@ -36,12 +40,28 @@ var max_horizontal_speed = null
 var jump_speed = null
 var gravity = 800
 
-# 0 = right, 1 = left
-var direction = 0
+# 1 = right, -1 = left
+var direction = 1
 var input = [0,0,0,0,0,0]
 var attacking = false
 var hittable = true
 var looting = false
+var buff_stats = {
+				"maxHealth": 0,
+				"maxMana": 0,
+				"strength": 0,
+				"wisdom": 0,
+				"dexterity": 0,
+				"luck": 0,
+				"movementSpeed": 0,
+				"jumpSpeed": 0,
+				"avoidability": 0,
+				"defense": 0,
+				"magicDefense": 0,
+				"accuracy": 0,
+				"bossPercent": 0,
+				"damagePercent": 0,
+				"critRate": 0,}
 
 # sprite string to put in ws
 onready var sprite = []
@@ -75,6 +95,10 @@ func _physics_process(delta: float) -> void:
 			movement_loop(delta)
 	if animation_state.a:
 		print("attacking")
+	if not cooldowns.empty() and CDTimer.is_stopped():
+		CDTimer.start()
+	if not current_character.buffs.empty() and BuffTimer.is_stopped():
+		BuffTimer.start()
 
 func get_animation() -> Dictionary:
 	if self.is_on_floor():
@@ -323,15 +347,17 @@ func change_direction() -> void:
 		if input[3] == 1 && !attacking:
 			if velocity.x < 0 && is_on_floor():
 				velocity.x = 0
-			if direction == 1:
-				direction = 0
+			#if left -> right
+			if direction == -1:
+				direction = 1
 				self.set_scale(Vector2(1,1))
 				self.set_rotation(0.0)
 		elif input[1] == 1 && !attacking:
 			if velocity.x > 0 && is_on_floor():
 				velocity.x  = 0
-			if direction == 0:
-				direction = 1
+			# if right -> left
+			if direction == 1:
+				direction = -1
 				self.set_scale(Vector2(-1,1))
 				self.set_rotation(0.0)
 
@@ -409,7 +435,29 @@ func update_sprite_array():
 	sprite[15] = str(temp_dict.glove)
 	sprite[16] = str(temp_dict.tattoo)
 	
-
-
 func _on_loot_timer_timeout():
 	looting = false
+
+func _on_CDTimer_timeout():
+	if not cooldowns.empty():
+		var skills = cooldowns.keys()
+		for skill in skills:
+			if cooldowns[skill] == 1:
+				cooldowns.erase(skill)
+			else:
+				cooldowns[skill] -= 1
+	else:
+		CDTimer.stop()
+
+func _on_BuffTimer_timeout():
+	if not current_character.buffs.empty():
+		var buffs = current_character.buffs.keys()
+		for buff in buffs:
+			if buffs[buff] == 1:
+				buffs.erase(buff)
+				Global.cancel_buff(self, buff)
+			else:
+				buffs[buff] -= 1
+	else:
+		BuffTimer.stop()
+

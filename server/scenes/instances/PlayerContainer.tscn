@@ -177,6 +177,10 @@ shape = SubResource( 22 )
 [node name="loot_timer" type="Timer" parent="Timers"]
 wait_time = 0.5
 
+[node name="CDTimer" type="Timer" parent="Timers"]
+
+[node name="BuffTimer" type="Timer" parent="Timers"]
+
 [node name="attack_range" type="Area2D" parent="."]
 position = Vector2( 7, 29 )
 collision_layer = 0
@@ -209,3 +213,5 @@ anims/bow = SubResource( 27 )
 [connection signal="timeout" from="Timers/Timer" to="." method="_on_Timer_timeout"]
 [connection signal="timeout" from="Timers/DamageTimer" to="." method="_on_DamageTimer_timeout"]
 [connection signal="timeout" from="Timers/loot_timer" to="." method="_on_loot_timer_timeout"]
+[connection signal="timeout" from="Timers/CDTimer" to="." method="_on_CDTimer_timeout"]
+[connection signal="timeout" from="Timers/BuffTimer" to="." method="_on_BuffTimer_timeout"]
