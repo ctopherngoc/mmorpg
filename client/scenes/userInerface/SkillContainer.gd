@@ -13,7 +13,9 @@ func _ready():
 
 
 func _on_Button_pressed():
-	pass # Replace with function body.
+	print("attempt to increase %s from %s to %s" % [skill_data.id, skill_data.level, skill_data.level + 1])
+	Server.increase_skill(skill_data.id, skill_data.level)
+	
 	
 func _on_Icon_gui_input(event):
 	if event is InputEventMouseButton:
