@@ -93,18 +93,19 @@ func _on_LineEdit_focus_exited():
 	save_settings(savelogin)
 
 func save_settings(save: bool) -> void:
-	var email = $VBoxContainer/username/LineEdit.text
 	var file = File.new()
 	file.open(login_file_path, file.WRITE)
 	var data
-	if save:
-		data ={ "login" : {"email": email,
+	if $VBoxContainer/loginButton/CheckBox.pressed:
+		var email = $VBoxContainer/username/LineEdit.text
+		data = { "login" : {"email": email,
 					"save": true}}
 	else:
-		data ={ "login" : {"save": true}}	
+		data ={ "login" : {
+					"save": false}}
 	file.store_line(JSON.print(data, "\t"))
 	file.close()
-	
+
 func load_settings() -> void:
 	var save_file = File.new()
 	if not save_file.file_exists(login_file_path):
