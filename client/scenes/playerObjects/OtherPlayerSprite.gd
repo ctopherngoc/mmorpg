@@ -54,7 +54,7 @@ func move_player(new_position: Vector2, animation: Dictionary) -> void:
 func flip_sprite(d):
 	for _i in composite_sprite_node.get_children():
 		if _i.name != "AnimationPlayer":
-			if d:
+			if d == -1:
 				_i.set_flip_h(true)
 			else:
 				_i.set_flip_h(false)
