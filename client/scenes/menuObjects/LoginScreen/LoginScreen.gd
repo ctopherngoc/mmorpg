@@ -92,6 +92,7 @@ func _on_CheckBox_toggled(_button_pressed):
 func _on_LineEdit_focus_exited():
 	save_settings(savelogin)
 
+# warning-ignore:unused_argument
 func save_settings(save: bool) -> void:
 	var file = File.new()
 	file.open(login_file_path, file.WRITE)
