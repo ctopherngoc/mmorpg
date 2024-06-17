@@ -13,6 +13,7 @@ func _ready():
 		var hotkey = hotkey_scene.instance()
 		hotkey.name = key
 		hotkey.get_node("Label").text = " " + key
+# warning-ignore:unused_variable
 		var icon_path: String
 		
 #		if Global.player.keybind[self.name]:
