@@ -33,8 +33,8 @@ func npc_attack(player: KinematicBody2D, monster_stats: Dictionary) -> void:
 	var player_stats = player.current_character.stats
 	# calculate basic hit mechanic and damage formula
 	# hit mechanic
-	if monster_stats.accuracy >= player_stats.base.avoidability + player_stats.equipment.avoidability:
-		var calculation = monster_stats.attack - player_stats.base.defense + player_stats.equipment.defense
+	if monster_stats.accuracy >= player_stats.base.avoidability + player_stats.equipment.avoidability + player_stats.buff.avoidability:
+		var calculation = monster_stats.attack - player_stats.base.defense + player_stats.equipment.defense + player_stats.buff.defense
 		if calculation > 1:
 			player.take_damage(calculation)
 		else:
@@ -63,8 +63,8 @@ func send_climb_data(player_id: int, climb_data: int):
 
 func damage_formula(type: bool, player_dict: Dictionary, target_stats: Dictionary) -> int:
 	var stats = player_dict.stats
-	if stats.base.accuracy + stats.equipment.accuracy < target_stats.avoidability:
-		var acc_diff = target_stats.avoidability - (stats.base.accuracy + stats.equipment.accuracy)
+	if stats.base.accuracy + stats.equipment.accuracy + stats.buff.accuracy < target_stats.avoidability:
+		var acc_diff = target_stats.avoidability - (stats.base.accuracy + stats.equipment.accuracy + stats.buff.accuracy)
 		acc_diff = acc_diff / 10
 		if rng.randi_range(1,10) < acc_diff:
 			print("miss")
@@ -85,16 +85,16 @@ func damage_formula(type: bool, player_dict: Dictionary, target_stats: Dictionar
 		#####################################################################
 		#print("magic")
 		if stats.base.magic >= target_stats.magicDefense:
-			damage = float(stats.base.magic * stats.equipment.magic / target_stats.magicDefense)
+			damage = float(stats.base.magic * stats.equipment.magic * stats.buff.magic / target_stats.magicDefense)
 		else:
 			return 0
 		#######################################################################
-	damage = damage * ((float(stats.base.damagePercent + stats.equipment.damagePercent) * 0.1) + 1.0)
+	damage = damage * ((float(stats.base.damagePercent + stats.equipment.damagePercent + stats.buff.damagePercent) * 0.1) + 1.0)
 	#print("after dmg_percent: %s" % damage)
 	if target_stats["boss"] == 1:
-		damage = damage * ((float(stats.base.bossPercent + stats.equipment.bossPercent) * 0.1) + 1.0)
+		damage = damage * ((float(stats.base.bossPercent + stats.equipment.bossPercent + stats.buff.bossPercent) * 0.1) + 1.0)
 		#print("After boss percent: %s" % damage)
-	var crit_rate = stats.base.critRate + stats.equipment.critRate
+	var crit_rate = stats.base.critRate + stats.equipment.critRate + stats.buff.critRate
 	var crit_ratio = calculate_crit(crit_rate)
 	var final_damage = int(damage * crit_ratio)
 	#print("final damage: %s" % final_damage)
@@ -527,17 +527,21 @@ func cancel_buff(player_container: KinematicBody2D, skill_id: String):
 	var keys = skill_data.stat.keys()
 	for key in keys:
 		if "Percent" in key and "strength" in key:
-			player_container.buff_stats["strength"] -= floor(player_container.current_character.stats.base.strength * skill_data.stat[key][player_skill_data - 1])
+			player_container.current_character.stats.buff["strength"] -= floor(player_container.current_character.stats.base.strength * skill_data.stat[key][player_skill_data - 1])
 		elif "Percent" in key and "dexterity" in key:
-			player_container.buff_stats["dexterity"] -= floor(player_container.current_character.stats.base.dexterity * skill_data.stat[key][player_skill_data - 1])
+			player_container.current_character.stats.buff["dexterity"] -= floor(player_container.current_character.stats.base.dexterity * skill_data.stat[key][player_skill_data - 1])
 		elif "Percent" in key and "wisdom" in key:
-			player_container.buff_stats["wisdom"] -= floor(player_container.current_character.stats.base.wisdom * skill_data.stat[key][player_skill_data - 1])
+			player_container.current_character.stats.buff["wisdom"] -= floor(player_container.current_character.stats.base.wisdom * skill_data.stat[key][player_skill_data - 1])
 		elif "Percent" in key and "luck" in key:
-			player_container.buff_stats["luck"] -= floor(player_container.current_character.stats.base.luck * skill_data.stat[key][player_skill_data - 1])
+			player_container.current_character.stats.buff["luck"] -= floor(player_container.current_character.stats.base.luck * skill_data.stat[key][player_skill_data - 1])
 		elif "Percent" in key and "health" in key:
-			player_container.buff_stats["maxHealth"] -= floor(player_container.current_character.stats.base.maxHealth * skill_data.stat[key][player_skill_data - 1])
+			player_container.current_character.stats.buff["maxHealth"] -= floor(player_container.current_character.stats.base.maxHealth * skill_data.stat[key][player_skill_data - 1])
+			if player_container.current_character.stats.base.health > player_container.current_character.stats.base.maxHealth + player_container.current_character.stats.buff.maxHealth:
+				player_container.current_character.stats.base.health = player_container.current_character.stats.base.maxHealth + player_container.current_character.stats.buff.maxHealth
 		elif "Percent" in key and "mana" in key:
-			player_container.buff_stats["maxMana"] -= floor(player_container.current_character.stats.base.maxMana * skill_data.stat[key][player_skill_data - 1])
+			player_container.current_character.stats.buff["maxMana"] -= floor(player_container.current_character.stats.base.maxMana * skill_data.stat[key][player_skill_data - 1])
+			if player_container.current_character.stats.base.mana > player_container.current_character.stats.base.maxMana + player_container.current_character.stats.buff.maxMana:
+				player_container.current_character.stats.base.mana = player_container.current_character.stats.base.maxMana + player_container.current_character.stats.buff.maxMana
 		else:
-			player_container.buff_stats[key] -= floor(player_container.current_character.stats.base[key] * skill_data.stat[key][player_skill_data - 1])
+			player_container.current_character.stats.buff[key] -= skill_data.stat[key][player_skill_data - 1]
 	server.update_player_stats(player_container)
