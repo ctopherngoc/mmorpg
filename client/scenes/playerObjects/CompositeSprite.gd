@@ -1,4 +1,4 @@
-extends Node2D
+	extends Node2D
 
 onready var ammo = $Ammo
 onready var body = $Body
@@ -169,8 +169,13 @@ func change_equipment(equipment_slot, item_id):
 func _on_AnimationPlayer_animation_finished(anim_name: String) -> void:
 	if anim_name == "slash":
 		self.get_parent().attacking = false
+		print(self.get_parent().attacking)
 	elif anim_name == "update_level":
 		print("level up finished")
+	elif anim_name == "ready":
+		if self.get_parent().attacking == true:
+			self.get_parent().attacking = false
+			print("ready ", self.get_parent().attacking)
 
 func play_level_up() -> void:
 	AudioControl.play_audio("levelUp")

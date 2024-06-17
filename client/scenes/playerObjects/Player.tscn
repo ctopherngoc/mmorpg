@@ -73,7 +73,12 @@ margin_right = -46.0
 margin_bottom = -79.0
 text = "move left"
 
+[node name="Timer" type="Timer" parent="."]
+wait_time = 5.0
+one_shot = true
+
 [connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]
 [connection signal="pressed" from="Button2" to="." method="_on_Button2_pressed"]
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
 
 [editable path="CompositeSprite"]

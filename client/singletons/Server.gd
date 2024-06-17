@@ -214,7 +214,7 @@ remote func receive_attack(player_id, attack_time):
 ########################################################################################################	
 
 remote func update_player_stats(player_stats: Dictionary) -> void:
-	print(player_stats.stats.buff)
+	#print(player_stats.stats.buff)
 	print("update player stats")
 	for character in Global.character_list:
 		if character["displayname"] == player_stats["displayname"]:
@@ -226,6 +226,7 @@ remote func update_player_stats(player_stats: Dictionary) -> void:
 
 				# lose health
 				if player_stats["stats"]["base"]["health"] < Global.player["stats"]["base"]["health"]:
+					Signals.emit_signal("take_damage")
 					print("Player took %s damage." % str(Global.player["stats"]["base"]["health"] - player_stats["stats"]["base"]["health"]))
 				# gained health
 				else:
@@ -385,6 +386,7 @@ func remove_keybind(key) -> void:
 	rpc_id(1, "remove_keybind", key)
 	
 func use_skill(id: String) -> void:
+	Signals.emit_signal("use_skill", GameData.animation_dict[id])
 	print("attempt to use skill %s" % id)
 	rpc_id(1, "skill_request", id)
 	

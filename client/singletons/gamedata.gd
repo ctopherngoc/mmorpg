@@ -255,3 +255,10 @@ onready var skill_class_dictionary = {
 }
 
 onready var mandatory_keys = ["attack", "skill", "inventory", "stat", "loot"]
+
+onready var animation_dict: Dictionary = {
+	"attack": "slash",
+	"600000": "attack",
+	"600001": "ready",
+	"600002": "ready",
+}

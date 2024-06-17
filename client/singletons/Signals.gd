@@ -45,6 +45,12 @@ signal update_skills
 signal toggle_keybinds
 # warning-ignore:unused_signal
 signal update_keybinds
+# warning-ignore:unused_signal
+signal attack
+# warning-ignore:unused_signal
+signal use_skill
+# warning-ignore:unused_signal
+signal take_damage
 
 
 # Called when the node enters the scene tree for the first time.

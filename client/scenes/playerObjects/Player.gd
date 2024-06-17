@@ -19,6 +19,7 @@ onready var player_state
 onready var sprite = $CompositeSprite/AnimationPlayer
 var floating_text = preload("res://scenes/userInerface/FloatingText.tscn")
 onready var input
+onready var hit_timer = $Timer
 
 #########
 #Temp
@@ -35,6 +36,9 @@ func _ready():
 	#max_horizontal_speed = Global.player.stats.base.movementSpeed + Global.player.stats.buff.movementSpeed
 	# warning-ignore:return_value_discarded
 	Signals.connect("dialog_closed", self, "movable_switch")
+	Signals.connect("attack", self, "attack")
+	Signals.connect("use_skill", self, "use_skill")
+	Signals.connect("take_damage", self, "start_hit_timer")
 	#jump_speed = (Global.player.stats.base.jumpSpeed)
 	Global.player_node = self
 	Global.in_game = true
@@ -68,19 +72,19 @@ func get_input():
 	var input = [0,0,0,0,0,0]
 	if Input.is_action_pressed("ui_up"):
 		input[0] = 1
-		last_input = "up"
+		#last_input = "up"
 	if Input.is_action_pressed("ui_left"):
 		input[1] = 1
-		last_input = "left"
+		#last_input = "left"
 	if Input.is_action_pressed("ui_down"):
 		input[2] = 1
-		last_input = "right"
+		#last_input = "right"
 	if Input.is_action_pressed("ui_right"):
 		input[3] = 1
-		last_input = "right"
+		#last_input = "right"
 	if Input.is_action_pressed("jump"):
 		input [4] = 1
-		last_input = "jump"
+		#last_input = "jump"
 	if Input.is_action_pressed("loot") and recon_arr["input_arr"][5] != 1:
 		input [5] = 1
 		
@@ -184,24 +188,34 @@ func get_velocity(move_vector, input, delta):
 		is_climbing = false
 
 func update_animation(move_vector):
-	#var move_vector = get_movement_vector()
 	if(attacking):
+		print("%s pass" % attacking)
+		last_input = null
 		pass
 
 	# send rpc to server
 	#elif(Input.is_action_pressed("attack") && !is_climbing && Global.movable):
-	elif input:
-		if(input == "attack" && !is_climbing && Global.movable):
-			attacking = true
-			#sprite.play("slash",-1, GameData.weapon_speed[str(Global.player.equipment.rweapon.speed)])
-			sprite.play("slash",-1, GameData.weapon_speed[str(Global.player.equipment.rweapon.attackSpeed)])
-			#### insert sound play
-			determine_weapon_noise()
-			"""
-			can insert determine_weapon_noise into compositesprite animations
-			determine attack speed -> adjust when sound is played (delay for slower wep)
-			"""
-			Server.send_input(0)
+	elif last_input:
+		if(!is_climbing && Global.movable):
+			if last_input in ["slash", "attack"]:
+				attacking = true
+				#sprite.play("slash",-1, GameData.weapon_speed[str(Global.player.equipment.rweapon.speed)])
+				sprite.play("slash",-1, GameData.weapon_speed[str(Global.player.equipment.rweapon.attackSpeed)])
+				#### insert sound play
+				determine_weapon_noise()
+				"""
+				can insert determine_weapon_noise into compositesprite animations
+				determine attack speed -> adjust when sound is played (delay for slower wep)
+				"""
+				if last_input == "attack":
+					Server.send_input(0)
+			else:
+				print(last_input)
+				attacking = true
+				sprite.play("ready",-1, GameData.weapon_speed[str(Global.player.equipment.rweapon.attackSpeed)])
+				#### insert sound play
+				#determine_weapon_noise()
+		last_input = null
 	else:
 		if(!is_on_floor()):
 			pass
@@ -212,17 +226,14 @@ func update_animation(move_vector):
 	#	elif(tookDamage):
 	#		$AnimationPlayer.play("ready")
 		else:
-			sprite.play("idle")
-	input = null
+			if hit_timer.time_left != 0:
+				sprite.play("hit")
+			else:
+				sprite.play("idle")
+	#input = null
 
 func determine_weapon_noise() -> void:
 	if Global.player.equipment.rweapon.type in ["dagger", "1h_sword", "1h_axe", "staff", "wand"]:
-		print("1hsword")
-		#var rng = Global.rng.randi_range(1,101)
-#		if rng <= 50:
-#			pass
-#		else:
-#			pass
 		AudioControl.play_audio("1h_swing")
 	elif Global.player.equipment.rweapon.type in ["1h_blunt", "2h_blunt"]:
 		AudioControl.play_audio("blunt_swing")
@@ -250,7 +261,6 @@ func change_direction():
 			velocity.x  = 0
 		flip_sprite(true)
 
-
 func heal(heal_value: int) -> void:
 	var text = floating_text.instance()
 	text.type = "Heal"
@@ -260,7 +270,6 @@ func heal(heal_value: int) -> void:
 #func _unhandled_input(event):
 # pass
 
-
 func _on_Button_pressed():
 	var _temp_pos = self.position
 	var temp_input = [0,0,0,1,0]
@@ -268,7 +277,6 @@ func _on_Button_pressed():
 	movement_loop(temp_delta, temp_input)
 	define_player_state(temp_input)
 	#print(temp_pos, " ", self.position)
-
 
 func _on_Button2_pressed():
 	var _temp_pos = self.position
@@ -278,3 +286,15 @@ func _on_Button2_pressed():
 	define_player_state(temp_input)
 	#print(temp_pos, " ", self.position)
 	
+func attack() -> void:
+	last_input = "attack"
+	
+func use_skill(animation_id: String) -> void:
+	print(animation_id)
+	last_input = animation_id
+	
+func start_hit_timer() -> void:
+	hit_timer.start()
+
+func _on_Timer_timeout():
+	print("hit timer = 0 play idle")
