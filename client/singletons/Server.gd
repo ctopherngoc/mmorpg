@@ -43,6 +43,7 @@ func connect_to_server() -> void:
 	network.connect("connection_failed", self, "_on_connection_failed")
 	network.connect("connection_succeeded", self, "_on_connection_succeeded")
 	network.connect("server_disconnected", self, "_on_server_disconnect")
+# warning-ignore:return_value_discarded
 	Signals.connect("drop_quantity", self, "drop_request")
 
 func _on_connection_failed() -> void:
@@ -213,6 +214,7 @@ remote func receive_attack(player_id, attack_time):
 ########################################################################################################	
 
 remote func update_player_stats(player_stats: Dictionary) -> void:
+	print(player_stats.stats.buff)
 	print("update player stats")
 	for character in Global.character_list:
 		if character["displayname"] == player_stats["displayname"]:
@@ -265,6 +267,10 @@ remote func update_player_stats(player_stats: Dictionary) -> void:
 				Global.player.stats = player_stats["stats"]
 				Global.player["skills"] = player_stats["skills"]
 				Signals.emit_signal("update_skills")
+			
+			if not dictionary_comparison(Global.player.stats.buff, player_stats.stats.buff):
+			#if player_stats["inventory"].hash() != Global.player["inventory"].hash():
+				Global.player.stats.buff = player_stats.stats.buff
 			
 			if not dictionary_comparison(Global.player["keybind"], player_stats["keybind"]):
 			#if player_stats["inventory"].hash() != Global.player["inventory"].hash():
@@ -380,6 +386,7 @@ func remove_keybind(key) -> void:
 	
 func use_skill(id: String) -> void:
 	print("attempt to use skill %s" % id)
-
+	rpc_id(1, "skill_request", id)
+	
 func increase_skill(id: String, level: int) -> void:
 	rpc_id(1, "increase_skill", id, level)
