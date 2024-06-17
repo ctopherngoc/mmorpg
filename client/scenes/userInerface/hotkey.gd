@@ -91,6 +91,7 @@ func drop_data(_pos, data):
 			icon.texture = data["origin_texture"]
 			Server.update_keybind(self.name, "skill", data.skill_data.id)
 	
+# warning-ignore:unused_argument
 func can_drop_data(_pos, data):
 	print("in %s hotkey" % self.name)
 	return true
