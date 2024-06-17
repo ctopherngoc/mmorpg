@@ -46,10 +46,14 @@ func load_info() -> void:
 	update_level()
 	update_job()
 	
+# warning-ignore:unused_argument
+# warning-ignore:unused_argument
 func _can_drop_data(pos: Vector2, data) -> bool:
 	print("in ui can drop")
 	return true
 	
+# warning-ignore:unused_argument
+# warning-ignore:unused_argument
 func _drop_data(pos: Vector2, data) -> void:
 	print("in ui drop_data")
 
