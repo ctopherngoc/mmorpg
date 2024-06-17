@@ -6,7 +6,7 @@ onready var drop_confirm_popup = preload("res://scenes/menuObjects/PopupMenus/dr
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
-var non_movable_windows = ["InGameMenu", "PlayerHUD", "ChatBox", "Control"]
+var non_movable_windows = ["InGameMenu", "PlayerHUD", "ChatBox", "Control", "DebuggerWindow"]
 onready var ui_nodes = {
 	'player_stats': get_node("PlayerStats"),
 	'inventory': get_node("Inventory"),
@@ -73,6 +73,7 @@ func drop_data(_pos, data):
 			"""
 			Server.drop_request(data.from_slot, data.tab)
 	
+# warning-ignore:unused_argument
 func can_drop_data(_pos, data):
 	#print("in can drop data")
 	return true
