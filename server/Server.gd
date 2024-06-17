@@ -205,7 +205,7 @@ remote func choose_character(requester: int, display_name: String) -> void:
 	for character_dict in player_container.characters_info_list:
 		if  display_name == character_dict['displayname']:
 			player_container.current_character = ServerData.characters_data[display_name]
-			player_container.current_character.stats["buff"] = player_container.buff_stats
+			player_container.current_character.stats["buff"] = ServerData.buff_stats.duplicate(true)
 			#print(player_container.current_character.inventory)
 			ServerData.username_list[str(player_id)] = display_name
 			break
@@ -735,27 +735,41 @@ remote func skill_request(skill: String) -> void:
 							var keys = skill_data.stat.keys()
 							for key in keys:
 								if "Percent" in key and "strength" in key:
-										player_container.buff_stats["strength"] += floor(player_container.current_character.stats.base.strength * skill_data.stat[key][player_skill_data - 1])
+										player_container.current_character.stats.buff["strength"] += floor(player_container.current_character.stats.base.strength * skill_data.stat[key][player_skill_data - 1])
 								elif "Percent" in key and "dexterity" in key:
-									player_container.buff_stats["dexterity"] += floor(player_container.current_character.stats.base.dexterity * skill_data.stat[key][player_skill_data - 1])
+									player_container.current_character.stats.buff["dexterity"] += floor(player_container.current_character.stats.base.dexterity * skill_data.stat[key][player_skill_data - 1])
 								elif "Percent" in key and "wisdom" in key:
-									player_container.buff_stats["wisdom"] += floor(player_container.current_character.stats.base.wisdom * skill_data.stat[key][player_skill_data - 1])
+									player_container.current_character.stats.buff["wisdom"] += floor(player_container.current_character.stats.base.wisdom * skill_data.stat[key][player_skill_data - 1])
 								elif "Percent" in key and "luck" in key:
-									player_container.buff_stats["luck"] += floor(player_container.current_character.stats.base.luck * skill_data.stat[key][player_skill_data - 1])
+									player_container.current_character.stats.buff["luck"] += floor(player_container.current_character.stats.base.luck * skill_data.stat[key][player_skill_data - 1])
 								elif "Percent" in key and "health" in key:
-									player_container.buff_stats["maxHealth"] += floor(player_container.current_character.stats.base.maxHealth * skill_data.stat[key][player_skill_data - 1])
+									player_container.current_character.stats.buff["maxHealth"] += floor(player_container.current_character.stats.base.maxHealth * skill_data.stat[key][player_skill_data - 1])
 								elif "Percent" in key and "mana" in key:
-									player_container.buff_stats["maxMana"] += floor(player_container.current_character.stats.base.maxMana * skill_data.stat[key][player_skill_data - 1])
+									player_container.current_character.stats.buff["maxMana"] += floor(player_container.current_character.stats.base.maxMana * skill_data.stat[key][player_skill_data - 1])
 								else:
-									player_container.buff_stats[key] += skill_data.stat[key][player_skill_data - 1]
+									player_container.current_character.stats.buff[key] += skill_data.stat[key][player_skill_data - 1]
 							#player_container.current_character.stats.buff[skill] = {"stat": skill_data.statType, "A": skill_data.type, "D": skill_data.duration[player_skill_data - 1]}
 						player_container.buffs[skill] = skill_data.duration[player_skill_data - 1]
+						print(player_container.current_character.stats.buff)
 						update_player_stats(player_container)
 						
 					elif skill_data.type == "heal":
+						print("attempt to heal")
 						var keys = skill_data.stat.keys()
 						for key in keys:
-							player_container.current_character.stats.base[key] += skill_data.stat[key][player_skill_data - 1]
+							if key == "health":
+								if player_container.current_character.stats.base.health + skill_data.stat[key][player_skill_data - 1] > player_container.current_character.stats.base.maxHealth + player_container.current_character.stats.buff.maxHealth:
+									player_container.current_character.stats.base.health = player_container.current_character.stats.base.maxHealth + player_container.current_character.stats.buff.maxHealth
+								else:
+									player_container.current_character.stats.base.health += skill_data.stat[key][player_skill_data - 1]
+									
+							elif key == "mana":
+								if player_container.current_character.stats.base.mana + skill_data.stat[key][player_skill_data - 1] > player_container.current_character.stats.base.maxMana + player_container.current_character.stats.buff.maxMana:
+									player_container.current_character.stats.base.mana = player_container.current_character.stats.base.maxMana + player_container.current_character.stats.buff.maxMana
+								else:
+									player_container.current_character.stats.base.mana += skill_data.stat[key][player_skill_data - 1]
+							else:
+								player_container.current_character.stats.buff[key] += skill_data.stat[key][player_skill_data - 1]
 						update_player_stats(player_container)
 						
 					# if attack
@@ -764,7 +778,7 @@ remote func skill_request(skill: String) -> void:
 						# create projectile
 						
 					# set cd
-					var cooldown = skill_data[player_skill_data - 1]
+					var cooldown = skill_data.cooldown[player_skill_data - 1]
 					if cooldown > 0:
 						player_container.cooldowns[skill] = int(cooldown)
 					else:
