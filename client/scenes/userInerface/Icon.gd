@@ -20,6 +20,7 @@ onready var label = $VBoxContainer/Label
 var dragging = false
 # Called when the node enters the scene tree for the first time.
 func _ready():
+# warning-ignore:return_value_discarded
 	Signals.connect("toggle_inventory", self, "item_info_free")
 	
 func _notification(what):
