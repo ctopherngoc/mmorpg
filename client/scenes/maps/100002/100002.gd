@@ -17,6 +17,7 @@ onready var teleporter2 : Label = $MapObjects/T2/Label
 onready var teleporter = [Vector2(-135, -225.500488), Vector2(657.772644, -225.575974)]
 
 func _ready():
+# warning-ignore:unused_variable
 	var gameWorld = self.get_parent().get_parent()
 	
 	Global.change_background()
