@@ -3,7 +3,7 @@ extends KinematicBody2D
 onready var velocity_multiplier = 1
 # dynamic player variables
 onready var jump_speed
-onready var max_horizontal_speed
+#onready var max_horizontal_speed
 onready var velocity = Vector2.ZERO
 onready var camera = $Camera2D
 onready var last_input = null
@@ -32,23 +32,25 @@ onready var recon_arr = {
 ########
 
 func _ready():
-	max_horizontal_speed = (Global.player.stats.base.movementSpeed)
+	#max_horizontal_speed = Global.player.stats.base.movementSpeed + Global.player.stats.buff.movementSpeed
 	# warning-ignore:return_value_discarded
 	Signals.connect("dialog_closed", self, "movable_switch")
-	jump_speed = (Global.player.stats.base.jumpSpeed)
+	#jump_speed = (Global.player.stats.base.jumpSpeed)
 	Global.player_node = self
 	Global.in_game = true
 
 func _physics_process(delta):
-	temp_delta = delta
-	""""
-	if Global.movable:
-		get_input()
-	"""
-	var input = get_input()
-	movement_loop(delta, input)
-	define_player_state(input)
-	Global.player_position = self.global_position
+	if Global.in_game:
+		temp_delta = delta
+		""""
+		if Global.movable:
+			get_input()
+		"""
+	# warning-ignore:shadowed_variable
+		var input = get_input()
+		movement_loop(delta, input)
+		define_player_state(input)
+		Global.player_position = self.global_position
 
 func define_player_state(input_array):
 	player_state = {"T": Server.client_clock, "P": input_array}
@@ -62,6 +64,7 @@ func define_player_state(input_array):
 	Server.send_player_state(player_state)
 
 func get_input():
+# warning-ignore:shadowed_variable
 	var input = [0,0,0,0,0,0]
 	if Input.is_action_pressed("ui_up"):
 		input[0] = 1
@@ -103,6 +106,7 @@ func movement_loop(delta, input_arr):
 		velocity.x = 0
 	update_animation(move_vector)
 	
+# warning-ignore:shadowed_variable
 func get_movement_vector(input):
 	var moveVector = Vector2.ZERO
 	# calculating x vector, allow x-axis jump off ropes or idle on floor
@@ -125,8 +129,10 @@ func get_movement_vector(input):
 			moveVector.y = 0
 	return moveVector
 
+# warning-ignore:shadowed_variable
 func get_velocity(move_vector, input, delta):
-	velocity.x += move_vector.x * max_horizontal_speed
+	#velocity.x += move_vector.x * max_horizontal_speed
+	velocity.x += move_vector.x * (Global.player.stats.base.movementSpeed + Global.player.stats.equipment.movementSpeed + Global.player.stats.buff.movementSpeed)
 	# slow down movement
 	if(move_vector.x == 0):
 		# allows forward jumping
@@ -135,7 +141,7 @@ func get_velocity(move_vector, input, delta):
 			velocity.x = 0
 
 	# allows maximum velocity
-	velocity.x = clamp(velocity.x, -max_horizontal_speed, max_horizontal_speed)
+	velocity.x = clamp(velocity.x, -(Global.player.stats.base.movementSpeed + Global.player.stats.equipment.movementSpeed + Global.player.stats.buff.movementSpeed), (Global.player.stats.base.movementSpeed + Global.player.stats.equipment.movementSpeed + Global.player.stats.buff.movementSpeed))
 	if can_climb:
 		if is_climbing:
 			velocity.y = 0
@@ -152,7 +158,7 @@ func get_velocity(move_vector, input, delta):
 			elif input[4] == 1 && (input[1] == 1 or input[3] == 1):
 				is_climbing = false
 				#Global.send_climb_data(self.name, 1)
-				velocity.y = move_vector.y * jump_speed * .8
+				velocity.y = move_vector.y * (Global.player.stats.base.jumpSpeed + Global.player.stats.equipment.jumpSpeed + Global.player.stats.buff.jumpSpeed) * .8
 				velocity.x = move_vector.x * 200
 		# can climb but not climbing
 		else:
@@ -171,7 +177,7 @@ func get_velocity(move_vector, input, delta):
 	else:
 		# normal movement
 		if (move_vector.y < 0 && is_on_floor()):
-			velocity.y = move_vector.y * jump_speed
+			velocity.y = move_vector.y * (Global.player.stats.base.jumpSpeed + Global.player.stats.equipment.jumpSpeed + Global.player.stats.buff.jumpSpeed)
 		else:
 			velocity.y += gravity * delta
 	if !can_climb:
