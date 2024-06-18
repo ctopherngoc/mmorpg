@@ -14,6 +14,7 @@ onready var interpolation_offset: int = 200
 onready var current_map: String = ""
 onready var in_game = false
 onready var floating_text = preload("res://scenes/userInerface/FloatingText.tscn")
+onready var projectile = preload("res://scenes/skillObjects/Projectile.tscn")
 
 var player_template = preload("res://scenes/playerObjects/OtherPlayerSprite.tscn")
 var player_node
@@ -101,10 +102,16 @@ func _physics_process(_delta: float) -> void:
 						if get_node("/root/GameWorld/MapNode/%s/Monsters" % Global.current_map).has_node(str(monster)):
 							var monster_node = get_node("/root/GameWorld/MapNode/%s/Monsters/" % Global.current_map + str(monster))
 							# monster dead on server
+							
+							# hp calculations
+							##############################################################################################################
+							# if world_state_buffer[2]["E"][monster]["damageTaken"]size() != 0
 							if world_state_buffer[2]["E"][monster]["EnemyHealth"] <= 0:
+								#monster_node.health(world_state_buffer[1]["E"][monster]["EnemyHealth"], world_state_buffer[2]["E"][monster]["damageTaken"])
 								monster_node.health(world_state_buffer[1]["E"][monster]["EnemyHealth"])
 								if monster_node.despawn != 0:
 									monster_node.on_death()
+							##############################################################################################################
 							# monster alive: update monster stats and position
 							else:
 								
@@ -150,6 +157,39 @@ func _physics_process(_delta: float) -> void:
 					var current_item_nodes = get_node("/root/GameWorld/MapNode/%s/Items" % Global.current_map).get_children()
 					for i in current_item_nodes:
 							i.queue_free()
+				###################################################################################
+				if world_state_buffer[2]["M"].size() > 0:
+					#print(world_state_buffer[2]["M"].size())
+					var current_projectile_nodes = get_node("/root/GameWorld/MapNode/%s/Projectiles" % Global.current_map).get_children()
+					# remove items if current state has item but future does not have it
+					for projectile in current_projectile_nodes:
+						if not projectile.name in world_state_buffer[2]["M"].keys():
+							projectile.queue_free()
+					for projectile in world_state_buffer[2]["M"].keys():
+						if not world_state_buffer[1]["M"].has(projectile):
+							continue
+						# monster not dead on client
+						if get_node("/root/GameWorld/MapNode/%s/Projectiles" % Global.current_map).has_node(str(projectile)):
+							# floor both world state item locations 
+							var ws1 = Vector2(floor(world_state_buffer[1]["M"][projectile]["P"].x), floor(world_state_buffer[1]["M"][projectile]["P"].y))
+							var ws2 = Vector2(floor(world_state_buffer[2]["M"][projectile]["P"].x), floor(world_state_buffer[2]["M"][projectile]["P"].y))
+							# if they are equal dont update the location
+							if ws1 != ws2:
+								#print(ws1, ws2)
+								var projectile_node = get_node("/root/GameWorld/MapNode/%s/Projectiles/" % Global.current_map + str(projectile))
+
+								var new_position = lerp(world_state_buffer[1]["M"][projectile]["P"], world_state_buffer[2]["M"][projectile]["P"], interpolation_factor)
+								print(projectile_node)
+								projectile_node.position = new_position
+						# spawn projectile
+						else:
+							spawn_projectile(projectile, world_state_buffer[2]["M"][projectile])
+				# no projectile in future state -> despawn all
+				else:
+					var current_projectile_nodes = get_node("/root/GameWorld/MapNode/%s/Projectiles" % Global.current_map).get_children()
+					for i in current_projectile_nodes:
+							i.queue_free()
+				#####################################################################################
 			# we have no future world_state
 			elif render_time > world_state_buffer[1].T:
 				despawn_players(world_state_buffer[1]["P"].keys())
@@ -231,7 +271,36 @@ func _physics_process(_delta: float) -> void:
 					var current_item_nodes = get_node("/root/GameWorld/MapNode/%s/Items" % Global.current_map).get_children()
 					for i in current_item_nodes:
 							i.queue_free()
-
+				#################################################################
+				if world_state_buffer[1]["M"].size() > 0:
+					var current_projectile_nodes = get_node("/root/GameWorld/MapNode/%s/Projectiles" % Global.current_map).get_children()
+					# remove items if current state has item but future does not have it
+					for projectile in current_projectile_nodes:
+						if not projectile.name in world_state_buffer[1]["M"].keys():
+							projectile.queue_free()
+					for projectile in world_state_buffer[1]["M"].keys():
+						if not world_state_buffer[0]["M"].has(projectile):
+							continue
+						# monster not dead on client
+						if get_node("/root/GameWorld/MapNode/%s/Projectiles" % Global.current_map).has_node(str(projectile)):
+							# floor both world state item locations 
+							var ws1 = Vector2(floor(world_state_buffer[0]["M"][projectile]["P"].x), floor(world_state_buffer[0]["M"][projectile]["P"].y))
+							var ws2 = Vector2(floor(world_state_buffer[1]["M"][projectile]["P"].x), floor(world_state_buffer[1]["M"][projectile]["P"].y))
+							# if they are equal dont update the location
+							if ws1 != ws2:
+								#print(ws1, ws2)
+								var projectile_node = get_node("/root/GameWorld/MapNode/%s/Projectiles/" % Global.current_map + str(projectile))
+								var new_position = world_state_buffer[1]["M"][projectile]["P"]
+								projectile_node.position = new_position
+						# spawn item
+						else:
+							spawn_projectile(projectile, world_state_buffer[1]["M"][projectile])
+				# no items in future state -> despawn all
+				else:
+					var current_projectile_nodes = get_node("/root/GameWorld/MapNode/%s/Projectiles" % Global.current_map).get_children()
+					for i in current_projectile_nodes:
+							i.queue_free()
+				#################################################################
 func spawn_new_player(player_id: int, player_state: Dictionary) -> void:
 	if player_id == get_tree().get_network_unique_id():
 		pass
@@ -282,6 +351,14 @@ func spawn_item(name: String, item_dict: Dictionary) -> void:
 		item.item_type = GameData.itemTable[str(item.id)]['itemType']
 		get_node("/root/GameWorld/MapNode/%s/Items" % Global.current_map).add_child(item, true)
 
+func spawn_projectile(name: String, projectile_world_state: Dictionary) -> void:
+	var new_projectile = projectile.instance()
+	new_projectile.name = name
+	new_projectile.texture = load(GameData.skill_class_dictionary[projectile_world_state["I"]].projectile_sprite)
+	new_projectile.position = projectile_world_state["P"]
+	get_node("/root/GameWorld/MapNode/%s/Projectiles" % Global.current_map).add_child(new_projectile, true)
+	
+	
 func server_reconciliation(server_input_data: Dictionary) -> void:
 	for i in range(input_queue.size()):
 		if server_input_data["T"] == input_queue[i]["T"]:
@@ -291,13 +368,14 @@ func server_reconciliation(server_input_data: Dictionary) -> void:
 				var clientx = stepify(input_queue[i]["P"].x, 1)
 				var clienty = stepify(input_queue[i]["P"].y, 1)
 				#print(serverx, servery, " ",clientx, clienty)
-				if abs(serverx - clientx) > 1 or abs(servery - clienty) > 1:
+				if abs(serverx - clientx) > 1 or abs(servery - clienty) > 5:
 					#print("recon")
 					#print("server: ", server_input_data["P"], " client: ",input_queue[i]["P"])
 					var recon_position = lerp(input_queue[i]["P"],server_input_data["P"], 0.5)
 					#var new_position = lerp(Vector2(clientx, clienty), Vector2(serverx, servery), interpolation_factor)
 					#var new_position = lerp(input_queue[i]["P"], server_input_data["P"], .75)
 					#get_node("/root/GameWorld/Player").set_position(recon_position)
+					var player = get_node("/root/GameWorld/MapNode/%s/Player" % Global.current_map)
 					get_node("/root/GameWorld/MapNode/%s/Player" % Global.current_map).set_position(recon_position)
 					#get_node("/root/currentScene/Player").set_position(server_input_data['P'])
 			input_queue = input_queue.slice(i+1, input_queue.size(), 1, true)

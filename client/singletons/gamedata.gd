@@ -238,7 +238,7 @@ onready var item_preload = {
 
 onready var skill_data = {
 	"0" : {
-		"0": {"name": "Godot Ball", "id": "600000",  "maxLevel": 3, "description": "Throw a projectile forward", "stat": {"damagePercent": [1.3, 1.5, 1.7]}, "mana": [25, 20, 15], "cooldown": [0, 0, 0], "type": "attack"},
+		"0": {"name": "Godot Ball", "id": "600000",  "maxLevel": 3, "targetCount": [1,1,1], "description": "Throw a projectile forward", "stat": {"damagePercent": [1.3, 1.5, 1.7]}, "mana": [25, 20, 15], "cooldown": [0, 0, 0], "type": "attack", "attackType": "projectile", "weaponType": null, "damageType": 1, "hitAmount": [2,3,4]},
 		"1": {"name": "Tenacious Heal", "id": "600001",  "maxLevel": 3, "description": "Heals for a small amount", "stat": {"health": [25, 50, 100]}, "mana": [30,20,10], "cooldown": [180, 120, 60], "type": "heal"},
 		"2": {"name": "Swift Speed", "id": "600002", "maxLevel": 3, "description": "Incrase speed for a short time", "stat": {"movementSpeed": [10, 20, 30]}, "mana":[30,20,10], "duration": [30,30,30], "cooldown": [180, 120, 60], "type": "buff"},
 		},
@@ -249,7 +249,7 @@ onready var skill_data = {
 }
 
 onready var skill_class_dictionary = {
-	"600000" : {"class":[0,1,2,3,4], "location": ["0","0"]},
+	"600000" : {"class":[0,1,2,3,4], "location": ["0","0"], "icon": "res://assets/skillSprites/0/icon.png", "projectile_sprite": "res://assets/skillSprites/0/icon.png"},
 	"600001" : {"class":[0,1,2,3,4], "location": ["0","1"]},
 	"600002" : {"class":[0,1,2,3,4], "location": ["0","2"]},
 }
@@ -258,7 +258,7 @@ onready var mandatory_keys = ["attack", "skill", "inventory", "stat", "loot"]
 
 onready var animation_dict: Dictionary = {
 	"attack": "slash",
-	"600000": "attack",
+	"600000": "ready",
 	"600001": "ready",
 	"600002": "ready",
 }

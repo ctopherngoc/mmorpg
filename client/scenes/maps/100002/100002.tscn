@@ -49,6 +49,8 @@ endLocation = Vector2( 103, -250 )
 
 [node name="OtherPlayers" type="YSort" parent="."]
 
+[node name="Projectiles" type="YSort" parent="."]
+
 [node name="Player" parent="." instance=ExtResource( 4 )]
 
 [node name="Items" type="YSort" parent="."]

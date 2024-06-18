@@ -189,7 +189,7 @@ func get_velocity(move_vector, input, delta):
 
 func update_animation(move_vector):
 	if(attacking):
-		print("%s pass" % attacking)
+		#print("%s pass" % attacking)
 		last_input = null
 		pass
 
