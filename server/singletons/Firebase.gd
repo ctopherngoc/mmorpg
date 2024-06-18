@@ -415,6 +415,8 @@ func server_firebase_dictionary_converter(database_data: Dictionary) -> Dictiona
 				temp_dict['keybind'][key] = str(shortcut[key]['stringValue'])
 	else:
 		temp_dict['keybind'] = ServerData.static_data.default_keybind.duplicate(true)
+	
+	temp_dict.stats["buff"] = ServerData.buff_stats.duplicate(true)
 
 	return temp_dict
 

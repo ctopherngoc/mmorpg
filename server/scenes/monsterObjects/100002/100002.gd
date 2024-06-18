@@ -4,6 +4,7 @@ var location = null
 var map_id = null
 var state = "idle"
 var stats = {}
+var damage_taken: Array = []
 
 var rng = RandomNumberGenerator.new()
 var velocity = Vector2.ZERO

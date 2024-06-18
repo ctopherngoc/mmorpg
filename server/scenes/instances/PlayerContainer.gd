@@ -79,7 +79,8 @@ func _physics_process(delta: float) -> void:
 			movement_loop(delta)
 			
 			if animation_state.a:
-				print("attacking")
+				pass
+				#print("attacking")
 			if not cooldowns.empty() and CDTimer.is_stopped():
 				CDTimer.start()
 			if not buffs.empty() and BuffTimer.is_stopped():
@@ -102,35 +103,73 @@ func load_player_stats() -> void:
 	jump_speed = current_character.stats.base.jumpSpeed
 	#print(typeof(current_character.inventory["100000"]))
 
-func attack(move_id: int) -> void:
+func normal_attack() -> void:
 	attacking = true
 	
 	#basic attack
-	if move_id == 0:
+	var equipment = current_character.equipment
+	if equipment.rweapon.type == "1h_sword":
+		animation.play("1h_sword",-1, ServerData.static_data.weapon_speed[equipment.rweapon.attackSpeed])
+		yield(animation, "animation_finished")
+	elif equipment.rweapon.type == "2h_sword":
+		pass
+#	elif equipment.weapon.type == "bow":
+#	# else ranged weapon:
+#		if equipment.ammo.amount > 0:
+#			animation.play("bow",-1, ServerData.static_data.weapon_speed[equipment.rweapon.attackSspeed])
+#		else:
+#			return "not enough ammo"
+	# no mobs overlap
+	if mobs_hit.size() == 0:
+		print("no mobs hit")
+	# there are mobs overlap
+	else:
+		# physical mobbing auto attack class
+		if current_character.stats.base.job == 10:
+			if mobs_hit.size() < 6:
+				for mob in mobs_hit:
+					var mob_parent = mob.get_parent()
+					var damage_list = Global.damage_formula(1, current_character, mob_parent.stats)
+					Global.npc_hit(damage_list, mob_parent, self.name)
+		# singe mob physical basic attack
+		else:
+			var closest = null
+			for monster in mobs_hit:
+				if closest == null:
+					closest = monster
+				else:
+					if pow((monster.position.x - self.position.x), 2) > pow((monster.position.x - self.position.x ), 2):
+						closest = monster
+			var mob_parent = closest.get_parent()
+			var damage_list = Global.damage_formula(1, current_character, mob_parent.stats)
+			#mob_parent.npc_hit(damage, self.name)
+			Global.npc_hit(damage_list, mob_parent, self.name)
+	# uses skill
+	attacking = false
+
+func skill_attack(skill_data: Dictionary, skill_level: int) -> void:
+	attacking = true
+	
+	#basic attack
+	if not skill_data["weaponType"] or current_character.equipment.rweapon.type in skill_data["weaponType"]:
 		var equipment = current_character.equipment
 		if equipment.rweapon.type == "1h_sword":
 			animation.play("1h_sword",-1, ServerData.static_data.weapon_speed[equipment.rweapon.attackSpeed])
 			yield(animation, "animation_finished")
 		elif equipment.rweapon.type == "2h_sword":
 			pass
-		elif equipment.weapon.type == "bow":
-		# else ranged weapon:
-			if equipment.ammo.amount > 0:
-				animation.play("bow",-1, ServerData.static_data.weapon_speed[equipment.rweapon.attackSspeed])
-			else:
-				return "not enough ammo"
-		# no mobs overlap
+		
 		if mobs_hit.size() == 0:
 			print("no mobs hit")
 		# there are mobs overlap
 		else:
 			# physical mobbing auto attack class
-			if current_character.stats.base.job == 10:
-				if mobs_hit.size() < 6:
+			if skill_data.targetCount[skill_level] > 1:
+				if mobs_hit.size() < skill_data.targetCount[skill_level]:
 					for mob in mobs_hit:
 						var mob_parent = mob.get_parent()
-						var damage = Global.damage_formula(1, current_character, mob_parent.stats)
-						Global.npc_hit(damage, mob_parent, self.name)
+						var damage_array = Global.damage_formula(skill_data["damangeType"], current_character, mob_parent.stats, skill_data.hitAmount[skill_level], skill_data.damagePercent[skill_level])
+						Global.npc_hit(damage_array, mob_parent, self.name)
 			# singe mob physical basic attack
 			else:
 				var closest = null
@@ -141,10 +180,9 @@ func attack(move_id: int) -> void:
 						if pow((monster.position.x - self.position.x), 2) > pow((monster.position.x - self.position.x ), 2):
 							closest = monster
 				var mob_parent = closest.get_parent()
-				var damage = Global.damage_formula(1, current_character, mob_parent.stats)
+				var damage_array = Global.damage_formula(1, current_character, mob_parent.stats)
 				#mob_parent.npc_hit(damage, self.name)
-				Global.npc_hit(damage, mob_parent, self.name)
-	attacking = false
+				Global.npc_hit(damage_array, mob_parent, self.name)
 
 func overlapping_bodies() -> void:
 	#if $attack_range.get_overlapping_areas().size() > 0:
@@ -428,6 +466,7 @@ func _on_CDTimer_timeout():
 		var skills = cooldowns.keys()
 		for skill in skills:
 			if cooldowns[skill] == 1:
+# warning-ignore:return_value_discarded
 				cooldowns.erase(skill)
 			else:
 				cooldowns[skill] -= 1
@@ -439,6 +478,7 @@ func _on_BuffTimer_timeout():
 		var buff_list = buffs.keys()
 		for buff in buff_list:
 			if buffs[buff] == 1:
+# warning-ignore:return_value_discarded
 				buffs.erase(buff)
 				Global.cancel_buff(self, buff)
 			else:

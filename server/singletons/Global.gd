@@ -45,7 +45,7 @@ func npc_attack(player: KinematicBody2D, monster_stats: Dictionary) -> void:
 # WIP
 # warning-ignore:unused_argument
 func player_death(player_id):
-	pass
+	print("%s died" % player_id)
 
 # save all player data to firebase db every 10 minutes
 func _on_Timer_timeout() -> void:
@@ -61,44 +61,53 @@ func send_climb_data(player_id: int, climb_data: int):
 	#print("send_climb_data: player_id: %s, climb_data %s" % [typeof(player_id), typeof(climb_data)])
 	server.send_climb_data(player_id, climb_data)
 
-func damage_formula(type: bool, player_dict: Dictionary, target_stats: Dictionary) -> int:
+func damage_formula(type: bool, player_dict: Dictionary, target_stats: Dictionary, hitAmount: int = 1, damagePercent: float = 1.0) -> int:
 	var stats = player_dict.stats
-	if stats.base.accuracy + stats.equipment.accuracy + stats.buff.accuracy < target_stats.avoidability:
-		var acc_diff = target_stats.avoidability - (stats.base.accuracy + stats.equipment.accuracy + stats.buff.accuracy)
-		acc_diff = acc_diff / 10
-		if rng.randi_range(1,10) < acc_diff:
-			print("miss")
-			return -1
-	#print("Acc >= Avoid")
-	var damage = rng.randi_range(stats.base.minRange, stats.base.maxRange)
-	#print("damage before: ", damage)
-	if type:
-		#print("phyiscal")
-		if stats.base.maxRange >= target_stats.defense:
-			damage = float( damage * 2 - target_stats.defense)
-		else:
-			damage = float( damage * damage / target_stats.defense)
-		#print("damage after %s" % damage)
-	#magic damage
-	else:
-		# update later
-		#####################################################################
-		#print("magic")
-		if stats.base.magic >= target_stats.magicDefense:
-			damage = float(stats.base.magic * stats.equipment.magic * stats.buff.magic / target_stats.magicDefense)
-		else:
-			return 0
-		#######################################################################
-	damage = damage * ((float(stats.base.damagePercent + stats.equipment.damagePercent + stats.buff.damagePercent) * 0.1) + 1.0)
-	#print("after dmg_percent: %s" % damage)
-	if target_stats["boss"] == 1:
-		damage = damage * ((float(stats.base.bossPercent + stats.equipment.bossPercent + stats.buff.bossPercent) * 0.1) + 1.0)
-		#print("After boss percent: %s" % damage)
-	var crit_rate = stats.base.critRate + stats.equipment.critRate + stats.buff.critRate
-	var crit_ratio = calculate_crit(crit_rate)
-	var final_damage = int(damage * crit_ratio)
-	#print("final damage: %s" % final_damage)
-	return final_damage
+	var damage_list = []
+	var count = 0
+	while count < hitAmount:
+		var damage
+		if stats.base.accuracy + stats.equipment.accuracy + stats.buff.accuracy < target_stats.avoidability:
+			var acc_diff = target_stats.avoidability - (stats.base.accuracy + stats.equipment.accuracy + stats.buff.accuracy)
+			acc_diff = acc_diff / 10
+			if rng.randi_range(1,10) < acc_diff:
+				print("miss")
+				damage = -1
+				damage_list.append(damage)
+		
+		#print("Acc >= Avoid")
+		if not damage:
+			damage = rng.randi_range(stats.base.minRange, stats.base.maxRange) * damagePercent
+		#print("damage before: ", damage)
+			if type:
+				#print("phyiscal")
+				if stats.base.maxRange >= target_stats.defense:
+					damage = float( damage * 2 - target_stats.defense)
+				else:
+					damage = float( damage * damage / target_stats.defense)
+				#print("damage after %s" % damage)
+			#magic damage
+			else:
+				# update later
+				#####################################################################
+				#print("magic")
+				if stats.base.magic >= target_stats.magicDefense:
+					damage = float(stats.base.magic * stats.equipment.magic * stats.buff.magic / target_stats.magicDefense)
+				else:
+					damage = 0
+				#######################################################################
+			damage = damage * ((float(stats.base.damagePercent + stats.equipment.damagePercent + stats.buff.damagePercent) * 0.1) + 1.0)
+			#print("after dmg_percent: %s" % damage)
+			if target_stats["boss"] == 1:
+				damage = damage * ((float(stats.base.bossPercent + stats.equipment.bossPercent + stats.buff.bossPercent) * 0.1) + 1.0)
+				#print("After boss percent: %s" % damage)
+			var crit_rate = stats.base.critRate + stats.equipment.critRate + stats.buff.critRate
+			var crit_ratio = calculate_crit(crit_rate)
+			var final_damage = int(damage * crit_ratio)
+			damage_list.append(final_damage)
+		count += 1
+		#print("final damage: %s" % final_damage)
+	return damage_list
 
 func calculate_crit(crit_rate: int) -> float:
 	var crit_number = rng.randi_range(1,100)
@@ -148,50 +157,54 @@ func calculate_stats(player_stats: Dictionary) -> void:
 	else:
 		pass
 
-func npc_hit(dmg: int, npc: KinematicBody2D, player: String):
-	if dmg <= npc.stats.currentHP:
-		npc.stats.currentHP -= dmg
-		if str(player) in npc.attackers.keys():
-			npc.attackers[str(player)] += dmg
+func npc_hit(dmg_list: Array, npc: KinematicBody2D, player: String):
+	for dmg in dmg_list:
+		npc.damage_taken.append(dmg)
+		if dmg < 0:
+			pass
+		elif dmg <= npc.stats.currentHP:
+			npc.stats.currentHP -= dmg
+			if str(player) in npc.attackers.keys():
+				npc.attackers[str(player)] += dmg
+			else:
+				npc.attackers[str(player)] = dmg
 		else:
-			npc.attackers[str(player)] = dmg
-	else:
-		if str(player) in npc.attackers.keys():
-			npc.attackers[str(player)] += npc.stats.currentHP
-		else:
-			npc.attackers[str(player)] = npc.stats.currentHP
-		npc.stats.currentHP -= dmg
-	# if dead change state and make it unhittable
-	if npc.stats.currentHP <= 0:
-		npc.state = "Dead"
-		for attacker in npc.attackers.keys():
-			var highest_attacker = null
-			var  damage = null
-			# if atacker in map
-			if npc.map_id in ServerData.player_location[attacker]:
-				#var player_container = get_node("../../Players/%s" % attacker)
-				var player_container = get_node(ServerData.player_location[str(attacker)] + "/%s" % str(attacker))
-				# xp = rounded (dmg done / max hp) * experience
-				var damage_percent = round((npc.attackers[attacker] / npc.stats.maxHP))
-				if !highest_attacker:
-					highest_attacker = attacker
-					damage = damage_percent
-				# highest daamge atacker saved
-				else:
-					if damage_percent > damage:
+			if str(player) in npc.attackers.keys():
+				npc.attackers[str(player)] += npc.stats.currentHP
+			else:
+				npc.attackers[str(player)] = npc.stats.currentHP
+			npc.stats.currentHP -= dmg
+		# if dead change state and make it unhittable
+		if npc.stats.currentHP <= 0 and npc.state != "Dead":
+			npc.state = "Dead"
+			for attacker in npc.attackers.keys():
+				var highest_attacker = null
+				var  damage = null
+				# if atacker in map
+				if npc.map_id in ServerData.player_location[attacker]:
+					#var player_container = get_node("../../Players/%s" % attacker)
+					var player_container = get_node(ServerData.player_location[str(attacker)] + "/%s" % str(attacker))
+					# xp = rounded (dmg done / max hp) * experience
+					var damage_percent = round((npc.attackers[attacker] / npc.stats.maxHP))
+					if !highest_attacker:
 						highest_attacker = attacker
 						damage = damage_percent
-				if damage_percent == 1:
-					# should be
-					# player_container.experience(ServerData.monsterTable[npc.id].experience)
-					player_container.experience(npc.stats.experience)
-				else:
-					player_container.experience(int(round(damage_percent * npc.stats.experience)))
-				var drop_list = dropGeneration(npc.id)
-				dropSpawn(npc.map_id, npc.position, drop_list, int(highest_attacker))
-		# drop items from npc location
-		npc.die()
-	print("monster: " + npc.name + " health: " + str(npc.stats.currentHP))
+					# highest daamge atacker saved
+					else:
+						if damage_percent > damage:
+							highest_attacker = attacker
+							damage = damage_percent
+					if damage_percent == 1:
+						# should be
+						# player_container.experience(ServerData.monsterTable[npc.id].experience)
+						player_container.experience(npc.stats.experience)
+					else:
+						player_container.experience(int(round(damage_percent * npc.stats.experience)))
+					var drop_list = dropGeneration(npc.id)
+					dropSpawn(npc.map_id, npc.position, drop_list, int(highest_attacker))
+			# drop items from npc location
+			npc.die()
+		print("monster: " + npc.name + " health: " + str(npc.stats.currentHP))
 
 func dropGeneration(monster_id: String) -> Dictionary:
 	"""
@@ -269,6 +282,7 @@ func dropDetermine(item_id: String) -> bool:
 	else:
 		return false
 
+# warning-ignore:unused_argument
 func dropSpawn(map: String, location: Vector2, item_dict: Dictionary, quantity: int = 1, user_id = null) -> void:
 	# user_id could be string or null
 	var map_path = "/root/Server/World/Maps/" + str(map) + "/YSort/Items"
@@ -511,15 +525,45 @@ func add_item_to_world_state(item: KinematicBody2D, map_id: String) -> void:
 		ServerData.items[map_id].erase(item.name)
 		item.queue_free()
 
-func add_projectile_to_world_state(projectile: KinematicBody2D, map_id: String) -> void:
+func add_projectile_to_world_state(projectile: Sprite, map_id: String) -> void:
 	# N = drop_id client node name
 	ServerData.projectiles[map_id][projectile.name] = {"P": projectile.position, "I": projectile.id}
 	if projectile.ready == 1:
 		projectile.ready = 0
 	elif projectile.ready == -1:
-		ServerData.projectile[map_id].erase(projectile.name)
+		#print(projectile.name)
+		#print(typeof(projectile.name))
+		ServerData.projectiles[map_id].erase(projectile.name)
+		# call skill do damage
+#		"""
+#		projectile.player = player node
+#		projectile.target = target node
+#		"""
+#		calculate_skill_damage(projectile.player, projectile.target, projectile.id)
 		projectile.queue_free()
 
+func remove_projectiles_in_world_state(projectile_list: Array, map_id: String) -> void:
+	var world_state_projectile_list = ServerData.projectiles[map_id].keys()
+	var projetile_names = []
+	
+	for node in projectile_list:
+		projetile_names.append(node.name)
+	for projectile in world_state_projectile_list:
+		if not projectile_list.has(projectile):
+			ServerData.projectiles[map_id].erase(projectile)
+			
+func calculate_skill_damage(player_container: KinematicBody2D, monster_container: KinematicBody2D, projectile_container: Sprite):
+	print("in calculate skill damage")
+	print("skill %s" % projectile_container.id)
+	print("player %s" % player_container.name)
+	print("monster %s" % monster_container.id)
+	
+	var damage_list = damage_formula(projectile_container.skill_data.damageType, player_container.current_character, monster_container.stats, projectile_container.skill_data.hitAmount[projectile_container.skill_level], projectile_container.skill_data.stat.damagePercent[projectile_container.skill_level])
+	print(damage_list)
+	
+	npc_hit(damage_list, monster_container, player_container.name)
+	
+	
 func cancel_buff(player_container: KinematicBody2D, skill_id: String):
 	# get skill level
 	var player_skill_data = player_container.current_character.skills[ServerData.skill_class_dictionary[skill_id].location[0]][ServerData.skill_class_dictionary[skill_id].location[1]]

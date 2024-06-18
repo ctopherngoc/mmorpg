@@ -30,12 +30,11 @@ func _ready():
 #	var skill_data_file = File.new()
 #	skill_data_file.open("res://Data/SkillData - Sheet1.json", File.READ)
 #	var skill_data_json = JSON.parse(skill_data_file.get_as_text())
-#	skill_data_file.close()
-#	skill_data = skill_data_json.result
+#	skill_data_file.close()s
 
 onready var skill_data = {
 	"0" : {
-		"0": {"name": "Godot Ball", "id": "600000",  "maxLevel": 3, "description": "Throw a projectile forward", "stat": {"damagePercent": [1.3, 1.5, 1.7]}, "mana": [25, 20, 15], "cooldown": [0, 0, 0], "type": "attack"},
+		"0": {"name": "Godot Ball", "id": "600000",  "maxLevel": 3, "targetCount": [1,1,1], "description": "Throw a projectile forward", "stat": {"damagePercent": [1.3, 1.5, 1.7]}, "mana": [25, 20, 15], "cooldown": [0, 0, 0], "type": "attack", "attackType": "projectile", "weaponType": null, "damageType": 1, "hitAmount": [2,3,4]},
 		"1": {"name": "Tenacious Heal", "id": "600001",  "maxLevel": 3, "description": "Heals for a small amount", "stat": {"health": [25, 50, 100]}, "mana": [30,20,10], "cooldown": [180, 120, 60], "type": "heal"},
 		"2": {"name": "Swift Speed", "id": "600002", "maxLevel": 3, "description": "Incrase speed for a short time", "stat": {"movementSpeed": [10, 20, 30]}, "mana":[30,20,10], "duration": [30,30,30], "cooldown": [180, 120, 60], "type": "buff"},
 		},
@@ -492,3 +491,7 @@ onready var buff_stats = {
 				"bossPercent": 0,
 				"damagePercent": 0,
 				"critRate": 0,}
+				
+onready var projectile_dict = {
+	"600000": {"object": preload("res://scenes/skillObjects/Projectile.tscn"), "distance": Vector2(44,25),}
+}

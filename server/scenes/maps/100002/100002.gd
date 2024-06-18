@@ -38,6 +38,7 @@ func _process(_delta):
 				enemy_list[monster_id]['EnemyState'] = monster_container.state
 	UpdateItemStateList()
 	UpdateProjectileStateList()
+	#UpdateMonsterList()
 	if player_ysort.get_children() != players:
 		players = player_ysort.get_children()
 # after timer function called
@@ -61,10 +62,10 @@ func SpawnEnemy():
 				new_enemy.position = location
 				new_enemy.name = str(i)
 				get_node("YSort/Monsters/").add_child(new_enemy, true)
-				enemy_list[i] = {'id': new_enemy.id, 'EnemyLocation': location, 'EnemyHealth': new_enemy.stats.currentHP, 'EnemyState': new_enemy.state, 'time_out': 1}
+				enemy_list[i] = {'id': new_enemy.id, 'EnemyLocation': location, 'EnemyHealth': new_enemy.stats.currentHP, 'EnemyState': new_enemy.state, 'time_out': 1, "DamageList": []}
 				########################################
 				enemy_id_counter += 1
-
+				
 	for enemy in enemy_list.keys():
 		if enemy_list[enemy]["EnemyState"] == "Dead":
 			if enemy_list[enemy]["time_out"] == 0:
@@ -74,6 +75,11 @@ func SpawnEnemy():
 			else:
 				enemy_list[enemy]['time_out'] = enemy_list[enemy]['time_out'] - 1
 	ServerData.monsters[map_id] = enemy_list
+	
+	for enemy in enemy_list.keys():
+		if not enemy_list[enemy]["DamageList"].empty():
+			print(enemy_list[enemy]["DamageList"])
+		enemy_list[enemy]["DamageList"] = []
 
 func UpdateItemStateList() -> void:
 	"""
@@ -97,8 +103,26 @@ func UpdateProjectileStateList() -> void:
 	gets a list of children nodes in ysort: items -> updates/add item dict
 	ServerData.items.keys() are item nodes name. Unique 6 len string of Uppercase Chars and Ints
 	"""
-	if  get_node("YSort/Projectiles").get_child_count() > 0:
+	var projectile_list = get_node("YSort/Projectiles").get_children()
+	
+	Global.remove_projectiles_in_world_state(projectile_list, self.name)
+	
+	if  projectile_list.size() > 0:
 		var _index  = 0
-		for projectile in get_node("YSort/Projectiles").get_children():
+		for projectile in projectile_list:
 			Global.add_projectile_to_world_state(projectile, self.name)
 			_index += 1
+
+func UpdateMonsterList() -> void: 	
+	for enemy in enemy_list.keys():
+		if enemy_list[enemy]["EnemyState"] == "Dead":
+			if enemy_list[enemy]["time_out"] == 0:
+				occupied_locations.erase(enemy)
+				get_node("YSort/Monsters/%s" % enemy).queue_free()
+				enemy_list.erase(enemy)
+			else:
+				enemy_list[enemy]['time_out'] = enemy_list[enemy]['time_out'] - 1
+	ServerData.monsters[map_id] = enemy_list.duplicate(true)
+	
+	for enemy in enemy_list.keys():
+		enemy_list[enemy]["DamageList"] = []

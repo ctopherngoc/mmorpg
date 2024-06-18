@@ -205,7 +205,6 @@ remote func choose_character(requester: int, display_name: String) -> void:
 	for character_dict in player_container.characters_info_list:
 		if  display_name == character_dict['displayname']:
 			player_container.current_character = ServerData.characters_data[display_name]
-			player_container.current_character.stats["buff"] = ServerData.buff_stats.duplicate(true)
 			#print(player_container.current_character.inventory)
 			ServerData.username_list[str(player_id)] = display_name
 			break
@@ -409,7 +408,7 @@ remote func receive_input(move_id):
 	var player_container = _Server_Get_Player_Container(player_id)
 	# basic attack
 	if move_id == 0:
-		player_container.attack(0)
+		player_container.normal_attack()
 	#uses skill
 	else:
 		if move_id in ServerData.job_skills[player_container.current_character.stats.job]:
@@ -709,6 +708,8 @@ remote func remove_keybind(key: String) -> void:
 remote func skill_request(skill: String) -> void:
 	var player_id = get_tree().get_rpc_sender_id()
 	var player_container = _Server_Get_Player_Container(player_id)
+	print(player_container)
+	#print(player_container.position)
 	var skill_class
 	var skill_data
 	
@@ -724,10 +725,11 @@ remote func skill_request(skill: String) -> void:
 				# get skill level
 				var player_skill_data = player_container.current_character.skills[skill_class.location[0]][skill_class.location[1]]
 				
+				player_container.current_character.stats.base.mana = player_container.current_character.stats.base.maxMana
 				# check mana cost
 				if player_container.current_character.stats.base.mana >= skill_data.mana[player_skill_data - 1]:
 					# update mana
-					player_container.current_character.stats.base.mana - skill_data.mana[player_skill_data - 1]
+					player_container.current_character.stats.base.mana -= skill_data.mana[player_skill_data - 1]
 					
 					# if buff
 					if skill_data.type == "buff": 
@@ -774,15 +776,35 @@ remote func skill_request(skill: String) -> void:
 						
 					# if attack
 					elif skill_data.type == "attack":
-						pass
-						# create projectile
+						# if projectile
+						if skill_data.attackType == "projectile":
+							var projectile = ServerData.projectile_dict[skill].object.instance()
+							projectile.id = skill
+							projectile.skill_data = skill_data
+							projectile.skill_level = player_skill_data - 1
+							projectile.position = player_container.position + ServerData.projectile_dict[skill].distance
+							projectile.player = player_container
+							projectile.direction = player_container.direction
+							#projectile.target_count = skill_data.targetCount[player_skill_data - 1]
+							#projectile.damage_type = skill_data.damageType
+							print("player position %s" % player_container.position)
+							#print("projectile position %s" % projectile.position)
+							get_node(str(ServerData.player_location[str(player_id)])).get_parent().get_node("Projectiles").add_child(projectile, true)
+							#var map_node = get_node(str(ServerData.player_location[str(player_id)]))
+							# create projectile
+						elif skill_data.attackType == "melee":
+							player_container.skill_attack(skill, skill_data)
+							
+						elif skill_data.attackType == "aoe":
+							pass
+						
 						
 					# set cd
 					var cooldown = skill_data.cooldown[player_skill_data - 1]
 					if cooldown > 0:
 						player_container.cooldowns[skill] = int(cooldown)
 					else:
-						print("%s does not have cooldown limit")
+						print("%s does not have cooldown limit" % skill)
 		else:
 			print("%s has %s is on cooldown" % [player_id, skill])
 	else:
