@@ -708,7 +708,7 @@ remote func remove_keybind(key: String) -> void:
 remote func skill_request(skill: String) -> void:
 	var player_id = get_tree().get_rpc_sender_id()
 	var player_container = _Server_Get_Player_Container(player_id)
-	print(player_container)
+	#print(player_container)
 	#print(player_container.position)
 	var skill_class
 	var skill_data
@@ -782,15 +782,13 @@ remote func skill_request(skill: String) -> void:
 							projectile.id = skill
 							projectile.skill_data = skill_data
 							projectile.skill_level = player_skill_data - 1
-							projectile.position = player_container.position + ServerData.projectile_dict[skill].distance
+							if player_container.direction == 1:
+								projectile.position = player_container.position + ServerData.projectile_dict[skill].distance
+							else:
+								projectile.position = Vector2(player_container.position.x - ServerData.projectile_dict[skill].distance.x, player_container.position.y + ServerData.projectile_dict[skill].distance.y)
 							projectile.player = player_container
 							projectile.direction = player_container.direction
-							#projectile.target_count = skill_data.targetCount[player_skill_data - 1]
-							#projectile.damage_type = skill_data.damageType
-							print("player position %s" % player_container.position)
-							#print("projectile position %s" % projectile.position)
 							get_node(str(ServerData.player_location[str(player_id)])).get_parent().get_node("Projectiles").add_child(projectile, true)
-							#var map_node = get_node(str(ServerData.player_location[str(player_id)]))
 							# create projectile
 						elif skill_data.attackType == "melee":
 							player_container.skill_attack(skill, skill_data)
