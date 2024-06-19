@@ -29,7 +29,7 @@ func _input(event) -> void:
 							line_edit.text = ""
 						# empty line = unfocus
 						else:
-							print("line edit will unfocus")
+							#print("line edit will unfocus")
 							line_edit.release_focus()
 					# if chat and escape = unfocus
 					elif event.scancode == KEY_ESCAPE:
@@ -67,15 +67,15 @@ func toggle_options() -> void:
 	options_toggled = not options_toggled
 
 func parse_keybind(input: InputEventKey) -> void:
-	print(input.as_text())
+	#print(input.as_text())
 	if keybind_dict.has(input.as_text()):
-		print("parse keybind %s in keybind_dict" % input.as_text())
+		#print("parse keybind %s in keybind_dict" % input.as_text())
 		var keybind = Global.player.keybind[keybind_dict[input.as_text()]]
 		if keybind == "stat":
 			AudioControl.play_audio("windowToggle")
 			Signals.emit_signal("toggle_stats")
 		elif keybind == "inventory":
-			print("inventory")
+			#print("inventory")
 			Signals.emit_signal("toggle_inventory")
 			AudioControl.play_audio("windowToggle")
 		elif keybind == "skill":
@@ -90,7 +90,7 @@ func parse_keybind(input: InputEventKey) -> void:
 			elif GameData.itemTable.has(keybind):
 				Server.use_item(keybind,find_item(keybind))
 			else:
-				print("inputmanager.gd -> parse_keybind else: %s input" % input.as_text())
+				#print("inputmanager.gd -> parse_keybind else: %s input" % input.as_text())
 				var key = Global.player.keybind[keybind_dict[input.as_text()]]
 				if key == "attack":
 					Signals.emit_signal("attack")
