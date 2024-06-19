@@ -102,11 +102,12 @@ func _physics_process(_delta: float) -> void:
 						if get_node("/root/GameWorld/MapNode/%s/Monsters" % Global.current_map).has_node(str(monster)):
 							var monster_node = get_node("/root/GameWorld/MapNode/%s/Monsters/" % Global.current_map + str(monster))
 							# monster dead on server
-							
+	
 							# hp calculations
 							##############################################################################################################
 							# if world_state_buffer[2]["E"][monster]["damageTaken"]size() != 0
 							if world_state_buffer[2]["E"][monster]["EnemyHealth"] <= 0:
+								world_state_buffer[2]["E"][monster]
 								#monster_node.health(world_state_buffer[1]["E"][monster]["EnemyHealth"], world_state_buffer[2]["E"][monster]["damageTaken"])
 								monster_node.health(world_state_buffer[1]["E"][monster]["EnemyHealth"])
 								if monster_node.despawn != 0:
@@ -179,7 +180,7 @@ func _physics_process(_delta: float) -> void:
 								var projectile_node = get_node("/root/GameWorld/MapNode/%s/Projectiles/" % Global.current_map + str(projectile))
 
 								var new_position = lerp(world_state_buffer[1]["M"][projectile]["P"], world_state_buffer[2]["M"][projectile]["P"], interpolation_factor)
-								print(projectile_node)
+								#print(projectile_node)
 								projectile_node.position = new_position
 						# spawn projectile
 						else:
@@ -215,7 +216,7 @@ func _physics_process(_delta: float) -> void:
 							spawn_new_player(player_state, world_state_buffer[1]["P"][player_state])
 					else:
 						if get_node("/root/GameWorld/MapNode/%s/OtherPlayers" % Global.current_map).has_node(str(player_state)):
-							print("what123")
+							pass
 							#despawn_player(player_state)
 				if world_state_buffer[1]["E"].size() > 0:
 					#spawn monsters function
