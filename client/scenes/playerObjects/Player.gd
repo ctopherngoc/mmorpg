@@ -36,8 +36,11 @@ func _ready():
 	#max_horizontal_speed = Global.player.stats.base.movementSpeed + Global.player.stats.buff.movementSpeed
 	# warning-ignore:return_value_discarded
 	Signals.connect("dialog_closed", self, "movable_switch")
+# warning-ignore:return_value_discarded
 	Signals.connect("attack", self, "attack")
+# warning-ignore:return_value_discarded
 	Signals.connect("use_skill", self, "use_skill")
+# warning-ignore:return_value_discarded
 	Signals.connect("take_damage", self, "start_hit_timer")
 	#jump_speed = (Global.player.stats.base.jumpSpeed)
 	Global.player_node = self
@@ -210,7 +213,7 @@ func update_animation(move_vector):
 				if last_input == "attack":
 					Server.send_input(0)
 			else:
-				print(last_input)
+				#print(last_input)
 				attacking = true
 				sprite.play("ready",-1, GameData.weapon_speed[str(Global.player.equipment.rweapon.attackSpeed)])
 				#### insert sound play
