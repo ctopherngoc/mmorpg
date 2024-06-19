@@ -56,6 +56,7 @@ func update_world_state(world_state: Dictionary) -> void:
 		world_state_buffer.append(world_state)
 
 func _physics_process(_delta: float) -> void:
+	var timestamp = rng.randi_range(1,100000)
 	# Current turn off client process of other characters and enemy because
 	# working on item drop, data load from json/spreadsheet etc
 	if in_game and !Server.testing:
@@ -102,27 +103,25 @@ func _physics_process(_delta: float) -> void:
 						if get_node("/root/GameWorld/MapNode/%s/Monsters" % Global.current_map).has_node(str(monster)):
 							var monster_node = get_node("/root/GameWorld/MapNode/%s/Monsters/" % Global.current_map + str(monster))
 							# monster dead on server
-	
 							# hp calculations
 							##############################################################################################################
+							if world_state_buffer[1]["E"][monster]["EnemyHealth"] < monster_node.current_hp:
+								print("hi")
+								monster_node.damage_taken(world_state_buffer[1]["E"][monster]["EnemyHealth"], world_state_buffer[1]["E"][monster]["DamageList"])
+
 							# if world_state_buffer[2]["E"][monster]["damageTaken"]size() != 0
 							if world_state_buffer[2]["E"][monster]["EnemyHealth"] <= 0:
-								world_state_buffer[2]["E"][monster]
-								#monster_node.health(world_state_buffer[1]["E"][monster]["EnemyHealth"], world_state_buffer[2]["E"][monster]["damageTaken"])
-								monster_node.health(world_state_buffer[1]["E"][monster]["EnemyHealth"])
+	
+								#monster_node.health(world_state_buffer[1]["E"][monster]["EnemyHealth"])
 								if monster_node.despawn != 0:
+									print("hrtr543654")
 									monster_node.on_death()
-							##############################################################################################################
-							# monster alive: update monster stats and position
 							else:
-								
 								var new_position = lerp(world_state_buffer[1]["E"][monster]["EnemyLocation"], world_state_buffer[2]["E"][monster]["EnemyLocation"], interpolation_factor)
 								monster_node.move(new_position)
-
-								monster_node.health(world_state_buffer[1]["E"][monster]["EnemyHealth"])
+								#monster_node.health(world_state_buffer[1]["E"][monster]["EnemyHealth"])
 						else:
 							# if actually alive respawned monster
-							
 							if world_state_buffer[2]["E"][monster]['time_out'] != 0 && world_state_buffer[2]["E"][monster]['EnemyState'] != "Dead":
 								spawn_monster(monster, world_state_buffer[2]["E"][monster])
 				#################################################################
@@ -226,16 +225,19 @@ func _physics_process(_delta: float) -> void:
 						# monster not dead on client
 						if get_node("/root/GameWorld/MapNode/%s/Monsters" % Global.current_map).has_node(str(monster)):
 							var monster_node = get_node("/root/GameWorld/MapNode/%s/Monsters/" % Global.current_map + str(monster))
+							if world_state_buffer[0]["E"][monster]["EnemyHealth"] > monster_node.current_hp:
+									monster_node.damage_taken(world_state_buffer[0]["E"][monster]["EnemyHealth"], world_state_buffer[0]["E"][monster]["DamageList"])
 							# monster dead on server
 							if world_state_buffer[1]["E"][monster]["EnemyHealth"] <= 0:
-								monster_node.health(world_state_buffer[0]["E"][monster]["EnemyHealth"])
+								#monster_node.health(world_state_buffer[0]["E"][monster]["EnemyHealth"])
 								if monster_node.despawn != 0:
+									print("here 1123")
 									monster_node.on_death()
 							# monster alive: update monster stats and position
 							else:
 								var new_position = world_state_buffer[1]["E"][monster]["EnemyLocation"]
 								monster_node.move(new_position)
-								monster_node.health(world_state_buffer[1]["E"][monster]["EnemyHealth"])
+								#monster_node.health(world_state_buffer[1]["E"][monster]["EnemyHealth"])
 						else:
 							# if actually alive respawned monster
 							if world_state_buffer[1]["E"][monster]['time_out'] != 0 && world_state_buffer[1]["E"][monster]['EnemyState'] != "Dead":
@@ -330,7 +332,7 @@ func spawn_monster(monster_id: int, monster_dict: Dictionary) -> void:
 	monster.position = monster_dict["EnemyLocation"]
 	#monster.max_hp = GameData.monsterTable["MaxHP"]
 	monster.current_hp = monster_dict["EnemyHealth"]
-	monster.state = monster_dict["EnemyState"]
+	#monster.state = monster_dict["EnemyState"]
 	monster.name = str(monster_id)
 	get_node("/root/GameWorld/MapNode/%s/Monsters" % Global.current_map).add_child(monster, true)
 	

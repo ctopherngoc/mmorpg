@@ -5,6 +5,7 @@ var map_id = null
 var state = "idle"
 var stats = {}
 var damage_taken: Array = []
+onready var parent
 
 var rng = RandomNumberGenerator.new()
 var velocity = Vector2.ZERO
@@ -51,3 +52,6 @@ func die():
 	get_node("do_damage/CollisionShape2D").set_deferred("disabled", true)
 	get_node("take_damage/CollisionShape2D").set_deferred("disabled", true)
 
+func update_state() -> void:
+	parent.enemy_list[int(self.name)]["DamageList"] = damage_taken.duplicate(true)
+	damage_taken.clear()
