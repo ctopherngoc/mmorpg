@@ -531,15 +531,7 @@ func add_projectile_to_world_state(projectile: Sprite, map_id: String) -> void:
 	if projectile.ready == 1:
 		projectile.ready = 0
 	elif projectile.ready == -1:
-		#print(projectile.name)
-		#print(typeof(projectile.name))
 		ServerData.projectiles[map_id].erase(projectile.name)
-		# call skill do damage
-#		"""
-#		projectile.player = player node
-#		projectile.target = target node
-#		"""
-#		calculate_skill_damage(projectile.player, projectile.target, projectile.id)
 		projectile.queue_free()
 
 func remove_projectiles_in_world_state(projectile_list: Array, map_id: String) -> void:
