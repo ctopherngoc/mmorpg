@@ -31,13 +31,24 @@ func _ready():
 func _physics_process(delta: float) -> void:
 	if not target or skill_data.targetCount[skill_level] > 1:
 		position += (max_speed * direction) * Vector2(1,0) * delta
-		if abs(self.position.x) > abs(max_distance):
-			ready = -1
+		if direction == 1:
+			if abs(self.position.x) > abs(max_distance):
+				ready = -1
+		else:
+			if self.position.x < max_distance:
+				ready = -1
 		return
 	else:
-		if abs(self.position.x) > abs(max_distance):
-			ready = -1
-		position = position.move_toward(target.position, (direction * max_speed) * delta)
+		if direction == 1:
+			if abs(self.position.x) > abs(max_distance):
+				ready = -1
+		else:
+			if abs(self.position.x) < abs(max_distance):
+				ready = -1
+		if is_instance_valid(target) and target.state != "Dead":
+			position = position.move_toward(target.position, max_speed * delta)
+		else:
+			target = null
 	
 #	if target:
 #		if target in hitbox.get_overlapping_areas():
@@ -45,6 +56,7 @@ func _physics_process(delta: float) -> void:
 		
 func get_closest_target() -> void:
 	var enemy_array = rangebox.get_overlapping_areas()
+	print(enemy_array)
 	#print("enemy array: ", enemy_array)
 	if not enemy_array.empty():
 		if skill_data["targetCount"][skill_level] == 1:
@@ -64,7 +76,7 @@ func get_closest_target() -> void:
 						closest_target_distance = distance
 				elif direction == -1 and self.position.x > monster_body.position.x:
 					var distance = distance_squared(monster_body.position)
-					if not closest_target or distance > closest_target:
+					if not closest_target or distance < closest_target:
 						closest_target = monster_body
 						closest_target_distance = distance
 			if closest_target:
@@ -110,6 +122,7 @@ func get_closest_target() -> void:
 		if not max_distance:
 # warning-ignore:narrowing_conversion
 			max_distance = self.position.x + (max_speed * direction)
+			print("direction %s, max distance %s position %s" % [direction, max_distance, self.position])
 	
 func distance_squared(monster_position) -> float:
 #	print("x: ", self.position.x - monster_position.x)
@@ -129,7 +142,7 @@ func _on_Hitbox_area_entered(area):
 	else:
 		if ready > -1:
 			if target_hit.size() == skill_data.targetCount[skill_level]:
-				hitbox.visible = false
+				hitbox.set_deferred("disabled", true)
 				ready = -1
 			else:
 				if area.get_parent() in target and not area.get_parent() in target_hit:
