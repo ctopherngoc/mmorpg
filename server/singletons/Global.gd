@@ -104,6 +104,10 @@ func damage_formula(type: bool, player_dict: Dictionary, target_stats: Dictionar
 			var crit_rate = stats.base.critRate + stats.equipment.critRate + stats.buff.critRate
 			var crit_ratio = calculate_crit(crit_rate)
 			var final_damage = int(damage * crit_ratio)
+			############
+			# change to [damage, damage type] -> [10000, crit]
+			# if crit ratio = 1.0 -> no crit
+			############
 			damage_list.append(final_damage)
 		count += 1
 		#print("final damage: %s" % final_damage)
@@ -115,7 +119,7 @@ func calculate_crit(crit_rate: int) -> float:
 		print("crit")
 		return 1.3
 	else:
-		print("no crit")
+		#print("no crit")
 		return 1.0
 
 func calculate_stats(player_stats: Dictionary) -> void:
@@ -158,21 +162,30 @@ func calculate_stats(player_stats: Dictionary) -> void:
 		pass
 
 func npc_hit(dmg_list: Array, npc: KinematicBody2D, player: String):
+	"""
+	change dmg_list to list of lists
+	"""
 	for dmg in dmg_list:
 		npc.damage_taken.append(dmg)
 		if dmg < 0:
+		# if dmg[0] < 0:
 			pass
+		# if dmg [0]
 		elif dmg <= npc.stats.currentHP:
+			# dmg[0]
 			npc.stats.currentHP -= dmg
 			if str(player) in npc.attackers.keys():
+				# dmg[0]
 				npc.attackers[str(player)] += dmg
 			else:
+				# dmg[0]
 				npc.attackers[str(player)] = dmg
 		else:
 			if str(player) in npc.attackers.keys():
 				npc.attackers[str(player)] += npc.stats.currentHP
 			else:
 				npc.attackers[str(player)] = npc.stats.currentHP
+			# dmg[0]
 			npc.stats.currentHP -= dmg
 		# if dead change state and make it unhittable
 		if npc.stats.currentHP <= 0 and npc.state != "Dead":
@@ -205,6 +218,7 @@ func npc_hit(dmg_list: Array, npc: KinematicBody2D, player: String):
 			# drop items from npc location
 			npc.die()
 		print("monster: " + npc.name + " health: " + str(npc.stats.currentHP))
+	#npc.update_state()
 
 func dropGeneration(monster_id: String) -> Dictionary:
 	"""
@@ -551,7 +565,7 @@ func calculate_skill_damage(player_container: KinematicBody2D, monster_container
 	print("monster %s" % monster_container.id)
 	
 	var damage_list = damage_formula(projectile_container.skill_data.damageType, player_container.current_character, monster_container.stats, projectile_container.skill_data.hitAmount[projectile_container.skill_level], projectile_container.skill_data.stat.damagePercent[projectile_container.skill_level])
-	print(damage_list)
+	#print(damage_list)
 	
 	npc_hit(damage_list, monster_container, player_container.name)
 	
