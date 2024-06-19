@@ -6,7 +6,7 @@ var title = "Blue Guy"
 var floating_text = preload("res://scenes/userInerface/FloatingText.tscn")
 var current_hp = null
 var max_hp = GameData.monsterTable[monster_id].maxHP
-var state = null
+#var state = null
 var xScale = 1.583
 var despawn = 1
 onready var timer = $Timer
@@ -15,16 +15,8 @@ onready var label = $Label
 ############################################################
 
 func _ready():
-	if state == "Idle":
-		pass
-	elif state == "Dead":
-		# play death animation ( currently just turns sprite black)
-		#$Sprite.modulate = Color(0,0,0)
-		#Sprite.visible = false
-		get_node("do_damage/CollisionShape2D").set_deferred("disabled", true)
-		get_node("take_damage/CollisionShape2D").set_deferred("disabled", true)
-
-####################################################
+	pass
+	
 # new functions
 func move(new_position):
 	var curr_position = self.get_position()
@@ -40,28 +32,44 @@ func move(new_position):
 		animation_control('idle')
 	set_position(new_position)
 
-func health(health):
-	if health < current_hp:
-		var damage_took = str(current_hp - health)
-		print(str(self.name) + " took " + damage_took + " damage")
-		AudioControl.play_audio("squish")
-		var damage_text = floating_text.instance()
-		damage_text.type = "Damage"
-		damage_text.amount = damage_took
-		add_child(damage_text)
-		current_hp = health
-		health_bar_update()
+#func health(health):
+#	if health < current_hp:
+#		var damage_took = str(current_hp - health)
+#		print("%s took %s damage" % [self.name, damage_took])
+#		AudioControl.play_audio("squish")
+#		var damage_text = floating_text.instance()
+#		damage_text.type = "Damage"
+#		damage_text.amount = damage_took
+#		add_child(damage_text)
+#		current_hp = health
+#		health_bar_update()
 
-	elif health > current_hp:
-		var damage_heal = str(current_hp - health)
-		print(str(self.name) + " healed " + damage_heal + " health")
-		#AudioControl.play_audio("squish")
-		var heal_text = floating_text.instance()
-		heal_text.type = "Heal"
-		heal_text.amount = damage_heal
-		add_child(heal_text)
+#	elif health > current_hp:
+#		var damage_heal = str(current_hp - health)
+#		print("%s healed %s health" % [self.name, damage_heal])
+#		#AudioControl.play_audio("squish")
+#		var heal_text = floating_text.instance()
+#		heal_text.type = "Heal"
+#		heal_text.amount = damage_heal
+#		add_child(heal_text)
+#		current_hp -= health
+#		health_bar_update()
+#
+func damage_taken(health, damage_array: Array) -> void:
+#	if not damage_array.empty():
+#		print("damage arr ", damage_array)
+#		print("health: ", health)
 	current_hp = health
-	health_bar_update()
+	var damage_text = floating_text.instance()
+	damage_text.type = "Damage"
+	add_child(damage_text)
+	for damage in damage_array:
+		print(str(self.name) + " took " + str(damage) + " damage")
+		#damage_text.amount = damage
+		damage_text.label.text += "%s\n" % str(damage)
+		current_hp -= damage
+		health_bar_update()
+		yield(get_tree().create_timer(0.1),"timeout")
 
 # health bar above monsters head on hit/death, not implemented yet
 func health_bar_update():
