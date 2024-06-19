@@ -9,7 +9,7 @@ onready var id: String
 onready var direction: int
 
 # projectile data
-var max_speed: int = 200
+var max_speed: int = 400
 onready var max_distance: int
 var target
 var target_hit
@@ -56,7 +56,7 @@ func _physics_process(delta: float) -> void:
 		
 func get_closest_target() -> void:
 	var enemy_array = rangebox.get_overlapping_areas()
-	print(enemy_array)
+	#print(enemy_array)
 	#print("enemy array: ", enemy_array)
 	if not enemy_array.empty():
 		if skill_data["targetCount"][skill_level] == 1:
@@ -80,7 +80,7 @@ func get_closest_target() -> void:
 						closest_target = monster_body
 						closest_target_distance = distance
 			if closest_target:
-				print("closest target: %s, distance: %s" % [closest_target.name, closest_target_distance])
+				#print("closest target: %s, distance: %s" % [closest_target.name, closest_target_distance])
 				target = closest_target
 		# more than  one target
 		else:
@@ -118,11 +118,11 @@ func get_closest_target() -> void:
 				
 	# no monsters in range
 	else:
-		print("no monsters in range")
+		#print("no monsters in range")
 		if not max_distance:
 # warning-ignore:narrowing_conversion
 			max_distance = self.position.x + (max_speed * direction)
-			print("direction %s, max distance %s position %s" % [direction, max_distance, self.position])
+			#print("direction %s, max distance %s position %s" % [direction, max_distance, self.position])
 	
 func distance_squared(monster_position) -> float:
 #	print("x: ", self.position.x - monster_position.x)
