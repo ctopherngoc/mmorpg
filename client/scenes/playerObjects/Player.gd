@@ -2,7 +2,7 @@ extends KinematicBody2D
 
 onready var velocity_multiplier = 1
 # dynamic player variables
-onready var jump_speed
+#onready var jump_speed
 #onready var max_horizontal_speed
 onready var velocity = Vector2.ZERO
 onready var camera = $Camera2D
@@ -171,7 +171,7 @@ func get_velocity(move_vector, input, delta):
 		else:
 			#if moving
 			if (move_vector.y < 0 && is_on_floor()):
-					velocity.y = move_vector.y * jump_speed
+					velocity.y = move_vector.y * (Global.player.stats.base.jumpSpeed + Global.player.stats.equipment.jumpSpeed + Global.player.stats.buff.jumpSpeed)
 			# press up on ladder initiates climbing
 			elif input[0] == 1:
 					is_climbing = true
