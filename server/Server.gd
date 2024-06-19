@@ -142,6 +142,7 @@ func create_characters():
 			character_array[2].characters.append(character_array[1]["un"])
 			var new_char = character_array[1]
 			var temp_player = _Server_New_Character(new_char)
+			temp_player["buff"] = ServerData.buff_stats.duplicate(true)
 			#print(temp_player)
 
 			print("creating character")
@@ -152,6 +153,7 @@ func create_characters():
 
 			var firebase_call3 = Firebase.update_document("users/%s" % character_array[2].db_info["id"], character_array[2].http, character_array[2].db_info["token"], character_array[2])
 			yield(firebase_call3, 'completed')
+			
 			character_array[2].characters_info_list.append(temp_player)
 
 			# update client with new character
