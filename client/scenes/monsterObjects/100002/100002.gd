@@ -5,6 +5,7 @@ var monster_id = "100002"
 var title = "Blue Guy"
 var floating_text = preload("res://scenes/userInerface/FloatingText.tscn")
 var current_hp = null
+var miss_counter = null
 var max_hp = GameData.monsterTable[monster_id].maxHP
 #var state = null
 var xScale = 1.583
@@ -55,21 +56,38 @@ func move(new_position):
 #		current_hp -= health
 #		health_bar_update()
 #
+#func damage_taken(health, damage_array: Array) -> void:
+##	if not damage_array.empty():
+##		print("damage arr ", damage_array)
+##		print("health: ", health)
+#	current_hp = health
+#	var damage_text = floating_text.instance()
+#	damage_text.type = "Damage"
+#	add_child(damage_text)
+#	for damage in damage_array:
+#		print(str(self.name) + " took " + str(damage) + " damage")
+#		#damage_text.amount = damage
+#		damage_text.label.text += "%s\n" % str(damage)
+#		#current_hp -= damage
+#		health_bar_update()
+#		yield(get_tree().create_timer(0.1),"timeout")
+
 func damage_taken(health, damage_array: Array) -> void:
 #	if not damage_array.empty():
 #		print("damage arr ", damage_array)
 #		print("health: ", health)
 	current_hp = health
-	var damage_text = floating_text.instance()
-	damage_text.type = "Damage"
-	add_child(damage_text)
+	var lines = 0
 	for damage in damage_array:
-		print(str(self.name) + " took " + str(damage) + " damage")
-		#damage_text.amount = damage
-		damage_text.label.text += "%s\n" % str(damage)
-		current_hp -= damage
+		var damage_text = floating_text.instance()
+		damage_text.position.y -= 35 * lines
+		damage_text.type = damage[1]
+		damage_text.amount = damage[0]
+		add_child(damage_text)
+		lines += 1
 		health_bar_update()
 		yield(get_tree().create_timer(0.1),"timeout")
+		
 
 # health bar above monsters head on hit/death, not implemented yet
 func health_bar_update():
