@@ -106,8 +106,12 @@ func _physics_process(_delta: float) -> void:
 							# hp calculations
 							##############################################################################################################
 							if world_state_buffer[1]["E"][monster]["EnemyHealth"] < monster_node.current_hp:
-								print("hi")
 								monster_node.damage_taken(world_state_buffer[1]["E"][monster]["EnemyHealth"], world_state_buffer[1]["E"][monster]["DamageList"])
+							else:
+								#print(world_state_buffer[2]["E"][monster]["MissCounter"], " ", world_state_buffer[1]["E"][monster]["MissCounter"])
+								if world_state_buffer[1]["E"][monster]["MissCounter"] > monster_node.miss_counter:
+									monster_node.miss_counter += 1
+									monster_node.damage_taken(world_state_buffer[1]["E"][monster]["EnemyHealth"], world_state_buffer[1]["E"][monster]["DamageList"])
 
 							# if world_state_buffer[2]["E"][monster]["damageTaken"]size() != 0
 							if world_state_buffer[2]["E"][monster]["EnemyHealth"] <= 0:
@@ -124,6 +128,7 @@ func _physics_process(_delta: float) -> void:
 							# if actually alive respawned monster
 							if world_state_buffer[2]["E"][monster]['time_out'] != 0 && world_state_buffer[2]["E"][monster]['EnemyState'] != "Dead":
 								spawn_monster(monster, world_state_buffer[2]["E"][monster])
+							
 				#################################################################
 				if world_state_buffer[2]["I"].size() > 0:
 					var current_item_nodes = get_node("/root/GameWorld/MapNode/%s/Items" % Global.current_map).get_children()
@@ -207,9 +212,6 @@ func _physics_process(_delta: float) -> void:
 							var new_position = world_state_buffer[1]["P"][player_state]["P"] + (position_delta * extrapolation_factor)
 							var animation = world_state_buffer[1]["P"][player_state]["A"]
 							player_container.move_player(new_position, animation)
-#							if world_state_buffer[1]["P"][player_state]["S"] != player_container.sprite:
-#								var new_sprite = world_state_buffer[1]["P"][player_state]["S"]
-#								player_container.update_sprite(new_sprite)
 						else:
 							print("not spawned")
 							spawn_new_player(player_state, world_state_buffer[1]["P"][player_state])
@@ -227,17 +229,18 @@ func _physics_process(_delta: float) -> void:
 							var monster_node = get_node("/root/GameWorld/MapNode/%s/Monsters/" % Global.current_map + str(monster))
 							if world_state_buffer[0]["E"][monster]["EnemyHealth"] > monster_node.current_hp:
 									monster_node.damage_taken(world_state_buffer[0]["E"][monster]["EnemyHealth"], world_state_buffer[0]["E"][monster]["DamageList"])
+							else:
+								if world_state_buffer[1]["E"][monster]["MissCounter"] > monster_node.miss_counter:
+									monster_node.miss_counter += 1
+									monster_node.damage_taken(world_state_buffer[0]["E"][monster]["EnemyHealth"], world_state_buffer[0]["E"][monster]["DamageList"])
 							# monster dead on server
 							if world_state_buffer[1]["E"][monster]["EnemyHealth"] <= 0:
-								#monster_node.health(world_state_buffer[0]["E"][monster]["EnemyHealth"])
 								if monster_node.despawn != 0:
 									print("here 1123")
 									monster_node.on_death()
-							# monster alive: update monster stats and position
 							else:
 								var new_position = world_state_buffer[1]["E"][monster]["EnemyLocation"]
 								monster_node.move(new_position)
-								#monster_node.health(world_state_buffer[1]["E"][monster]["EnemyHealth"])
 						else:
 							# if actually alive respawned monster
 							if world_state_buffer[1]["E"][monster]['time_out'] != 0 && world_state_buffer[1]["E"][monster]['EnemyState'] != "Dead":
@@ -332,6 +335,7 @@ func spawn_monster(monster_id: int, monster_dict: Dictionary) -> void:
 	monster.position = monster_dict["EnemyLocation"]
 	#monster.max_hp = GameData.monsterTable["MaxHP"]
 	monster.current_hp = monster_dict["EnemyHealth"]
+	monster.miss_counter = monster_dict["MissCounter"]
 	#monster.state = monster_dict["EnemyState"]
 	monster.name = str(monster_id)
 	get_node("/root/GameWorld/MapNode/%s/Monsters" % Global.current_map).add_child(monster, true)
@@ -406,3 +410,9 @@ func despawn_players(world_state_players: Array) -> void:
 	for temp_player_node in player_nodes:
 		if not int(temp_player_node.name) in world_state_players:
 			temp_player_node.queue_free()
+
+func array_comparison(future_arr: Array, current_arr: Array) -> bool:
+	if not future_arr.hash() ==  current_arr.hash():
+		return false
+	else:
+		return true
