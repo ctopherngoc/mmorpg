@@ -26,7 +26,7 @@ func _ready():
 	#print(monsterTable)
 	#print(equipmentTable)
 	
-	
+onready var ign_id_dict = {}
 #	var skill_data_file = File.new()
 #	skill_data_file.open("res://Data/SkillData - Sheet1.json", File.READ)
 #	var skill_data_json = JSON.parse(skill_data_file.get_as_text())
