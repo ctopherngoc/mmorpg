@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/inventorySlots2.png-4cbb87fbbc2dec6546d12e511ff98330.stex"
+path="res://.import/StatusIcons.png-ad012e904fba486e3402fb1765586928.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/UI/inventorySlots2.png"
-dest_files=[ "res://.import/inventorySlots2.png-4cbb87fbbc2dec6546d12e511ff98330.stex" ]
+source_file="res://assets/UI/statusIcons/StatusIcons.png"
+dest_files=[ "res://.import/StatusIcons.png-ad012e904fba486e3402fb1765586928.stex" ]
 
 [params]
 

@@ -1,7 +1,7 @@
 extends VBoxContainer
 
 onready var key_list = ['shift', 'ins', 'home', 'pgup', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 'ctrl', 'del', 'end', 'pgdn', 'f1', 'f2', 'f3', 'f4', 'f5', 'f6', 'f7', 'f8', 'f9', 'f10', 'f11', 'f12']
-onready var hotkey_scene = preload("res://scenes/userInerface/hotkey.tscn")
+onready var hotkey_scene = preload("res://scenes/userInerface/InGameUI/hotkey.tscn")
 onready var item_path = "res://assets/itemSprites/"
 #onready var skill_path = "res://assets/abilitySprites/"
 onready var grid = $GridContainer

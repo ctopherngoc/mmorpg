@@ -1,21 +1,21 @@
 [gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://scenes/userInerface/Inventory.gd" type="Script" id=1]
-[ext_resource path="res://resources/Fonts/Oswald/Oswald-VariableFont_wght.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://resources/Fonts/Oswald/Oswald-VariableFont_wght.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://scenes/userInerface/InGameUI/Skills.gd" type="Script" id=2]
 
 [sub_resource type="DynamicFont" id=1]
 size = 24
 outline_size = 2
 outline_color = Color( 0, 0, 0, 1 )
-font_data = ExtResource( 2 )
+font_data = ExtResource( 1 )
 
 [sub_resource type="DynamicFont" id=2]
 size = 18
 outline_size = 1
 outline_color = Color( 0, 0, 0, 1 )
-font_data = ExtResource( 2 )
+font_data = ExtResource( 1 )
 
-[node name="Inventory" type="Control"]
+[node name="Skills" type="Control"]
 anchor_left = -0.0015625
 anchor_top = 0.00416667
 anchor_right = 0.229687
@@ -25,7 +25,7 @@ margin_top = -3.0
 margin_right = 2.0
 margin_bottom = -3.0
 rect_scale = Vector2( 0.5, 0.5 )
-script = ExtResource( 1 )
+script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": true
 }
@@ -79,7 +79,7 @@ margin_top = -9.0
 margin_right = -1.0
 margin_bottom = 41.0
 custom_fonts/font = SubResource( 1 )
-text = "Inventory
+text = "Skills
 "
 align = 1
 valign = 1
@@ -91,6 +91,7 @@ margin_bottom = 25.0
 size_flags_horizontal = 3
 
 [node name="TextureButton" type="TextureButton" parent="Background/M/V/Header/Exit"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 rect_min_size = Vector2( 25, 25 )
@@ -103,91 +104,6 @@ margin_bottom = 462.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_fonts/font = SubResource( 2 )
-
-[node name="Equip" type="Tabs" parent="Background/M/V/TabContainer"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = 4.0
-margin_top = 46.0
-margin_right = -4.0
-margin_bottom = -4.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-scrolling_enabled = false
-
-[node name="ScrollContainer" type="ScrollContainer" parent="Background/M/V/TabContainer/Equip"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-size_flags_vertical = 3
-scroll_horizontal_enabled = false
-__meta__ = {
-"_edit_use_anchors_": true
-}
-
-[node name="GridContainer" type="GridContainer" parent="Background/M/V/TabContainer/Equip/ScrollContainer"]
-margin_right = 250.0
-margin_bottom = 383.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-custom_constants/vseparation = 4
-custom_constants/hseparation = 4
-columns = 4
-
-[node name="Use" type="Tabs" parent="Background/M/V/TabContainer"]
-visible = false
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = 4.0
-margin_top = 32.0
-margin_right = -4.0
-margin_bottom = -4.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-scrolling_enabled = false
-
-[node name="ScrollContainer" type="ScrollContainer" parent="Background/M/V/TabContainer/Use"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_right = 2.0
-size_flags_vertical = 3
-scroll_horizontal_enabled = false
-
-[node name="GridContainer" type="GridContainer" parent="Background/M/V/TabContainer/Use/ScrollContainer"]
-margin_right = 252.0
-margin_bottom = 397.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-custom_constants/vseparation = 4
-custom_constants/hseparation = 4
-columns = 4
-
-[node name="ETC" type="Tabs" parent="Background/M/V/TabContainer"]
-visible = false
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = 4.0
-margin_top = 32.0
-margin_right = -4.0
-margin_bottom = -4.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-scrolling_enabled = false
-
-[node name="ScrollContainer" type="ScrollContainer" parent="Background/M/V/TabContainer/ETC"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_right = 2.0
-size_flags_vertical = 3
-scroll_horizontal_enabled = false
-
-[node name="GridContainer" type="GridContainer" parent="Background/M/V/TabContainer/ETC/ScrollContainer"]
-margin_right = 252.0
-margin_bottom = 397.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-custom_constants/vseparation = 4
-custom_constants/hseparation = 4
-columns = 4
 
 [node name="ColorRect" type="ColorRect" parent="Background/M/V"]
 margin_top = 466.0
@@ -202,16 +118,16 @@ anchor_bottom = 1.0
 
 [node name="Label" type="Label" parent="Background/M/V/ColorRect/HBoxContainer"]
 margin_top = 3.0
-margin_right = 34.0
+margin_right = 44.0
 margin_bottom = 17.0
-text = "Gold:"
+text = "Points:"
 
-[node name="goldLabel" type="Label" parent="Background/M/V/ColorRect/HBoxContainer"]
-margin_left = 38.0
+[node name="apLabel" type="Label" parent="Background/M/V/ColorRect/HBoxContainer"]
+margin_left = 48.0
 margin_top = 3.0
-margin_right = 256.0
+margin_right = 258.0
 margin_bottom = 17.0
-rect_min_size = Vector2( 218, 0 )
+rect_min_size = Vector2( 210, 0 )
 align = 2
 
 [node name="Foreground" type="NinePatchRect" parent="."]

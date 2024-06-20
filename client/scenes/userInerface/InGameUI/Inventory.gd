@@ -1,6 +1,6 @@
 extends Control
 
-var inventory_slot = preload("res://scenes/userInerface/InventorySlot.tscn")
+var inventory_slot = preload("res://scenes/userInerface/InGameUI/InventorySlot.tscn")
 signal move_to_top
 
 onready var use_grid = $Background/M/V/TabContainer/Use/ScrollContainer/GridContainer

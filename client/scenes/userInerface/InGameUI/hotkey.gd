@@ -4,8 +4,8 @@ onready var icon = $Icon
 #onready var label_text = ""
 onready var quantity_label = $Item/Quantity
 onready var hotkey_data
-onready var empty_bg = "res://assets/UI/hotkey_background.png"
-onready var active_bg = "res://assets/UI/hotkey_background_used.png"
+onready var empty_bg = "res://assets/UI/background/hotkey_background.png"
+onready var active_bg = "res://assets/UI/background/hotkey_background_used.png"
 onready var bg = get_node("TextureRect")
 
 func _ready():
@@ -109,8 +109,8 @@ func update_hotkey() -> void:
 		
 		if GameData.skill_class_dictionary.has(str(id)):
 			#var skill_path = "res://assets/itemSprites/useItems/" + id + ".png"
-			var skill_path = "res://assets/skillSprites/0/icon.png"
-			icon.texture = load(skill_path)
+			#var skill_path = "res://assets/skillSprites/0/icon.png"
+			icon.texture = load(GameData.skill_class_dictionary[str(id)].icon)
 			hotkey_data = {"id": str(id)}
 			quantity_label.text = ""
 			

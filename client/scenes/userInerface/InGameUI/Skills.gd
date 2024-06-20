@@ -1,7 +1,7 @@
 extends Control
 
-var skill_tabs = preload("res://scenes/userInerface/SkillTab.tscn")
-var skill_container_instance = preload("res://scenes/userInerface/SkillContainer.tscn")
+var skill_tabs = preload("res://scenes/userInerface/InGameUI/SkillTab.tscn")
+var skill_container_instance = preload("res://scenes/userInerface/InGameUI/SkillContainer.tscn")
 
 signal move_to_top
 
@@ -70,9 +70,9 @@ func poplulate_skills():
 				# get skill icon
 				# change to tab number and skill id
 				if skill_container_new.skill_data.level > 0:
-					skill_container_new.get_node("HBoxContainer/NinePatchRect/Icon").texture = load("res://assets/skillSprites/0/icon.png")
+					skill_container_new.get_node("HBoxContainer/NinePatchRect/Icon").texture = load(GameData.skill_class_dictionary[skill_container_new.skill_data.id].icon)
 				else:
-					skill_container_new.get_node("HBoxContainer/NinePatchRect/Icon").texture = skill_container_new.to_gray_scale(load("res://assets/skillSprites/0/icon.png"))
+					skill_container_new.get_node("HBoxContainer/NinePatchRect/Icon").texture = skill_container_new.to_gray_scale(load(GameData.skill_class_dictionary[skill_container_new.skill_data.id].icon))
 				# if character ap > 1
 				if Global.player.stats.base.ap == 0 or skill_tab_ref[str(tab_count-1)][str(skill_count)] == GameData.skill_data[str(tab_count-1)][str(skill_count)].maxLevel:
 					skill_container_new.get_node("HBoxContainer/VBoxContainer/HBoxContainer2/Button").visible = false
@@ -104,9 +104,9 @@ func update_skills():
 				# get skill icon
 				# change to tab number and skill id
 				if skill_container_new.skill_data.level > 0:
-					skill_container_new.get_node("HBoxContainer/NinePatchRect/Icon").texture = load("res://assets/skillSprites/0/icon.png")
+					skill_container_new.get_node("HBoxContainer/NinePatchRect/Icon").texture = load(GameData.skill_class_dictionary[skill_container_new.skill_data.id].icon)
 				else:
-					skill_container_new.get_node("HBoxContainer/NinePatchRect/Icon").texture = skill_container_new.to_gray_scale(load("res://assets/skillSprites/0/icon.png"))
+					skill_container_new.get_node("HBoxContainer/NinePatchRect/Icon").texture = skill_container_new.to_gray_scale(load(GameData.skill_class_dictionary[skill_container_new.skill_data.id].icon))
 					
 				# get skill name
 				skill_container_new.get_node("HBoxContainer/VBoxContainer/HBoxContainer/Label").text = GameData.skill_data[str(job)][str(skill_count)].name
@@ -130,7 +130,7 @@ func update_skills():
 						update_skill_container.skill_level.text = str(update_skill_container.skill_data.level)
 						
 						if update_skill_container.skill_data.level > 0:
-							update_skill_container.get_node("HBoxContainer/NinePatchRect/Icon").texture = load("res://assets/skillSprites/0/icon.png")
+							update_skill_container.get_node("HBoxContainer/NinePatchRect/Icon").texture = load(GameData.skill_class_dictionary[update_skill_container.skill_data.id].icon)
 						
 						if Global.player.stats.base.ap == 0 or skill_tab_ref[tab][skill] == GameData.skill_data[tab][skill].maxLevel:
 							update_skill_container.get_node("HBoxContainer/VBoxContainer/HBoxContainer2/Button").visible = false
