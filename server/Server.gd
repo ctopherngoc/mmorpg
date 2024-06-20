@@ -65,6 +65,7 @@ func _Server_Data_Remove_Player(player_id: int) -> void:
 	ServerData.player_state_collection.erase(player_id)
 	ServerData.logged_emails.erase(ServerData.player_id_emails[str(player_id)])
 	ServerData.player_id_emails.erase(str(player_id))
+	ServerData.ign_id_dict.erase(ServerData.username_list[str(player_id)])
 	ServerData.username_list.erase(str(player_id))
 	
 func return_token_verification_results(player_id: int, result: bool) -> void:
@@ -209,6 +210,7 @@ remote func choose_character(requester: int, display_name: String) -> void:
 			player_container.current_character = ServerData.characters_data[display_name]
 			#print(player_container.current_character.inventory)
 			ServerData.username_list[str(player_id)] = display_name
+			ServerData.ign_id_dict[(display_name)] = str(player_id)
 			break
 	var map = player_container.current_character['map']
 	var temp_dict = player_container.current_character.avatar
@@ -568,7 +570,7 @@ func _on_Button3_pressed():
 #	print("testcase 1")
 #	print("dropping leather pants")
 	var bottom = {"500003": 1, "accuracy":0, "attack":15, "avoidability":0, "bossPercent":5, "critRate":0, "damagePercent":0, "defense":0, "dexterity":4, "job":0, "jumpSpeed":0, "luck":5, "magic":0, "magicDefense":0, "maxHealth":0, "maxMana":0, "movementSpeed":0, "name":"Leather Bottom", "slot":7, "speed":5, "strength":5, "type":"bottom", "wisdom":5, "uniqueID": 100000000}
-	Global.dropSpawn("100001",  Vector2(231, -405), {"500003": bottom},  1, "testing123")
+	Global.dropSpawn("100001",  Vector2(231, -405), {"500003": bottom}, "testing123")
 	#print("dropping  200 gold")
 	#Global.dropSpawn("100001",  Vector2(231, -405), {"100000": 200}, "testing123")
 #	print("cuurent gold: %s" % Global.testplayer.current_character.inventory["100000"])
