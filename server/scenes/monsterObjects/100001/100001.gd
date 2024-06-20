@@ -6,6 +6,7 @@ var state = "idle"
 var stats = {}
 var damage_taken: Array = []
 onready var parent
+onready var miss_counter = 0
 
 var rng = RandomNumberGenerator.new()
 var velocity = Vector2.ZERO

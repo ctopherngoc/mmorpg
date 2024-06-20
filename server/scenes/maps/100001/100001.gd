@@ -16,6 +16,7 @@ var occupied_locations = {}
 var enemy_list = {}
 var players = []
 onready var player_ysort = $YSort/Players
+var counter = 0
 
 func _ready():
 	var timer = Timer.new()
@@ -34,11 +35,17 @@ func _process(_delta):
 				enemy_list[monster_id]['EnemyLocation'] = monster_container.position
 				enemy_list[monster_id]['EnemyHealth'] = monster_container.stats.currentHP
 				enemy_list[monster_id]['EnemyState'] = monster_container.state
+				enemy_list[monster_id]['MissCounter'] = monster_container.miss_counter
 				if monster_container.damage_taken.size() > 0:
+					counter = 0
 					enemy_list[monster_id]['DamageList'] = monster_container.damage_taken.duplicate(true)
 					monster_container.damage_taken.clear()
-#					print("inside loop: ", monster_container.damage_taken)
-#					print("inside loop: ", enemy_list[monster_id]['DamageList'])
+				else:
+					if counter < 5:
+						counter += 1
+					else:
+						counter = 0
+						enemy_list[monster_id]['DamageList'].clear()
 	UpdateItemStateList()
 	UpdateProjectileStateList()
 	UpdateMonsterList()
@@ -67,7 +74,7 @@ func SpawnEnemy():
 				new_enemy.name = str(i)
 				new_enemy.parent = self
 				get_node("YSort/Monsters/").add_child(new_enemy, true)
-				enemy_list[i] = {'id': new_enemy.id, 'EnemyLocation': location, 'EnemyHealth': new_enemy.stats.currentHP, 'EnemyState': new_enemy.state, 'time_out': 1, "DamageList": []}
+				enemy_list[i] = {'id': new_enemy.id, 'EnemyLocation': location, 'EnemyHealth': new_enemy.stats.currentHP, 'EnemyState': new_enemy.state, 'time_out': 1, "DamageList": [], "MissCounter":  0}
 				########################################
 				enemy_id_counter += 1
 
