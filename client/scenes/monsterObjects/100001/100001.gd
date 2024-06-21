@@ -13,6 +13,7 @@ var despawn = 1
 onready var timer = $Timer
 onready var sprite = $Sprite
 onready var label = $Label
+onready var dmg_text_height = 10
 ############################################################
 
 func _ready():
@@ -84,6 +85,7 @@ func damage_taken(health, damage_array: Array) -> void:
 	var lines = 0
 	for damage in damage_array:
 		var damage_text = floating_text.instance()
+		damage_text.position.y = dmg_text_height
 		damage_text.position.y -= 35 * lines
 		damage_text.type = damage[1]
 		damage_text.amount = damage[0]
@@ -98,13 +100,11 @@ func health_bar_update():
 
 func on_death():
 	AudioControl.play_audio("deathSquish")
-	$AnimationPlayer.play("idle")
+	$AnimationPlayer.play("die")
 	despawn = 0
 	get_node("do_damage/CollisionShape2D").set_deferred("disabled", true)
 	get_node("take_damage/CollisionShape2D").set_deferred("disabled", true)
 	label.visible = false
-	#sprite.visible = false
-	sprite.modulate = Color8(62,62,62)
 	timer.start()
 	print("%s died" % self.name)
 	yield(timer, "timeout")
