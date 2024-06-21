@@ -2545,7 +2545,6 @@ frame = 16
 texture = ExtResource( 27 )
 hframes = 16
 vframes = 11
-frame = 16
 
 [node name="Ammo" type="Sprite" parent="."]
 texture = ExtResource( 18 )
@@ -2600,25 +2599,24 @@ frame = 16
 texture = ExtResource( 24 )
 hframes = 16
 vframes = 11
-frame = 16
 
 [node name="Tattoo" type="Sprite" parent="."]
 texture = ExtResource( 25 )
 hframes = 16
 vframes = 11
-frame = 16
+frame = 32
 
 [node name="Eyeacc" type="Sprite" parent="."]
 texture = ExtResource( 26 )
 hframes = 16
 vframes = 11
-frame = 16
+frame = 32
 
 [node name="Faceacc" type="Sprite" parent="."]
 texture = ExtResource( 28 )
 hframes = 16
 vframes = 11
-frame = 16
+frame = 33
 
 [node name="Headgear" type="Sprite" parent="."]
 visible = false
