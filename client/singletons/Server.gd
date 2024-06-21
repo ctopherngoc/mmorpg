@@ -226,8 +226,9 @@ remote func update_player_stats(player_stats: Dictionary) -> void:
 
 				# lose health
 				if player_stats["stats"]["base"]["health"] < Global.player["stats"]["base"]["health"]:
-					Signals.emit_signal("take_damage")
-					print("Player took %s damage." % str(Global.player["stats"]["base"]["health"] - player_stats["stats"]["base"]["health"]))
+					var damage_taken = Global.player["stats"]["base"]["health"] - Global.player["stats"]["base"]["health"]
+					Signals.emit_signal("take_damage", damage_taken)
+					print("Player took %s damage." % str(damage_taken))
 				# gained health
 				else:
 					var heal_value = abs(Global.player["stats"]["base"]["health"] - player_stats["stats"]["base"]["health"])
