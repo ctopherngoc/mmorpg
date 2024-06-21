@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://scenes/maps/100002/100002.gd" type="Script" id=1]
 [ext_resource path="res://scenes/mapObjects/Portal.tscn" type="PackedScene" id=2]
 [ext_resource path="res://assets/tiles/0001/tile.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scenes/playerObjects/Player.tscn" type="PackedScene" id=4]
 [ext_resource path="res://resources/background/maps/BaseLevel.jpg" type="Texture" id=5]
+[ext_resource path="res://assets/tiles/0001/tileset.tres" type="TileSet" id=6]
 [ext_resource path="res://assets/tiles/0001/platform.tscn" type="PackedScene" id=7]
 [ext_resource path="res://scenes/mapObjects/Ladder.tscn" type="PackedScene" id=8]
 [ext_resource path="res://scenes/mapObjects/Teleporter.tscn" type="PackedScene" id=9]
@@ -33,7 +34,7 @@ tile_data = PoolIntArray( -2228237, 0, 0, -2228236, 0, 1, -2228235, 0, 1, -22282
 tile_data = PoolIntArray( -1441783, 0, 0, -1441782, 0, 1, -1441781, 0, 1, -1441780, 0, 1, -1441779, 0, 1, -1441778, 0, 1, -1441777, 0, 1, -1441776, 0, 1, -1441775, 0, 1, -1441774, 0, 1, -1441773, 0, 1, -1441772, 0, 1, -1441771, 0, 1, -1441770, 0, 1, -1441769, 0, 1, -1441768, 0, 1, -1441767, 0, 2, -1441764, 0, 0, -1441763, 0, 1, -1441762, 0, 1, -1441761, 0, 1, -1441760, 0, 1, -1441759, 0, 1, -1441758, 0, 1, -1441757, 0, 1, -1441756, 0, 1, -1441755, 0, 1, -1441754, 0, 1, -1441753, 0, 1, -1441752, 0, 1, -1441751, 0, 1, -1441750, 0, 2, -1376247, 0, 65536, -1376246, 0, 65537, -1376245, 0, 65537, -1376244, 0, 65537, -1376243, 0, 65537, -1376242, 0, 65537, -1376241, 0, 65537, -1376240, 0, 65537, -1376239, 0, 65537, -1376238, 0, 65537, -1376237, 0, 65537, -1376236, 0, 65537, -1376235, 0, 65537, -1376234, 0, 65537, -1376233, 0, 65537, -1376232, 0, 65537, -1376231, 0, 65538, -1376228, 0, 65536, -1376227, 0, 65537, -1376226, 0, 65537, -1376225, 0, 65537, -1376224, 0, 65537, -1376223, 0, 65537, -1376222, 0, 65537, -1376221, 0, 65537, -1376220, 0, 65537, -1376219, 0, 65537, -1376218, 0, 65537, -1376217, 0, 65537, -1376216, 0, 65537, -1376215, 0, 65537, -1376214, 0, 65538, -1310711, 0, 131072, -1310710, 0, 131073, -1310709, 0, 131073, -1310708, 0, 131073, -1310707, 0, 131073, -1310706, 0, 131073, -1310705, 0, 131073, -1310704, 0, 131073, -1310703, 0, 131073, -1310702, 0, 131073, -1310701, 0, 131073, -1310700, 0, 131073, -1310699, 0, 131073, -1310698, 0, 131073, -1310697, 0, 131073, -1310696, 0, 131073, -1310695, 0, 131074, -1310692, 0, 131072, -1310691, 0, 131073, -1310690, 0, 131073, -1310689, 0, 131073, -1310688, 0, 131073, -1310687, 0, 131073, -1310686, 0, 131073, -1310685, 0, 131073, -1310684, 0, 131073, -1310683, 0, 131073, -1310682, 0, 131073, -1310681, 0, 131073, -1310680, 0, 131073, -1310679, 0, 131073, -1310678, 0, 131074 )
 
 [node name="Ladder" parent="MapObjects/Platform" instance=ExtResource( 8 )]
-position = Vector2( 298, -98 )
+position = Vector2( 297, -98 )
 
 [node name="T2" parent="MapObjects" instance=ExtResource( 9 )]
 position = Vector2( 821, -54 )
@@ -45,6 +46,12 @@ position = Vector2( 183, -51 )
 scale = Vector2( 1.04935, 1.00166 )
 endLocation = Vector2( 103, -250 )
 
+[node name="TileMap2" type="TileMap" parent="."]
+tile_set = ExtResource( 6 )
+cell_size = Vector2( 18, 18 )
+format = 1
+tile_data = PoolIntArray( -1441776, 7, 0, -1376240, 8, 0, -1310704, 8, 0, -1245168, 8, 0, -1179632, 8, 0, -1114096, 8, 0, -1048560, 8, 0, -983024, 8, 0, -917488, 8, 0, -851952, 8, 0, -786416, 8, 0, -720880, 8, 0, -655344, 8, 0, -589808, 8, 0, -524272, 8, 0 )
+
 [node name="Monsters" type="YSort" parent="."]
 
 [node name="OtherPlayers" type="YSort" parent="."]
@@ -52,6 +59,7 @@ endLocation = Vector2( 103, -250 )
 [node name="Projectiles" type="YSort" parent="."]
 
 [node name="Player" parent="." instance=ExtResource( 4 )]
+position = Vector2( 109, -272 )
 
 [node name="Items" type="YSort" parent="."]
 
@@ -59,3 +67,6 @@ endLocation = Vector2( 103, -250 )
 
 [node name="P1" parent="Portals" instance=ExtResource( 2 )]
 position = Vector2( 103, -250 )
+
+[node name="P2" parent="Portals" instance=ExtResource( 2 )]
+position = Vector2( 904, -252 )
