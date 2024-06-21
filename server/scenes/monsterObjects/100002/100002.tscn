@@ -46,6 +46,9 @@ shape = SubResource( 1 )
 [node name="Timer" type="Timer" parent="."]
 autostart = true
 
+[node name="Timer2" type="Timer" parent="."]
+wait_time = 0.5
+
 [node name="ColorRect" type="ColorRect" parent="."]
 margin_left = -16.0
 margin_top = -17.0
@@ -54,3 +57,4 @@ margin_bottom = 18.0
 color = Color( 0.027451, 0.282353, 0.964706, 1 )
 
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
+[connection signal="timeout" from="Timer2" to="." method="_on_Timer2_timeout"]
