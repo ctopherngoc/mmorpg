@@ -175,18 +175,22 @@ func npc_hit(dmg_list: Array, npc: KinematicBody2D, player: String):
 		if typeof(dmg[0]) == TYPE_STRING:
 			miss_counter += 1
 			pass
-		elif dmg[0] <= npc.stats.currentHP:
+		elif dmg[0] < npc.stats.currentHP and dmg[0] > 0:
 			npc.stats.currentHP -= dmg[0]
 			if ServerData.username_list[str(player)] in npc.attackers.keys():
 				npc.attackers[ServerData.username_list[str(player)]] += dmg[0]
 			else:
 				npc.attackers[ServerData.username_list[str(player)]] = dmg[0]
+			# apply knockback
+			npc.knockback(dmg[0])
+		# its dead
 		else:
-			if ServerData.username_list[str(player)] in npc.attackers.keys():
-				npc.attackers[ServerData.username_list[str(player)]] += npc.stats.currentHP
-			else:
-				npc.attackers[ServerData.username_list[str(player)]] = npc.stats.currentHP
-			npc.stats.currentHP -= dmg[0]
+			if npc.stats.currentHP > 0:
+				if ServerData.username_list[str(player)] in npc.attackers.keys():
+						npc.attackers[ServerData.username_list[str(player)]] += npc.stats.currentHP
+				else:
+					npc.attackers[ServerData.username_list[str(player)]] = npc.stats.currentHP
+				npc.stats.currentHP = 0
 		# if dead change state and make it unhittable
 		if npc.stats.currentHP <= 0 and npc.state != "Dead":
 			npc.state = "Dead"
@@ -225,6 +229,9 @@ func npc_hit(dmg_list: Array, npc: KinematicBody2D, player: String):
 					dropSpawn(npc.map_id, npc.position, drop_list, highest_attacker)
 			# drop items from npc location
 			npc.die()
+		else:
+			npc.state == "hit"
+			npc.start_hit_timer() == "hit"
 	if miss_counter == dmg_list.size():
 		npc.miss_counter += 1
 	print("monster: " + npc.name + " :health: " + str(npc.stats.currentHP))
