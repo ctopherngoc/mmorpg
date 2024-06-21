@@ -32,6 +32,21 @@ editor_draw_drag_margin = true
 
 [node name="CompositeSprite" parent="." instance=ExtResource( 1 )]
 
+[node name="Learring" parent="CompositeSprite" index="10"]
+frame = 0
+
+[node name="Rearring" parent="CompositeSprite" index="19"]
+frame = 0
+
+[node name="Tattoo" parent="CompositeSprite" index="20"]
+frame = 32
+
+[node name="Eyeacc" parent="CompositeSprite" index="21"]
+frame = 32
+
+[node name="Faceacc" parent="CompositeSprite" index="22"]
+frame = 33
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false
 position = Vector2( 1, -0.5 )
@@ -57,28 +72,10 @@ position = Vector2( 17, -2.5 )
 shape = SubResource( 22 )
 disabled = true
 
-[node name="Button" type="Button" parent="."]
-visible = false
-margin_left = -28.0
-margin_top = -97.0
-margin_right = 53.0
-margin_bottom = -77.0
-text = "move right"
-
-[node name="Button2" type="Button" parent="."]
-visible = false
-margin_left = -119.0
-margin_top = -99.0
-margin_right = -46.0
-margin_bottom = -79.0
-text = "move left"
-
 [node name="Timer" type="Timer" parent="."]
 wait_time = 5.0
 one_shot = true
 
-[connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]
-[connection signal="pressed" from="Button2" to="." method="_on_Button2_pressed"]
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
 
 [editable path="CompositeSprite"]
