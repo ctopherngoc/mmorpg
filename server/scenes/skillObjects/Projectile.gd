@@ -76,7 +76,7 @@ func get_closest_target() -> void:
 						closest_target_distance = distance
 				elif direction == -1 and self.position.x > monster_body.position.x:
 					var distance = distance_squared(monster_body.position)
-					if not closest_target or distance < closest_target:
+					if not closest_target or distance < closest_target_distance:
 						closest_target = monster_body
 						closest_target_distance = distance
 			if closest_target:
@@ -151,6 +151,7 @@ func _on_Hitbox_area_entered(area):
 
 func monster_hit(monster_container) -> void:
 	Global.calculate_skill_damage(player, monster_container, self)
+	ready = -1
 
 # warning-ignore:unused_argument
 func _on_Range_area_entered(area):
