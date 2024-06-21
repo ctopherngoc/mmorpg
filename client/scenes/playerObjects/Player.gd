@@ -21,6 +21,9 @@ var floating_text = preload("res://scenes/userInerface/FloatingText.tscn")
 onready var input
 onready var hit_timer = $Timer
 
+onready var horizontal_speed: int
+onready var vertical_speed: int
+
 #########
 #Temp
 onready var recon_arr = {
@@ -49,10 +52,8 @@ func _ready():
 func _physics_process(delta):
 	if Global.in_game:
 		temp_delta = delta
-		""""
-		if Global.movable:
-			get_input()
-		"""
+
+		get_directional_speed()
 	# warning-ignore:shadowed_variable
 		var input = get_input()
 		movement_loop(delta, input)
@@ -72,27 +73,27 @@ func define_player_state(input_array):
 
 func get_input():
 # warning-ignore:shadowed_variable
-	var input = [0,0,0,0,0,0]
+	var temp_input = [0,0,0,0,0,0]
 	if Input.is_action_pressed("ui_up"):
-		input[0] = 1
+		temp_input[0] = 1
 		#last_input = "up"
 	if Input.is_action_pressed("ui_left"):
-		input[1] = 1
+		temp_input[1] = 1
 		#last_input = "left"
 	if Input.is_action_pressed("ui_down"):
-		input[2] = 1
+		temp_input[2] = 1
 		#last_input = "right"
 	if Input.is_action_pressed("ui_right"):
-		input[3] = 1
+		temp_input[3] = 1
 		#last_input = "right"
 	if Input.is_action_pressed("jump"):
-		input [4] = 1
+		temp_input[4] = 1
 		#last_input = "jump"
 	if Input.is_action_pressed("loot") and recon_arr["input_arr"][5] != 1:
-		input [5] = 1
+		temp_input[5] = 1
 		
-	recon_arr["input_arr"] = input
-	return input
+	recon_arr["input_arr"] = temp_input
+	return temp_input
 
 func movement_loop(delta, input_arr):
 	change_direction()
@@ -139,7 +140,7 @@ func get_movement_vector(input):
 # warning-ignore:shadowed_variable
 func get_velocity(move_vector, input, delta):
 	#velocity.x += move_vector.x * max_horizontal_speed
-	velocity.x += move_vector.x * (Global.player.stats.base.movementSpeed + Global.player.stats.equipment.movementSpeed + Global.player.stats.buff.movementSpeed)
+	velocity.x += move_vector.x * horizontal_speed
 	# slow down movement
 	if(move_vector.x == 0):
 		# allows forward jumping
@@ -148,7 +149,7 @@ func get_velocity(move_vector, input, delta):
 			velocity.x = 0
 
 	# allows maximum velocity
-	velocity.x = clamp(velocity.x, -(Global.player.stats.base.movementSpeed + Global.player.stats.equipment.movementSpeed + Global.player.stats.buff.movementSpeed), (Global.player.stats.base.movementSpeed + Global.player.stats.equipment.movementSpeed + Global.player.stats.buff.movementSpeed))
+	velocity.x = clamp(velocity.x, -horizontal_speed, horizontal_speed)
 	if can_climb:
 		if is_climbing:
 			velocity.y = 0
@@ -165,7 +166,7 @@ func get_velocity(move_vector, input, delta):
 			elif input[4] == 1 && (input[1] == 1 or input[3] == 1):
 				is_climbing = false
 				#Global.send_climb_data(self.name, 1)
-				velocity.y = move_vector.y * (Global.player.stats.base.jumpSpeed + Global.player.stats.equipment.jumpSpeed + Global.player.stats.buff.jumpSpeed) * .8
+				velocity.y = move_vector.y * (vertical_speed)
 				velocity.x = move_vector.x * 200
 		# can climb but not climbing
 		else:
@@ -213,7 +214,6 @@ func update_animation(move_vector):
 				if last_input == "attack":
 					Server.send_input(0)
 			else:
-				#print(last_input)
 				attacking = true
 				sprite.play("ready",-1, GameData.weapon_speed[str(Global.player.equipment.rweapon.attackSpeed)])
 				#### insert sound play
@@ -272,22 +272,6 @@ func heal(heal_value: int) -> void:
 	
 #func _unhandled_input(event):
 # pass
-
-func _on_Button_pressed():
-	var _temp_pos = self.position
-	var temp_input = [0,0,0,1,0]
-	recon_arr["input_arr"] = temp_input
-	movement_loop(temp_delta, temp_input)
-	define_player_state(temp_input)
-	#print(temp_pos, " ", self.position)
-
-func _on_Button2_pressed():
-	var _temp_pos = self.position
-	var temp_input = [0,1,0,0,0]
-	recon_arr["input_arr"] = temp_input
-	movement_loop(temp_delta, temp_input)
-	define_player_state(temp_input)
-	#print(temp_pos, " ", self.position)
 	
 func attack() -> void:
 	last_input = "attack"
@@ -301,3 +285,7 @@ func start_hit_timer() -> void:
 
 func _on_Timer_timeout():
 	print("hit timer = 0 play idle")
+
+func get_directional_speed() -> void:
+	vertical_speed = Global.player.stats.base.jumpSpeed + Global.player.stats.equipment.jumpSpeed + Global.player.stats.buff.jumpSpeed
+	horizontal_speed = Global.player.stats.base.movementSpeed + Global.player.stats.equipment.movementSpeed + Global.player.stats.buff.movementSpeed
