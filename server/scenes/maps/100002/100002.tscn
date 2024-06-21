@@ -28,7 +28,7 @@ tile_data = PoolIntArray( -2424845, 0, 0, -2424844, 0, 1, -2424843, 0, 1, -24248
 [node name="MapObjects" type="Node2D" parent="."]
 
 [node name="Ladder" parent="MapObjects" instance=ExtResource( 3 )]
-position = Vector2( 298, -98 )
+position = Vector2( 297, -98 )
 
 [node name="noCol" type="Area2D" parent="MapObjects/Ladder"]
 position = Vector2( -63, 82 )
