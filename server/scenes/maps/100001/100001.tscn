@@ -19,7 +19,7 @@ tile_data = PoolIntArray( -2555861, 0, 0, -2555860, 0, 1, -2555859, 0, 1, -25558
 [node name="MapObjects" type="Node2D" parent="."]
 
 [node name="Ladder" parent="MapObjects" instance=ExtResource( 3 )]
-position = Vector2( 188, -102 )
+position = Vector2( 207, -104 )
 scale = Vector2( 1, 0.95 )
 
 [node name="P1" parent="MapObjects" instance=ExtResource( 1 )]
