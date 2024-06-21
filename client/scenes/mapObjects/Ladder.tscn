@@ -10,13 +10,8 @@ collision_layer = 0
 collision_mask = 256
 script = ExtResource( 2 )
 
-[node name="Sprite" type="Sprite" parent="."]
-modulate = Color( 1, 0, 0, 1 )
-self_modulate = Color( 1, 0, 0, 1 )
-position = Vector2( 2.38419e-07, -154 )
-scale = Vector2( 0.15625, 5.09375 )
-
 [node name="ColorRect" type="ColorRect" parent="."]
+visible = false
 margin_left = -2.0
 margin_top = -297.0
 margin_right = 2.0
