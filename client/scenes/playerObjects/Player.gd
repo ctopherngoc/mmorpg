@@ -23,7 +23,7 @@ onready var hit_timer = $Timer
 
 onready var horizontal_speed: int
 onready var vertical_speed: int
-
+onready var dmg_number_height = -15
 #########
 #Temp
 onready var recon_arr = {
@@ -270,6 +270,13 @@ func heal(heal_value: int) -> void:
 	text.amount = str(heal_value)
 	add_child(text)
 	
+func took_damage(damage_value: int) -> void:
+	var text = floating_text.instance()
+	floating_text.position.y = dmg_number_height
+	text.type = "PH"
+	text.amount = str(damage_value)
+	add_child(text)
+	
 #func _unhandled_input(event):
 # pass
 	
@@ -280,8 +287,9 @@ func use_skill(animation_id: String) -> void:
 	print(animation_id)
 	last_input = animation_id
 	
-func start_hit_timer() -> void:
+func start_hit_timer(damage_taken: int) -> void:
 	hit_timer.start()
+	took_damage(damage_taken)
 
 func _on_Timer_timeout():
 	print("hit timer = 0 play idle")
