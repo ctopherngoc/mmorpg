@@ -382,7 +382,6 @@ func server_reconciliation(server_input_data: Dictionary) -> void:
 					#var new_position = lerp(Vector2(clientx, clienty), Vector2(serverx, servery), interpolation_factor)
 					#var new_position = lerp(input_queue[i]["P"], server_input_data["P"], .75)
 					#get_node("/root/GameWorld/Player").set_position(recon_position)
-					var player = get_node("/root/GameWorld/MapNode/%s/Player" % Global.current_map)
 					get_node("/root/GameWorld/MapNode/%s/Player" % Global.current_map).set_position(recon_position)
 					#get_node("/root/currentScene/Player").set_position(server_input_data['P'])
 			input_queue = input_queue.slice(i+1, input_queue.size(), 1, true)
