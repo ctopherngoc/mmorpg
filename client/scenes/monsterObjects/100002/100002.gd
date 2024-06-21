@@ -20,18 +20,19 @@ func _ready():
 	
 # new functions
 func move(new_position):
-	var curr_position = self.get_position()
-	#turn right
-	if new_position.x > curr_position.x:
-		$Sprite.scale.x = xScale * -1
-		animation_control('walk')
-	#turn left
-	elif new_position.x < curr_position.x:
-		$Sprite.scale.x = xScale
-		animation_control('walk')
-	else:
-		animation_control('idle')
-	set_position(new_position)
+	if despawn == 1:
+		var curr_position = self.get_position()
+		#turn right
+		if new_position.x > curr_position.x:
+			$Sprite.scale.x = xScale * -1
+			animation_control('walk')
+		#turn left
+		elif new_position.x < curr_position.x:
+			$Sprite.scale.x = xScale
+			animation_control('walk')
+		else:
+			animation_control('idle')
+		set_position(new_position)
 
 #func health(health):
 #	if health < current_hp:
@@ -95,11 +96,13 @@ func health_bar_update():
 
 func on_death():
 	AudioControl.play_audio("deathSquish")
+	$AnimationPlayer.play("idle")
 	despawn = 0
 	get_node("do_damage/CollisionShape2D").set_deferred("disabled", true)
 	get_node("take_damage/CollisionShape2D").set_deferred("disabled", true)
 	label.visible = false
-	sprite.visible = false
+	#sprite.visible = false
+	sprite.modulate = Color8(62,62,62)
 	timer.start()
 	print("%s died" % self.name)
 	yield(timer, "timeout")
