@@ -35,9 +35,13 @@ var velocity = Vector2.ZERO
 var is_climbing = false
 var can_climb = false
 
-var velocity_multiplier = 1
-var max_horizontal_speed = null
-var jump_speed = null
+#var velocity_multiplier = 1
+#var max_horizontal_speed = null
+#var jump_speed = null
+
+
+var vertical_speed: int
+var horizontal_speed: int
 var gravity = 800
 
 # 1 = right, -1 = left
@@ -99,9 +103,7 @@ func get_animation() -> Dictionary:
 	return animation_state
 
 func load_player_stats() -> void:
-	max_horizontal_speed = current_character.stats.base.movementSpeed
-	jump_speed = current_character.stats.base.jumpSpeed
-	#print(typeof(current_character.inventory["100000"]))
+	get_directional_speed()
 
 func normal_attack() -> void:
 	attacking = true
@@ -260,6 +262,7 @@ func experience(experience: int) -> void:
 	#print("EXP: %s" % current_character.stats.base.experience)
 
 func movement_loop(delta: float) -> void:
+	get_directional_speed()
 	var move_vector = get_movement_vector()
 	recon_arr["m_vector"] = move_vector
 	change_direction()
@@ -276,9 +279,6 @@ func movement_loop(delta: float) -> void:
 		velocity = move_and_slide(velocity, Vector2.UP)
 	if is_climbing:
 		velocity.x = 0
-	#if recon_arr["input_arr"] != [0,0,0,0,0] and recon_arr["input_arr"] != []:
-		#print(recon_arr)
-	#return self.global_position
 
 func get_movement_vector() -> Vector2:
 	var moveVector = Vector2.ZERO
@@ -293,7 +293,7 @@ func get_movement_vector() -> Vector2:
 	recon_arr["input_arr"] = input
 	# calculating x vector, allow x-axis jump off ropes or idle on floor
 	if (!attacking && is_on_floor()) or (input[1] == 1 or input[3] == 1) and input[4] == 1:
-		moveVector.x = (input[3] - input[1]) * velocity_multiplier
+		moveVector.x = (input[3] - input[1])
 	else:
 		moveVector.x = 0	
 	# calculating y vector, allow jump off ropes
@@ -310,7 +310,7 @@ func get_movement_vector() -> Vector2:
 	return moveVector
 
 func get_velocity(move_vector: Vector2, delta: float) -> void:
-	velocity.x += move_vector.x * max_horizontal_speed
+	velocity.x += move_vector.x * horizontal_speed
 	# slow down movement
 	if(move_vector.x == 0):
 		# allows forward jumping
@@ -319,7 +319,7 @@ func get_velocity(move_vector: Vector2, delta: float) -> void:
 			velocity.x = 0
 
 	# allows maximum velocity
-	velocity.x = clamp(velocity.x, -max_horizontal_speed, max_horizontal_speed)
+	velocity.x = clamp(velocity.x, -horizontal_speed, horizontal_speed)
 	if can_climb:
 		if is_climbing:
 			velocity.y = 0
@@ -336,13 +336,13 @@ func get_velocity(move_vector: Vector2, delta: float) -> void:
 			elif input[4] == 1 && (input[1] == 1 or input[3] == 1):
 				is_climbing = false
 				Global.send_climb_data(int(self.name), 1)
-				velocity.y = move_vector.y * jump_speed * .8
+				velocity.y = move_vector.y * vertical_speed
 				velocity.x = move_vector.x * 200
 		# can climb but not climbing
 		else:
 			#if moving
 			if (move_vector.y < 0 && is_on_floor()):
-					velocity.y = move_vector.y * jump_speed
+					velocity.y = move_vector.y * vertical_speed
 			# press up on ladder initiates climbing
 			elif input[0] == 1:
 					is_climbing = true
@@ -356,7 +356,7 @@ func get_velocity(move_vector: Vector2, delta: float) -> void:
 	else:
 		# normal movement
 		if (move_vector.y < 0 && is_on_floor()):
-			velocity.y = move_vector.y * jump_speed
+			velocity.y = move_vector.y * vertical_speed
 		else:
 			velocity.y += gravity * delta
 	if !can_climb:
@@ -486,3 +486,7 @@ func _on_BuffTimer_timeout():
 	else:
 		BuffTimer.stop()
 
+
+func get_directional_speed() -> void:
+	vertical_speed = current_character.stats.base.jumpSpeed + current_character.stats.equipment.jumpSpeed + current_character.stats.buff.jumpSpeed
+	horizontal_speed = current_character.stats.base.movementSpeed + current_character.stats.equipment.movementSpeed + current_character.stats.buff.movementSpeed
