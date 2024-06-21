@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/OurMusicBox - Memory Lane.mp3-391b4979647f66805deb98f72bb00258.mp3str"
+
+[deps]
+
+source_file="res://resources/sounds/bgm/OurMusicBox - Memory Lane.mp3"
+dest_files=[ "res://.import/OurMusicBox - Memory Lane.mp3-391b4979647f66805deb98f72bb00258.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

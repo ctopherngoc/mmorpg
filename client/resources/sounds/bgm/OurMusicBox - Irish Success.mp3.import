@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/OurMusicBox - Irish Success.mp3-088c29121938ba02d93600a1a7793ab2.mp3str"
+
+[deps]
+
+source_file="res://resources/sounds/bgm/OurMusicBox - Irish Success.mp3"
+dest_files=[ "res://.import/OurMusicBox - Irish Success.mp3-088c29121938ba02d93600a1a7793ab2.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

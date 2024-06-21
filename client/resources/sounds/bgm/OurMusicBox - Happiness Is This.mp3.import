@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/OurMusicBox - Happiness Is This.mp3-e58b53b78d2eb6b5bac14119b8fc714e.mp3str"
+
+[deps]
+
+source_file="res://resources/sounds/bgm/OurMusicBox - Happiness Is This.mp3"
+dest_files=[ "res://.import/OurMusicBox - Happiness Is This.mp3-e58b53b78d2eb6b5bac14119b8fc714e.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

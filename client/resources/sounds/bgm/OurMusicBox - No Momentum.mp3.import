@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/OurMusicBox - No Momentum.mp3-973b1b9730784202edf4871d92bef858.mp3str"
+
+[deps]
+
+source_file="res://resources/sounds/bgm/OurMusicBox - No Momentum.mp3"
+dest_files=[ "res://.import/OurMusicBox - No Momentum.mp3-973b1b9730784202edf4871d92bef858.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

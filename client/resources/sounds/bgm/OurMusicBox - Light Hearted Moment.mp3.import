@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/OurMusicBox - Light Hearted Moment.mp3-380a053ef9788418a1eb9d4753d90f8d.mp3str"
+
+[deps]
+
+source_file="res://resources/sounds/bgm/OurMusicBox - Light Hearted Moment.mp3"
+dest_files=[ "res://.import/OurMusicBox - Light Hearted Moment.mp3-380a053ef9788418a1eb9d4753d90f8d.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

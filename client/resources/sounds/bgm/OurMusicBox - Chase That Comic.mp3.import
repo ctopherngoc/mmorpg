@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/OurMusicBox - Chase That Comic.mp3-82a3e59e83f621b8a39e2cf1f7e1318b.mp3str"
+
+[deps]
+
+source_file="res://resources/sounds/bgm/OurMusicBox - Chase That Comic.mp3"
+dest_files=[ "res://.import/OurMusicBox - Chase That Comic.mp3-82a3e59e83f621b8a39e2cf1f7e1318b.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

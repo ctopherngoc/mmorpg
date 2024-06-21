@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/OurMusicBox - City Jaunt.mp3-23c0f8a569cef70c3e552b2803de2fb5.mp3str"
+
+[deps]
+
+source_file="res://resources/sounds/bgm/OurMusicBox - City Jaunt.mp3"
+dest_files=[ "res://.import/OurMusicBox - City Jaunt.mp3-23c0f8a569cef70c3e552b2803de2fb5.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

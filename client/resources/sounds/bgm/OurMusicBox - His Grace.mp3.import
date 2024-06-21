@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/OurMusicBox - His Grace.mp3-a01f5414268ffe8dea93c52848d9b667.mp3str"
+
+[deps]
+
+source_file="res://resources/sounds/bgm/OurMusicBox - His Grace.mp3"
+dest_files=[ "res://.import/OurMusicBox - His Grace.mp3-a01f5414268ffe8dea93c52848d9b667.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0
