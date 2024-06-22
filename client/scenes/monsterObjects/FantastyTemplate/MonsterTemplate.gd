@@ -1,14 +1,14 @@
 extends KinematicBody2D
 
 ##########################################################
-var monster_id
-var title
+var monster_id = "100005"
+var title = "crazy hen"
 var floating_text = preload("res://scenes/userInerface/FloatingText.tscn")
 var current_hp = null
 var miss_counter = null
 #var max_hp = GameData.monsterTable[monster_id].maxHP
 #var state = null
-var xScale = 1.583
+var xScale = 0.4
 var despawn = 1
 onready var timer = $Timer
 onready var sprite = $Sprite
@@ -16,7 +16,8 @@ onready var label = $Label
 ############################################################
 
 func _ready():
-	pass
+	label.text = title
+	self.scale = Vector2(0.4,0.4)
 	
 # new functions
 func move(new_position):
