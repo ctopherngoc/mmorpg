@@ -43,6 +43,112 @@
       "experience": 30,
       "movementSpeed": 100,
       "jumpSpeed": 200
+    },
+    "100003": {
+      "title": "Chick",
+      "dropList": [
+        100000,
+        300003,
+        200004,
+        500002
+      ],
+      "level": 3,
+      "boss": 0,
+      "maxHP": 100,
+      "currentHP": 100,
+      "attack": 25,
+      "defense": 15,
+      "magicDefense": 15,
+      "accuracy": 20,
+      "avoidability": 5,
+      "experience": 40,
+      "movementSpeed": 100,
+      "jumpSpeed": 200
+    },
+    "100004": {
+      "title": "Chicken",
+      "dropList": [
+        100000,
+        300003,
+        200004,
+        500003
+      ],
+      "level": 4,
+      "boss": 0,
+      "maxHP": 125,
+      "currentHP": 125,
+      "attack": 35,
+      "defense": 15,
+      "magicDefense": 15,
+      "accuracy": 20,
+      "avoidability": 10,
+      "experience": 45,
+      "movementSpeed": 100,
+      "jumpSpeed": 200
+    },
+    "100005": {
+      "title": "Hen",
+      "dropList": [
+        100000,
+        300003,
+        200003,
+        200004
+      ],
+      "level": 5,
+      "boss": 0,
+      "maxHP": 140,
+      "currentHP": 140,
+      "attack": 40,
+      "defense": 20,
+      "magicDefense": 20,
+      "accuracy": 25,
+      "avoidability": 15,
+      "experience": 50,
+      "movementSpeed": 100,
+      "jumpSpeed": 200
+    },
+    "100006": {
+      "title": "Crazy Hen",
+      "dropList": [
+        100000,
+        300003,
+        200000,
+        200004
+      ],
+      "level": 6,
+      "boss": 0,
+      "maxHP": 140,
+      "currentHP": 140,
+      "attack": 40,
+      "defense": 20,
+      "magicDefense": 20,
+      "accuracy": 25,
+      "avoidability": 15,
+      "experience": 60,
+      "movementSpeed": 100,
+      "jumpSpeed": 200
+    },
+    "100007": {
+      "title": "Rooster",
+      "dropList": [
+        100000,
+        300003,
+        200001,
+        200003,
+        200004
+      ],
+      "level": 7,
+      "boss": 0,
+      "maxHP": 160,
+      "currentHP": 160,
+      "attack": 55,
+      "defense": 25,
+      "magicDefense": 25,
+      "accuracy": 25,
+      "avoidability": 20,
+      "experience": 65,
+      "movementSpeed": 100,
+      "jumpSpeed": 200
     }
   },
   "ItemTable": {
