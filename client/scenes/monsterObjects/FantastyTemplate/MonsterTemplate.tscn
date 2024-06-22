@@ -1,7 +1,7 @@
 [gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://scenes/menuObjects/Options/godot-simpleTheme-master/simpleTheme.tres" type="Theme" id=1]
-[ext_resource path="res://assets/monsters/chicken (Idle Run Attack Death).png" type="Texture" id=2]
+[ext_resource path="res://assets/monsters/100003.png" type="Texture" id=2]
 [ext_resource path="res://scenes/monsterObjects/100002/100002.gd" type="Script" id=4]
 
 [sub_resource type="RectangleShape2D" id=3]
@@ -11,7 +11,7 @@ extents = Vector2( 16, 17.5 )
 extents = Vector2( 16, 17.5 )
 
 [sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 92.5, 116.5 )
+extents = Vector2( 92.5, 118 )
 
 [sub_resource type="Animation" id=6]
 length = 0.001
@@ -30,7 +30,6 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id=7]
 resource_name = "attack"
-loop = true
 step = 0.063
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:animation")
@@ -87,7 +86,6 @@ tracks/1/keys = {
 
 [sub_resource type="Animation" id=5]
 resource_name = "idle"
-loop = true
 step = 0.063
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:animation")
@@ -144,6 +142,7 @@ tracks/1/keys = {
 }
 
 [node name="Monster" type="KinematicBody2D"]
+scale = Vector2( 0.4, 0.4 )
 collision_layer = 0
 collision_mask = 16
 script = ExtResource( 4 )
@@ -177,11 +176,8 @@ hframes = 16
 vframes = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( 10.5, 16.5 )
+position = Vector2( 10.5, 18 )
 shape = SubResource( 2 )
-__meta__ = {
-"_edit_lock_": true
-}
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/RESET = SubResource( 6 )
