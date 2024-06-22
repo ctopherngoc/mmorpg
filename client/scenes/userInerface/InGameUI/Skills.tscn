@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://resources/Fonts/Oswald/Oswald-VariableFont_wght.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://scenes/userInerface/InGameUI/Skills.gd" type="Script" id=2]
+[ext_resource path="res://assets/UI/background/window_background2.png" type="Texture" id=3]
 
 [sub_resource type="DynamicFont" id=1]
 size = 24
@@ -30,14 +31,24 @@ __meta__ = {
 "_edit_use_anchors_": true
 }
 
-[node name="ColorRect" type="ColorRect" parent="."]
-anchor_right = 1.0
-anchor_bottom = 1.0
-color = Color( 0, 0, 0, 1 )
-
 [node name="Background" type="NinePatchRect" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
+texture = ExtResource( 3 )
+region_rect = Rect2( 0, 0, 48, 48 )
+patch_margin_left = 16
+patch_margin_top = 16
+patch_margin_right = 16
+patch_margin_bottom = 16
+
+[node name="ColorRect" type="ColorRect" parent="Background"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 5.0
+margin_top = 5.0
+margin_right = -5.0
+margin_bottom = -5.0
+color = Color( 0, 0, 0, 1 )
 
 [node name="M" type="MarginContainer" parent="Background"]
 anchor_right = 1.0
@@ -104,6 +115,7 @@ margin_bottom = 462.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_fonts/font = SubResource( 2 )
+tab_align = 0
 
 [node name="ColorRect" type="ColorRect" parent="Background/M/V"]
 margin_top = 466.0
