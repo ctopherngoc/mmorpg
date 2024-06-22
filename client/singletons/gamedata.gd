@@ -26,10 +26,9 @@ func _ready():
 	data_file.close()
 	
 onready var bgm_dict = {
-	'menu': preload("res://resources/sounds/bgm/menu_bgm.mp3"),
-	'Remy': preload("res://resources/sounds/bgm/game_bgm.mp3"),
-}
-
+	'menu': preload("res://resources/sounds/bgm/Dream Sakura_Loop.ogg"),
+	'Remy': preload("res://resources/sounds/bgm/OurMusicBox - Beyond The Hills.mp3"),}
+	
 onready var menu_sound_dict = {
 	'click': preload("res://resources/sounds/menu/button_click.mp3"),
 	'hover': preload("res://resources/sounds/menu/button_hover.mp3"),
