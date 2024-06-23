@@ -1,11 +1,11 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://assets/monsters/100007.png" type="Texture" id=1]
-[ext_resource path="res://scenes/menuObjects/Options/godot-simpleTheme-master/simpleTheme.tres" type="Theme" id=2]
+[ext_resource path="res://scenes/monsterObjects/Label.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/monsterObjects/100007/100007.gd" type="Script" id=3]
 
 [sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 98.5, 122.5 )
+extents = Vector2( 55, 81.25 )
 
 [sub_resource type="Animation" id=6]
 length = 0.001
@@ -26,27 +26,15 @@ tracks/0/keys = {
 resource_name = "attack"
 step = 0.063
 tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite:animation")
+tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ "walk" ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath("Sprite:frame")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
 "times": PoolRealArray( 0, 0.063, 0.126, 0.189, 0.252, 0.315, 0.378, 0.441, 0.504, 0.567, 0.63, 0.693, 0.756, 0.819, 0.882, 0.945 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
-"update": 1,
+"update": 0,
 "values": [ 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47 ]
 }
 
@@ -54,7 +42,23 @@ tracks/1/keys = {
 resource_name = "die"
 step = 0.063
 tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite:animation")
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.063, 0.126, 0.189, 0.252, 0.315, 0.378, 0.441, 0.504, 0.567, 0.63, 0.693, 0.756, 0.819, 0.882, 0.945 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63 ]
+}
+
+[sub_resource type="Animation" id=10]
+resource_name = "hit"
+step = 0.063
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -62,47 +66,23 @@ tracks/0/enabled = true
 tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ "walk" ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath("Sprite:frame")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0, 0.063, 0.126, 0.189, 0.252, 0.315, 0.378, 0.441, 0.504, 0.567, 0.63, 0.693, 0.756, 0.819, 0.882, 0.945 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
-"update": 1,
-"values": [ 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63 ]
+"update": 0,
+"values": [ 48 ]
 }
 
 [sub_resource type="Animation" id=5]
 resource_name = "idle"
 step = 0.063
 tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite:animation")
+tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ "walk" ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath("Sprite:frame")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
 "times": PoolRealArray( 0, 0.063, 0.126, 0.189, 0.252, 0.315, 0.378, 0.441, 0.504, 0.567, 0.63, 0.693, 0.756, 0.819, 0.882 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
-"update": 1,
+"update": 0,
 "values": [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 ]
 }
 
@@ -111,27 +91,15 @@ resource_name = "ready"
 loop = true
 step = 0.063
 tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite:animation")
+tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ "walk" ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath("Sprite:frame")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
 "times": PoolRealArray( 0, 0.063, 0.126, 0.189, 0.252, 0.315, 0.378, 0.441, 0.504, 0.567, 0.63, 0.693, 0.756, 0.819, 0.882, 0.945 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
-"update": 1,
+"update": 0,
 "values": [ 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31 ]
 }
 
@@ -141,56 +109,35 @@ collision_layer = 0
 collision_mask = 16
 script = ExtResource( 3 )
 
-[node name="do_damage" type="Area2D" parent="."]
-visible = false
-position = Vector2( 0, 1 )
-scale = Vector2( 0.999998, 1 )
-collision_layer = 4
-collision_mask = 0
-
-[node name="CollisionShape2D3" type="CollisionShape2D" parent="do_damage"]
-position = Vector2( 16.5, 19 )
-scale = Vector2( 1, 1 )
-shape = SubResource( 2 )
-
-[node name="take_damage" type="Area2D" parent="." groups=["enemy"]]
-scale = Vector2( 1.58333, 1.5 )
-collision_layer = 32
-collision_mask = 0
-
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="take_damage"]
-position = Vector2( 10.4211, 13.3333 )
-scale = Vector2( 0.63158, 0.666667 )
-shape = SubResource( 2 )
-
 [node name="Sprite" type="Sprite" parent="."]
-scale = Vector2( -1.583, 1.5 )
+scale = Vector2( -1, 1 )
 texture = ExtResource( 1 )
 hframes = 16
 vframes = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( 16.5, 20 )
-scale = Vector2( 1, 1 )
+visible = false
+position = Vector2( 9.99998, 11.25 )
+scale = Vector2( 0.999999, 0.999999 )
 shape = SubResource( 2 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/RESET = SubResource( 6 )
 anims/attack = SubResource( 7 )
 anims/die = SubResource( 8 )
+anims/hit = SubResource( 10 )
 anims/idle = SubResource( 5 )
 anims/ready = SubResource( 9 )
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 1.5
 
-[node name="Label" type="Label" parent="."]
-margin_left = -47.5
-margin_top = 137.5
-margin_right = 51.5
-margin_bottom = 160.5
-theme = ExtResource( 2 )
-align = 1
+[node name="Label" parent="." instance=ExtResource( 2 )]
+margin_left = -40.0
+margin_top = 85.0
+margin_right = 59.0
+margin_bottom = 121.0
+text = "Rooster"
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
