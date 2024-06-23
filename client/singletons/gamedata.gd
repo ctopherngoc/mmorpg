@@ -39,7 +39,14 @@ onready var region_dict = {
 }
 onready var monster_preload = {
 	"100001" : preload("res://scenes/monsterObjects/100001/100001.tscn"),
-	"100002" : preload("res://scenes/monsterObjects/100002/100002.tscn")
+	"100002" : preload("res://scenes/monsterObjects/100002/100002.tscn"),
+	"100003" : preload("res://scenes/monsterObjects/100003/100003.tscn"),
+	"100004" : preload("res://scenes/monsterObjects/100004/100004.tscn"),
+	"100005" : preload("res://scenes/monsterObjects/100005/100005.tscn"),
+	"100006" : preload("res://scenes/monsterObjects/100006/100006.tscn"),
+	"100007" : preload("res://scenes/monsterObjects/100007/100007.tscn"),
+	
+	
 }
 onready var map_dict = {
 	"100000": {"name": "Grassy Road 1 Test", "path": "res://scenes/maps/100000/100000.tscn", "region": "Remy", "bgm": "Remy"},
