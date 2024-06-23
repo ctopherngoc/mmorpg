@@ -1,14 +1,12 @@
 extends KinematicBody2D
 
 ##########################################################
-var monster_id = "100005"
+var monster_id = "100006"
 var title = "Crazy Hen"
 var floating_text = preload("res://scenes/userInerface/FloatingText.tscn")
 var current_hp = null
 var miss_counter = null
-#var max_hp = GameData.monsterTable[monster_id].maxHP
-#var state = null
-var xScale = 0.4
+var sprite_scale = Vector2(0.4, 0.4)
 var despawn = 1
 onready var timer = $Timer
 onready var sprite = $Sprite
@@ -17,19 +15,23 @@ onready var label = $Label
 
 func _ready():
 	label.text = title
-	self.scale = Vector2(.4,.4)
+	self.scale = sprite_scale
 	
 # new functions
 func move(new_position):
+
+	if self.scale.y != sprite_scale.y:
+		self.scale.y = sprite_scale.y
+		 
 	if despawn == 1:
 		var curr_position = self.get_position()
 		#turn right
 		if new_position.x > curr_position.x:
-			$Sprite.scale.x = xScale * -1
+			$Sprite.scale.x = sprite_scale.x * -1
 			animation_control('walk')
 		#turn left
 		elif new_position.x < curr_position.x:
-			$Sprite.scale.x = xScale
+			$Sprite.scale.x = sprite_scale.x
 			animation_control('walk')
 		else:
 			animation_control('idle')
@@ -76,7 +78,7 @@ func move(new_position):
 
 func damage_taken(health, damage_array: Array) -> void:
 	if health > current_hp:
-		animation_control("ready")
+		animation_control("hit")
 	current_hp = health
 	var lines = 0
 	for damage in damage_array:
@@ -102,7 +104,7 @@ func on_death():
 	get_node("take_damage/CollisionShape2D").set_deferred("disabled", true)
 	label.visible = false
 	#sprite.visible = false
-	sprite.modulate = Color8(62,62,62)
+	#sprite.modulate = Color8(62,62,62)
 	timer.start()
 	print("%s died" % self.name)
 	yield(timer, "timeout")
