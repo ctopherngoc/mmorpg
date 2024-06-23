@@ -1,17 +1,11 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=11 format=2]
 
-[ext_resource path="res://scenes/menuObjects/Options/godot-simpleTheme-master/simpleTheme.tres" type="Theme" id=1]
+[ext_resource path="res://scenes/monsterObjects/Label.tscn" type="PackedScene" id=1]
 [ext_resource path="res://assets/monsters/100003.png" type="Texture" id=2]
-[ext_resource path="res://scenes/monsterObjects/100002/100002.gd" type="Script" id=4]
-
-[sub_resource type="RectangleShape2D" id=3]
-extents = Vector2( 16, 17.5 )
-
-[sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 16, 17.5 )
+[ext_resource path="res://scenes/monsterObjects/FantastyTemplate/MonsterTemplate.gd" type="Script" id=3]
 
 [sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 92.5, 118 )
+extents = Vector2( 38.75, 45 )
 
 [sub_resource type="Animation" id=6]
 length = 0.001
@@ -32,24 +26,12 @@ tracks/0/keys = {
 resource_name = "attack"
 step = 0.063
 tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite:animation")
+tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
-tracks/0/enabled = false
+tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ "walk" ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath("Sprite:frame")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
 "times": PoolRealArray( 0, 0.063, 0.126, 0.189, 0.252, 0.315, 0.378, 0.441, 0.504, 0.567, 0.63, 0.693, 0.756, 0.819, 0.882, 0.945 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
 "update": 1,
@@ -60,24 +42,12 @@ tracks/1/keys = {
 resource_name = "die"
 step = 0.063
 tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite:animation")
+tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
-tracks/0/enabled = false
+tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ "walk" ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath("Sprite:frame")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
 "times": PoolRealArray( 0, 0.063, 0.126, 0.189, 0.252, 0.315, 0.378, 0.441, 0.504, 0.567, 0.63, 0.693, 0.756, 0.819, 0.882, 0.945 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
 "update": 1,
@@ -88,24 +58,12 @@ tracks/1/keys = {
 resource_name = "hit"
 step = 0.063
 tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite:animation")
+tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
-tracks/0/enabled = false
+tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ "walk" ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath("Sprite:frame")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
@@ -116,24 +74,12 @@ tracks/1/keys = {
 resource_name = "idle"
 step = 0.063
 tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite:animation")
+tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
-tracks/0/enabled = false
+tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ "walk" ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath("Sprite:frame")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
 "times": PoolRealArray( 0, 0.063, 0.126, 0.189, 0.252, 0.315, 0.378, 0.441, 0.504, 0.567, 0.63, 0.693, 0.756, 0.819, 0.882 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
 "update": 1,
@@ -145,24 +91,12 @@ resource_name = "walk"
 loop = true
 step = 0.063
 tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite:animation")
+tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
-tracks/0/enabled = false
+tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ "walk" ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath("Sprite:frame")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
 "times": PoolRealArray( 0, 0.063, 0.126, 0.189, 0.252, 0.315, 0.378, 0.441, 0.504, 0.567, 0.63, 0.693, 0.756, 0.819, 0.882, 0.945 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
 "update": 1,
@@ -173,38 +107,17 @@ tracks/1/keys = {
 scale = Vector2( 0.4, 0.4 )
 collision_layer = 0
 collision_mask = 16
-script = ExtResource( 4 )
-
-[node name="do_damage" type="Area2D" parent="."]
-visible = false
-position = Vector2( 0, 1 )
-scale = Vector2( 0.999998, 1 )
-collision_layer = 4
-collision_mask = 0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="do_damage"]
-position = Vector2( -2.38419e-07, -0.5 )
-shape = SubResource( 3 )
-
-[node name="take_damage" type="Area2D" parent="." groups=["enemy"]]
-scale = Vector2( 1.58333, 1.5 )
-collision_layer = 32
-collision_mask = 0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="take_damage"]
-visible = false
-position = Vector2( 0, 0.333333 )
-scale = Vector2( 0.631579, 0.666667 )
-shape = SubResource( 1 )
+script = ExtResource( 3 )
 
 [node name="Sprite" type="Sprite" parent="."]
-scale = Vector2( -1.583, 1.5 )
+scale = Vector2( -1, 1 )
 texture = ExtResource( 2 )
 hframes = 16
 vframes = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( 10.5, 18 )
+position = Vector2( 1.25, 10 )
+scale = Vector2( 1, 1 )
 shape = SubResource( 2 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
@@ -218,13 +131,12 @@ anims/walk = SubResource( 9 )
 [node name="Timer" type="Timer" parent="."]
 wait_time = 1.5
 
-[node name="Label" type="Label" parent="."]
-margin_left = -27.0
-margin_top = 19.0
-margin_right = 35.0
-margin_bottom = 33.0
-theme = ExtResource( 1 )
-text = "blue guy"
+[node name="Label" parent="." instance=ExtResource( 1 )]
+margin_left = -50.0
+margin_top = 45.0
+margin_right = 49.0
+margin_bottom = 81.0
+text = "temp name"
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
