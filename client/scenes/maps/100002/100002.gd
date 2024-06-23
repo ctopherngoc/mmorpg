@@ -5,8 +5,8 @@ var map_name = "Grassy Road 2"
 var spawn_location = Vector2.ZERO
 
 var map_bound = {
-	"left": 0,
-	"right": 1000,
+	"left": -242,
+	"right": 1678,
 	"bottom": 30,
 	"top": -10000,
 }
@@ -19,7 +19,7 @@ onready var teleporter = [Vector2(-135, -225.500488), Vector2(657.772644, -225.5
 func _ready():
 # warning-ignore:unused_variable
 	var gameWorld = self.get_parent().get_parent()
-	
+
 	Global.change_background()
 	if Global.player.map != get_filename():
 		Global.update_lastmap(get_filename())
