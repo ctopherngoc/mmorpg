@@ -105,6 +105,7 @@ func on_death():
 	get_node("do_damage/CollisionShape2D").set_deferred("disabled", true)
 	get_node("take_damage/CollisionShape2D").set_deferred("disabled", true)
 	label.visible = false
+	sprite.modulate = Color8(62,62,62)
 	timer.start()
 	print("%s died" % self.name)
 	yield(timer, "timeout")
