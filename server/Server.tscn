@@ -32,7 +32,7 @@ position = Vector2( -292, 1 )
 [node name="100001" parent="World/Maps" instance=ExtResource( 5 )]
 
 [node name="100002" parent="World/Maps" instance=ExtResource( 4 )]
-position = Vector2( 1272, 0 )
+position = Vector2( 1277, 161 )
 
 [node name="HTTPRequest" type="HTTPRequest" parent="."]
 
