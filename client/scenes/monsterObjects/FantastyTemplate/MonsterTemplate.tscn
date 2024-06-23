@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://scenes/menuObjects/Options/godot-simpleTheme-master/simpleTheme.tres" type="Theme" id=1]
 [ext_resource path="res://assets/monsters/100003.png" type="Texture" id=2]
@@ -36,7 +36,7 @@ tracks/0/path = NodePath("Sprite:animation")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
-tracks/0/enabled = true
+tracks/0/enabled = false
 tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
@@ -64,7 +64,7 @@ tracks/0/path = NodePath("Sprite:animation")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
-tracks/0/enabled = true
+tracks/0/enabled = false
 tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
@@ -84,6 +84,34 @@ tracks/1/keys = {
 "values": [ 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63 ]
 }
 
+[sub_resource type="Animation" id=10]
+resource_name = "hit"
+step = 0.063
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = false
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ "walk" ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprite:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 48 ]
+}
+
 [sub_resource type="Animation" id=5]
 resource_name = "idle"
 step = 0.063
@@ -92,7 +120,7 @@ tracks/0/path = NodePath("Sprite:animation")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
-tracks/0/enabled = true
+tracks/0/enabled = false
 tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
@@ -113,7 +141,7 @@ tracks/1/keys = {
 }
 
 [sub_resource type="Animation" id=9]
-resource_name = "ready"
+resource_name = "walk"
 loop = true
 step = 0.063
 tracks/0/type = "value"
@@ -121,7 +149,7 @@ tracks/0/path = NodePath("Sprite:animation")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
-tracks/0/enabled = true
+tracks/0/enabled = false
 tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
@@ -183,8 +211,9 @@ shape = SubResource( 2 )
 anims/RESET = SubResource( 6 )
 anims/attack = SubResource( 7 )
 anims/die = SubResource( 8 )
+anims/hit = SubResource( 10 )
 anims/idle = SubResource( 5 )
-anims/ready = SubResource( 9 )
+anims/walk = SubResource( 9 )
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 1.5
