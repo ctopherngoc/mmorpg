@@ -36,7 +36,6 @@ onready var recon_arr = {
 ########
 
 func _ready():
-	#max_horizontal_speed = Global.player.stats.base.movementSpeed + Global.player.stats.buff.movementSpeed
 	# warning-ignore:return_value_discarded
 	Signals.connect("dialog_closed", self, "movable_switch")
 # warning-ignore:return_value_discarded
@@ -48,6 +47,12 @@ func _ready():
 	#jump_speed = (Global.player.stats.base.jumpSpeed)
 	Global.player_node = self
 	Global.in_game = true
+#	var tilemap_rect = get_parent().get_node("TileMap").get_used_rect()
+#	var tilemap_cell_size = get_parent().get_node("TileMap").cell_size
+#	camera.limit_left = tilemap_rect.position.x * tilemap_cell_size.x
+#	camera.limit_right = tilemap_rect.end.x * tilemap_cell_size.x
+#	camera.limit_top = tilemap_rect.position.y * tilemap_cell_size.y
+#	camera.limit_bottom = tilemap_rect.end.y * tilemap_cell_size.y
 
 func _physics_process(delta):
 	if Global.in_game:
@@ -266,14 +271,14 @@ func change_direction():
 
 func heal(heal_value: int) -> void:
 	var text = floating_text.instance()
-	text.type = "Heal"
+	text.type = "PH"
 	text.amount = str(heal_value)
 	add_child(text)
 	
 func took_damage(damage_value: int) -> void:
 	var text = floating_text.instance()
-	floating_text.position.y = dmg_number_height
-	text.type = "PH"
+	text.position.y = dmg_number_height
+	text.type = "PN"
 	text.amount = str(damage_value)
 	add_child(text)
 	
