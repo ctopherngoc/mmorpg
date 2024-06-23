@@ -8,11 +8,23 @@ var spawn_position = Vector2(110, -275)
 
 var green_guy = preload("res://scenes/monsterObjects/100001/100001.tscn")
 var blue_guy = preload("res://scenes/monsterObjects/100002/100002.tscn")
-var enemy_types = [green_guy, green_guy, blue_guy, blue_guy]
+var chick = preload("res://scenes/monsterObjects/100003/100003.tscn")
 
-var enemy_spawn_points = [Vector2(367, -93), Vector2(631, -93), Vector2(355, -433), Vector2(631, -433)]
+var enemy_types = [green_guy, green_guy, blue_guy, blue_guy,
+					chick, chick, blue_guy, blue_guy,
+					chick, chick, chick, blue_guy,
+					blue_guy, chick, green_guy, green_guy,
+					green_guy, chick, green_guy
+]					
 
-var open_locations = [0,1,2,3]
+var enemy_spawn_points = [Vector2(367, -93), Vector2(631, -93), Vector2(355, -433), Vector2(631, -433),
+							Vector2(407, -414), Vector2(564, -414), Vector2(856, -414), Vector2(987, -414),
+							Vector2(1109, -414), Vector2(1223, -414), Vector2(1392, -414), Vector2(1587, -414),
+							Vector2(1758, -414), Vector2(550, -71), Vector2(878, -71), Vector2(1089, -71),
+							Vector2(1247, -414), Vector2(1503, -71), Vector2(1740, -71),
+]
+
+var open_locations = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]
 
 var occupied_locations = {}
 var enemy_list = {}
