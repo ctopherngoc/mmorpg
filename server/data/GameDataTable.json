@@ -117,15 +117,15 @@
       ],
       "level": 6,
       "boss": 0,
-      "maxHP": 140,
+      "maxHP": 150,
       "currentHP": 140,
-      "attack": 40,
-      "defense": 20,
+      "attack": 50,
+      "defense": 80,
       "magicDefense": 20,
       "accuracy": 25,
       "avoidability": 15,
       "experience": 60,
-      "movementSpeed": 100,
+      "movementSpeed": 200,
       "jumpSpeed": 200
     },
     "100007": {
@@ -147,7 +147,29 @@
       "accuracy": 25,
       "avoidability": 20,
       "experience": 65,
-      "movementSpeed": 100,
+      "movementSpeed": 125,
+      "jumpSpeed": 200
+    },
+    "100008": {
+      "title": "Bull Rooster",
+      "dropList": [
+        100000,
+        300003,
+        200001,
+        200003,
+        200004
+      ],
+      "level": 8,
+      "boss": 0,
+      "maxHP": 200,
+      "currentHP": 200,
+      "attack": 80,
+      "defense": 15,
+      "magicDefense": 15,
+      "accuracy": 50,
+      "avoidability": 15,
+      "experience": 80,
+      "movementSpeed": 150,
       "jumpSpeed": 200
     }
   },
