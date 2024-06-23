@@ -6,8 +6,6 @@ var title = "Chick"
 var floating_text = preload("res://scenes/userInerface/FloatingText.tscn")
 var current_hp = null
 var miss_counter = null
-#var max_hp = GameData.monsterTable[monster_id].maxHP
-#var state = null
 var xScale = 0.4
 var despawn = 1
 onready var timer = $Timer
@@ -76,7 +74,7 @@ func move(new_position):
 
 func damage_taken(health, damage_array: Array) -> void:
 	if health > current_hp:
-		animation_control("ready")
+		animation_control("hit")
 	current_hp = health
 	var lines = 0
 	for damage in damage_array:
@@ -102,7 +100,7 @@ func on_death():
 	get_node("take_damage/CollisionShape2D").set_deferred("disabled", true)
 	label.visible = false
 	#sprite.visible = false
-	sprite.modulate = Color8(62,62,62)
+	#sprite.modulate = Color8(62,62,62)
 	timer.start()
 	print("%s died" % self.name)
 	yield(timer, "timeout")
