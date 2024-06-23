@@ -3,16 +3,17 @@ extends Control
 var drag_position
 signal move_to_top
 
-onready var strength = get_node("HBoxContainer/VBoxContainer/Strength/Value")
-onready var luck = get_node("HBoxContainer/VBoxContainer/Luck/Value")
-onready var dexterity = get_node("HBoxContainer/VBoxContainer/Dexterity/Value")
-onready var wisdom = get_node("HBoxContainer/VBoxContainer/Wisdom/Value")
-onready var stat_points = get_node("HBoxContainer/VBoxContainer/StatPoints/ColorRect/Value")
+onready var strength = get_node("NinePatchRect/HBoxContainer/VBoxContainer/Strength/Value")
+onready var luck = get_node("NinePatchRect/HBoxContainer/VBoxContainer/Luck/Value")
+onready var dexterity = get_node("NinePatchRect/HBoxContainer/VBoxContainer/Dexterity/Value")
+onready var wisdom = get_node("NinePatchRect/HBoxContainer/VBoxContainer/Wisdom/Value")
+onready var stat_points = get_node("NinePatchRect/HBoxContainer/VBoxContainer/StatPoints/ColorRect/Value")
 
-onready var sp_buttons = [$HBoxContainer/VBoxContainer/Strength/Button, 
-						$HBoxContainer/VBoxContainer/Luck/Button4,
-						$HBoxContainer/VBoxContainer/Dexterity/Button3,
-						$HBoxContainer/VBoxContainer/Wisdom/Button2,
+
+onready var sp_buttons = [$NinePatchRect/HBoxContainer/VBoxContainer/Strength/Button, 
+						$NinePatchRect/HBoxContainer/VBoxContainer/Wisdom/Button2,
+						$NinePatchRect/HBoxContainer/VBoxContainer/Dexterity/Button3,
+						$NinePatchRect/HBoxContainer/VBoxContainer/Luck/Button4
 						]
 
 """
