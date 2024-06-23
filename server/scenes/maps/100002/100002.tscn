@@ -68,11 +68,13 @@ shape = SubResource( 6 )
 position = Vector2( 852, -98 )
 
 [node name="Teleporter2" parent="MapObjects" instance=ExtResource( 4 )]
+visible = false
 position = Vector2( 821, -54 )
 scale = Vector2( 1.03714, 1.00204 )
 endLocation = Vector2( 900, -260 )
 
 [node name="Teleporter1" parent="MapObjects" instance=ExtResource( 4 )]
+visible = false
 position = Vector2( 183, -51 )
 scale = Vector2( 1.04935, 1.00166 )
 endLocation = Vector2( 103, -250 )
