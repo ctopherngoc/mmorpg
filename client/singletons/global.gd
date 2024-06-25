@@ -56,6 +56,7 @@ func update_world_state(world_state: Dictionary) -> void:
 		world_state_buffer.append(world_state)
 
 func _physics_process(_delta: float) -> void:
+# warning-ignore:unused_variable
 	var timestamp = rng.randi_range(1,100000)
 	# Current turn off client process of other characters and enemy because
 	# working on item drop, data load from json/spreadsheet etc
@@ -167,9 +168,11 @@ func _physics_process(_delta: float) -> void:
 					#print(world_state_buffer[2]["M"].size())
 					var current_projectile_nodes = get_node("/root/GameWorld/MapNode/%s/Projectiles" % Global.current_map).get_children()
 					# remove items if current state has item but future does not have it
+# warning-ignore:shadowed_variable
 					for projectile in current_projectile_nodes:
 						if not projectile.name in world_state_buffer[2]["M"].keys():
 							projectile.queue_free()
+# warning-ignore:shadowed_variable
 					for projectile in world_state_buffer[2]["M"].keys():
 						if not world_state_buffer[1]["M"].has(projectile):
 							continue
@@ -281,9 +284,11 @@ func _physics_process(_delta: float) -> void:
 				if world_state_buffer[1]["M"].size() > 0:
 					var current_projectile_nodes = get_node("/root/GameWorld/MapNode/%s/Projectiles" % Global.current_map).get_children()
 					# remove items if current state has item but future does not have it
+# warning-ignore:shadowed_variable
 					for projectile in current_projectile_nodes:
 						if not projectile.name in world_state_buffer[1]["M"].keys():
 							projectile.queue_free()
+# warning-ignore:shadowed_variable
 					for projectile in world_state_buffer[1]["M"].keys():
 						if not world_state_buffer[0]["M"].has(projectile):
 							continue
@@ -332,11 +337,12 @@ func spawn_monster(monster_id: int, monster_dict: Dictionary) -> void:
 	#var monster = get_node("/root/currentScene").monster_list[monster_dict['id']].instance()
 	#print(monster_dict)
 	var monster = GameData.monster_preload[monster_dict['id']].instance()
+	monster.monster_id = monster_dict['id']
 	monster.position = monster_dict["EnemyLocation"]
-	#monster.max_hp = GameData.monsterTable["MaxHP"]
+	monster.title = GameData.monsterTable[monster_dict["id"]]["title"]
+	monster.max_hp = GameData.monsterTable[monster_dict["id"]]["maxHP"]
 	monster.current_hp = monster_dict["EnemyHealth"]
 	monster.miss_counter = monster_dict["MissCounter"]
-	#monster.state = monster_dict["EnemyState"]
 	monster.name = str(monster_id)
 	get_node("/root/GameWorld/MapNode/%s/Monsters" % Global.current_map).add_child(monster, true)
 	
