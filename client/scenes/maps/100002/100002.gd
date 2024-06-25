@@ -38,4 +38,4 @@ func _ready():
 ###############################################################################################
 func _on_teleport_zone_body_entered(body):
 	print("entered")
-	body.global_position = Vector2(103, -250)
+	#body.global_position = Vector2(103, -250)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://scenes/playerObjects/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://resources/background/maps/BaseLevel.jpg" type="Texture" id=2]
@@ -11,10 +11,11 @@
 [ext_resource path="res://scenes/monsterObjects/100003/100003.tscn" type="PackedScene" id=9]
 [ext_resource path="res://scenes/mapObjects/Ladder.tscn" type="PackedScene" id=10]
 [ext_resource path="res://scenes/monsterObjects/100004/100004.tscn" type="PackedScene" id=11]
-[ext_resource path="res://scenes/monsterObjects/100005/100005.tscn" type="PackedScene" id=12]
-[ext_resource path="res://scenes/monsterObjects/100007/100007.tscn" type="PackedScene" id=13]
-[ext_resource path="res://scenes/monsterObjects/100006/100006.tscn" type="PackedScene" id=14]
-[ext_resource path="res://scenes/monsterObjects/100008/100008.tscn" type="PackedScene" id=15]
+[ext_resource path="res://scenes/monsterObjects/100006/100006.tscn" type="PackedScene" id=12]
+[ext_resource path="res://scenes/monsterObjects/100008/100008.tscn" type="PackedScene" id=13]
+[ext_resource path="res://scenes/monsterObjects/100007/100007.tscn" type="PackedScene" id=14]
+[ext_resource path="res://scenes/monsterObjects/100010/100010.tscn" type="PackedScene" id=15]
+[ext_resource path="res://scenes/monsterObjects/100009/100009.tscn" type="PackedScene" id=16]
 
 [node name="Map" type="Node2D"]
 script = ExtResource( 5 )
@@ -77,3 +78,6 @@ position = Vector2( 233, -85 )
 
 [node name="100008" parent="." instance=ExtResource( 15 )]
 position = Vector2( 549, -91 )
+
+[node name="100009" parent="." instance=ExtResource( 16 )]
+position = Vector2( 619, -93 )

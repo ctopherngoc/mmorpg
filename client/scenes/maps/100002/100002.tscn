@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://scenes/maps/100002/100002.gd" type="Script" id=1]
 [ext_resource path="res://scenes/mapObjects/Portal.tscn" type="PackedScene" id=2]
@@ -9,9 +9,6 @@
 [ext_resource path="res://assets/tiles/0001/platform.tscn" type="PackedScene" id=7]
 [ext_resource path="res://scenes/mapObjects/Ladder.tscn" type="PackedScene" id=8]
 [ext_resource path="res://scenes/mapObjects/Teleporter.tscn" type="PackedScene" id=9]
-[ext_resource path="res://scenes/monsterObjects/100004/100004.tscn" type="PackedScene" id=10]
-[ext_resource path="res://scenes/monsterObjects/100007/100007.tscn" type="PackedScene" id=11]
-[ext_resource path="res://scenes/monsterObjects/100006/100006.tscn" type="PackedScene" id=12]
 
 [node name="100002" type="Node2D"]
 position = Vector2( 2, 0 )
@@ -40,6 +37,9 @@ tile_data = PoolIntArray( -1441783, 0, 0, -1441782, 0, 1, -1441781, 0, 1, -14417
 [node name="Ladder" parent="MapObjects/Platform" instance=ExtResource( 8 )]
 position = Vector2( 297, -98 )
 
+[node name="Ladder2" parent="MapObjects/Platform" instance=ExtResource( 8 )]
+position = Vector2( 856, -98 )
+
 [node name="T2" parent="MapObjects" instance=ExtResource( 9 )]
 visible = false
 position = Vector2( 821, -54 )
@@ -56,7 +56,7 @@ endLocation = Vector2( 103, -250 )
 tile_set = ExtResource( 6 )
 cell_size = Vector2( 18, 18 )
 format = 1
-tile_data = PoolIntArray( -1441776, 7, 0, -1376240, 8, 0, -1310704, 8, 0, -1245168, 8, 0, -1179632, 8, 0, -1114096, 8, 0, -1048560, 8, 0, -983024, 8, 0, -917488, 8, 0, -851952, 8, 0, -786416, 8, 0, -720880, 8, 0, -655344, 8, 0, -589808, 8, 0, -524272, 8, 0 )
+tile_data = PoolIntArray( -1441776, 7, 0, -1441745, 8, 0, -1376240, 8, 0, -1376209, 8, 0, -1310704, 8, 0, -1310673, 8, 0, -1245168, 8, 0, -1245137, 8, 0, -1179632, 8, 0, -1179601, 8, 0, -1114096, 8, 0, -1114065, 8, 0, -1048560, 8, 0, -1048529, 8, 0, -983024, 8, 0, -982993, 8, 0, -917488, 8, 0, -917457, 8, 0, -851952, 8, 0, -851921, 8, 0, -786416, 8, 0, -786385, 8, 0, -720880, 8, 0, -720849, 8, 0, -655344, 8, 0, -655313, 8, 0, -589808, 8, 0, -589777, 8, 0, -524272, 8, 0, -524241, 8, 0 )
 
 [node name="Monsters" type="YSort" parent="."]
 
@@ -76,15 +76,6 @@ position = Vector2( 103, -250 )
 
 [node name="P2" parent="Portals" instance=ExtResource( 2 )]
 position = Vector2( 1933, -270 )
-
-[node name="100006" parent="." instance=ExtResource( 12 )]
-position = Vector2( 278, -268 )
-
-[node name="100007" parent="." instance=ExtResource( 11 )]
-position = Vector2( 190, -257 )
-
-[node name="100004" parent="." instance=ExtResource( 10 )]
-position = Vector2( 138, -244 )
 
 [editable path="Player"]
 [editable path="Player/CompositeSprite"]
