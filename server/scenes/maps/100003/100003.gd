@@ -4,7 +4,7 @@ var map_name = "Grassy Road 3"
 
 var enemy_id_counter = 0
 var enemy_maximum = 19
-var spawn_position = Vector2(110, -260)
+var spawn_position = Vector2(350, -462)
 
 var green_guy = preload("res://scenes/monsterObjects/100001/100001.tscn")
 var blue_guy = preload("res://scenes/monsterObjects/100002/100002.tscn")
@@ -32,40 +32,41 @@ var players = []
 onready var player_ysort = $YSort/Players
 
 func _ready():
-	var timer = Timer.new()
-	timer.wait_time = 3
-	timer.autostart = true
-	timer.connect("timeout", self, "SpawnEnemy")
-	self.add_child(timer)
+	pass
+	#var timer = Timer.new()
+	#timer.wait_time = 3
+	#timer.autostart = true
+	#timer.connect("timeout", self, "SpawnEnemy")
+	#self.add_child(timer)
 
 var counter = 0
 
 func _process(_delta):
 	if enemy_list.size() == 0:
 		pass
-	else:
-		for monster_id in enemy_list.keys():
-			if enemy_list[monster_id]['EnemyState'] != "Dead":
-				var monster_container = get_node("YSort/Monsters/%s" % str(monster_id))
-				enemy_list[monster_id]['EnemyLocation'] = monster_container.position
-				enemy_list[monster_id]['EnemyHealth'] = monster_container.stats.currentHP
-				enemy_list[monster_id]['EnemyState'] = monster_container.state
-				enemy_list[monster_id]['MissCounter'] = monster_container.miss_counter
-				if monster_container.damage_taken.size() > 0:
-					counter = 0
-					enemy_list[monster_id]['DamageList'] = monster_container.damage_taken.duplicate(true)
-					monster_container.damage_taken.clear()
-				else:
-					if counter < 5:
-						counter += 1
-					else:
-						counter = 0
-						enemy_list[monster_id]['DamageList'].clear()
-	UpdateItemStateList()
-	UpdateProjectileStateList()
-	UpdateMonsterList()
-	if player_ysort.get_children() != players:
-		players = player_ysort.get_children()
+#	else:
+#		for monster_id in enemy_list.keys():
+#			if enemy_list[monster_id]['EnemyState'] != "Dead":
+#				var monster_container = get_node("YSort/Monsters/%s" % str(monster_id))
+#				enemy_list[monster_id]['EnemyLocation'] = monster_container.position
+#				enemy_list[monster_id]['EnemyHealth'] = monster_container.stats.currentHP
+#				enemy_list[monster_id]['EnemyState'] = monster_container.state
+#				enemy_list[monster_id]['MissCounter'] = monster_container.miss_counter
+#				if monster_container.damage_taken.size() > 0:
+#					counter = 0
+#					enemy_list[monster_id]['DamageList'] = monster_container.damage_taken.duplicate(true)
+#					monster_container.damage_taken.clear()
+#				else:
+#					if counter < 5:
+#						counter += 1
+#					else:
+#						counter = 0
+#						enemy_list[monster_id]['DamageList'].clear()
+#	UpdateItemStateList()
+#	UpdateProjectileStateList()
+#	UpdateMonsterList()
+#	if player_ysort.get_children() != players:
+#		players = player_ysort.get_children()
 # after timer function called
 func SpawnEnemy():
 	# only calculate/spawn monsters when at least 1 player is actively in the map
