@@ -5,16 +5,11 @@ var map_name = "Grassy Road 2"
 var spawn_location = Vector2.ZERO
 
 var map_bound = {
-	"left": -242,
+	"left": 0,
 	"right": 1678,
 	"bottom": 30,
 	"top": -10000,
 }
-
-#teleporter end locations
-onready var teleporter1 : Label = $MapObjects/T1/Label
-onready var teleporter2 : Label = $MapObjects/T2/Label
-onready var teleporter = [Vector2(-135, -225.500488), Vector2(657.772644, -225.575974)]
 
 func _ready():
 # warning-ignore:unused_variable
