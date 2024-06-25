@@ -50,7 +50,8 @@
         100000,
         300003,
         200004,
-        500002
+        500002,
+        100003
       ],
       "level": 3,
       "boss": 0,
@@ -71,7 +72,8 @@
         100000,
         300003,
         200004,
-        500003
+        500003,
+        100004
       ],
       "level": 4,
       "boss": 0,
@@ -92,7 +94,8 @@
         100000,
         300003,
         200003,
-        200004
+        200004,
+        100005
       ],
       "level": 5,
       "boss": 0,
@@ -108,12 +111,35 @@
       "jumpSpeed": 200
     },
     "100006": {
+      "title": "Advance Hen",
+      "dropList": [
+        100000,
+        300003,
+        200003,
+        200004,
+        100006
+      ],
+      "level": 5,
+      "boss": 0,
+      "maxHP": 145,
+      "currentHP": 145,
+      "attack": 45,
+      "defense": 25,
+      "magicDefense": 25,
+      "accuracy": 25,
+      "avoidability": 15,
+      "experience": 55,
+      "movementSpeed": 125,
+      "jumpSpeed": 200
+    },
+    "100007": {
       "title": "Crazy Hen",
       "dropList": [
         100000,
         300003,
         200000,
-        200004
+        200004,
+        100006
       ],
       "level": 6,
       "boss": 0,
@@ -124,18 +150,19 @@
       "magicDefense": 20,
       "accuracy": 25,
       "avoidability": 15,
-      "experience": 60,
+      "experience": 70,
       "movementSpeed": 200,
       "jumpSpeed": 200
     },
-    "100007": {
+    "100008": {
       "title": "Rooster",
       "dropList": [
         100000,
         300003,
         200001,
         200003,
-        200004
+        200004,
+        100008
       ],
       "level": 7,
       "boss": 0,
@@ -146,31 +173,183 @@
       "magicDefense": 25,
       "accuracy": 25,
       "avoidability": 20,
-      "experience": 65,
+      "experience": 75,
       "movementSpeed": 125,
       "jumpSpeed": 200
     },
-    "100008": {
+    "100009": {
+      "title": "Wild Rooster",
+      "dropList": [
+        100000,
+        300003,
+        200001,
+        200003,
+        200004,
+        100009
+      ],
+      "level": 7,
+      "boss": 0,
+      "maxHP": 180,
+      "currentHP": 180,
+      "attack": 80,
+      "defense": 25,
+      "magicDefense": 25,
+      "accuracy": 25,
+      "avoidability": 20,
+      "experience": 80,
+      "movementSpeed": 125,
+      "jumpSpeed": 200
+    },
+    "100010": {
       "title": "Bull Rooster",
       "dropList": [
         100000,
         300003,
         200001,
         200003,
-        200004
+        200004,
+        100010
       ],
       "level": 8,
       "boss": 0,
       "maxHP": 200,
       "currentHP": 200,
-      "attack": 80,
-      "defense": 15,
+      "attack": 100,
+      "defense": 40,
       "magicDefense": 15,
       "accuracy": 50,
       "avoidability": 15,
-      "experience": 80,
+      "experience": 100,
       "movementSpeed": 150,
       "jumpSpeed": 200
+    },
+    "100011": {
+      "title": "Turkey",
+      "dropList": null,
+      "level": null,
+      "boss": null,
+      "maxHP": null,
+      "currentHP": null,
+      "attack": null,
+      "defense": null,
+      "magicDefense": null,
+      "accuracy": null,
+      "avoidability": null,
+      "experience": null,
+      "movementSpeed": null,
+      "jumpSpeed": null
+    },
+    "100012": {
+      "title": "Forest Turkey",
+      "dropList": null,
+      "level": null,
+      "boss": null,
+      "maxHP": null,
+      "currentHP": null,
+      "attack": null,
+      "defense": null,
+      "magicDefense": null,
+      "accuracy": null,
+      "avoidability": null,
+      "experience": null,
+      "movementSpeed": null,
+      "jumpSpeed": null
+    },
+    "100013": {
+      "title": "Piggy",
+      "dropList": null,
+      "level": null,
+      "boss": null,
+      "maxHP": null,
+      "currentHP": null,
+      "attack": null,
+      "defense": null,
+      "magicDefense": null,
+      "accuracy": null,
+      "avoidability": null,
+      "experience": null,
+      "movementSpeed": null,
+      "jumpSpeed": null
+    },
+    "100014": {
+      "title": "Pig",
+      "dropList": null,
+      "level": null,
+      "boss": null,
+      "maxHP": null,
+      "currentHP": null,
+      "attack": null,
+      "defense": null,
+      "magicDefense": null,
+      "accuracy": null,
+      "avoidability": null,
+      "experience": null,
+      "movementSpeed": null,
+      "jumpSpeed": null
+    },
+    "100015": {
+      "title": "Hog",
+      "dropList": null,
+      "level": null,
+      "boss": null,
+      "maxHP": null,
+      "currentHP": null,
+      "attack": null,
+      "defense": null,
+      "magicDefense": null,
+      "accuracy": null,
+      "avoidability": null,
+      "experience": null,
+      "movementSpeed": null,
+      "jumpSpeed": null
+    },
+    "100016": {
+      "title": "Porky",
+      "dropList": null,
+      "level": null,
+      "boss": null,
+      "maxHP": null,
+      "currentHP": null,
+      "attack": null,
+      "defense": null,
+      "magicDefense": null,
+      "accuracy": null,
+      "avoidability": null,
+      "experience": null,
+      "movementSpeed": null,
+      "jumpSpeed": null
+    },
+    "100017": {
+      "title": "Swine",
+      "dropList": null,
+      "level": null,
+      "boss": null,
+      "maxHP": null,
+      "currentHP": null,
+      "attack": null,
+      "defense": null,
+      "magicDefense": null,
+      "accuracy": null,
+      "avoidability": null,
+      "experience": null,
+      "movementSpeed": null,
+      "jumpSpeed": null
+    },
+    "100018": {
+      "title": "Boar",
+      "dropList": null,
+      "level": null,
+      "boss": null,
+      "maxHP": null,
+      "currentHP": null,
+      "attack": null,
+      "defense": null,
+      "magicDefense": null,
+      "accuracy": null,
+      "avoidability": null,
+      "experience": null,
+      "movementSpeed": null,
+      "jumpSpeed": null
     }
   },
   "ItemTable": {
@@ -181,6 +360,86 @@
       "stackable": 1,
       "droppable": 1,
       "description": null,
+      "useType": null,
+      "useAmount": null
+    },
+    "100003": {
+      "itemName": "Chick Feather",
+      "itemType": "etc",
+      "dropRate": 45,
+      "stackable": 1,
+      "droppable": 1,
+      "description": "Feather from a baby chick",
+      "useType": null,
+      "useAmount": null
+    },
+    "100004": {
+      "itemName": "Chicken Feather",
+      "itemType": "etc",
+      "dropRate": 45,
+      "stackable": 1,
+      "droppable": 1,
+      "description": "Feather from a chicken",
+      "useType": null,
+      "useAmount": null
+    },
+    "100005": {
+      "itemName": "Hen Feather",
+      "itemType": "etc",
+      "dropRate": 45,
+      "stackable": 1,
+      "droppable": 1,
+      "description": "Feather from a hen",
+      "useType": null,
+      "useAmount": null
+    },
+    "100006": {
+      "itemName": "Advance Hen Feather",
+      "itemType": "etc",
+      "dropRate": 45,
+      "stackable": 1,
+      "droppable": 1,
+      "description": "Feather from an advance hen",
+      "useType": null,
+      "useAmount": null
+    },
+    "100007": {
+      "itemName": "Crazy Hen Feather",
+      "itemType": "etc",
+      "dropRate": 45,
+      "stackable": 1,
+      "droppable": 1,
+      "description": "Feather from an advance hen",
+      "useType": null,
+      "useAmount": null
+    },
+    "100008": {
+      "itemName": "Rooster Feather",
+      "itemType": "etc",
+      "dropRate": 45,
+      "stackable": 1,
+      "droppable": 1,
+      "description": "Feather from a rooster",
+      "useType": null,
+      "useAmount": null
+    },
+    "100009": {
+      "itemName": "Wild Rooster Feather",
+      "itemType": "etc",
+      "dropRate": 45,
+      "stackable": 1,
+      "droppable": 1,
+      "description": "Feather from a wild rooster",
+      "useType": null,
+      "useAmount": null
+    },
+    "100010": {
+      "itemName": "Bully Rooster Feather",
+      "itemType": "etc",
+      "dropRate": 45,
+      "stackable": 1,
+      "droppable": 1,
+      "description": "Feather from a bull rooster",
       "useType": null,
       "useAmount": null
     },
