@@ -343,6 +343,7 @@ remote func portal(portal_id):
 
 	#get nextmap name
 	var map_id = get_node(ServerData.player_location[str(player_id)].replace("YSort/Players", "")).map_id
+	print(map_id, " ", portal_id, " ", ServerData.portal_data[map_id][portal_id]['map'])
 	var next_map = ServerData.portal_data[map_id][portal_id]['map']
 	# get mapname, move user container to the map
 	#print("move character container to %s" % next_map)
@@ -646,11 +647,7 @@ remote func drop_request(slot: int, tab: String, quantity: int) -> void:
 	# check if has item
 	
 func _unhandled_input(event):
-	if event is InputEventKey:if event.pressed and event.scancode == KEY_SPACE:
-		var test_dict = ServerData.static_data.player_info.duplicate(true)
-		Firebase.server_dictionary_converter(ServerData.characters_data["1111111"], test_dict)
-		#print(test_dict)
-		print(test_dict.skills)
+	pass
 
 remote func update_keybind(key: String, type: String, id: String) -> void:
 	var player_id = get_tree().get_rpc_sender_id()
