@@ -1,7 +1,7 @@
 extends Node2D
+onready var looted = false
+onready var animation_player = $AnimationPlayer
 
 func _ready():
-	self.set_scale(Vector2(.7,.7))
-	
-func _process(_delta):
 	pass
+	animation_player.play("idle")

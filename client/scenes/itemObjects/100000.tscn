@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://assets/coin/tile_0151.png" type="Texture" id=1]
 [ext_resource path="res://assets/coin/tile_0152.png" type="Texture" id=2]
@@ -12,28 +12,45 @@ animations = [ {
 "speed": 5.0
 } ]
 
-[sub_resource type="Animation" id=3]
-resource_name = "idle"
-loop = true
+[sub_resource type="Animation" id=5]
+length = 0.001
 tracks/0/type = "value"
 tracks/0/path = NodePath("AnimatedSprite:position")
-tracks/0/interp = 2
+tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.5 ),
-"transitions": PoolRealArray( 1, 1 ),
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector2( 0, -18 ), Vector2( 0, -10 ) ]
+"values": [ Vector2( 0, -18 ) ]
+}
+
+[sub_resource type="Animation" id=3]
+resource_name = "idle"
+length = 2.0
+loop = true
+step = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("AnimatedSprite:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5, 1, 1.5, 2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, -18 ), Vector2( 0, -28 ), Vector2( 0, -18 ), Vector2( 0, -7 ), Vector2( 0, -18 ) ]
 }
 
 [sub_resource type="Animation" id=4]
-resource_name = "pickup"
+resource_name = "loot"
 length = 0.4
 tracks/0/type = "value"
 tracks/0/path = NodePath("AnimatedSprite:position")
-tracks/0/interp = 2
+tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -45,7 +62,7 @@ tracks/0/keys = {
 }
 tracks/1/type = "value"
 tracks/1/path = NodePath("AnimatedSprite:scale")
-tracks/1/interp = 2
+tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
@@ -71,17 +88,17 @@ tracks/2/keys = {
 }
 
 [node name="100000" type="Node2D"]
-scale = Vector2( 0.7, 0.7 )
+position = Vector2( 0, 3 )
 script = ExtResource( 3 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
-position = Vector2( 0, -15 )
-scale = Vector2( 2, 2 )
+position = Vector2( 0, -12.2465 )
 frames = SubResource( 1 )
 frame = 1
 playing = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 reset_on_save = false
+anims/RESET = SubResource( 5 )
 anims/idle = SubResource( 3 )
-anims/pickup = SubResource( 4 )
+anims/loot = SubResource( 4 )
