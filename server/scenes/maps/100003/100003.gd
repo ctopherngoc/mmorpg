@@ -1,36 +1,21 @@
 extends Node2D
-var map_id = "100002"
-var map_name = "Grassy Road 2"
+var map_id = "100003"
+var map_name = "Grassy Road 3"
 
 var enemy_id_counter = 0
 var enemy_maximum = 19
-var spawn_position = Vector2(110, -275)
+var spawn_position = Vector2(110, -260)
 
 var green_guy = preload("res://scenes/monsterObjects/100001/100001.tscn")
 var blue_guy = preload("res://scenes/monsterObjects/100002/100002.tscn")
 var chick = preload("res://scenes/monsterObjects/100003/100003.tscn")
-var chicken = preload("res://scenes/monsterObjects/100004/100004.tscn")
-var hen = preload("res://scenes/monsterObjects/100005/100005.tscn")
-var advanceHen = preload("res://scenes/monsterObjects/100006/100006.tscn")
-var crazyHen = preload("res://scenes/monsterObjects/100007/100007.tscn")
-var rooster = preload("res://scenes/monsterObjects/100008/100008.tscn")
-var wildRooster = preload("res://scenes/monsterObjects/100009/100009.tscn")
-var bullRooster = preload("res://scenes/monsterObjects/100010/100010.tscn")
-
 
 var enemy_types = [green_guy, green_guy, blue_guy, blue_guy,
 					chick, chick, blue_guy, blue_guy,
 					chick, chick, chick, blue_guy,
-					hen, advanceHen, crazyHen, rooster,
-					wildRooster, bullRooster, green_guy
-]				
-
-#var enemy_types = [green_guy, green_guy, blue_guy, blue_guy,
-#					chick, chick, blue_guy, blue_guy,
-#					chick, chick, chick, blue_guy,
-#					blue_guy, chick, green_guy, green_guy,
-#					green_guy, chick, green_guy
-#]					
+					blue_guy, chick, green_guy, green_guy,
+					green_guy, chick, green_guy
+]					
 
 var enemy_spawn_points = [Vector2(367, -93), Vector2(631, -93), Vector2(355, -433), Vector2(631, -433),
 							Vector2(407, -414), Vector2(564, -414), Vector2(856, -414), Vector2(987, -414),
