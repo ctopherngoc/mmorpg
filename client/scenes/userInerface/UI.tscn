@@ -47,21 +47,17 @@ anchor_bottom = 0.713889
 
 [node name="KeyBinds" parent="Control" instance=ExtResource( 10 )]
 
-[node name="Control" type="Control" parent="Control"]
-anchor_right = 1.0
-anchor_bottom = 0.893
-margin_top = 583.0
-margin_right = 1.0
-margin_bottom = 0.039978
+[node name="ChatBox" parent="Control" instance=ExtResource( 7 )]
+margin_left = 1.0
+margin_top = -136.0
+margin_right = 625.0
+margin_bottom = -80.0
 
-[node name="HotKeys" parent="Control/Control" instance=ExtResource( 8 )]
-
-[node name="ChatBox" parent="Control/Control" instance=ExtResource( 7 )]
-anchor_top = 1.0
-anchor_bottom = 1.0
-margin_top = -57.0
-margin_right = 607.0
-margin_bottom = -1.0
+[node name="HotKeys" parent="Control" instance=ExtResource( 8 )]
+margin_left = -655.0
+margin_top = -134.0
+margin_right = 19.0
+margin_bottom = -80.0
 
 [node name="PlayerHUD" parent="Control" instance=ExtResource( 1 )]
 anchor_left = 0.00078125

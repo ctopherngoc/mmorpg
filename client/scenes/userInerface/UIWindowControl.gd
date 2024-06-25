@@ -6,13 +6,14 @@ onready var drop_confirm_popup = preload("res://scenes/menuObjects/PopupMenus/dr
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
-var non_movable_windows = ["InGameMenu", "PlayerHUD", "ChatBox", "Control", "DebuggerWindow"]
+var non_movable_windows = ["InGameMenu", "PlayerHUD", "ChatBox", "Control", "DebuggerWindow", "HotKeys"]
 onready var ui_nodes = {
 	'player_stats': get_node("PlayerStats"),
 	'inventory': get_node("Inventory"),
-	'chat_box': $Control/ChatBox,
+	'chat_box': $ChatBox,
 	'player_hud':  get_node("PlayerHUD"),
-	"key_binds": get_node("KeyBinds")
+	"key_binds": get_node("KeyBinds"),
+	'hot_keys': $HotKeys,
 }
 
 # Called when the node enters the scene tree for the first time.
