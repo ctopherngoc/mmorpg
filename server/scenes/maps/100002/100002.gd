@@ -25,13 +25,6 @@ var enemy_types = [green_guy, green_guy, blue_guy, blue_guy,
 					wildRooster, bullRooster, green_guy
 ]				
 
-#var enemy_types = [green_guy, green_guy, blue_guy, blue_guy,
-#					chick, chick, blue_guy, blue_guy,
-#					chick, chick, chick, blue_guy,
-#					blue_guy, chick, green_guy, green_guy,
-#					green_guy, chick, green_guy
-#]					
-
 var enemy_spawn_points = [Vector2(367, -93), Vector2(631, -93), Vector2(355, -433), Vector2(631, -433),
 							Vector2(407, -414), Vector2(564, -414), Vector2(856, -414), Vector2(987, -414),
 							Vector2(1109, -414), Vector2(1223, -414), Vector2(1392, -414), Vector2(1587, -414),
