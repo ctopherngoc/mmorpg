@@ -3,22 +3,23 @@
 [ext_resource path="res://scenes/monsterObjects/100006/100006.gd" type="Script" id=1]
 
 [sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 55, 78.75 )
+extents = Vector2( 17.1429, 77.5 )
 
 [sub_resource type="RectangleShape2D" id=3]
-extents = Vector2( 55, 78.75 )
+extents = Vector2( 56.25, 77.5 )
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 55, 78.75 )
+extents = Vector2( 56.25, 77.5 )
 
 [node name="100006" type="KinematicBody2D" groups=["enemy"]]
-scale = Vector2( 0.4, 0.4 )
+scale = Vector2( 0.7, 0.4 )
 collision_layer = 16
 collision_mask = 0
 script = ExtResource( 1 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 modulate = Color( 1, 0, 0, 1 )
+position = Vector2( -1.36239e-06, 0 )
 shape = SubResource( 2 )
 
 [node name="do_damage" type="Area2D" parent="."]
@@ -44,9 +45,9 @@ autostart = true
 wait_time = 0.5
 
 [node name="ColorRect" type="ColorRect" parent="."]
-margin_left = -55.0
+margin_left = -56.0
 margin_top = -80.0
-margin_right = 55.0
+margin_right = 56.0
 margin_bottom = 80.0
 color = Color( 0.839216, 0.776471, 0.368627, 1 )
 

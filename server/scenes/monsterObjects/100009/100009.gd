@@ -1,5 +1,5 @@
 extends KinematicBody2D
-var id = "100003"
+var id = "100009"
 var location = null
 var map_id = null
 var state = "idle"

@@ -18,7 +18,7 @@ var attackers = {}
 onready var hit_timer = $Timer2
 onready var target_node
 onready var target_position
-onready var sprite_scale = Vector2(0.4, 0.4)
+onready var sprite_scale = Vector2(0.7, 0.4)
 
 func _ready():
 	stats = ServerData.monsterTable[self.id].duplicate(true)
