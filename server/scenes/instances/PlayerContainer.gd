@@ -295,7 +295,7 @@ func get_movement_vector() -> Vector2:
 	if (!attacking && is_on_floor()) or (input[1] == 1 or input[3] == 1) and input[4] == 1:
 		moveVector.x = (input[3] - input[1])
 	else:
-		moveVector.x = 0	
+		moveVector.x = 0
 	# calculating y vector, allow jump off ropes
 	if is_climbing:
 		if (input[1] == 1 or input[3] == 1) and input[4] == 1:
@@ -342,13 +342,13 @@ func get_velocity(move_vector: Vector2, delta: float) -> void:
 		else:
 			#if moving
 			if (move_vector.y < 0 && is_on_floor()):
-					velocity.y = move_vector.y * vertical_speed
+				velocity.y = move_vector.y * vertical_speed
 			# press up on ladder initiates climbing
 			elif input[0] == 1:
-					is_climbing = true
-					Global.send_climb_data(int(self.name), 2)
-					velocity.y = 0
-					velocity.x = 0
+				is_climbing = true
+				Global.send_climb_data(int(self.name), 2)
+				velocity.y = 0
+				velocity.x = 0
 			# over lapping ladder pressing nothing allows gravity
 			else:
 				velocity.y += gravity * delta

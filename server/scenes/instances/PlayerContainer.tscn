@@ -175,7 +175,7 @@ shape = SubResource( 22 )
 [node name="DamageTimer" type="Timer" parent="Timers"]
 
 [node name="loot_timer" type="Timer" parent="Timers"]
-wait_time = 0.5
+wait_time = 0.2
 
 [node name="CDTimer" type="Timer" parent="Timers"]
 
