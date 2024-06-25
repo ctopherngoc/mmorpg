@@ -1,8 +1,8 @@
 extends KinematicBody2D
 
 ##########################################################
-var monster_id = "100005"
-var title = "crazy hen"
+var monster_id = "100009"
+var title = "wild rooster"
 var floating_text = preload("res://scenes/userInerface/FloatingText.tscn")
 var current_hp = null
 var miss_counter = null
@@ -11,7 +11,7 @@ onready var timer = $Timer
 onready var sprite = $Sprite
 onready var label = $Label
 ############################################################
-var sprite_scale = Vector2(0.4,0.4)
+var sprite_scale = Vector2(0.7,0.4)
 
 func _ready():
 	label.text = title
@@ -19,17 +19,17 @@ func _ready():
 	
 # new functions
 func move(new_position):
-	if self.scale.y != sprite_scale.y:
-		self.scale.y = sprite_scale.y
 	if despawn == 1:
 		var curr_position = self.get_position()
 		#turn right
 		if new_position.x > curr_position.x:
 			$Sprite.scale.x = sprite_scale.x * -1
+			#sprite.flip_h = true
 			animation_control('walk')
 		#turn left
 		elif new_position.x < curr_position.x:
 			$Sprite.scale.x = sprite_scale.x
+			#sprite.flip_h = false
 			animation_control('walk')
 		else:
 			animation_control('idle')
@@ -76,7 +76,7 @@ func move(new_position):
 
 func damage_taken(health, damage_array: Array) -> void:
 	if health > current_hp:
-		animation_control("ready")
+		animation_control("hit")
 	current_hp = health
 	var lines = 0
 	for damage in damage_array:
@@ -98,8 +98,6 @@ func on_death():
 	AudioControl.play_audio("deathSquish")
 	animation_control("die")
 	despawn = 0
-	get_node("do_damage/CollisionShape2D").set_deferred("disabled", true)
-	get_node("take_damage/CollisionShape2D").set_deferred("disabled", true)
 	label.visible = false
 	#sprite.visible = false
 	sprite.modulate = Color8(62,62,62)
@@ -110,8 +108,8 @@ func on_death():
 func animation_control(animation):
 	if animation == 'idle':
 		$AnimationPlayer.play("idle")
-	elif animation == "ready":
-		$AnimationPlayer.play("ready")
+#	elif animation == "ready":
+#		$AnimationPlayer.play("ready")
 	elif animation == "die":
 		$AnimationPlayer.play("die")
 	else:
@@ -120,3 +118,7 @@ func animation_control(animation):
 
 func _on_Timer_timeout():
 	self.queue_free()
+
+
+func _on_AnimationPlayer_animation_finished(anim_name):
+	pass # Replace with function body.

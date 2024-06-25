@@ -1,37 +1,42 @@
 extends KinematicBody2D
 
 ##########################################################
-var monster_id = "100007"
-var title = "Rooster"
+var monster_id = ""
+var title = ""
 var floating_text = preload("res://scenes/userInerface/FloatingText.tscn")
 var current_hp = null
 var miss_counter = null
+var max_hp
+#var state = null
+onready var sprite_scale = Vector2(1, 0.4)
 var despawn = 1
 onready var timer = $Timer
 onready var sprite = $Sprite
 onready var label = $Label
+onready var collision = $CollisionShape2D
+onready var dmg_text_height = 10
 ############################################################
-var sprite_scale = Vector2(0.4, 0.4)
 
 func _ready():
+	#monster_id = self.name
+	#title = GameData.monsterTable[monster_id].name.to_lower()
 	label.text = title
-	self.scale = sprite_scale
-	
-	
+	collision.scale = sprite_scale
+	#max_hp = GameData.monsterTable[monster_id].maxHP
+
 # new functions
 func move(new_position):
-	if self.scale.y != sprite_scale.y:
-		self.scale.y = sprite_scale.y
+#	if self.scale.y != sprite_scale.y:
+#		self.scale.y = sprite_scale.y
 	if despawn == 1:
-		
 		var curr_position = self.get_position()
 		#turn right
-		if new_position.x > curr_position.x:
-			$Sprite.scale.x = sprite_scale.x * -1
+		if new_position.x > curr_position.x and abs(new_position.x - curr_position.x) > 0.2: 
+			sprite.scale = Vector2(-.7,.4)
 			animation_control('walk')
 		#turn left
-		elif new_position.x < curr_position.x:
-			$Sprite.scale.x = sprite_scale.x
+		elif new_position.x < curr_position.x and abs(new_position.x - curr_position.x) > 0.2:
+			sprite.scale = Vector2(.7,.4)
 			animation_control('walk')
 		else:
 			animation_control('idle')
@@ -100,11 +105,9 @@ func on_death():
 	AudioControl.play_audio("deathSquish")
 	animation_control("die")
 	despawn = 0
-	get_node("do_damage/CollisionShape2D").set_deferred("disabled", true)
-	get_node("take_damage/CollisionShape2D").set_deferred("disabled", true)
 	label.visible = false
 	#sprite.visible = false
-	#sprite.modulate = Color8(62,62,62)
+	sprite.modulate = Color8(62,62,62)
 	timer.start()
 	print("%s died" % self.name)
 	yield(timer, "timeout")
@@ -112,8 +115,8 @@ func on_death():
 func animation_control(animation):
 	if animation == 'idle':
 		$AnimationPlayer.play("idle")
-	elif animation == "ready":
-		$AnimationPlayer.play("ready")
+#	elif animation == "ready":
+#		$AnimationPlayer.play("ready")
 	elif animation == "die":
 		$AnimationPlayer.play("die")
 	else:
@@ -122,3 +125,7 @@ func animation_control(animation):
 
 func _on_Timer_timeout():
 	self.queue_free()
+
+
+func _on_AnimationPlayer_animation_finished(anim_name):
+	pass # Replace with function body.

@@ -1,7 +1,7 @@
 [gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://scenes/monsterObjects/Label.tscn" type="PackedScene" id=1]
-[ext_resource path="res://assets/monsters/100003.png" type="Texture" id=2]
+[ext_resource path="res://assets/monsters/SpritesWithShadow/100003.png" type="Texture" id=2]
 [ext_resource path="res://scenes/monsterObjects/FantastyTemplate/MonsterTemplate.gd" type="Script" id=3]
 
 [sub_resource type="RectangleShape2D" id=2]
@@ -117,7 +117,6 @@ vframes = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 1.25, 10 )
-scale = Vector2( 1, 1 )
 shape = SubResource( 2 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

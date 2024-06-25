@@ -1,11 +1,11 @@
 [gd_scene load_steps=11 format=2]
 
-[ext_resource path="res://assets/monsters/100006.png" type="Texture" id=1]
+[ext_resource path="res://scenes/monsterObjects/normalMonsterScript.gd" type="Script" id=1]
 [ext_resource path="res://scenes/monsterObjects/Label.tscn" type="PackedScene" id=2]
-[ext_resource path="res://scenes/monsterObjects/100006/100006.gd" type="Script" id=3]
+[ext_resource path="res://assets/monsters/SpritesWithShadow/100006.png" type="Texture" id=3]
 
 [sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 55, 78.75 )
+extents = Vector2( 56.25, 77.5 )
 
 [sub_resource type="Animation" id=6]
 length = 0.001
@@ -23,7 +23,6 @@ tracks/0/keys = {
 }
 
 [sub_resource type="Animation" id=7]
-resource_name = "attack"
 step = 0.063
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
@@ -39,7 +38,6 @@ tracks/0/keys = {
 }
 
 [sub_resource type="Animation" id=8]
-resource_name = "die"
 step = 0.063
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
@@ -55,7 +53,6 @@ tracks/0/keys = {
 }
 
 [sub_resource type="Animation" id=10]
-resource_name = "hit"
 step = 0.063
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
@@ -71,7 +68,6 @@ tracks/0/keys = {
 }
 
 [sub_resource type="Animation" id=5]
-resource_name = "idle"
 step = 0.063
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
@@ -87,7 +83,7 @@ tracks/0/keys = {
 }
 
 [sub_resource type="Animation" id=9]
-resource_name = "ready"
+resource_name = "walk"
 loop = true
 step = 0.063
 tracks/0/type = "value"
@@ -104,21 +100,20 @@ tracks/0/keys = {
 }
 
 [node name="100006" type="KinematicBody2D"]
-scale = Vector2( 0.4, 0.4 )
 collision_layer = 0
 collision_mask = 16
-script = ExtResource( 3 )
+script = ExtResource( 1 )
 
 [node name="Sprite" type="Sprite" parent="."]
-scale = Vector2( -1, 1 )
-texture = ExtResource( 1 )
+scale = Vector2( -0.7, 0.4 )
+texture = ExtResource( 3 )
 hframes = 16
 vframes = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false
-position = Vector2( 2.50001, 13.75 )
-scale = Vector2( 0.999999, 0.999999 )
+position = Vector2( 2.5, 5 )
+scale = Vector2( 0.7, 0.4 )
 shape = SubResource( 2 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
@@ -127,21 +122,20 @@ anims/attack = SubResource( 7 )
 anims/die = SubResource( 8 )
 anims/hit = SubResource( 10 )
 anims/idle = SubResource( 5 )
-anims/ready = SubResource( 9 )
+anims/walk = SubResource( 9 )
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 1.5
 
 [node name="Label" parent="." instance=ExtResource( 2 )]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -37.5
-margin_top = 82.5
-margin_right = 49.5
-margin_bottom = 118.5
-text = "Crazy Hen"
+margin_left = -60.0
+margin_top = 30.0
+margin_right = 64.0
+margin_bottom = 66.0
+text = "Advanced Hen"
+__meta__ = {
+"_edit_lock_": true
+}
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

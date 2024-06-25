@@ -1,11 +1,11 @@
 [gd_scene load_steps=11 format=2]
 
-[ext_resource path="res://assets/monsters/100008.png" type="Texture" id=1]
+[ext_resource path="res://assets/monsters/SpritesWithShadow/100008.png" type="Texture" id=1]
 [ext_resource path="res://scenes/monsterObjects/Label.tscn" type="PackedScene" id=2]
-[ext_resource path="res://scenes/monsterObjects/100008/100008.gd" type="Script" id=3]
+[ext_resource path="res://scenes/monsterObjects/normalMonsterScript.gd" type="Script" id=3]
 
 [sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 62.5001, 82.5 )
+extents = Vector2( 56.0714, 81.25 )
 
 [sub_resource type="Animation" id=6]
 length = 0.001
@@ -23,7 +23,6 @@ tracks/0/keys = {
 }
 
 [sub_resource type="Animation" id=7]
-resource_name = "attack"
 step = 0.063
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
@@ -39,7 +38,6 @@ tracks/0/keys = {
 }
 
 [sub_resource type="Animation" id=8]
-resource_name = "die"
 step = 0.063
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
@@ -55,7 +53,6 @@ tracks/0/keys = {
 }
 
 [sub_resource type="Animation" id=10]
-resource_name = "hit"
 step = 0.063
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
@@ -71,7 +68,6 @@ tracks/0/keys = {
 }
 
 [sub_resource type="Animation" id=5]
-resource_name = "idle"
 step = 0.063
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
@@ -104,21 +100,20 @@ tracks/0/keys = {
 }
 
 [node name="100008" type="KinematicBody2D"]
-scale = Vector2( 0.4, 0.4 )
 collision_layer = 0
 collision_mask = 16
 script = ExtResource( 3 )
 
 [node name="Sprite" type="Sprite" parent="."]
-scale = Vector2( -1, 1 )
+scale = Vector2( -0.7, 0.4 )
 texture = ExtResource( 1 )
 hframes = 16
 vframes = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false
-position = Vector2( 10, 12.5 )
-scale = Vector2( 0.999999, 0.999999 )
+position = Vector2( 9.24999, 4.5 )
+scale = Vector2( 0.7, 0.4 )
 shape = SubResource( 2 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
@@ -133,10 +128,10 @@ anims/walk = SubResource( 9 )
 wait_time = 1.5
 
 [node name="Label" parent="." instance=ExtResource( 2 )]
-margin_left = -40.0
-margin_top = 90.0
-margin_right = 59.0
-margin_bottom = 126.0
+margin_left = -42.0
+margin_top = 28.0
+margin_right = 57.0
+margin_bottom = 64.0
 text = "Rooster"
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
