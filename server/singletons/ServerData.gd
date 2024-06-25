@@ -460,19 +460,14 @@ var static_data = {
 
 var portal_data = {
 	"100001": {
-		'P1': {'map': '100002',
-					'spawn': Vector2(110, -275)},
-	},
-	'100002': {
-		'P1': {'map': '100001',
-					'spawn': Vector2(837, -108)},
-		'P2': {'map': '100003',
-					'spawn': Vector2(103, -290)}
+		'P1': {'map': '100002', 'spawn': Vector2(103	, -260)}},
+	'100002': {'P1': {'map': '100001', 'spawn': Vector2(833, -100)},
+				'P2': {'map': '100003', 'spawn': Vector2(28, -280)}
 	},
 	'100003' : {
-		'P1': {'map': '100002',
-					'spawn': Vector2(904, -252)}
-	},
+		'P1': {'map': '100002','spawn': Vector2(1933, -280)},
+		'P2': {'map': '100004','spawn': Vector2(1933, -280)},
+		},
 }
 
 onready var buff_stats = {
