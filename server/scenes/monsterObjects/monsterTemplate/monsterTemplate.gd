@@ -18,7 +18,7 @@ var attackers = {}
 onready var hit_timer = $Timer2
 onready var target_node
 onready var target_position
-onready var sprite_scale = Vector2(0.4, 0.4)
+onready var sprite_scale = Vector2(0.7, 0.4)
 
 func _ready():
 	stats = ServerData.monsterTable[self.id].duplicate(true)
@@ -82,8 +82,14 @@ func _process(delta):
 		velocity = move_and_slide(velocity, Vector2.UP)
 
 func _on_Timer_timeout():
-	move_state = floor(rand_range(0,3))
-
+	var randi_move = floor(rand_range(0,3))
+	# next is idle
+	if not move_state in [0,3] and randi_move in [0,3]:
+		move_state = randi_move
+	# if idle
+	elif move_state in [0,3]:
+		move_state = randi_move
+		
 func touch_damage():
 	if $do_damage.get_overlapping_areas().size() > 0:
 		for player in $do_damage.get_overlapping_areas():
