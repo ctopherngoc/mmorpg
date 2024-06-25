@@ -9,12 +9,12 @@ onready var id: String
 onready var direction: int
 
 # projectile data
-var max_speed: int = 400
+var max_speed: int = 600
 onready var max_distance: int
 var target
 var target_hit
 
-onready var ready
+onready var ready = 1
 
 onready var hitbox = get_node("Hitbox")
 onready var rangebox = get_node("Range")
@@ -56,6 +56,7 @@ func _physics_process(delta: float) -> void:
 		
 func get_closest_target() -> void:
 	var enemy_array = rangebox.get_overlapping_areas()
+	print(enemy_array)
 	#print(enemy_array)
 	#print("enemy array: ", enemy_array)
 	if not enemy_array.empty():
