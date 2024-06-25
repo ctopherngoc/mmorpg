@@ -381,7 +381,7 @@ func server_reconciliation(server_input_data: Dictionary) -> void:
 				var clientx = stepify(input_queue[i]["P"].x, 1)
 				var clienty = stepify(input_queue[i]["P"].y, 1)
 				#print(serverx, servery, " ",clientx, clienty)
-				if abs(serverx - clientx) > 1 or abs(servery - clienty) > 5:
+				if abs(serverx - clientx) > 25 or abs(servery - clienty) > 25:
 					#print("recon")
 					#print("server: ", server_input_data["P"], " client: ",input_queue[i]["P"])
 					var recon_position = lerp(input_queue[i]["P"],server_input_data["P"], 0.5)
