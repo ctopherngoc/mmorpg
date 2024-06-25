@@ -46,6 +46,8 @@ onready var monster_preload = {
 	"100006" : preload("res://scenes/monsterObjects/100006/100006.tscn"),
 	"100007" : preload("res://scenes/monsterObjects/100007/100007.tscn"),
 	"100008" : preload("res://scenes/monsterObjects/100008/100008.tscn"),
+	"100009" : preload("res://scenes/monsterObjects/100009/100009.tscn"),
+	"100010" : preload("res://scenes/monsterObjects/100010/100010.tscn"),
 	
 	
 }
