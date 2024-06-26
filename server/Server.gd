@@ -9,7 +9,7 @@ extends Node
 var network = NetworkedMultiplayerENet.new()
 var port: int = 2733
 var max_players:int = 100
-var stats
+#var stats
 # example tokens added
 var expected_tokens = []
 onready var player_verification_process = get_node("PlayerVerification")
@@ -134,6 +134,9 @@ func create_characters():
 		#player_id, username, playerContainer, requester
 		var character_array = character_creation_queue[0]
 		character_creation_queue.remove(0)
+		"""
+		[player_id, char_dict, player_container, requester]
+		"""
 		
 		if character_array[1]["un"] in ServerData.characters_data.keys():
 			print("%s already taken." % character_array[1])
@@ -154,6 +157,10 @@ func create_characters():
 
 			var firebase_call3 = Firebase.update_document("users/%s" % character_array[2].db_info["id"], character_array[2].http, character_array[2].db_info["token"], character_array[2])
 			yield(firebase_call3, 'completed')
+			
+			Global.http_requests.append([character_array[1].equipment.top, character_array[2]])
+			Global.http_requests.append([character_array[1].equipment.bottom, character_array[2]])
+			Global.http_requests.append([character_array[1].equipment.rweapon, character_array[2]])
 			
 			character_array[2].characters_info_list.append(temp_player)
 
@@ -186,18 +193,35 @@ func _Server_New_Character(new_char: Dictionary):
 	var equips = temp_player["equipment"]
 	#print(new_char["o"])
 	if new_char["o"] == 0:
-		equips["top"] = ServerData.static_data.starter_equips[0][0]
-		equips["bottom"] = ServerData.static_data.starter_equips[0][1]
-	elif new_char["o"] == 1:
-		equips["top"] = ServerData.static_data.starter_equips[1][0]
-		equips["bottom"] = ServerData.static_data.starter_equips[1][1]
-	else:
-		equips["top"] = ServerData.static_data.starter_equips[2][0]
-		equips["bottom"] = ServerData.static_data.starter_equips[2][1]
+		var top = ServerData.equipmentTable[ServerData.static_data.starter_equips[0][0]].duplicate(true)
+		top["uniqueID"] = str(Global.generate_unique_id(ServerData.static_data.starter_equips[0][0]))
+		equips["top"] = top
 		
-	############################################################################
-	#temp add weapon
-	equips.rweapon = {"accuracy":0, "attack":15, "avoidability":0, "bossPercent":5, "critRate":0, "damagePercent":0, "defense":0, "dexterity":4, "id":"200001", "job":0, "jumpSpeed":0, "luck":5, "magic":0, "magicDefense":0, "maxHealth":0, "maxMana":0, "movementSpeed":0, "name":"Training Sword", "slot":7, "attackSpeed":5, "strength":5, "type":"1h_sword", "wisdom":5, "uniqueID": str(Global.rng.randi_range(1, 1000000000))}
+		var bottom = ServerData.equipmentTable[ServerData.static_data.starter_equips[0][1]].duplicate(true)
+		top["uniqueID"] = str(Global.generate_unique_id(ServerData.static_data.starter_equips[0][1]))
+		equips["bottom"] = bottom
+		
+	elif new_char["o"] == 1:
+		var top = ServerData.equipmentTable[ServerData.static_data.starter_equips[1][0]].duplicate(true)
+		top["uniqueID"] = str(Global.generate_unique_id(ServerData.static_data.starter_equips[1][0]))
+		equips["top"] = top
+		
+		var bottom = ServerData.equipmentTable[ServerData.static_data.starter_equips[1][1]].duplicate(true)
+		top["uniqueID"] = str(Global.generate_unique_id(ServerData.static_data.starter_equips[1][1]))
+		equips["bottom"] = bottom
+		
+	else:
+		var top = ServerData.equipmentTable[ServerData.static_data.starter_equips[2][0]].duplicate(true)
+		top["uniqueID"] = str(Global.generate_unique_id(ServerData.static_data.starter_equips[2][0]))
+		equips["top"] = top
+		
+		var bottom = ServerData.equipmentTable[ServerData.static_data.starter_equips[2][1]].duplicate(true)
+		top["uniqueID"] = str(Global.generate_unique_id(ServerData.static_data.starter_equips[2][1]))
+		equips["bottom"] = bottom
+	
+	var weapon = ServerData.equipmentTable["200000"].duplicate(true)
+	weapon["uniqueID"] = str(Global.generate_unique_id("200000"))
+	equips.rweapon = weapon
 	#############################################################################
 	
 	return temp_player
@@ -829,3 +853,102 @@ remote func increase_skill(skill_id: String, level: int) -> void:
 			print("after %s %s lvl %s" %[player_container.current_character.stats.base.ap, skill_id, player_container.current_character.skills[skill_class.location[0]][skill_class.location[1]]])
 			
 			update_player_stats(player_container)
+
+remote func send_equipment_request(equipment_slot, inventory_slot) -> void:
+	var player_id = get_tree().get_rpc_sender_id()
+	var player_container = _Server_Get_Player_Container(player_id)
+	
+	# get slot item type
+	var item = player_container.current_character.inventory.equipment[inventory_slot]
+	var equipment = player_container.current_character.equipment[equipment_slot]
+	
+	
+	if equipment_swap_check(player_container, equipment_slot, equipment, item):
+		var temp_equipment = equipment.duplicate(true)
+		player_container.current_character.equipment[equipment_slot] = item.duplicate(true)
+		player_container.current_character.inventory.equipment[inventory_slot] = temp_equipment.duplicate(true)	
+		rpc_id(player_id, "return_equipment_request", inventory_slot)
+		# switch equip slot with the inventory slot
+	update_player_stats(player_container)
+
+func remove_equipment_request(equipment_slot, inventory_slot) -> void:
+	var player_id = get_tree().get_rpc_sender_id()
+	var player_container = _Server_Get_Player_Container(player_id)
+	
+	var equipment = player_container.current_character.equipment[equipment_slot]
+	
+	if not player_container.current_character.inventory.equipment[inventory_slot]:
+		player_container.current_character.inventory.equipment[inventory_slot] = equipment
+		player_container.current_character.equipment[equipment_slot] = null
+	else:
+		print("inventory slot not null")
+	rpc_id(player_id, "return_remove_equipment", equipment_slot)
+
+func equipment_swap_check(player, equipment_slot, equipment, item) -> bool:
+	## JOB CHECK ###
+	if not ServerData.equipmentTable[item.id].job == null and not ServerData.equipmentTable[item.id].job == player.current_character.stats.base.job:
+		print("wrong job")
+		return false
+	## LEVEL CHECK ###
+	if not ServerData.equipmentTable[item.id].reqLevel <= player.current_character.stats.base.level:
+		print("wrong level")
+		return false
+	## STAT CHECK ###
+	print("equipment slot check stats")
+	if equipment:
+		if not ServerData.equipmentTable[item.id].reqStr <= player.current_character.stats.base.strength + player.current_character.stats.buff.strength + player.current_character.stats.equipment.strength - equipment.strength:
+			print("not enough str")
+			return false
+		if not ServerData.equipmentTable[item.id].reqWis <= player.current_character.stats.base.wisdom + player.current_character.stats.buff.wisdom + player.current_character.stats.equipment.wisdom - equipment.wisdom:
+			print("not enough wis")
+			return false
+		if not ServerData.equipmentTable[item.id].reqLuk <= player.current_character.stats.base.luck + player.current_character.stats.buff.luck + player.current_character.stats.equipment.luck - equipment.luck:
+			print("not enough luk")
+			return false
+		if not ServerData.equipmentTable[item.id].reqDex <= player.current_character.stats.base.dexterity + player.current_character.stats.buff.dexterity + player.current_character.stats.equipment.dexterity - equipment.dexterity:
+			print("not enough dex")
+			return false
+	## STAT CHECK ###
+	else:
+		print("equipment slot check no equipment")
+		if not ServerData.equipmentTable[item.id].reqStr <= player.current_character.stats.base.strength + player.current_character.stats.buff.strength + player.current_character.stats.equipment.strength:
+			print("not enough str")
+			return false
+		if not ServerData.equipmentTable[item.id].reqWis <= player.current_character.stats.base.wisdom + player.current_character.stats.buff.wisdom + player.current_character.stats.equipment.wisdom:
+			print("not enough wis")
+			return false
+		if not ServerData.equipmentTable[item.id].reqLuk <= player.current_character.stats.base.luck + player.current_character.stats.buff.luck + player.current_character.stats.equipment.luck:
+			print("not enough luk")
+			return false
+		if not ServerData.equipmentTable[item.id].reqDex <= player.current_character.stats.base.dexterity + player.current_character.stats.buff.dexterity + player.current_character.stats.equipment.dexterity:
+			print("not enough dex")
+			return false
+		
+	## TYPE CHECK ###
+	# if weapon right hand true
+	print("pass equipment stat check")
+	if ServerData.equipmentTable[item.id].type == "weapon":
+		print("checking weapon")
+		if equipment_slot == "rhand":
+			print("righthand")
+			return true
+		elif equipment_slot == "lhand":
+			print("lefthand")
+			if player.current_character.stats.base.job in []:
+				print("job in dual wield")
+				return true
+			else:
+				print("job not in dual wield")
+				return false
+		else:
+			print("weapon but not right hand or left hand")
+			return false
+	elif ServerData.equipmentTable[item.id].type == "shield" and equipment_slot == "lhand":
+		print("sheild and left hand")
+		return true
+	elif ServerData.equipmentTable[item.id].type == equipment.type:
+		print("equipment and slot same type")
+		return true
+	else:
+		print("incorrect slot")
+		return false
