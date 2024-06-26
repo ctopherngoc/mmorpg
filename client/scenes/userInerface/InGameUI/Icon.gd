@@ -97,7 +97,7 @@ func drop_data(_pos,data):
 	if data.has("slot"):
 		if item_data.id == null:
 			# send server request
-			Server.remove_equipment_request(data.slot)
+			Server.remove_equipment_request(data.slot, slot_index)
 			AudioControl.play_audio("itemSwap")
 			
 			# setup inentory with equip info
@@ -112,7 +112,7 @@ func drop_data(_pos,data):
 		# if swapping items
 		else:
 			# temp vars to hold each slots info
-			Server.send_equipment_request(slot_index)
+			Server.send_equipment_request(data.slot, slot_index)
 
 			AudioControl.play_audio("itemSwap")
 			data.origin_node.dragging = false
