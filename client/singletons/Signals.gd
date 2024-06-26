@@ -51,7 +51,10 @@ signal attack
 signal use_skill
 # warning-ignore:unused_signal
 signal take_damage
-
+# warning-ignore:unused_signal
+signal update_equipment
+# warning-ignore:unused_signal
+signal toggle_equipment
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
