@@ -35,6 +35,7 @@ onready var equipment_string  = {
 	"ring2": "ring",
 	"ring3": "ring",
 }
+
 onready var equipment_ref
 #onready var equipment_ref = GameData.test_player.equipment
 onready var item_path = "res://assets/itemSprites/equipItems/"
