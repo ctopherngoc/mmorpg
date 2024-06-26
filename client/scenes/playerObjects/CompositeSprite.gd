@@ -131,7 +131,8 @@ func update_avatar(data: String) -> void:
 					lglove.set_texture(sprite)
 					rglove.set_texture(sprite)
 				else:
-					sprite_dict[key].set_texture(sprite)
+					if not "ring" in key:
+						sprite_dict[key].set_texture(sprite)
 
 			else:
 				if key == "earring":
