@@ -5,6 +5,7 @@ var username_list = {}
 var player_state_collection = {}
 var user_characters = {}
 var characters_data = {}
+var equipment_data = []
 
 var monsterTable
 var itemTable
@@ -165,21 +166,21 @@ var static_data = {
 		}, # avatar
 		"equipment" : {"mapValue":
 			{"fields": 
-				{"ammo": {'integerValue': null},
-				"headgear": {'integerValue': null},
-				"faceacc": {'integerValue': null},
-				"eyeacc": {'integerValue': null},
-				"top": {'integerValue': null},
-				"bottom": {'integerValue': null},
-				"earring": {'integerValue': null},
-				"glove": {'integerValue': null},
-				"pocket": {'integerValue': null},
-				"lweapon": {'integerValue': null},
-				"rweapon": {'integerValue': null},
-				"tattoo": {'integerValue': null},
-				"ring1": {'integerValue': null},
-				"ring2": {'integerValue': null},
-				"ring3": {'integerValue': null},
+				{"ammo": {'nullValue': null},
+				"headgear": {'nullValue': null},
+				"faceacc": {'nullValue': null},
+				"eyeacc": {'nullValue': null},
+				"top": {'mapValue': null},
+				"bottom": {'mapValue': null},
+				"earring": {'nullValue': null},
+				"glove": {'nullValue': null},
+				"pocket": {'nullValue': null},
+				"lweapon": {'nullValue': null},
+				"rweapon": {'mapValue': null},
+				"tattoo": {'nullValue': null},
+				"ring1": {'nullValue': null},
+				"ring2": {'nullValue': null},
+				"ring3": {'nullValue': null},
 				}#fields
 			}#mapvalue
 		}, #equipment
@@ -286,22 +287,22 @@ var static_data = {
 			"ecolor": null,
 		},
 		"equipment" : {
-				"ammo": -1,
-				"headgear": -1,
-				"faceacc": -1,
-				"eyeacc": -1,
-				"earring":-1,
+				"ammo": null,
+				"headgear": null,
+				"faceacc": null,
+				"eyeacc": null,
+				"earring":null,
 				"top": null,
 				"bottom": null,
-				"glove": -1,
-				"lweapon": -1,
-				"rweapon": -1,
+				"glove": null,
+				"lweapon": null,
+				"rweapon": null,
 				#"rweapon": {"accuracy":0, "attack":15, "avoidability":0, "bossPercent":0, "critRate":0, "damagePercent":0, "defense":0, "dexterity":4, "id":"200001", "job":0, "jumpSpeed":0, "luck":5, "magic":0, "magicDefense":0, "maxHealth":0, "maxMana":0, "movementSpeed":0, "name":"Training Sword", "slot":7, "speed":5, "strength":5, "type":"1h_sword", "uniqueID":1000000, "wisdom":5},
-				"pocket": -1,
-				"tattoo": -1,
-				"ring1": -1,
-				"ring2": -1,
-				"ring3": -1
+				"pocket": null,
+				"tattoo": null,
+				"ring1": null,
+				"ring2": null,
+				"ring3": null,
 				}, #equipment
 		 "inventory":{"100000":0,
 			"equipment": [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
@@ -419,6 +420,7 @@ var static_data = {
 		'29': 59511,
 		'30': 65462,
 	},
+	
 	"fb_equipment_template" : {
 		"owner": {"stringValue": ""},
 		"id": {"stringValue": ""},
@@ -495,4 +497,22 @@ onready var buff_stats = {
 				
 onready var projectile_dict = {
 	"600000": {"object": preload("res://scenes/skillObjects/Projectile.tscn"), "distance": Vector2(44,25),}
+}
+
+onready var equipment_string  = {
+	"faceacc": "face",
+	"headgear": "head",
+	"earring": "earring",
+	"ammo": "ammo",
+	"top": "top",
+	"glove": "glove",
+	"lweapon": "lhand",
+	"bottom": "bottom",
+	"rweapon": "rhand",
+	"eyeacc": "eye",
+	"tattoo": "tattoo",
+	"pocket": "pocket",
+	"ring1":"ring",
+	"ring2": "ring",
+	"ring3": "ring",
 }
