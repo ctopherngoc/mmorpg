@@ -53,57 +53,113 @@ func get_drag_data(_pos):
 		return data
 
 func can_drop_data(_pos, data):
+	if data.has("slot"):
+		if tab == "equipment":
+			# slot empty
+			if item_data.id == null:
+				print("inventory slot is empty")
+				return true
+			else:
+				print(item_data)
+				print(data.item_data)
+				if GameData.equipmentTable[item_data.id].type == GameData.equipmentTable[data.item_data.id].type:
+					print("slot is occupied with same type")
+					if equipment_check(data):
+						print("slot can swap")
+						return true
+					else:
+						print("slot cant swap")
+						return false
+				else:
+					print("slot and equip not the same type")
+					return false
+		else:
+			print("equipment -> into non equip tab")
+			return false
+	else:	
 	# check if we can drop item into slow
 	# if slot is null -> move item
-	if item_data.id == null:
-		return true
-	else:
-		if data.tab == tab:
-			#data['origin_node'].get_node("ItemInfo").free()
+		if item_data.id == null:
 			return true
 		else:
-			#data['origin_node'].get_node("ItemInfo").free()
-			return false
+			if data.tab == tab:
+				#data['origin_node'].get_node("ItemInfo").free()
+				return true
+			else:
+				#data['origin_node'].get_node("ItemInfo").free()
+				return false
 
 func drop_data(_pos,data):
 	# temp vars to hold each slots info
 	var drag_icon = data.item_data
 	var drop_icon = item_data
 	
-	"""
-	tab: 0 = equip, 1 = use, 2 = etc
-	from: 0-31 (slot)
-	to: 0-31(slot)
-	"""
-	Server.send_inventory_movement(tab_dict[tab], data["from_slot"], slot_index)
-	AudioControl.play_audio("itemSwap")
-	data.origin_node.dragging = false
-	data.origin_node.item_info_free()
-	self.item_info_free()
-	
-	# update beginning slot with destination slot info
-	data.origin_node.icon.texture = icon.texture
-	data.origin_node.item_data = drop_icon
-	# update distination slot with beginning slot info
-	icon.texture = data["origin_texture"]
-	item_data = drag_icon
-	
-	# if both are equips end function
-	if tab == "equipment" and data["tab"] == "equipment":
-		return
-	
-	# update beginning slot if destination slot q is null or not 
-	if data.origin_node.item_data.q != null:
-		data.origin_node.label.text = str(data.origin_node.item_data.q)
+	if data.has("slot"):
+		if item_data.id == null:
+			# send server request
+			Server.remove_equipment_request(data.slot)
+			AudioControl.play_audio("itemSwap")
+			
+			# setup inentory with equip info
+			item_data.id = data.item_data.id
+			item_data.item = data.item_data
+			icon.texture = data.origin_texture
+			
+			# null out inventory slot
+			data.origin_node.texture = null
+			data.origin_node.item_data.id = null
+			data.origin_node.item_data.item = null
+		# if swapping items
+		else:
+			# temp vars to hold each slots info
+			Server.send_equipment_request(slot_index)
+
+			AudioControl.play_audio("itemSwap")
+			data.origin_node.dragging = false
+			data.origin_node.item_info_free()
+			self.item_info_free()
+		#	# update beginning slot with destination slot info
+			data.origin_node.icon.texture = icon.texture
+			data.origin_node.item_data = drop_icon
+			
+			# update distination slot with beginning slot info
+			icon.texture = data["origin_texture"]
+			item_data = drag_icon
 	else:
-		data.origin_node.label.text = ""
-	
-	# update destination slot if beginning slot q is null or not
-	if item_data.q != null:
-		label.text = str(item_data.q)
-	else:
-		label.text = ""
-		#slot has null
+		"""
+		tab: 0 = equip, 1 = use, 2 = etc
+		from: 0-31 (slot)
+		to: 0-31(slot)
+		"""
+		Server.send_inventory_movement(tab_dict[tab], data["from_slot"], slot_index)
+		AudioControl.play_audio("itemSwap")
+		data.origin_node.dragging = false
+		data.origin_node.item_info_free()
+		self.item_info_free()
+		
+		# update beginning slot with destination slot info
+		data.origin_node.icon.texture = icon.texture
+		data.origin_node.item_data = drop_icon
+		# update distination slot with beginning slot info
+		icon.texture = data["origin_texture"]
+		item_data = drag_icon
+		
+		# if both are equips end function
+		if tab == "equipment" and data["tab"] == "equipment":
+			return
+		
+		# update beginning slot if destination slot q is null or not 
+		if data.origin_node.item_data.q != null:
+			data.origin_node.label.text = str(data.origin_node.item_data.q)
+		else:
+			data.origin_node.label.text = ""
+		
+		# update destination slot if beginning slot q is null or not
+		if item_data.q != null:
+			label.text = str(item_data.q)
+		else:
+			label.text = ""
+			#slot has null
 	
 # create function that gets call from rpc return update slots/inv
 """
@@ -194,3 +250,45 @@ func item_info_free():
 	for node in self.get_children():
 		if "ItemInfo" in node.name:
 			node.queue_free()
+
+# checking of item in inventory slot matches the slot equipped is dragging from
+func equipment_check(data) -> bool:
+	## INVENTORY TYPE CHECK##
+	if not tab == "equipment":
+		return false
+	## JOB CHECK ###
+	if item_data.item.job == 0 or not item_data.item.job == Global.player.stats.base.job:
+		return false
+	## LEVEL CHECK ###
+	if not GameData.equipmentTable[item_data.item.id].reqLevel <= Global.player.stats.base.level:
+		return false
+	## STAT CHECK ###
+	if not GameData.equipmentTable[item_data.item.id].reqStr <= Global.player.stats.base.strength + Global.player.stats.buff.strength + Global.player.stats.equipment.strength - data.item_data.item.strength:
+		return false
+	if not GameData.equipmentTable[item_data.item.id].reqWis <= Global.player.stats.base.wisdom + Global.player.stats.buff.wisdom + Global.player.stats.equipment.wisdom - data.item_data.item.wisdom:
+		return false
+	if not GameData.equipmentTable[item_data.item.id].reqLuk <= Global.player.stats.base.luck + Global.player.stats.buff.luck + Global.player.stats.equipment.luck - data.item_data.item.luck:
+		return false
+	if not GameData.equipmentTable[item_data.item.id].reqDex <= Global.player.stats.base.dexterity + Global.player.stats.buff.dexterity + Global.player.stats.equipment.dexterity - data.item_data.item.dexterity:
+		return false
+	## TYPE CHECK ###
+	# if weapon right hand true
+###################################################################################
+#wop: inside inventory weapons checking if it can fit as shield, rweapon or lweapon without equipment slot typing
+	if GameData.equipmentTable[item_data.id].type == "weapon":
+		if data.slot == "rweapon":
+			return true
+		elif self.type == "lweapon":
+			if Global.player.stats.base.job in []:
+				return true
+			else:
+				return false
+		else:
+			return false
+	elif GameData.equipmentTable[data.item_data.id][type] == "shield" and data.slot == "lweapon":
+		return true
+	elif data.item_data.type == item_data.item.type:
+		return true
+	else:
+		return false
+		###################################################################################
