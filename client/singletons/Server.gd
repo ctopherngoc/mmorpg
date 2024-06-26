@@ -344,6 +344,14 @@ func send_inventory_movement(tab: int, from: int, to: int) -> void:
 	"""
 	rpc_id(1, "move_item", [tab, from, to])
 
+func send_equipment_request(inventory_slot) -> void:
+	print("send_equipment_request succcess")
+	#rpc_id(1, "equipment_request", inventory_slot)
+
+func remove_equipment_request(equipment_slot) -> void:
+	print("remove_equipment_request succcess")
+	#rpc_id(1, "remove_equipment_request", equipment_slot)
+
 remote func server_message(message: String):
 	print("received messge %s" % message)
 	
