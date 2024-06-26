@@ -1,0 +1,681 @@
+[gd_scene load_steps=13 format=2]
+
+[ext_resource path="res://scenes/userInerface/InGameUI/Equipment.gd" type="Script" id=1]
+[ext_resource path="res://resources/Fonts/Oswald/Oswald-VariableFont_wght.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://assets/UI/background/window_background2.png" type="Texture" id=3]
+[ext_resource path="res://scenes/userInerface/InGameUI/EquipmentSlot.tscn" type="PackedScene" id=4]
+
+[sub_resource type="Theme" id=3]
+
+[sub_resource type="DynamicFont" id=1]
+size = 24
+outline_size = 2
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 2 )
+
+[sub_resource type="StyleBoxFlat" id=4]
+bg_color = Color( 0.290196, 0.27451, 0.345098, 1 )
+border_width_top = 2
+border_color = Color( 0, 0, 0, 1 )
+
+[sub_resource type="StyleBoxFlat" id=5]
+content_margin_left = 27.0
+content_margin_right = 27.0
+bg_color = Color( 0.290196, 0.27451, 0.345098, 0.701961 )
+border_width_left = 1
+border_width_right = 1
+border_color = Color( 0, 0, 0, 1 )
+
+[sub_resource type="StyleBoxFlat" id=6]
+expand_margin_left = 25.0
+expand_margin_right = 25.0
+
+[sub_resource type="StyleBoxFlat" id=7]
+content_margin_left = 25.0
+content_margin_right = 26.0
+bg_color = Color( 0.290196, 0.27451, 0.345098, 1 )
+border_width_left = 1
+border_width_right = 1
+border_color = Color( 0, 0, 0, 1 )
+
+[sub_resource type="Theme" id=8]
+TabContainer/colors/font_color_bg = Color( 1, 1, 1, 1 )
+TabContainer/colors/font_color_fg = Color( 1, 1, 1, 1 )
+TabContainer/styles/panel = SubResource( 4 )
+TabContainer/styles/tab_bg = SubResource( 5 )
+TabContainer/styles/tab_disabled = SubResource( 6 )
+TabContainer/styles/tab_fg = SubResource( 7 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 18
+outline_size = 1
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 2 )
+
+[node name="Equipment" type="Control"]
+anchor_left = -0.0015625
+anchor_top = 0.00416667
+anchor_right = 0.2375
+anchor_bottom = 0.711111
+margin_left = 2.0
+margin_top = -3.0
+margin_right = 2.0
+margin_bottom = -3.0
+rect_scale = Vector2( 0.5, 0.5 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Background" type="NinePatchRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = SubResource( 3 )
+texture = ExtResource( 3 )
+region_rect = Rect2( 0, 0, 48, 48 )
+patch_margin_left = 16
+patch_margin_top = 16
+patch_margin_right = 16
+patch_margin_bottom = 16
+
+[node name="ColorRect" type="ColorRect" parent="Background"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 5.0
+margin_top = 5.0
+margin_right = -5.0
+margin_bottom = -5.0
+color = Color( 0, 0, 0, 1 )
+
+[node name="M" type="MarginContainer" parent="Background"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/margin_right = 19
+custom_constants/margin_top = 11
+custom_constants/margin_left = 19
+custom_constants/margin_bottom = 11
+
+[node name="V" type="VBoxContainer" parent="Background/M"]
+margin_left = 19.0
+margin_top = 11.0
+margin_right = 287.0
+margin_bottom = 497.0
+
+[node name="Header" type="HBoxContainer" parent="Background/M/V"]
+margin_right = 268.0
+margin_bottom = 25.0
+rect_min_size = Vector2( 240, 25 )
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="Control" type="Control" parent="Background/M/V/Header"]
+margin_right = 5.0
+margin_bottom = 25.0
+size_flags_horizontal = 3
+
+[node name="TitleBackground" type="TextureRect" parent="Background/M/V/Header"]
+margin_left = 9.0
+margin_right = 259.0
+margin_bottom = 25.0
+rect_min_size = Vector2( 250, 25 )
+expand = true
+
+[node name="Label" type="Label" parent="Background/M/V/Header/TitleBackground"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -1.0
+margin_top = -9.0
+margin_right = -1.0
+margin_bottom = 41.0
+custom_fonts/font = SubResource( 1 )
+text = "Equipment
+"
+align = 1
+valign = 1
+
+[node name="Exit" type="Control" parent="Background/M/V/Header"]
+margin_left = 263.0
+margin_right = 268.0
+margin_bottom = 25.0
+size_flags_horizontal = 3
+
+[node name="TextureButton" type="TextureButton" parent="Background/M/V/Header/Exit"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_min_size = Vector2( 25, 25 )
+expand = true
+
+[node name="TabContainer" type="TabContainer" parent="Background/M/V"]
+margin_top = 29.0
+margin_right = 268.0
+margin_bottom = 486.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = SubResource( 8 )
+custom_fonts/font = SubResource( 2 )
+
+[node name="Equip" type="Tabs" parent="Background/M/V/TabContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 30.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+scrolling_enabled = false
+
+[node name="MarginContainer" type="MarginContainer" parent="Background/M/V/TabContainer/Equip"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 5.0
+margin_top = 5.0
+margin_right = -5.0
+margin_bottom = -5.0
+rect_min_size = Vector2( 250, 420 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Background/M/V/TabContainer/Equip/MarginContainer"]
+margin_right = 258.0
+margin_bottom = 420.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer"]
+margin_right = 258.0
+margin_bottom = 80.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="C1" type="Control" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer"]
+margin_right = 13.0
+margin_bottom = 80.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Face" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource( 4 )]
+margin_left = 17.0
+margin_right = 77.0
+margin_bottom = 80.0
+
+[node name="TextureRect" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer/Face" index="0"]
+margin_top = 10.0
+margin_bottom = 70.0
+
+[node name="Label" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer/Face" index="1"]
+margin_top = 10.0
+margin_bottom = 70.0
+
+[node name="Icon" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer/Face" index="2"]
+margin_top = 10.0
+margin_bottom = 70.0
+
+[node name="C2" type="Control" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer"]
+margin_left = 81.0
+margin_right = 95.0
+margin_bottom = 80.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Head" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource( 4 )]
+margin_left = 99.0
+margin_right = 159.0
+margin_bottom = 80.0
+
+[node name="TextureRect" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer/Head" index="0"]
+margin_top = 10.0
+margin_bottom = 70.0
+
+[node name="Label" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer/Head" index="1"]
+margin_top = 10.0
+margin_bottom = 70.0
+
+[node name="Icon" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer/Head" index="2"]
+margin_top = 10.0
+margin_bottom = 70.0
+
+[node name="C3" type="Control" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer"]
+margin_left = 163.0
+margin_right = 176.0
+margin_bottom = 80.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Earring" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource( 4 )]
+margin_left = 180.0
+margin_right = 240.0
+margin_bottom = 80.0
+
+[node name="TextureRect" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer/Earring" index="0"]
+margin_top = 10.0
+margin_bottom = 70.0
+
+[node name="Label" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer/Earring" index="1"]
+margin_top = 10.0
+margin_bottom = 70.0
+
+[node name="Icon" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer/Earring" index="2"]
+margin_top = 10.0
+margin_bottom = 70.0
+
+[node name="C4" type="Control" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer"]
+margin_left = 244.0
+margin_right = 258.0
+margin_bottom = 80.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer"]
+margin_top = 84.0
+margin_right = 258.0
+margin_bottom = 165.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="C1" type="Control" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer2"]
+margin_right = 13.0
+margin_bottom = 81.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Ammo" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource( 4 )]
+margin_left = 17.0
+margin_right = 77.0
+margin_bottom = 81.0
+
+[node name="TextureRect" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer2/Ammo" index="0"]
+margin_top = 10.0
+margin_bottom = 70.0
+
+[node name="Label" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer2/Ammo" index="1"]
+margin_top = 10.0
+margin_bottom = 70.0
+
+[node name="Icon" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer2/Ammo" index="2"]
+margin_top = 10.0
+margin_bottom = 70.0
+
+[node name="C2" type="Control" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer2"]
+margin_left = 81.0
+margin_right = 95.0
+margin_bottom = 81.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Top" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource( 4 )]
+margin_left = 99.0
+margin_right = 159.0
+margin_bottom = 81.0
+
+[node name="TextureRect" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer2/Top" index="0"]
+margin_top = 10.0
+margin_bottom = 70.0
+
+[node name="Label" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer2/Top" index="1"]
+margin_top = 10.0
+margin_bottom = 70.0
+
+[node name="Icon" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer2/Top" index="2"]
+margin_top = 10.0
+margin_bottom = 70.0
+
+[node name="C3" type="Control" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer2"]
+margin_left = 163.0
+margin_right = 176.0
+margin_bottom = 81.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Glove" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource( 4 )]
+margin_left = 180.0
+margin_right = 240.0
+margin_bottom = 81.0
+
+[node name="TextureRect" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer2/Glove" index="0"]
+margin_top = 10.0
+margin_bottom = 70.0
+
+[node name="Label" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer2/Glove" index="1"]
+margin_top = 10.0
+margin_bottom = 70.0
+
+[node name="Icon" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer2/Glove" index="2"]
+margin_top = 10.0
+margin_bottom = 70.0
+
+[node name="C4" type="Control" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer2"]
+margin_left = 244.0
+margin_right = 258.0
+margin_bottom = 81.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer"]
+margin_top = 169.0
+margin_right = 258.0
+margin_bottom = 250.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="C1" type="Control" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer3"]
+margin_right = 13.0
+margin_bottom = 81.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Lhand" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer3" instance=ExtResource( 4 )]
+margin_left = 17.0
+margin_right = 77.0
+margin_bottom = 81.0
+
+[node name="TextureRect" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer3/Lhand" index="0"]
+margin_top = 10.0
+margin_bottom = 70.0
+
+[node name="Label" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer3/Lhand" index="1"]
+margin_top = 10.0
+margin_bottom = 70.0
+
+[node name="Icon" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer3/Lhand" index="2"]
+margin_top = 10.0
+margin_bottom = 70.0
+
+[node name="C2" type="Control" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer3"]
+margin_left = 81.0
+margin_right = 95.0
+margin_bottom = 81.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Bottom" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer3" instance=ExtResource( 4 )]
+margin_left = 99.0
+margin_right = 159.0
+margin_bottom = 81.0
+
+[node name="TextureRect" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer3/Bottom" index="0"]
+margin_top = 10.0
+margin_bottom = 70.0
+
+[node name="Label" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer3/Bottom" index="1"]
+margin_top = 10.0
+margin_bottom = 70.0
+
+[node name="Icon" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer3/Bottom" index="2"]
+margin_top = 10.0
+margin_bottom = 70.0
+
+[node name="C3" type="Control" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer3"]
+margin_left = 163.0
+margin_right = 176.0
+margin_bottom = 81.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Rhand" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer3" instance=ExtResource( 4 )]
+margin_left = 180.0
+margin_right = 240.0
+margin_bottom = 81.0
+
+[node name="TextureRect" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer3/Rhand" index="0"]
+margin_top = 10.0
+margin_bottom = 70.0
+
+[node name="Label" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer3/Rhand" index="1"]
+margin_top = 10.0
+margin_bottom = 70.0
+
+[node name="Icon" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer3/Rhand" index="2"]
+margin_top = 10.0
+margin_bottom = 70.0
+
+[node name="C4" type="Control" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer3"]
+margin_left = 244.0
+margin_right = 258.0
+margin_bottom = 81.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer"]
+margin_top = 254.0
+margin_right = 258.0
+margin_bottom = 335.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="C1" type="Control" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer4"]
+margin_right = 13.0
+margin_bottom = 81.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Eye" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer4" instance=ExtResource( 4 )]
+margin_left = 17.0
+margin_right = 77.0
+margin_bottom = 81.0
+
+[node name="TextureRect" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer4/Eye" index="0"]
+margin_top = 10.0
+margin_bottom = 70.0
+
+[node name="Label" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer4/Eye" index="1"]
+margin_top = 10.0
+margin_bottom = 70.0
+
+[node name="Icon" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer4/Eye" index="2"]
+margin_top = 10.0
+margin_bottom = 70.0
+
+[node name="C2" type="Control" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer4"]
+margin_left = 81.0
+margin_right = 95.0
+margin_bottom = 81.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Tattoo" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer4" instance=ExtResource( 4 )]
+margin_left = 99.0
+margin_right = 159.0
+margin_bottom = 81.0
+
+[node name="TextureRect" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer4/Tattoo" index="0"]
+margin_top = 10.0
+margin_bottom = 70.0
+
+[node name="Label" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer4/Tattoo" index="1"]
+margin_top = 10.0
+margin_bottom = 70.0
+
+[node name="Icon" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer4/Tattoo" index="2"]
+margin_top = 10.0
+margin_bottom = 70.0
+
+[node name="C3" type="Control" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer4"]
+margin_left = 163.0
+margin_right = 176.0
+margin_bottom = 81.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Pocket" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer4" instance=ExtResource( 4 )]
+margin_left = 180.0
+margin_right = 240.0
+margin_bottom = 81.0
+
+[node name="TextureRect" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer4/Pocket" index="0"]
+margin_top = 10.0
+margin_bottom = 70.0
+
+[node name="Label" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer4/Pocket" index="1"]
+margin_top = 10.0
+margin_bottom = 70.0
+
+[node name="Icon" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer4/Pocket" index="2"]
+margin_top = 10.0
+margin_bottom = 70.0
+
+[node name="C4" type="Control" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer4"]
+margin_left = 244.0
+margin_right = 258.0
+margin_bottom = 81.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer"]
+margin_top = 339.0
+margin_right = 258.0
+margin_bottom = 420.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="C1" type="Control" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer5"]
+margin_right = 13.0
+margin_bottom = 81.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Ring1" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer5" instance=ExtResource( 4 )]
+margin_left = 17.0
+margin_right = 77.0
+margin_bottom = 81.0
+
+[node name="TextureRect" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer5/Ring1" index="0"]
+margin_top = 10.0
+margin_bottom = 70.0
+
+[node name="Label" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer5/Ring1" index="1"]
+margin_top = 10.0
+margin_bottom = 70.0
+
+[node name="Icon" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer5/Ring1" index="2"]
+margin_top = 10.0
+margin_bottom = 70.0
+
+[node name="C2" type="Control" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer5"]
+margin_left = 81.0
+margin_right = 95.0
+margin_bottom = 81.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Ring2" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer5" instance=ExtResource( 4 )]
+margin_left = 99.0
+margin_right = 159.0
+margin_bottom = 81.0
+
+[node name="TextureRect" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer5/Ring2" index="0"]
+margin_top = 10.0
+margin_bottom = 70.0
+
+[node name="Label" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer5/Ring2" index="1"]
+margin_top = 10.0
+margin_bottom = 70.0
+
+[node name="Icon" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer5/Ring2" index="2"]
+margin_top = 10.0
+margin_bottom = 70.0
+
+[node name="C3" type="Control" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer5"]
+margin_left = 163.0
+margin_right = 176.0
+margin_bottom = 81.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Ring3" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer5" instance=ExtResource( 4 )]
+margin_left = 180.0
+margin_right = 240.0
+margin_bottom = 81.0
+
+[node name="TextureRect" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer5/Ring3" index="0"]
+margin_top = 10.0
+margin_bottom = 70.0
+
+[node name="Label" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer5/Ring3" index="1"]
+margin_top = 10.0
+margin_bottom = 70.0
+
+[node name="Icon" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer5/Ring3" index="2"]
+margin_top = 10.0
+margin_bottom = 70.0
+
+[node name="C4" type="Control" parent="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer5"]
+margin_left = 244.0
+margin_right = 258.0
+margin_bottom = 81.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Cash" type="Tabs" parent="Background/M/V/TabContainer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+scrolling_enabled = false
+
+[node name="GridContainer" type="GridContainer" parent="Background/M/V/TabContainer/Cash"]
+margin_right = 262.0
+margin_bottom = 422.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/vseparation = 4
+custom_constants/hseparation = 4
+columns = 4
+
+[node name="Pet" type="Tabs" parent="Background/M/V/TabContainer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+scrolling_enabled = false
+
+[node name="GridContainer" type="GridContainer" parent="Background/M/V/TabContainer/Pet"]
+margin_right = 262.0
+margin_bottom = 422.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/vseparation = 4
+custom_constants/hseparation = 4
+columns = 4
+
+[node name="ColorRect" type="ColorRect" parent="Background/M/V"]
+visible = false
+margin_top = 466.0
+margin_right = 258.0
+margin_bottom = 486.0
+rect_min_size = Vector2( 0, 20 )
+color = Color( 0.290196, 0.27451, 0.345098, 1 )
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Background/M/V/ColorRect"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Foreground" type="NinePatchRect" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[connection signal="gui_input" from="Background/M/V/Header" to="." method="_on_Header_gui_input"]
+[connection signal="tab_selected" from="Background/M/V/TabContainer" to="." method="_on_TabContainer_tab_selected"]
+
+[editable path="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer/Face"]
+[editable path="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer/Head"]
+[editable path="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer/Earring"]
+[editable path="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer2/Ammo"]
+[editable path="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer2/Top"]
+[editable path="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer2/Glove"]
+[editable path="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer3/Lhand"]
+[editable path="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer3/Bottom"]
+[editable path="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer3/Rhand"]
+[editable path="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer4/Eye"]
+[editable path="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer4/Tattoo"]
+[editable path="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer4/Pocket"]
+[editable path="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer5/Ring1"]
+[editable path="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer5/Ring2"]
+[editable path="Background/M/V/TabContainer/Equip/MarginContainer/VBoxContainer/HBoxContainer5/Ring3"]
