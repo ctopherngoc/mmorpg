@@ -254,6 +254,8 @@ func get_data(username: String, password: String):
 		yield(accounts_call, 'completed')
 		var characters_call = _server_get_document("characters/", httprequest)
 		yield(characters_call, 'completed')
+		var items_call = _server_get_document("items/", httprequest)
+		yield(items_call, 'completed')
 		Global.fb_loaded = true
 		
 func _server_get_document(path: String, http: HTTPRequest)-> void:
@@ -280,6 +282,13 @@ func _server_get_document(path: String, http: HTTPRequest)-> void:
 			for document in document_list:
 				var character = document["name"].replace("projects/godotproject-ef224/databases/(default)/documents/characters/", "")
 				ServerData.characters_data[character] = server_firebase_dictionary_converter(document["fields"])
+				
+	elif "items" in path:
+		if "documents" in result_body.keys():
+			var document_list = result_body["documents"]
+			for document in document_list:
+				var item = document["name"].replace("projects/godotproject-ef224/databases/(default)/documents/items/", "")
+				ServerData.equipment_data.append(str(item))
 
 func server_firebase_dictionary_converter(database_data: Dictionary) -> Dictionary:
 	"""
@@ -334,7 +343,19 @@ func server_firebase_dictionary_converter(database_data: Dictionary) -> Dictiona
 	#for equip in equip key list
 	for key in keys:
 		if 'integerValue' in shortcut[key].keys():
-			temp_dict['equipment'][key] = int(shortcut[key]['integerValue'])
+			var equipment_id = int(shortcut[key]['integerValue'])
+			var item_dict = ServerData.equipmentTable[str(equipment_id)]
+			
+			item_dict["uniqueID"] = str(Global.generate_unique_id(equipment_id))
+			temp_dict['equipment'][key] = item_dict.duplicate(true)
+			
+			#var path = "items/%s" % (str(equipment_id) + str(item_dict.uniqueID)) 
+#			var firebase = Firebase.update_document(path, httprequest, server_token, item_dict)
+#			yield(firebase, 'completed')
+
+			#temp_dict['equipment'][key] = int(shortcut[key]['integerValue'])
+		elif 'nullValue' in shortcut[key].keys():
+			temp_dict['equipment'][key] = null
 		else:
 			temp_dict['equipment'][key] = {}
 			var shortcut2 = shortcut[key]["mapValue"]["fields"]
@@ -342,13 +363,15 @@ func server_firebase_dictionary_converter(database_data: Dictionary) -> Dictiona
 			for key2 in keys2:
 				if 'integerValue' in shortcut2[key2]:
 					temp_dict['equipment'][key][key2] = int(shortcut2[key2]['integerValue'])
-				else:
+				elif 'stringValue' in shortcut2[key2]:
 					temp_dict['equipment'][key][key2] = str(shortcut2[key2]['stringValue'])
+				elif 'nullValue' in shortcut2[key2]:
+					temp_dict['equipment'][key][key2] = null
 	#################################################################
 	# remove this after finishing equipment update
 	for equip in ["ring1", "ring2", "ring3"]:
 		if not temp_dict['equipment'].has(equip):
-			temp_dict['equipment'][equip] = -1
+			temp_dict['equipment'][equip] = null
 	####################################################################
 	
 	#inventory
@@ -424,7 +447,7 @@ func server_firebase_dictionary_converter(database_data: Dictionary) -> Dictiona
 		temp_dict['keybind'] = ServerData.static_data.default_keybind.duplicate(true)
 	
 	temp_dict.stats["buff"] = ServerData.buff_stats.duplicate(true)
-
+	#print(temp_dict)
 	return temp_dict
 
 func server_dictionary_converter(server_data: Dictionary, firebase_data: Dictionary) -> void:
@@ -489,8 +512,10 @@ func server_dictionary_converter(server_data: Dictionary, firebase_data: Diction
 			for key2 in keys2:
 				if typeof(shortcut2[key2]) == TYPE_STRING:
 					temp_dict[key2] = {'stringValue' : shortcut2[key2]}
-				else:
+				elif typeof(shortcut2[key2]) == TYPE_INT:
 					temp_dict[key2] = {'integerValue': shortcut2[key2]}
+				elif typeof(shortcut2[key2]) == TYPE_NIL:
+					temp_dict[key2] = {'nullValue': null}
 			fb_shortcut[key] = {'mapValue':{'fields': temp_dict}}
 #####################################################################################################
 	#inventory
@@ -561,12 +586,15 @@ func save(var path : String, var thing_to_save: Dictionary):
 	file.close()
 
 func item_data_converter(before: Dictionary, after: Dictionary) -> Dictionary:
+	var skip_list = ["reqStr", "reqDex", "reqLuk", "reqWis", "weaponType"]
 	for stat in before.keys():
-		if not "req" in stat:
+		if not stat in skip_list:
 			if typeof(before[stat]) == TYPE_STRING:
 				after[stat]["stringValue"] = before[stat]
-			else:
+			elif typeof(before[stat]) == TYPE_INT:
 				after[stat]["integerValue"] = before[stat]
+			elif typeof(before[stat]) == TYPE_NIL:
+				after[stat]["nullValue"] = null
 	return{'mapValue':{'fields': after}}
 
 func test_update_document(path: String, data_dict: Dictionary) -> void:
