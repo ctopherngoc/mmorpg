@@ -25,7 +25,7 @@ func _ready():
 			window.connect('move_to_top', self, 'move_window_to_top')
 
 func move_window_to_top(node):
-	move_child(node, get_child_count() - 3)
+	move_child(node, get_child_count() - 5)
 
 """
 data["origin_node"] = self
@@ -77,5 +77,7 @@ func drop_data(_pos, data):
 # warning-ignore:unused_argument
 func can_drop_data(_pos, data):
 	#print("in can drop data")
+	if data.has("slot"):
+		return false
 	return true
 
