@@ -49,7 +49,7 @@
       "dropList": [
         100000,
         300003,
-        200004,
+        200008,
         500002,
         100003
       ],
@@ -71,7 +71,7 @@
       "dropList": [
         100000,
         300003,
-        200004,
+        200008,
         500003,
         100004
       ],
@@ -94,7 +94,7 @@
         100000,
         300003,
         200003,
-        200004,
+        200008,
         100005
       ],
       "level": 5,
@@ -116,7 +116,7 @@
         100000,
         300003,
         200003,
-        200004,
+        200008,
         100006
       ],
       "level": 5,
@@ -138,7 +138,7 @@
         100000,
         300003,
         200000,
-        200004,
+        200008,
         100006
       ],
       "level": 6,
@@ -161,7 +161,7 @@
         300003,
         200001,
         200003,
-        200004,
+        200008,
         100008
       ],
       "level": 7,
@@ -184,7 +184,7 @@
         300003,
         200001,
         200003,
-        200004,
+        200008,
         100009
       ],
       "level": 7,
@@ -207,7 +207,7 @@
         300003,
         200001,
         200003,
-        200004,
+        200008,
         100010
       ],
       "level": 8,
@@ -361,7 +361,8 @@
       "droppable": 1,
       "description": null,
       "useType": null,
-      "useAmount": null
+      "useAmount": null,
+      "equipmentType": null
     },
     "100003": {
       "itemName": "Chick Feather",
@@ -371,7 +372,8 @@
       "droppable": 1,
       "description": "Feather from a baby chick",
       "useType": null,
-      "useAmount": null
+      "useAmount": null,
+      "equipmentType": null
     },
     "100004": {
       "itemName": "Chicken Feather",
@@ -381,7 +383,8 @@
       "droppable": 1,
       "description": "Feather from a chicken",
       "useType": null,
-      "useAmount": null
+      "useAmount": null,
+      "equipmentType": null
     },
     "100005": {
       "itemName": "Hen Feather",
@@ -391,7 +394,8 @@
       "droppable": 1,
       "description": "Feather from a hen",
       "useType": null,
-      "useAmount": null
+      "useAmount": null,
+      "equipmentType": null
     },
     "100006": {
       "itemName": "Advance Hen Feather",
@@ -401,7 +405,8 @@
       "droppable": 1,
       "description": "Feather from an advance hen",
       "useType": null,
-      "useAmount": null
+      "useAmount": null,
+      "equipmentType": null
     },
     "100007": {
       "itemName": "Crazy Hen Feather",
@@ -411,7 +416,8 @@
       "droppable": 1,
       "description": "Feather from an advance hen",
       "useType": null,
-      "useAmount": null
+      "useAmount": null,
+      "equipmentType": null
     },
     "100008": {
       "itemName": "Rooster Feather",
@@ -421,7 +427,8 @@
       "droppable": 1,
       "description": "Feather from a rooster",
       "useType": null,
-      "useAmount": null
+      "useAmount": null,
+      "equipmentType": null
     },
     "100009": {
       "itemName": "Wild Rooster Feather",
@@ -431,7 +438,8 @@
       "droppable": 1,
       "description": "Feather from a wild rooster",
       "useType": null,
-      "useAmount": null
+      "useAmount": null,
+      "equipmentType": null
     },
     "100010": {
       "itemName": "Bully Rooster Feather",
@@ -441,7 +449,8 @@
       "droppable": 1,
       "description": "Feather from a bull rooster",
       "useType": null,
-      "useAmount": null
+      "useAmount": null,
+      "equipmentType": null
     },
     "200000": {
       "itemName": "Training Sword",
@@ -451,7 +460,8 @@
       "droppable": 1,
       "description": "sword used for training",
       "useType": null,
-      "useAmount": null
+      "useAmount": null,
+      "equipmentType": null
     },
     "200001": {
       "itemName": "Training Dagger",
@@ -461,7 +471,8 @@
       "droppable": 1,
       "description": "dagger used for training",
       "useType": null,
-      "useAmount": null
+      "useAmount": null,
+      "equipmentType": null
     },
     "200003": {
       "itemName": "Acorn Armor",
@@ -471,9 +482,54 @@
       "droppable": 1,
       "description": "armor made out of acorns",
       "useType": null,
-      "useAmount": null
+      "useAmount": null,
+      "equipmentType": null
     },
     "200004": {
+      "itemName": "Training Pistol",
+      "itemType": "equipment",
+      "dropRate": 5,
+      "stackable": 0,
+      "droppable": 1,
+      "description": "pistol for training",
+      "useType": null,
+      "useAmount": null,
+      "equipmentType": "weapon"
+    },
+    "200005": {
+      "itemName": "Large Sword",
+      "itemType": "equipment",
+      "dropRate": 5,
+      "stackable": 0,
+      "droppable": 1,
+      "description": "heavy large sword for slashing",
+      "useType": null,
+      "useAmount": null,
+      "equipmentType": "weapon"
+    },
+    "200006": {
+      "itemName": "Large Axe",
+      "itemType": "equipment",
+      "dropRate": 5,
+      "stackable": 0,
+      "droppable": 1,
+      "description": "heavy large axe for chopping",
+      "useType": null,
+      "useAmount": null,
+      "equipmentType": "weapon"
+    },
+    "200007": {
+      "itemName": "Large Hammer",
+      "itemType": "equipment",
+      "dropRate": 5,
+      "stackable": 0,
+      "droppable": 1,
+      "description": "heavy large hammer for smashing",
+      "useType": null,
+      "useAmount": null,
+      "equipmentType": "weapon"
+    },
+    "200008": {
       "itemName": "Stone Arrow",
       "itemType": "use",
       "dropRate": 30,
@@ -481,7 +537,8 @@
       "droppable": 1,
       "description": "arrows for bow with heads made of stone",
       "useType": null,
-      "useAmount": null
+      "useAmount": null,
+      "equipmentType": null
     },
     "300000": {
       "itemName": "Health Potion",
@@ -491,7 +548,8 @@
       "droppable": 1,
       "description": "consuming potion heals 20 heath",
       "useType": "health",
-      "useAmount": 20
+      "useAmount": 20,
+      "equipmentType": null
     },
     "300001": {
       "itemName": "Red Apple",
@@ -501,7 +559,8 @@
       "droppable": 1,
       "description": "consuming apple heals 10 health",
       "useType": "health",
-      "useAmount": 10
+      "useAmount": 10,
+      "equipmentType": null
     },
     "300002": {
       "itemName": "Cheese",
@@ -511,7 +570,8 @@
       "droppable": 1,
       "description": "consuming cheese recovers 10 mana",
       "useType": "mana",
-      "useAmount": 10
+      "useAmount": 10,
+      "equipmentType": null
     },
     "300003": {
       "itemName": "Meat",
@@ -521,7 +581,8 @@
       "droppable": 1,
       "description": "consuming meat recovers 20 mana",
       "useType": "mana",
-      "useAmount": 20
+      "useAmount": 20,
+      "equipmentType": null
     },
     "500000": {
       "itemName": "Cloth Shirt",
@@ -531,7 +592,8 @@
       "droppable": 1,
       "description": "shirt made of cloth",
       "useType": null,
-      "useAmount": null
+      "useAmount": null,
+      "equipmentType": "top"
     },
     "500001": {
       "itemName": "Cloth Bottom",
@@ -541,7 +603,8 @@
       "droppable": 1,
       "description": "pants made of cloth",
       "useType": null,
-      "useAmount": null
+      "useAmount": null,
+      "equipmentType": "bottom"
     },
     "500002": {
       "itemName": "Leather Shirt",
@@ -551,7 +614,8 @@
       "droppable": 1,
       "description": "shirt made of leather",
       "useType": null,
-      "useAmount": null
+      "useAmount": null,
+      "equipmentType": "top"
     },
     "500003": {
       "itemName": "Leather Bottom",
@@ -561,7 +625,8 @@
       "droppable": 1,
       "description": "pants made of leather",
       "useType": null,
-      "useAmount": null
+      "useAmount": null,
+      "equipmentType": "bottom"
     },
     "500004": {
       "itemName": "Woodcutter Shirt",
@@ -571,7 +636,8 @@
       "droppable": 1,
       "description": "shirt woodcutters wear",
       "useType": null,
-      "useAmount": null
+      "useAmount": null,
+      "equipmentType": "top"
     },
     "500005": {
       "itemName": "Woodcuttern Bottom",
@@ -581,13 +647,15 @@
       "droppable": 1,
       "description": "pants wood cutters wear",
       "useType": null,
-      "useAmount": null
+      "useAmount": null,
+      "equipmentType": "bottom"
     }
   },
   "EquipmentTable": {
     "200000": {
       "name": "Training Sword",
-      "type": "1h_sword",
+      "type": "weapon",
+      "weaponType": "1h_sword",
       "slot": 7,
       "accuracy": 15,
       "attack": 15,
@@ -616,14 +684,15 @@
     },
     "200001": {
       "name": "Training Dagger",
-      "type": "dagger",
+      "type": "weapon",
+      "weaponType": "dagger",
       "slot": 7,
       "accuracy": 10,
       "attack": 10,
       "bossPercent": null,
       "critRate": null,
       "damagePercent": null,
-      "attackSpeed": 5,
+      "attackSpeed": 6,
       "avoidability": null,
       "defense": null,
       "dexterity": null,
@@ -646,6 +715,7 @@
     "200003": {
       "name": "Acorn Armor",
       "type": "top",
+      "weaponType": null,
       "slot": 7,
       "accuracy": 20,
       "attack": null,
@@ -672,9 +742,130 @@
       "reqDex": 0,
       "reqLuk": 0
     },
+    "200004": {
+      "name": "Training Pistol",
+      "type": "pistol",
+      "weaponType": "pistol",
+      "slot": 7,
+      "accuracy": null,
+      "attack": 12,
+      "bossPercent": null,
+      "critRate": null,
+      "damagePercent": null,
+      "attackSpeed": 6,
+      "avoidability": null,
+      "defense": null,
+      "dexterity": null,
+      "jumpSpeed": null,
+      "luck": null,
+      "magic": null,
+      "magicDefense": null,
+      "maxHealth": null,
+      "maxMana": null,
+      "movementSpeed": null,
+      "strength": null,
+      "wisdom": null,
+      "job": null,
+      "reqLevel": 0,
+      "reqStr": 0,
+      "reqWis": 0,
+      "reqDex": 0,
+      "reqLuk": 0
+    },
+    "200005": {
+      "name": "Large Sword",
+      "type": "weapon",
+      "weaponType": "2h_sword",
+      "slot": 7,
+      "accuracy": null,
+      "attack": 25,
+      "bossPercent": null,
+      "critRate": null,
+      "damagePercent": null,
+      "attackSpeed": 3,
+      "avoidability": null,
+      "defense": null,
+      "dexterity": null,
+      "jumpSpeed": null,
+      "luck": null,
+      "magic": null,
+      "magicDefense": null,
+      "maxHealth": null,
+      "maxMana": null,
+      "movementSpeed": null,
+      "strength": null,
+      "wisdom": null,
+      "job": null,
+      "reqLevel": 0,
+      "reqStr": 0,
+      "reqWis": 0,
+      "reqDex": 0,
+      "reqLuk": 0
+    },
+    "200006": {
+      "name": "Large Axe",
+      "type": "weapon",
+      "weaponType": "2h_axe",
+      "slot": 7,
+      "accuracy": null,
+      "attack": 30,
+      "bossPercent": null,
+      "critRate": null,
+      "damagePercent": null,
+      "attackSpeed": 2,
+      "avoidability": null,
+      "defense": null,
+      "dexterity": null,
+      "jumpSpeed": null,
+      "luck": null,
+      "magic": null,
+      "magicDefense": null,
+      "maxHealth": null,
+      "maxMana": null,
+      "movementSpeed": null,
+      "strength": null,
+      "wisdom": null,
+      "job": null,
+      "reqLevel": 0,
+      "reqStr": 0,
+      "reqWis": 0,
+      "reqDex": 0,
+      "reqLuk": 0
+    },
+    "200007": {
+      "name": "Large Hammer",
+      "type": "weapon",
+      "weaponType": "2h_hammer",
+      "slot": 7,
+      "accuracy": null,
+      "attack": 35,
+      "bossPercent": null,
+      "critRate": null,
+      "damagePercent": null,
+      "attackSpeed": 1,
+      "avoidability": null,
+      "defense": null,
+      "dexterity": null,
+      "jumpSpeed": null,
+      "luck": null,
+      "magic": null,
+      "magicDefense": null,
+      "maxHealth": null,
+      "maxMana": null,
+      "movementSpeed": null,
+      "strength": null,
+      "wisdom": null,
+      "job": null,
+      "reqLevel": 0,
+      "reqStr": 0,
+      "reqWis": 0,
+      "reqDex": 0,
+      "reqLuk": 0
+    },
     "500000": {
       "name": "Cloth Shirt",
       "type": "top",
+      "weaponType": null,
       "slot": 7,
       "accuracy": null,
       "attack": null,
@@ -704,6 +895,7 @@
     "500001": {
       "name": "Cloth Bottom",
       "type": "bottom",
+      "weaponType": null,
       "slot": 7,
       "accuracy": null,
       "attack": null,
@@ -733,6 +925,7 @@
     "500002": {
       "name": "Leather Shirt",
       "type": "top",
+      "weaponType": null,
       "slot": 7,
       "accuracy": null,
       "attack": null,
@@ -762,6 +955,7 @@
     "500003": {
       "name": "Leather Bottom",
       "type": "bottom",
+      "weaponType": null,
       "slot": 7,
       "accuracy": null,
       "attack": null,
@@ -791,6 +985,7 @@
     "500004": {
       "name": "Woodcutter Shirt",
       "type": "top",
+      "weaponType": null,
       "slot": 7,
       "accuracy": null,
       "attack": null,
@@ -820,6 +1015,7 @@
     "500005": {
       "name": "Woodcutter Bottom",
       "type": "bottom",
+      "weaponType": null,
       "slot": 7,
       "accuracy": null,
       "attack": null,
