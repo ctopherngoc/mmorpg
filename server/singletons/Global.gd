@@ -268,7 +268,7 @@ func dropGeneration(monster_id: String) -> Dictionary:
 						if equip_stats[key] < 0:
 							equip_stats[key] = 0
 				# create unique id
-				var random_unique_id = (((rng.randi_range(10000000, 999999999) + rng.randi_range(100, 10000)) / rng.randi_range(2, 5)) - rng.randi_range(10, 100)) + rng.randi_range(10, 51)
+				var random_unique_id = generate_unique_id(item_id)
 				equip_stats["uniqueID"] = str(random_unique_id)
 				
 				item_list[item_id] = equip_stats
@@ -587,6 +587,8 @@ func add_item_to_world_state(item: KinematicBody2D, map_id: String) -> void:
 		item.just_dropped = 0
 	elif item.just_dropped == -1:
 		ServerData.items[map_id].erase(item.name)
+		if ServerData.itemTable[item.id]["itemType"] == "equipment":
+			ServerData.equipmentTable.erase(str(item.stats.id) + str(item.stats.uniqueID))
 		item.queue_free()
 
 func add_projectile_to_world_state(projectile: Sprite, map_id: String) -> void:
@@ -645,3 +647,12 @@ func cancel_buff(player_container: KinematicBody2D, skill_id: String):
 		else:
 			player_container.current_character.stats.buff[key] -= skill_data.stat[key][player_skill_data - 1]
 	server.update_player_stats(player_container)
+
+func generate_unique_id(item_id) -> int:
+	var unique_id = (((rng.randi_range(10000000, 999999999) + rng.randi_range(100, 10000)) / rng.randi_range(2, 5)) - rng.randi_range(10, 100)) + rng.randi_range(10, 51)
+	var equipment_id = str(item_id) + str(unique_id)
+	while equipment_id in ServerData.equipment_data:
+		unique_id = (((rng.randi_range(10000000, 999999999) + rng.randi_range(100, 10000)) / rng.randi_range(2, 5)) - rng.randi_range(10, 100)) + rng.randi_range(10, 51)
+		equipment_id = str(item_id) + str(unique_id)
+	ServerData.equipment_data.append(equipment_id)
+	return unique_id
