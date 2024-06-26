@@ -110,10 +110,10 @@ func normal_attack() -> void:
 	
 	#basic attack
 	var equipment = current_character.equipment
-	if equipment.rweapon.type == "1h_sword":
+	if equipment.rweapon.weaponType == "1h_sword":
 		animation.play("1h_sword",-1, ServerData.static_data.weapon_speed[equipment.rweapon.attackSpeed])
 		yield(animation, "animation_finished")
-	elif equipment.rweapon.type == "2h_sword":
+	elif equipment.rweapon.weaponType == "2h_sword":
 		pass
 #	elif equipment.weapon.type == "bow":
 #	# else ranged weapon:
@@ -153,12 +153,12 @@ func skill_attack(skill_data: Dictionary, skill_level: int) -> void:
 	attacking = true
 	
 	#basic attack
-	if not skill_data["weaponType"] or current_character.equipment.rweapon.type in skill_data["weaponType"]:
+	if not skill_data["weaponType"] or current_character.equipment.rweapon.weaponType in skill_data["weaponType"]:
 		var equipment = current_character.equipment
-		if equipment.rweapon.type == "1h_sword":
+		if equipment.rweapon.weaponType == "1h_sword":
 			animation.play("1h_sword",-1, ServerData.static_data.weapon_speed[equipment.rweapon.attackSpeed])
 			yield(animation, "animation_finished")
-		elif equipment.rweapon.type == "2h_sword":
+		elif equipment.rweapon.weaponType == "2h_sword":
 			pass
 		
 		if mobs_hit.size() == 0:
