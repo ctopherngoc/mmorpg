@@ -241,11 +241,11 @@ func update_animation(move_vector):
 	#input = null
 
 func determine_weapon_noise() -> void:
-	if Global.player.equipment.rweapon.type in ["dagger", "1h_sword", "1h_axe", "staff", "wand"]:
+	if Global.player.equipment.rweapon.weaponType in ["dagger", "1h_sword", "1h_axe", "staff", "wand"]:
 		AudioControl.play_audio("1h_swing")
-	elif Global.player.equipment.rweapon.type in ["1h_blunt", "2h_blunt"]:
+	elif Global.player.equipment.rweapon.weaponType in ["1h_blunt", "2h_blunt"]:
 		AudioControl.play_audio("blunt_swing")
-	elif Global.player.equipment.rweapon.type in ["2h_sword", "2h_axe"]:
+	elif Global.player.equipment.rweapon.weaponType in ["2h_sword", "2h_axe"]:
 		AudioControl.play_audio("2h_swing")
 	
 func movable_switch():
