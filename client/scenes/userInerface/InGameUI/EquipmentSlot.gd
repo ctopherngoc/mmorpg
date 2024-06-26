@@ -69,9 +69,6 @@ func can_drop_data(_pos, data):
 		print("not equipment tab")
 		return false
 	## JOB CHECK ###
-	print(data.item_data)
-	print(GameData.equipmentTable[data.item_data.id].job)
-	print(Global.player.stats.base.job)
 	if not GameData.equipmentTable[data.item_data.id].job == null and not GameData.equipmentTable[data.item_data.id].job == Global.player.stats.base.job:
 		print("wrong job")
 		return false
@@ -142,7 +139,7 @@ func drop_data(_pos, data):
 	# from inventory to empty equipment slot
 	if item_data.id == null:
 		# send server request
-		Server.remove_equipment_request(item_data.slot)
+		Server.send_equipment_request(slot, data.from_slot)
 		AudioControl.play_audio("itemSwap")
 		
 		# setup equipment slot
@@ -161,7 +158,7 @@ func drop_data(_pos, data):
 			return
 			
 		# temp vars to hold each slots info
-		Server.send_equipment_request(data.from_slot)
+		Server.send_equipment_request(slot, data.from_slot)
 		var drag_icon = data.item_data
 		var drop_icon = item_data
 	
