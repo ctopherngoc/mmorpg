@@ -121,18 +121,18 @@ func update_avatar(data: String) -> void:
 		
 	if data == "equipment":
 		for key in equipment.keys():
-			if str(equipment[key]) == "-1":
-				var sprite = load(GameData.equipment_sprite.default + "empty_16_11_spritesheet.png")
+			if equipment[key] == null:
+				#var sprite = load(GameData.equipment_sprite.default + "empty_16_11_spritesheet.png")
 				if key == "earring":
-					rearring.set_texture(sprite)
-					learring.set_texture(sprite)
+					rearring.texture == null
+					learring.texture == null
 					
 				elif key == "glove":
-					lglove.set_texture(sprite)
-					rglove.set_texture(sprite)
+					lglove.texture = null
+					rglove.texture = null
 				else:
 					if not "ring" in key:
-						sprite_dict[key].set_texture(sprite)
+						sprite_dict[key].texture == null
 
 			else:
 				if key == "earring":
@@ -148,12 +148,14 @@ func update_avatar(data: String) -> void:
 					lleg.set_texture(sprite)
 
 				else:
+					######################################
 					var sprite
 					if equipment[key] is Dictionary:
 						sprite = load(GameData.equipment_sprite[key] + str(equipment[key]["id"])+".png")
 					else:
 						sprite = load(GameData.equipment_sprite[key] + str(equipment[key])+".png")
 					sprite_dict[key].set_texture(sprite)
+					######################################
 
 func avatar_check() -> void:
 	if avatar != Global.player.avatar:
