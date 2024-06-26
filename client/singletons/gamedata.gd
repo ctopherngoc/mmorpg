@@ -140,10 +140,21 @@ onready var test_player = {
 			"accuracy": 0,
 			"bossPercent": 0,
 			"damagePercent": 0,
-			"critRate": 0,
-			},# rwep
-		#"lweapon": null,
-	},#equip
+			"critRate": 0,},
+		"lweapon": 200001,
+		"faceacc": -1,
+		"top": 500002,
+		"bottom": 500003,
+		"tattoo": -1,
+		"glove": -1,
+		"eyeacc": -1,
+		"headgear": -1,
+		"pocket": -1,
+		"earring": -1,
+		"ring1": -1,
+		"ring2": -1,
+		"ring3": -1,
+		"ammo": 200004},#equip
 	"stats": 
 	{
 		"base": {
