@@ -15,6 +15,7 @@ onready var current_map: String = ""
 onready var in_game = false
 onready var floating_text = preload("res://scenes/userInerface/FloatingText.tscn")
 onready var projectile = preload("res://scenes/skillObjects/Projectile.tscn")
+onready var last_recon
 
 var player_template = preload("res://scenes/playerObjects/OtherPlayerSprite.tscn")
 var player_node
@@ -376,19 +377,34 @@ func server_reconciliation(server_input_data: Dictionary) -> void:
 	for i in range(input_queue.size()):
 		if server_input_data["T"] == input_queue[i]["T"]:
 			if server_input_data["P"] != input_queue[i]["P"]:
-				var serverx = stepify(server_input_data["P"].x, 1)
-				var servery = stepify(server_input_data["P"].y, 1)
-				var clientx = stepify(input_queue[i]["P"].x, 1)
-				var clienty = stepify(input_queue[i]["P"].y, 1)
-				#print(serverx, servery, " ",clientx, clienty)
-				if abs(serverx - clientx) > 25 or abs(servery - clienty) > 25:
+#				var serverx = stepify(server_input_data["P"].x, 1)
+#				var servery = stepify(server_input_data["P"].y, 1)
+#				var clientx = stepify(input_queue[i]["P"].x, 1)
+#				var clienty = stepify(input_queue[i]["P"].y, 1)
+				var serverx = int(server_input_data["P"].x)
+				var servery = int(server_input_data["P"].y)
+				var clientx = int(input_queue[i]["P"].x)
+				var clienty = int(input_queue[i]["P"].y)
+				#print("server: ", serverx," ", servery, " ", "client: ", clientx, " ", clienty)
+				var player_node = get_node("/root/GameWorld/MapNode/%s/Player" % Global.current_map)
+				if abs(serverx - clientx) > 1 and player_node.is_climbing:
+					print("climbing fix")
+					print("server: ", serverx," ", servery, " ", "client: ", clientx, " ", clienty)
+					var recon_position = lerp(input_queue[i]["P"],server_input_data["P"], 0.85)
+					player_node.set_position(recon_position)
 					#print("recon")
 					#print("server: ", server_input_data["P"], " client: ",input_queue[i]["P"])
-					var recon_position = lerp(input_queue[i]["P"],server_input_data["P"], 0.5)
+				elif not player_node.is_on_floor() and not player_node.is_climbing:
+					print("jumping")
+					pass
+				elif abs(serverx - clientx) > 50 or abs(servery - clienty) > 50:
+					print("greater than 15")
+					print("server: ", serverx," ", servery, " ", "client: ", clientx, " ", clienty)
+					var recon_position = lerp(input_queue[i]["P"],server_input_data["P"], 0.85)
 					#var new_position = lerp(Vector2(clientx, clienty), Vector2(serverx, servery), interpolation_factor)
 					#var new_position = lerp(input_queue[i]["P"], server_input_data["P"], .75)
 					#get_node("/root/GameWorld/Player").set_position(recon_position)
-					get_node("/root/GameWorld/MapNode/%s/Player" % Global.current_map).set_position(recon_position)
+					player_node.set_position(recon_position)
 					#get_node("/root/currentScene/Player").set_position(server_input_data['P'])
 			input_queue = input_queue.slice(i+1, input_queue.size(), 1, true)
 			return
