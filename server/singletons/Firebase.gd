@@ -344,6 +344,13 @@ func server_firebase_dictionary_converter(database_data: Dictionary) -> Dictiona
 					temp_dict['equipment'][key][key2] = int(shortcut2[key2]['integerValue'])
 				else:
 					temp_dict['equipment'][key][key2] = str(shortcut2[key2]['stringValue'])
+	#################################################################
+	# remove this after finishing equipment update
+	for equip in ["ring1", "ring2", "ring3"]:
+		if not temp_dict['equipment'].has(equip):
+			temp_dict['equipment'][equip] = -1
+	####################################################################
+	
 	#inventory
 	shortcut = database_data["inventory"]["mapValue"]["fields"]
 	keys = shortcut.keys()
