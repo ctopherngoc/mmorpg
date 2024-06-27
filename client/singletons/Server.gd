@@ -216,6 +216,7 @@ remote func receive_attack(player_id, attack_time):
 remote func update_player_stats(player_stats: Dictionary) -> void:
 	#print(player_stats.stats.buff)
 	print("update player stats")
+	#print(player_stats)
 	for character in Global.character_list:
 		if character["displayname"] == player_stats["displayname"]:
 			character = player_stats
@@ -264,15 +265,23 @@ remote func update_player_stats(player_stats: Dictionary) -> void:
 				Global.player["inventory"] = player_stats["inventory"]
 				Signals.emit_signal("update_inventory")
 			
+			#if not dictionary_comparison(Global.player["equipment"], player_stats["equipment"]):
+			if player_stats["equipment"].hash() != Global.player["equipment"].hash():
+				print("pls work")
+				Global.player["equipment"] = player_stats["equipment"]
+				Signals.emit_signal("update_equipment")
+				Signals.emit_signal("update_sprite")
+			
 			if not dictionary_comparison(Global.player["skills"], player_stats["skills"]):
 			#if player_stats["inventory"].hash() != Global.player["inventory"].hash():
 				Global.player.stats = player_stats["stats"]
 				Global.player["skills"] = player_stats["skills"]
 				Signals.emit_signal("update_skills")
-			
-			if not dictionary_comparison(Global.player.stats.buff, player_stats.stats.buff):
+				
+			if player_stats.stats.hash() != Global.player.stats.hash():
+			#if not dictionary_comparison(Global.player.stats.buff, player_stats.stats.buff):
 			#if player_stats["inventory"].hash() != Global.player["inventory"].hash():
-				Global.player.stats.buff = player_stats.stats.buff
+				Global.player.stats = player_stats.stats
 			
 			if not dictionary_comparison(Global.player["keybind"], player_stats["keybind"]):
 			#if player_stats["inventory"].hash() != Global.player["inventory"].hash():
@@ -348,15 +357,15 @@ func send_equipment_request(equipment_slot, inventory_slot) -> void:
 	print("send_equipment_request succcess")
 	rpc_id(1, "equipment_request", equipment_slot, inventory_slot)
 
-remote func return_equipment_request() -> void:
-	pass
+#remote func return_equipment_request() -> void:
+#	pass
 	
 func remove_equipment_request(equipment_slot, inventory_slot) -> void:
 	print("remove_equipment_request succcess")
 	rpc_id(1, "remove_equipment_request", equipment_slot, inventory_slot)
 
-remote func return_remove_equipment_() -> void:
-	pass
+#remote func return_remove_equipment_() -> void:
+#	pass
 	
 remote func server_message(message: String):
 	print("received messge %s" % message)
