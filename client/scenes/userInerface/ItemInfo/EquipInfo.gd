@@ -89,6 +89,8 @@ func _ready() -> void:
 				var strength = itemStat.instance()
 				strength.get_node("StatLabel").text = "STR: "
 				strength.get_node("StatNumber").text =  "+" + str(stats.strength)
+				print(stats.strength)
+				print(GameData.equipmentTable[stats.id].strength)
 				if stats.strength > GameData.equipmentTable[stats.id].strength:
 					strength.get_node("StatLabel").set("custom_colors/font_color", Color("00ff15"))
 					strength.get_node("StatNumber").set("custom_colors/font_color", Color("00ff15"))
