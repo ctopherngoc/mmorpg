@@ -247,18 +247,14 @@ remote func choose_character(requester: int, display_name: String) -> void:
 	# character creation is front facing while in game is side profile. 
 	player_container.sprite.append(str(temp_dict.bcolor))
 	player_container.sprite.append(str(temp_dict.mouth))
-
+	
+	var equipment_list = ["headgear", "top", "bottom", "rweapon", "lweapon", "eyeacc", "earring", "faceacc", "glove", "tattoo"]
 	temp_dict = player_container.current_character.equipment
-	player_container.sprite.append(str(temp_dict.headgear))
-	player_container.sprite.append(str(temp_dict.top))
-	player_container.sprite.append(str(temp_dict.bottom))
-	player_container.sprite.append(str(temp_dict.rweapon.id))
-	player_container.sprite.append(str(temp_dict.lweapon))
-	player_container.sprite.append(str(temp_dict.eyeacc))
-	player_container.sprite.append(str(temp_dict.earring))
-	player_container.sprite.append(str(temp_dict.faceacc))
-	player_container.sprite.append(str(temp_dict.glove))
-	player_container.sprite.append(str(temp_dict.tattoo))
+	for equip in equipment_list:
+		if temp_dict[equip]:
+			player_container.sprite.append(str(temp_dict[equip].id))
+		else:
+			player_container.sprite.append(null)
 	
 	# move user container to the map
 	move_player_container(player_id, player_container, map, 'spawn')
@@ -854,24 +850,34 @@ remote func increase_skill(skill_id: String, level: int) -> void:
 			
 			update_player_stats(player_container)
 
-remote func send_equipment_request(equipment_slot, inventory_slot) -> void:
+remote func equipment_request(equipment_slot, inventory_slot) -> void:
 	var player_id = get_tree().get_rpc_sender_id()
 	var player_container = _Server_Get_Player_Container(player_id)
-	
+	print(equipment_slot)
+	print(inventory_slot)
 	# get slot item type
 	var item = player_container.current_character.inventory.equipment[inventory_slot]
 	var equipment = player_container.current_character.equipment[equipment_slot]
-	
-	
 	if equipment_swap_check(player_container, equipment_slot, equipment, item):
-		var temp_equipment = equipment.duplicate(true)
-		player_container.current_character.equipment[equipment_slot] = item.duplicate(true)
-		player_container.current_character.inventory.equipment[inventory_slot] = temp_equipment.duplicate(true)	
-		rpc_id(player_id, "return_equipment_request", inventory_slot)
-		# switch equip slot with the inventory slot
+		var temp_equipment = equipment
+		player_container.current_character.equipment[equipment_slot] = item
+		player_container.current_character.inventory.equipment[inventory_slot] = temp_equipment
+
+		print(player_container.current_character.inventory.equipment[inventory_slot])
+		# remove unequiped item stats
+		if equipment:
+			for stats in player_container.current_character.stats.equipment.keys():
+				player_container.current_character.stats.equipment[stats] -= player_container.current_character.inventory.equipment[inventory_slot][stats]
+			
+		# add new equiped item stats
+		for stats in player_container.current_character.stats.equipment.keys():
+			player_container.current_character.stats.equipment[stats] += player_container.current_character.equipment[equipment_slot][stats]
+		
+		# calcluate total stats
+	Global.calculate_stats(player_container.current_character)	
 	update_player_stats(player_container)
 
-func remove_equipment_request(equipment_slot, inventory_slot) -> void:
+remote func remove_equipment_request(equipment_slot, inventory_slot) -> void:
 	var player_id = get_tree().get_rpc_sender_id()
 	var player_container = _Server_Get_Player_Container(player_id)
 	
@@ -880,9 +886,14 @@ func remove_equipment_request(equipment_slot, inventory_slot) -> void:
 	if not player_container.current_character.inventory.equipment[inventory_slot]:
 		player_container.current_character.inventory.equipment[inventory_slot] = equipment
 		player_container.current_character.equipment[equipment_slot] = null
+		
+		for stats in player_container.current_character.stats.equipment.keys():
+			player_container.current_character.stats.equipment[stats] -= player_container.current_character.inventory.equipment[inventory_slot][stats]
 	else:
 		print("inventory slot not null")
-	rpc_id(player_id, "return_remove_equipment", equipment_slot)
+	Global.calculate_stats(player_container.current_character)
+	update_player_stats(player_container)
+	#rpc_id(player_id, "return_remove_equipment", equipment_slot)
 
 func equipment_swap_check(player, equipment_slot, equipment, item) -> bool:
 	## JOB CHECK ###
@@ -927,12 +938,15 @@ func equipment_swap_check(player, equipment_slot, equipment, item) -> bool:
 	## TYPE CHECK ###
 	# if weapon right hand true
 	print("pass equipment stat check")
+	print(ServerData.equipmentTable[item.id])
+	print(equipment)
+	print(equipment_slot)
 	if ServerData.equipmentTable[item.id].type == "weapon":
 		print("checking weapon")
-		if equipment_slot == "rhand":
+		if equipment_slot == "rweapon":
 			print("righthand")
 			return true
-		elif equipment_slot == "lhand":
+		elif equipment_slot == "lweapon":
 			print("lefthand")
 			if player.current_character.stats.base.job in []:
 				print("job in dual wield")
@@ -946,7 +960,7 @@ func equipment_swap_check(player, equipment_slot, equipment, item) -> bool:
 	elif ServerData.equipmentTable[item.id].type == "shield" and equipment_slot == "lhand":
 		print("sheild and left hand")
 		return true
-	elif ServerData.equipmentTable[item.id].type == equipment.type:
+	elif ServerData.equipmentTable[item.id].type == equipment_slot:
 		print("equipment and slot same type")
 		return true
 	else:
