@@ -345,7 +345,11 @@ func server_firebase_dictionary_converter(database_data: Dictionary) -> Dictiona
 		if 'integerValue' in shortcut[key].keys():
 			var equipment_id = int(shortcut[key]['integerValue'])
 			var item_dict = ServerData.equipmentTable[str(equipment_id)]
-			
+			var temp_item_keys = item_dict.keys()
+			for temp_key in temp_item_keys:
+				if item_dict[temp_key] == null:
+					item_dict[temp_key] = 0
+			item_dict["id"] = str(equipment_id)
 			item_dict["uniqueID"] = str(Global.generate_unique_id(equipment_id))
 			temp_dict['equipment'][key] = item_dict.duplicate(true)
 			
@@ -586,15 +590,15 @@ func save(var path : String, var thing_to_save: Dictionary):
 	file.close()
 
 func item_data_converter(before: Dictionary, after: Dictionary) -> Dictionary:
-	var skip_list = ["reqStr", "reqDex", "reqLuk", "reqWis", "weaponType"]
+	#var skip_list = ["reqStr", "reqDex", "reqLuk", "reqWis", "weaponType"]
 	for stat in before.keys():
-		if not stat in skip_list:
-			if typeof(before[stat]) == TYPE_STRING:
-				after[stat]["stringValue"] = before[stat]
-			elif typeof(before[stat]) == TYPE_INT:
-				after[stat]["integerValue"] = before[stat]
-			elif typeof(before[stat]) == TYPE_NIL:
-				after[stat]["nullValue"] = null
+		#if not stat in skip_list:
+		if typeof(before[stat]) == TYPE_STRING:
+			after[stat]["stringValue"] = before[stat]
+		elif typeof(before[stat]) == TYPE_INT:
+			after[stat]["integerValue"] = before[stat]
+		elif typeof(before[stat]) == TYPE_NIL:
+			after[stat]["nullValue"] = null
 	return{'mapValue':{'fields': after}}
 
 func test_update_document(path: String, data_dict: Dictionary) -> void:
