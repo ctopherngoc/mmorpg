@@ -62,11 +62,11 @@ func _process(_delta):
 #					else:
 #						counter = 0
 #						enemy_list[monster_id]['DamageList'].clear()
-#	UpdateItemStateList()
-#	UpdateProjectileStateList()
+	UpdateItemStateList()
+	UpdateProjectileStateList()
 #	UpdateMonsterList()
-#	if player_ysort.get_children() != players:
-#		players = player_ysort.get_children()
+	if player_ysort.get_children() != players:
+		players = player_ysort.get_children()
 # after timer function called
 func SpawnEnemy():
 	# only calculate/spawn monsters when at least 1 player is actively in the map
@@ -107,10 +107,11 @@ func UpdateItemStateList() -> void:
 	ServerData.items.keys() are item nodes name. Unique 6 len string of Uppercase Chars and Ints
 	"""
 	if  get_node("YSort/Items").get_child_count() > 0:
-			var _index  = 0
-			for item in get_node("YSort/Items").get_children():
-				Global.add_item_to_world_state(item, self.name)
-				_index += 1
+		print("yes")
+		var _index  = 0
+		for item in get_node("YSort/Items").get_children():
+			Global.add_item_to_world_state(item, self.name)
+			_index += 1
 
 func UpdateProjectileStateList() -> void:
 	"""
