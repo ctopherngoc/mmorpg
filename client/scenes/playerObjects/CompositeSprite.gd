@@ -67,6 +67,7 @@ func _ready() -> void:
 	update_avatar("equipment")
 # warning-ignore:return_value_discarded
 	Signals.connect("level_up", self, "play_level_up")
+	Signals.connect("update_sprite", self, "avatar_check")
 
 # warning-ignore:unused_argument
 func _physics_process(delta: float) -> void:
@@ -77,6 +78,7 @@ func _physics_process(delta: float) -> void:
 # warning-ignore:unused_argument
 func update_avatar(data: String) -> void:
 	if data == "avatar":
+		avatar = Global.player.avatar
 		#body
 		var sprite = load(GameData.avatar_sprite.body + str(avatar['bcolor']) + str(avatar['body']) + ".png")
 		body.set_texture(sprite)
@@ -120,19 +122,20 @@ func update_avatar(data: String) -> void:
 		mouth.set_texture(sprite)
 		
 	if data == "equipment":
+		equipment = Global.player.equipment
 		for key in equipment.keys():
 			if equipment[key] == null:
-				#var sprite = load(GameData.equipment_sprite.default + "empty_16_11_spritesheet.png")
+				var sprite = load(GameData.equipment_sprite.default + "empty_16_11_spritesheet.png")
 				if key == "earring":
-					rearring.texture == null
-					learring.texture == null
+					rearring.set_texture(sprite)
+					learring.set_texture(sprite)
 					
 				elif key == "glove":
-					lglove.texture = null
-					rglove.texture = null
+					lglove.set_texture(sprite)
+					rglove.set_texture(sprite)
 				else:
 					if not "ring" in key:
-						sprite_dict[key].texture == null
+						sprite_dict[key].set_texture(sprite)
 
 			else:
 				if key == "earring":
@@ -158,12 +161,8 @@ func update_avatar(data: String) -> void:
 					######################################
 
 func avatar_check() -> void:
-	if avatar != Global.player.avatar:
-		avatar = Global.player.avatar
-		update_avatar(avatar)
-	if equipment != Global.player.equipment:
-		equipment = Global.player.equipment
-		update_avatar(equipment)
+		update_avatar("avatar")
+		update_avatar("equipment")
 
 # warning-ignore:unused_argument
 func change_equipment(equipment_slot, item_id):
