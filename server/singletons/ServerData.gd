@@ -369,7 +369,8 @@ var static_data = {
 			"critRate": 0,
 		},
 	"weapon_ratio" : {
-		"1h_sword": 1.2,
+		"dagger": 1.2,
+		"1h_sword": 1.3,
 		"2h_sword": 1.5,
 		"staff": 0.8,},
 	"weapon_speed" : {
@@ -447,6 +448,12 @@ var static_data = {
 		"damagePercent": {"integerValue": 0},
 		"critRate": {"integerValue": 0},
 		"attackSpeed": {"integerValue": 0},
+		"reqLuk": {"integerValue": 0},
+		"reqStr": {"integerValue": 0},
+		"reqDex": {"integerValue": 0},
+		"reqWis": {"integerValue": 0},
+		"reqLevel": {"integerValue": 0},
+		"weaponType": {"integerValue": 0},
 		},
 	"server_keybind_template": {
 	'shift': null, 'ins': null, 'home': null, 'pgup': null, 'ctrl': null,  'del': null, 'end': null, 'pgdn': null,
