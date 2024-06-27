@@ -62,23 +62,30 @@ func poplulate_inventory():
 					var item = inv_ref[tab][count]
 					var _item_name = GameData.itemTable[str(item['id'])]["itemName"]
 					inv_slot_new.item_data["id"] = str(item['id'])
-					inv_slot_new.item_data["item"] = GameData.itemTable[str(item['id'])]["itemName"]
-					# if stackable exit number on iventory slot
-					if tab in stackable_tabs:
-						inv_slot_new.get_node("VBoxContainer/Label").text = str(item["q"])
-						inv_slot_new.item_data["q"]= item["q"]
 					if tab == "equipment":
+						inv_slot_new.item_data["item"] = inv_ref.equipment[count]
 						var temp_item_path = item_path + "equipItems/" + inv_ref[tab][count]["id"] + ".png"
 						inv_slot_new.get_node("Icon").texture = load(temp_item_path)
 						equip_grid.add_child(inv_slot_new, true)
-					elif tab == "use":
-						var temp_item_path = item_path + "useItems/" + inv_ref[tab][count]["id"] + ".png"
-						inv_slot_new.get_node("Icon").texture = load(temp_item_path)
-						use_grid.add_child(inv_slot_new, true)
-					elif tab == "etc":
-						var temp_item_path = item_path + "etcItems/" + inv_ref[tab][count]["id"] + ".png"
-						inv_slot_new.get_node("Icon").texture = load(temp_item_path)
-						etc_grid.add_child(inv_slot_new, true)
+					else:
+						
+						inv_slot_new.item_data["item"] = GameData.itemTable[str(item['id'])]["itemName"]
+						# if stackable exit number on iventory slot
+						if tab in stackable_tabs:
+							inv_slot_new.get_node("VBoxContainer/Label").text = str(item["q"])
+							inv_slot_new.item_data["q"]= item["q"]
+						if tab == "equipment":
+							var temp_item_path = item_path + "equipItems/" + inv_ref[tab][count]["id"] + ".png"
+							inv_slot_new.get_node("Icon").texture = load(temp_item_path)
+							equip_grid.add_child(inv_slot_new, true)
+						elif tab == "use":
+							var temp_item_path = item_path + "useItems/" + inv_ref[tab][count]["id"] + ".png"
+							inv_slot_new.get_node("Icon").texture = load(temp_item_path)
+							use_grid.add_child(inv_slot_new, true)
+						elif tab == "etc":
+							var temp_item_path = item_path + "etcItems/" + inv_ref[tab][count]["id"] + ".png"
+							inv_slot_new.get_node("Icon").texture = load(temp_item_path)
+							etc_grid.add_child(inv_slot_new, true)
 					node_list[tab].append(inv_slot_new)
 				else:
 					if tab == "equipment":
@@ -109,20 +116,23 @@ func update_inventory():
 					#print("in update inventory, item: %s" % item)
 					var _item_name = GameData.itemTable[str(item['id'])]["itemName"]
 					item_node.item_data["id"] = str(item['id'])
-					item_node.item_data["item"] = GameData.itemTable[str(item['id'])]["itemName"]
-					# if stackable exit number on iventory slot
-					if tab in stackable_tabs:
-						item_node.label.text = str(item["q"])
-						item_node.item_data["q"]= item["q"]
 					if tab == "equipment":
 						var temp_item_path = item_path + "equipItems/" + inv_ref[tab][count]["id"] + ".png"
 						item_node.icon.texture = load(temp_item_path)
-					elif tab == "use":
-						var temp_item_path = item_path + "useItems/" + inv_ref[tab][count]["id"] + ".png"
-						item_node.icon.texture = load(temp_item_path)
-					elif tab == "etc":
-						var temp_item_path = item_path + "etcItems/" + inv_ref[tab][count]["id"] + ".png"
-						item_node.icon.texture = load(temp_item_path)
+						item_node.item_data["item"] = inv_ref.equipment[count]
+					else:
+						item_node.item_data["item"] = GameData.itemTable[str(item['id'])]["itemName"]
+						# if stackable exit number on iventory slot
+						if tab in stackable_tabs:
+							item_node.label.text = str(item["q"])
+							item_node.item_data["q"]= item["q"]
+						
+						elif tab == "use":
+							var temp_item_path = item_path + "useItems/" + inv_ref[tab][count]["id"] + ".png"
+							item_node.icon.texture = load(temp_item_path)
+						elif tab == "etc":
+							var temp_item_path = item_path + "etcItems/" + inv_ref[tab][count]["id"] + ".png"
+							item_node.icon.texture = load(temp_item_path)
 				else:
 					var item_node = node_list[tab][count]
 					item_node.item_data = {"id": null,"item": null, "q": null}
