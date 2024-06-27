@@ -60,12 +60,17 @@ func populate_equipment():
 	equipment_ref = Global.player.equipment
 	var equipment_key = equipment_ref.keys()
 	for slot in equipment_key:
-		equipment_tab[slot].label.text = equipment_string[slot]
-		
-		if not equipment_tab[slot].type:
-			equipment_tab[slot].slot = slot
-			equipment_tab[slot].type = equipment_string[slot]
 			
+		equipment_tab[slot].label.text = equipment_string[slot]
+			
+		if not equipment_tab[slot].slot:
+			equipment_tab[slot].slot = slot
+			#equipment_tab[slot].type = equipment_string[slot]
+			
+		if typeof(equipment_ref[slot]) == TYPE_NIL:
+			equipment_tab[slot].icon.texture = null
+			equipment_tab[slot].background.texture = load(equipment_tab[slot].empty_bg)
+			continue
 			
 		if typeof(equipment_ref[slot]) == TYPE_INT:
 			if equipment_ref[slot] == -1:
