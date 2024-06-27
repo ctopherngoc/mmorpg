@@ -14,7 +14,7 @@
 [ext_resource path="res://assets/character/spritesheet/rhand/0.png" type="Texture" id=12]
 [ext_resource path="res://assets/character/spritesheet/lhand/0.png" type="Texture" id=13]
 [ext_resource path="res://assets/character/spritesheet/rear/00.png" type="Texture" id=14]
-[ext_resource path="res://assets/character/spritesheet/bottom/500001.png" type="Texture" id=15]
+[ext_resource path="res://assets/character/spritesheet/bottom/500005.png" type="Texture" id=15]
 [ext_resource path="res://assets/character/spritesheet/lfinger/0.png" type="Texture" id=16]
 [ext_resource path="res://assets/character/spritesheet/hair/00.png" type="Texture" id=17]
 [ext_resource path="res://assets/character/spritesheet/back/300000.png" type="Texture" id=18]
@@ -2479,6 +2479,12 @@ tracks/27/keys = {
 [node name="CompositeSprite" type="Node2D"]
 script = ExtResource( 29 )
 
+[node name="Ammo" type="Sprite" parent="."]
+texture = ExtResource( 18 )
+hframes = 16
+vframes = 11
+frame = 16
+
 [node name="Lleg" type="Sprite" parent="."]
 texture = ExtResource( 4 )
 hframes = 16
@@ -2523,7 +2529,7 @@ vframes = 11
 frame = 16
 
 [node name="Bottom" type="Sprite" parent="."]
-position = Vector2( 1, -12 )
+position = Vector2( 0, 1 )
 texture = ExtResource( 15 )
 hframes = 16
 vframes = 11
@@ -2545,12 +2551,6 @@ frame = 16
 texture = ExtResource( 27 )
 hframes = 16
 vframes = 11
-
-[node name="Ammo" type="Sprite" parent="."]
-texture = ExtResource( 18 )
-hframes = 16
-vframes = 11
-frame = 16
 
 [node name="Top" type="Sprite" parent="."]
 texture = ExtResource( 7 )
