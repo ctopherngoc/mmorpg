@@ -134,16 +134,15 @@ func calculate_stats(player_stats: Dictionary) -> void:
 # warning-ignore:shadowed_variable
 	for item in equipment.keys():
 		# for every stat in equipment.stats dict ( not null)
-		if equipment[item] is int:
+		if equipment[item] is int or equipment[item] == null:
 			pass
 		else:
 			for stat in equipment[item].keys():
-				if stat in ["name", "id", "uniqueID", "type", "attackSpeed", "slot", "job", "owner"]:
+				if stat in ["name", "id", "uniqueID", "type", "attackSpeed", "slot", "job", "owner", "weaponType","reqLevel", "reqStr", "reqLuk", "reqWis", "reqDex",]:
 					continue
 				else:
 					# add stat value to each stat in temp equipment dict
 					#print("%s before: " % stat, equipment_stats[stat])
-					
 					equipment_stats[stat] += equipment[item][stat]
 					#print("%s after: " % stat, equipment_stats[stat])
 		# update equipment stats of player_dict
@@ -159,7 +158,7 @@ func calculate_stats(player_stats: Dictionary) -> void:
 		if equipment.rweapon == null:
 			base.maxRange = (base.strength + base.wisdom + base.dexterity + base.luck + equip.strength + equip.wisdom + equip.dexterity + equip.luck)
 		else:
-			base.maxRange = (base.strength + base.wisdom + base.dexterity + base.luck + equip.strength + equip.wisdom + equip.dexterity + equip.luck) + int((float(equip.attack) * ServerData.static_data.weapon_ratio[equipment.rweapon.type]))
+			base.maxRange = (base.strength + base.wisdom + base.dexterity + base.luck + equip.strength + equip.wisdom + equip.dexterity + equip.luck) + int((float(equip.attack) * ServerData.static_data.weapon_ratio[equipment.rweapon.weaponType]))
 		base.minRange = int(float(base.maxRange) * 0.2)
 		#print(base.maxRange)
 	else:
