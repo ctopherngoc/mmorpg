@@ -8,9 +8,8 @@ onready var item_info = preload("res://scenes/userInerface/ItemInfo/ItemInfo.tsc
 var tab_dict = {"equipment": 0, "use": 1, "etc": 2}
 
 var item_data = {
-	"id": null,
+	"id":  null,
 	"item": null,
-	"q": null,
 }
 
 onready var item_info_child_list: Array
@@ -50,6 +49,7 @@ func get_drag_data(_pos):
 		drag_texture.rect_position = -0.5 * drag_texture.rect_size
 		set_drag_preview(control)
 		
+		print(data)
 		return data
 
 func can_drop_data(_pos, data):
@@ -93,23 +93,23 @@ func drop_data(_pos,data):
 	# temp vars to hold each slots info
 	var drag_icon = data.item_data
 	var drop_icon = item_data
-	
+	print(data)
 	if data.has("slot"):
 		if item_data.id == null:
 			# send server request
 			Server.remove_equipment_request(data.slot, slot_index)
 			AudioControl.play_audio("itemSwap")
 			
-			# setup inentory with equip info
-			item_data.id = data.item_data.id
-			item_data.item = data.item_data
-			icon.texture = data.origin_texture
+			# update beginning slot with destination slot info
+			data.origin_node.icon.texture = null
+			data.origin_node.item_data = drop_icon
+			# update distination slot with beginning slot info
+			icon.texture = data["origin_texture"]
+			item_data = drag_icon
 			
-			# null out inventory slot
-			data.origin_node.texture = null
-			data.origin_node.item_data.id = null
-			data.origin_node.item_data.item = null
-		# if swapping items
+			print("if")
+			print(item_data)
+			print(data.origin_node.item_data)
 		else:
 			# temp vars to hold each slots info
 			Server.send_equipment_request(data.slot, slot_index)
@@ -118,13 +118,16 @@ func drop_data(_pos,data):
 			data.origin_node.dragging = false
 			data.origin_node.item_info_free()
 			self.item_info_free()
-		#	# update beginning slot with destination slot info
+				
+			# update beginning slot with destination slot info
 			data.origin_node.icon.texture = icon.texture
 			data.origin_node.item_data = drop_icon
-			
 			# update distination slot with beginning slot info
 			icon.texture = data["origin_texture"]
 			item_data = drag_icon
+			print("else")
+			print(item_data)
+			print(data.origin_node.item_data)
 	else:
 		"""
 		tab: 0 = equip, 1 = use, 2 = etc
@@ -232,7 +235,6 @@ func _on_0_mouse_entered():
 				#print("Show item_tip")
 				get_node("ItemInfo").show()
 
-
 func _on_0_mouse_exited():
 	#print("mouse exit %s" % item_data.id)
 	while dragging:
@@ -253,6 +255,10 @@ func item_info_free():
 
 # checking of item in inventory slot matches the slot equipped is dragging from
 func equipment_check(data) -> bool:
+	print("inside ")
+	print(data)
+	print("item data")
+	print(item_data)
 	## INVENTORY TYPE CHECK##
 	if not tab == "equipment":
 		return false
@@ -263,13 +269,13 @@ func equipment_check(data) -> bool:
 	if not GameData.equipmentTable[item_data.item.id].reqLevel <= Global.player.stats.base.level:
 		return false
 	## STAT CHECK ###
-	if not GameData.equipmentTable[item_data.item.id].reqStr <= Global.player.stats.base.strength + Global.player.stats.buff.strength + Global.player.stats.equipment.strength - data.item_data.item.strength:
+	if not GameData.equipmentTable[item_data.item.id].reqStr <= Global.player.stats.base.strength + Global.player.stats.buff.strength + Global.player.stats.equipment.strength - data.item_data.strength:
 		return false
-	if not GameData.equipmentTable[item_data.item.id].reqWis <= Global.player.stats.base.wisdom + Global.player.stats.buff.wisdom + Global.player.stats.equipment.wisdom - data.item_data.item.wisdom:
+	if not GameData.equipmentTable[item_data.item.id].reqWis <= Global.player.stats.base.wisdom + Global.player.stats.buff.wisdom + Global.player.stats.equipment.wisdom - data.item_data.wisdom:
 		return false
-	if not GameData.equipmentTable[item_data.item.id].reqLuk <= Global.player.stats.base.luck + Global.player.stats.buff.luck + Global.player.stats.equipment.luck - data.item_data.item.luck:
+	if not GameData.equipmentTable[item_data.item.id].reqLuk <= Global.player.stats.base.luck + Global.player.stats.buff.luck + Global.player.stats.equipment.luck - data.item_data.luck:
 		return false
-	if not GameData.equipmentTable[item_data.item.id].reqDex <= Global.player.stats.base.dexterity + Global.player.stats.buff.dexterity + Global.player.stats.equipment.dexterity - data.item_data.item.dexterity:
+	if not GameData.equipmentTable[item_data.item.id].reqDex <= Global.player.stats.base.dexterity + Global.player.stats.buff.dexterity + Global.player.stats.equipment.dexterity - data.item_data.dexterity:
 		return false
 	## TYPE CHECK ###
 	# if weapon right hand true
@@ -278,7 +284,7 @@ func equipment_check(data) -> bool:
 	if GameData.equipmentTable[item_data.id].type == "weapon":
 		if data.slot == "rweapon":
 			return true
-		elif self.type == "lweapon":
+		elif data.slot == "lweapon":
 			if Global.player.stats.base.job in []:
 				return true
 			else:
