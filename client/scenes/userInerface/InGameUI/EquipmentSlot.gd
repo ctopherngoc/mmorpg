@@ -6,7 +6,8 @@ onready var empty_bg = "res://assets/UI/background/inventorySlots2.png"
 onready var used_bg = "res://assets/UI/backgroundSource/Green.png"
 onready var label = $Label
 var dragging = false
-
+var slot
+#var type
 """
 	slot :  type
 	"faceacc": "face",
@@ -25,8 +26,7 @@ var dragging = false
 	"ring2": "ring",
 	"ring3": "ring",
 """
-var slot
-var type
+
 
 func _ready():
 	Signals.connect("toggle_inventory", self, "item_info_free")
@@ -41,6 +41,8 @@ func _notification(what):
 		item_info_free()
 
 func get_drag_data(_pos):
+	print("item_data")
+	print(item_data)
 	# if slot is not null
 	#if Global.player.inventory[tab][slot_index] != null:
 	if item_data != null:
@@ -48,9 +50,9 @@ func get_drag_data(_pos):
 		var data = {}
 		data["origin_node"] = self
 		data["origin_texture"] = icon.texture
-		data["item_data"] = item_data
+		data["item_data"] = item_data.duplicate(true)
 		data["tab"] = "equipment"
-		data["slot"] = type
+		data["slot"] = slot
 		
 		var drag_texture = TextureRect.new()
 		drag_texture.expand = true
@@ -79,6 +81,7 @@ func can_drop_data(_pos, data):
 	## STAT CHECK ###
 	if item_data.id:
 		print("equipment slot check stats")
+		print(item_data)
 		if not GameData.equipmentTable[data.item_data.id].reqStr <= Global.player.stats.base.strength + Global.player.stats.buff.strength + Global.player.stats.equipment.strength - item_data.item.strength:
 			print("not enough str")
 			return false
@@ -111,11 +114,11 @@ func can_drop_data(_pos, data):
 	print("pass equipment stat check")
 	if GameData.equipmentTable[data.item_data.id].type == "weapon":
 		print("checking weapon")
-		if self.type == "rhand":
-			print("righthand")
+		if self.slot == "rweapon":
+			print("rweapon")
 			return true
-		elif self.type == "lhand":
-			print("lefthand")
+		elif self.slot == "lweapon":
+			print("lweapon")
 			if Global.player.stats.base.job in []:
 				print("job in dual wield")
 				return true
@@ -125,10 +128,10 @@ func can_drop_data(_pos, data):
 		else:
 			print("weapon but not right hand or left hand")
 			return false
-	elif GameData.equipmentTable[data.item_data.id].type == "shield" and self.type == "lhand":
+	elif GameData.equipmentTable[data.item_data.id].type == "shield" and self.slot == "lhand":
 		print("sheild and left hand")
 		return true
-	elif GameData.equipmentTable[data.item_data.id].type == self.type:
+	elif GameData.equipmentTable[data.item_data.id].type == self.slot:
 		print("equipment and slot same type")
 		return true
 	else:
@@ -136,21 +139,28 @@ func can_drop_data(_pos, data):
 		return false
 
 func drop_data(_pos, data):
+	print("datadfgdsfgsdfgsdfgsdfgsdfgsgfsd")
+	print(data)
+	var drag_icon = data.item_data
+	var drop_icon = item_data
+	
 	# from inventory to empty equipment slot
 	if item_data.id == null:
 		# send server request
 		Server.send_equipment_request(slot, data.from_slot)
 		AudioControl.play_audio("itemSwap")
 		
-		# setup equipment slot
-		item_data.id = data.item.id
-		item_data.item = data.item_data
-		icon.texture = data.origin_texture
 		
-		# null out inventory slot
-		data.origin_node.texture = null
-		data.origin_node.item_data.id = null
-		data.origin_node.item_data.item = null
+		# update beginning slot with destination slot info
+		data.origin_node.icon.texture = null
+		data.origin_node.item_data = drop_icon
+		# update distination slot with beginning slot info
+		icon.texture = data["origin_texture"]
+		item_data = drag_icon
+		
+		print("if")
+		print(item_data)
+		print(data.origin_node.item_data)
 		
 	else:
 		if data.origin_node == self:
@@ -159,21 +169,21 @@ func drop_data(_pos, data):
 			
 		# temp vars to hold each slots info
 		Server.send_equipment_request(slot, data.from_slot)
-		var drag_icon = data.item_data
-		var drop_icon = item_data
 	
 		AudioControl.play_audio("itemSwap")
 		data.origin_node.dragging = false
 		data.origin_node.item_info_free()
 		self.item_info_free()
-	#	# update beginning slot with destination slot info
+			
+		# update beginning slot with destination slot info
 		data.origin_node.icon.texture = icon.texture
 		data.origin_node.item_data = drop_icon
-		
 		# update distination slot with beginning slot info
 		icon.texture = data["origin_texture"]
 		item_data = drag_icon
-		
+		print("else")
+		print(item_data)
+		print(data.origin_node.item_data)
 """
 Required to add rpc calls to server to swap inventory data.
 Server remove func to validate item move request -> 
