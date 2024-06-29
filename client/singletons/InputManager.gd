@@ -8,7 +8,7 @@ var keybind_dict = {"Shift": 'shift', "Insert": 'ins', "Home": 'home',"PageUp": 
 	 "F1": 'f1', "F2": 'f2', "F3": 'f3', "F4": 'f4', "F5": 'f5', "F6": 'f6', "F7": 'f7', "F8": 'f8', "F9": 'f9', "F0": 'f10', "F11": 'f11', "F12": 'f12',
 	"Q": 'q', "W": 'w', "E": 'e', "R": 'r', "T": 't', "Y": 'y', "U": 'u', "I": 'i', "O": "o", "P": 'p', "BracketLeft": '[', "BracketRight": ']',
 	"A": 'a', "S": 's', "D": 'd', "F": 'f', "G": 'g', "H": 'h', "J": 'j', "K": 'k', "L": 'l', "Semicolon": ';', "Apostrophe": "'",
-	"Z": 'z', "X": 'x', "C": 'c', "V": 'v', "B": 'b', "N": 'n', "M": 'm', "Comma": ',', "Period": '.', "Slash": '/',
+	"Z": 'z', "X": 'x', "C": 'c', "V": 'v', "B": 'b', "N": 'n', "M": 'm', "Comma": ',', "Period": '.', "Slash": '/', "space": "Space"
 }
 
 func _ready():
@@ -91,7 +91,7 @@ func parse_keybind(input: InputEventKey) -> void:
 				#Global.player_node.input = keybind
 			# item
 			elif GameData.itemTable.has(keybind):
-				Server.use_item(keybind,find_item(keybind))
+				Server.use_item(keybind.id,find_item(keybind))
 			else:
 				#print("inputmanager.gd -> parse_keybind else: %s input" % input.as_text())
 				var key = Global.player.keybind[keybind_dict[input.as_text()]]
