@@ -7,9 +7,9 @@
 [ext_resource path="res://scenes/userInerface/InGameUI/PlayerStats.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scenes/userInerface/UIWindowControl.gd" type="Script" id=6]
 [ext_resource path="res://scenes/userInerface/InGameUI/ChatBox.tscn" type="PackedScene" id=7]
-[ext_resource path="res://scenes/userInerface/InGameUI/HotKeys.tscn" type="PackedScene" id=8]
+[ext_resource path="res://scenes/userInerface/InGameUI/HotKeyBar.tscn" type="PackedScene" id=8]
 [ext_resource path="res://scenes/userInerface/InGameUI/Skills.tscn" type="PackedScene" id=9]
-[ext_resource path="res://scenes/userInerface/InGameUI/KeyBinds.tscn" type="PackedScene" id=10]
+[ext_resource path="res://scenes/userInerface/InGameUI/KeybindUI.tscn" type="PackedScene" id=10]
 [ext_resource path="res://scenes/userInerface/DebugWindow/DebuggerWindow.tscn" type="PackedScene" id=11]
 [ext_resource path="res://scenes/userInerface/InGameUI/Equipment.tscn" type="PackedScene" id=12]
 
@@ -48,6 +48,7 @@ anchor_bottom = 0.713889
 rect_scale = Vector2( 0.7, 0.7 )
 
 [node name="KeyBinds" parent="Control" instance=ExtResource( 10 )]
+visible = false
 
 [node name="Equipment" parent="Control" instance=ExtResource( 12 )]
 visible = false
@@ -68,6 +69,7 @@ margin_right = 625.0
 margin_bottom = -80.0
 
 [node name="HotKeys" parent="Control" instance=ExtResource( 8 )]
+visible = false
 margin_left = -655.0
 margin_top = -134.0
 margin_right = 19.0
