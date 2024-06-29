@@ -3,7 +3,7 @@ extends Control
 onready var quantity_popup = preload("res://scenes/menuObjects/PopupMenus/drop_quantity_popup.tscn")
 onready var drop_confirm_popup = preload("res://scenes/menuObjects/PopupMenus/drop_confirm_popup.tscn")
 
-var non_movable_windows = ["InGameMenu", "PlayerHUD", "ChatBox", "Control", "DebuggerWindow", "HotKeys"]
+var non_movable_windows = ["InGameMenu", "PlayerHUD", "ChatBox", "Control", "DebuggerWindow", "HotKeys", "ButtonBar"]
 onready var ui_nodes = {
 	'player_stats': get_node("PlayerStats"),
 	'inventory': get_node("Inventory"),
@@ -22,7 +22,7 @@ func _ready():
 			window.connect('move_to_top', self, 'move_window_to_top')
 
 func move_window_to_top(node):
-	move_child(node, get_child_count() - 5)
+	move_child(node, get_child_count() - 6)
 
 """
 data["origin_node"] = self
