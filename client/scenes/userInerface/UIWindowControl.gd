@@ -32,19 +32,7 @@ data["origin_node"] = self
 		data["tab"] = tab
 		"""
 func drop_data(_pos, data):
-	print("attempt dropped item")
-	# dropping item from inventory
-	if data.origin_node.type == "keybind":
-		data.origin_node.icon.texture = null
-		if data.origin_node.quantity_label.text in GameData.mandatory_keys:
-			Signals.emit_signal("reset_default_keybind", data.origin_node.quantity_label.text)
-		data.origin_node.quantity_label.text = ""
-		data.origin_node.hotkey_data = null
-		data.origin_node.bg.texture = load(data.origin_node.active_bg)
-		Server.remove_keybind(data.origin_node.name)
-		
-		
-	elif data.has("item_data"):
+	if data.has("item_data"):
 		if not GameData.itemTable[data.item_data.id].droppable:
 			print("are you sure you want to drop?")
 			var drop_confirm =  drop_confirm_popup.instance()
@@ -73,6 +61,18 @@ func drop_data(_pos, data):
 			data["tab"] = tab
 			"""
 			Server.drop_request(data.from_slot, data.tab)
+	else:
+		if data.keybind_data.id in GameData.mandatory_keys:
+			print("emitting signal for attak")
+			Signals.emit_signal("reset_default_keybind", data.keybind_data.id)
+		data.origin_node.icon.texture = null
+		data.origin_node.quantity_label.text = ""
+		data.origin_node.hotkey_data = null
+		data.origin_node.bg.texture = load(data.origin_node.empty_bg)
+		Server.remove_keybind(data.origin_node.name)
+		
+		
+	
 	
 # warning-ignore:unused_argument
 func can_drop_data(_pos, data):
