@@ -13,7 +13,7 @@ onready var skill_tab_ref
 onready var skill_tab_data: Array = []
 onready var initialize = 0
 var drag_position = null
-
+onready var type = "skill"
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
