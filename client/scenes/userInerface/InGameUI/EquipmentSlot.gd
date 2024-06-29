@@ -205,8 +205,8 @@ func _on_0_gui_input(event):
 			else:
 				print("trying to unequip %s" % slot)
 				var empty_slot = inventory_room_check()
-				if inventory_room_check():
-					pass
+				if empty_slot:
+					Server.remove_equipment_request(self.slot, empty_slot)
 				else:
 					print("equipment %s been clicked D:" % slot)
 		elif event.button_index == BUTTON_LEFT and event.pressed:
