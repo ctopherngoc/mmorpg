@@ -761,7 +761,7 @@ margin_right = 176.0
 margin_left = 180.0
 margin_right = 212.0
 
-[node name="test" parent="NinePatchRect/MarginContainer/VBoxContainer/UnsetKeyBinds/VBoxContainer/GridContainer" groups=["unsetkeybinds"] instance=ExtResource( 3 )]
+[node name="6" parent="NinePatchRect/MarginContainer/VBoxContainer/UnsetKeyBinds/VBoxContainer/GridContainer" groups=["unsetkeybinds"] instance=ExtResource( 3 )]
 margin_left = 216.0
 margin_right = 248.0
 
@@ -916,3 +916,4 @@ margin_bottom = 68.0
 [editable path="NinePatchRect/MarginContainer/VBoxContainer/HBoxContainer/SetKeyBinds/GridContainer6/lalt"]
 [editable path="NinePatchRect/MarginContainer/VBoxContainer/HBoxContainer/SetKeyBinds/GridContainer6/fn"]
 [editable path="NinePatchRect/MarginContainer/VBoxContainer/HBoxContainer/SetKeyBinds/GridContainer6/lctrl"]
+[editable path="NinePatchRect/MarginContainer/VBoxContainer/UnsetKeyBinds/VBoxContainer/GridContainer/6"]
