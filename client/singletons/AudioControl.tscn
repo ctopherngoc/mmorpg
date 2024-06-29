@@ -47,6 +47,7 @@ bus = "Effects"
 
 [node name="typing" type="AudioStreamPlayer" parent="menu"]
 stream = ExtResource( 18 )
+bus = "Effects"
 
 [node name="combat" type="Node" parent="."]
 
