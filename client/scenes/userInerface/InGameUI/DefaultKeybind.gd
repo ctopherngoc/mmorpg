@@ -56,6 +56,8 @@ func drop_data(_pos, data):
 
 # warning-ignore:unused_argument
 func can_drop_data(_pos, data):
+#	if data.has("item_data") or data.has("skill_data"):
+#		return true
 	return false
 
 func update_hotkey() -> void:
