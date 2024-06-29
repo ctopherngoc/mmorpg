@@ -57,6 +57,10 @@ signal update_equipment
 signal toggle_equipment
 # warning-ignore:unused_signal
 signal update_sprite
+# warning-ignore:unused_signal
+signal reset_default_keybind
+# warning-ignore:unused_signal
+signal key_in_use
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
