@@ -99,7 +99,7 @@ onready var default_keybind_nodes = {
 	"skill": $NinePatchRect/MarginContainer/VBoxContainer/UnsetKeyBinds/VBoxContainer/GridContainer/skill,
 	"inventory": $NinePatchRect/MarginContainer/VBoxContainer/UnsetKeyBinds/VBoxContainer/GridContainer/inventory,
 	"equipment": $NinePatchRect/MarginContainer/VBoxContainer/UnsetKeyBinds/VBoxContainer/GridContainer/equipment,
-	"test": $NinePatchRect/MarginContainer/VBoxContainer/UnsetKeyBinds/VBoxContainer/GridContainer/test,
+	#"test": $NinePatchRect/MarginContainer/VBoxContainer/UnsetKeyBinds/VBoxContainer/GridContainer/test,
 	}
 
 onready var unbound_default_keybind = []
@@ -174,6 +174,7 @@ func populate_key_labels() -> void:
 		elif key == "equipment":
 			default_keybind_nodes[key].label.text = "equip"
 		else:
+			print(key)
 			default_keybind_nodes[key].label.text = key
 		default_keybind_nodes[key].label.rect_min_size = Vector2(30,30)
 		
