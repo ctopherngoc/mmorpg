@@ -53,7 +53,7 @@ rect_min_size = Vector2( 606.5, 22 )
 size_flags_horizontal = 3
 
 [node name="Label" type="Label" parent="VBoxContainer/HBoxContainer"]
-margin_right = 80.0
+margin_right = 82.0
 margin_bottom = 24.0
 rect_min_size = Vector2( 60, 0 )
 size_flags_horizontal = 3
@@ -64,8 +64,9 @@ valign = 1
 
 [node name="Panel" type="Panel" parent="VBoxContainer/HBoxContainer/Label"]
 show_behind_parent = true
-margin_right = 80.0
-margin_bottom = 24.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_min_size = Vector2( 83, 24 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
