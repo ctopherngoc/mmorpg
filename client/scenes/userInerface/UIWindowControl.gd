@@ -3,9 +3,6 @@ extends Control
 onready var quantity_popup = preload("res://scenes/menuObjects/PopupMenus/drop_quantity_popup.tscn")
 onready var drop_confirm_popup = preload("res://scenes/menuObjects/PopupMenus/drop_confirm_popup.tscn")
 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
 var non_movable_windows = ["InGameMenu", "PlayerHUD", "ChatBox", "Control", "DebuggerWindow", "HotKeys"]
 onready var ui_nodes = {
 	'player_stats': get_node("PlayerStats"),
@@ -39,10 +36,13 @@ func drop_data(_pos, data):
 	# dropping item from inventory
 	if data.origin_node.type == "keybind":
 		data.origin_node.icon.texture = null
+		if data.origin_node.quantity_label.text in GameData.mandatory_keys:
+			Signals.emit_signal("reset_default_keybind", data.origin_node.quantity_label.text)
 		data.origin_node.quantity_label.text = ""
 		data.origin_node.hotkey_data = null
 		data.origin_node.bg.texture = load(data.origin_node.active_bg)
 		Server.remove_keybind(data.origin_node.name)
+		
 		
 	elif data.has("item_data"):
 		if not GameData.itemTable[data.item_data.id].droppable:
