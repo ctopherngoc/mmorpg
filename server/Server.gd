@@ -672,7 +672,7 @@ func _unhandled_input(event):
 remote func update_keybind(key: String, type: String, id: String) -> void:
 	var player_id = get_tree().get_rpc_sender_id()
 	var player_container = _Server_Get_Player_Container(player_id)
-	print("items should be 3XXXXX, skills should be 6XXXXX")
+	#print("items should be 3XXXXX, skills should be 6XXXXX")
 	print(type, " and ", id)
 	
 	if type == "use":
@@ -707,7 +707,16 @@ remote func update_keybind(key: String, type: String, id: String) -> void:
 				player_container.current_character.keybind[key] = id
 				update_player_stats(player_container)
 				print("update %s keybind: key %s with %s %s" % [player_id, key, type, id])
-
+	else:
+		for keybind in player_container.current_character.keybind.keys():
+					if player_container.current_character.keybind[keybind] == id:
+						player_container.current_character.keybind[keybind] = null
+						break
+						
+		player_container.current_character.keybind[key] = id
+		update_player_stats(player_container)
+		print("update %s keybind: key %s with %s %s" % [player_id, key, type, id])
+		
 remote func swap_keybind(key1: String, key2: String) -> void:
 	var player_id = get_tree().get_rpc_sender_id()
 	var player_container = _Server_Get_Player_Container(player_id)
@@ -724,7 +733,7 @@ remote func remove_keybind(key: String) -> void:
 	
 	player_container.current_character.keybind[key] = null
 	update_player_stats(player_container)
-	print("player %s remove keybind %s" % [player_id,key])
+	print("player %s remove keybind %s" % [player_id, key])
 
 remote func skill_request(skill: String) -> void:
 	var player_id = get_tree().get_rpc_sender_id()
