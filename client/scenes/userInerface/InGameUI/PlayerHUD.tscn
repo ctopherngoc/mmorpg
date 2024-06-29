@@ -9,7 +9,6 @@
 [ext_resource path="res://scenes/menuObjects/Options/godot-simpleTheme-master/simpleTheme.tres" type="Theme" id=7]
 [ext_resource path="res://scenes/userInerface/InGameUI/HotKeyShortcut.tscn" type="PackedScene" id=8]
 
-
 [node name="PlayerInfo" type="Control"]
 anchor_top = 1.0
 anchor_bottom = 1.0
