@@ -28,7 +28,7 @@ func get_drag_data(_pos):
 			drag_texture.expand = true
 			drag_texture.texture = icon.texture
 			drag_texture.rect_size = Vector2(50, 50)
-			drag_texture.modulate = Color(0,0,0,20)
+			#drag_texture.modulate = Color(0,0,0,155)
 			
 			var drag_label = Label.new()
 			drag_label.text = self.label.text
