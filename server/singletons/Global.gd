@@ -164,7 +164,7 @@ func calculate_stats(player_stats: Dictionary) -> void:
 	else:
 		pass
 
-func npc_hit(dmg_list: Array, npc: KinematicBody2D, player: String):
+func npc_hit(dmg_list: Array, npc: KinematicBody2D, player: KinematicBody2D):
 	"""
 	change dmg_list to list of lists
 	"""
@@ -176,19 +176,20 @@ func npc_hit(dmg_list: Array, npc: KinematicBody2D, player: String):
 			pass
 		elif dmg[0] < npc.stats.currentHP and dmg[0] > 0:
 			npc.stats.currentHP -= dmg[0]
-			if ServerData.username_list[str(player)] in npc.attackers.keys():
-				npc.attackers[ServerData.username_list[str(player)]] += dmg[0]
+			if ServerData.username_list[str(player.name)] in npc.attackers.keys():
+				npc.attackers[ServerData.username_list[str(player.name)]] += dmg[0]
 			else:
-				npc.attackers[ServerData.username_list[str(player)]] = dmg[0]
+				npc.attackers[ServerData.username_list[str(player.name)]] = dmg[0]
 			# apply knockback
-			npc.knockback(dmg[0])
+			npc.knockback(dmg[0], player.position)
+			npc.state = "Hit"
 		# its dead
 		else:
 			if npc.stats.currentHP > 0:
-				if ServerData.username_list[str(player)] in npc.attackers.keys():
-						npc.attackers[ServerData.username_list[str(player)]] += npc.stats.currentHP
+				if ServerData.username_list[str(player.name)] in npc.attackers.keys():
+						npc.attackers[ServerData.username_list[str(player.name)]] += npc.stats.currentHP
 				else:
-					npc.attackers[ServerData.username_list[str(player)]] = npc.stats.currentHP
+					npc.attackers[ServerData.username_list[str(player.name)]] = npc.stats.currentHP
 				npc.stats.currentHP = 0
 		# if dead change state and make it unhittable
 		if npc.stats.currentHP <= 0 and npc.state != "Dead":
@@ -229,8 +230,8 @@ func npc_hit(dmg_list: Array, npc: KinematicBody2D, player: String):
 			# drop items from npc location
 			npc.die()
 		else:
-			npc.state == "hit"
-			npc.start_hit_timer() == "hit"
+			pass
+			#npc.start_hit_timer() == "Hit"
 	if miss_counter == dmg_list.size():
 		npc.miss_counter += 1
 	print("monster: " + npc.name + " :health: " + str(npc.stats.currentHP))
@@ -618,7 +619,7 @@ func calculate_skill_damage(player_container: KinematicBody2D, monster_container
 	var damage_list = damage_formula(projectile_container.skill_data.damageType, player_container.current_character, monster_container.stats, projectile_container.skill_data.hitAmount[projectile_container.skill_level], projectile_container.skill_data.stat.damagePercent[projectile_container.skill_level])
 	#print(damage_list)
 	
-	npc_hit(damage_list, monster_container, player_container.name)
+	npc_hit(damage_list, monster_container, player_container)
 	
 	
 func cancel_buff(player_container: KinematicBody2D, skill_id: String):
