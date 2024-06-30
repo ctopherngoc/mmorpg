@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://scenes/monsterObjects/100010/100010.gd" type="Script" id=1]
+[ext_resource path="res://scenes/monsterObjects/monsterTemplate/monsterTemplate.gd" type="Script" id=1]
 
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 15, 90.625 )
@@ -43,9 +43,6 @@ shape = SubResource( 1 )
 wait_time = 1.5
 autostart = true
 
-[node name="Timer2" type="Timer" parent="."]
-wait_time = 0.5
-
 [node name="ColorRect" type="ColorRect" parent="."]
 margin_left = -63.0
 margin_top = -90.0
@@ -54,4 +51,3 @@ margin_bottom = 90.0
 color = Color( 0.835294, 0.505882, 1, 1 )
 
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
-[connection signal="timeout" from="Timer2" to="." method="_on_Timer2_timeout"]
