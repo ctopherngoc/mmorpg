@@ -312,7 +312,16 @@ func server_firebase_dictionary_converter(database_data: Dictionary) -> Dictiona
 		var keys2 = shortcut2.keys()
 		for key2 in keys2:
 			# added situation if value saved as integervalue
-			temp_dict['stats'][key][key2] = int(shortcut2[key2]['integerValue'])
+			if key2 == "ap":
+				#print(shortcut[key]["mapValue"]["fields"]["ap"])
+				var ap_array = []
+				#print(shortcut2[key2]["arrayValue"])
+				for ap in shortcut2[key2]["arrayValue"]["values"]:
+					ap_array.append(int(ap['integerValue']))
+				temp_dict['stats'][key][key2] = ap_array
+				
+			else:
+				temp_dict['stats'][key][key2] = int(shortcut2[key2]['integerValue'])
 
 	# avatar
 	shortcut = database_data["avatar"]["mapValue"]["fields"]
@@ -353,11 +362,6 @@ func server_firebase_dictionary_converter(database_data: Dictionary) -> Dictiona
 			item_dict["uniqueID"] = str(Global.generate_unique_id(equipment_id))
 			temp_dict['equipment'][key] = item_dict.duplicate(true)
 			
-			#var path = "items/%s" % (str(equipment_id) + str(item_dict.uniqueID)) 
-#			var firebase = Firebase.update_document(path, httprequest, server_token, item_dict)
-#			yield(firebase, 'completed')
-
-			#temp_dict['equipment'][key] = int(shortcut[key]['integerValue'])
 		elif 'nullValue' in shortcut[key].keys():
 			temp_dict['equipment'][key] = null
 		else:
@@ -466,13 +470,21 @@ func server_dictionary_converter(server_data: Dictionary, firebase_data: Diction
 	# stats
 	var shortcut = server_data["stats"]
 	var fb_shortcut = firebase_data['stats']['mapValue']['fields']
-	# base, equipment
+	# base, equipment, buffs
 	for key in shortcut.keys():
 		var shortcut_keys2 = shortcut[key].keys()
 		if not key == "buff":
 			# stats
 			for key2 in shortcut_keys2:
-				fb_shortcut[key]['mapValue']['fields'][key2]['integerValue'] = int(shortcut[key][key2])
+				if key2 == "ap":
+					var ap = []
+					for job_ap in shortcut[key]["ap"]:
+						ap.append({"integerValue": job_ap})
+					fb_shortcut[key]['mapValue']['fields']["ap"]["arrayValue"]["values"] = ap
+					#print(fb_shortcut[key]['mapValue']['fields'])
+					########################################
+				else:
+					fb_shortcut[key]['mapValue']['fields'][key2]['integerValue'] = int(shortcut[key][key2])
 	
 	# avatar
 	shortcut = server_data["avatar"]
@@ -487,7 +499,6 @@ func server_dictionary_converter(server_data: Dictionary, firebase_data: Diction
 	# skills dictionary
 	var fb_skill_dict = {}
 	# list if job skills dicts
-	#print(shortcut.keys())
 	for job in shortcut.keys():
 		var skill_dict = {}
 		# for each skill in job skills dict
@@ -518,9 +529,11 @@ func server_dictionary_converter(server_data: Dictionary, firebase_data: Diction
 					temp_dict[key2] = {'stringValue' : shortcut2[key2]}
 				elif typeof(shortcut2[key2]) == TYPE_INT:
 					temp_dict[key2] = {'integerValue': shortcut2[key2]}
-				elif typeof(shortcut2[key2]) == TYPE_NIL:
-					temp_dict[key2] = {'nullValue': null}
+#				elif typeof(shortcut2[key2]) == TYPE_NIL:
+#					temp_dict[key2] = {'nullValue': null}
 			fb_shortcut[key] = {'mapValue':{'fields': temp_dict}}
+		elif typeof(shortcut[key]) == TYPE_NIL:
+			fb_shortcut[key]['nullValue'] = null
 #####################################################################################################
 	#inventory
 	shortcut = server_data["inventory"]
@@ -600,28 +613,3 @@ func item_data_converter(before: Dictionary, after: Dictionary) -> Dictionary:
 		elif typeof(before[stat]) == TYPE_NIL:
 			after[stat]["nullValue"] = null
 	return{'mapValue':{'fields': after}}
-
-func test_update_document(path: String, data_dict: Dictionary) -> void:
-	
-	# update player 
-	###########################################################################
-#	var fb_data = ServerData.static_data.player_info.duplicate(true)
-#	server_dictionary_converter(data_dict, fb_data)
-#	var document := {"fields": fb_data}
-#	var body := to_json(document)
-#	var url := DATABASE_URL + path
-#	httprequest.request(url, _get_request_headers(server_token), false, HTTPClient.METHOD_PATCH, body)
-#	yield(httprequest, "request_completed")
-	#################################################################################
-#	var fb_data = ServerData.static_data.fb_equipment_template.duplicate(true)
-#	item_data_converter(data_dict, fb_data)
-#	save("res://save.json",fb_data)
-#	var document := {"fields": fb_data}
-#	var body := to_json(document)
-#	var url := DATABASE_URL + path
-	# warning-ignore:return_value_discarded
-	#httprequest.request(url, _get_request_headers(server_token), false, HTTPClient.METHOD_PATCH, body)
-# warning-ignore:unused_variable
-	var new_path = "items/%s" % (data_dict.id + str(data_dict.uniqueID)) 
-	update_document(path, httprequest, server_token, data_dict)
-	#yield(httprequest, "request_completed")
