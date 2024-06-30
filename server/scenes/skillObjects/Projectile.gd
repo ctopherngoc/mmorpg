@@ -158,3 +158,7 @@ func monster_hit(monster_container) -> void:
 func _on_Range_area_entered(area):
 	if not target and skill_data.targetCount[skill_level] == 1:
 		get_closest_target()
+
+
+func _on_Timer_timeout():
+	self.ready = -1
