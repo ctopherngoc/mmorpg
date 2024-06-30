@@ -139,8 +139,6 @@ func can_drop_data(_pos, data):
 		return false
 
 func drop_data(_pos, data):
-	print("datadfgdsfgsdfgsdfgsdfgsdfgsgfsd")
-	print(data)
 	var drag_icon = data.item_data
 	var drop_icon = item_data
 	
@@ -149,24 +147,19 @@ func drop_data(_pos, data):
 		# send server request
 		Server.send_equipment_request(slot, data.from_slot)
 		AudioControl.play_audio("itemSwap")
-		
-		
+
 		# update beginning slot with destination slot info
 		data.origin_node.icon.texture = null
 		data.origin_node.item_data = drop_icon
 		# update distination slot with beginning slot info
 		icon.texture = data["origin_texture"]
 		item_data = drag_icon
-		
-		print("if")
-		print(item_data)
-		print(data.origin_node.item_data)
-		
+
 	else:
 		if data.origin_node == self:
 			print("same node")
 			return
-			
+
 		# temp vars to hold each slots info
 		Server.send_equipment_request(slot, data.from_slot)
 	
@@ -181,9 +174,6 @@ func drop_data(_pos, data):
 		# update distination slot with beginning slot info
 		icon.texture = data["origin_texture"]
 		item_data = drag_icon
-		print("else")
-		print(item_data)
-		print(data.origin_node.item_data)
 """
 Required to add rpc calls to server to swap inventory data.
 Server remove func to validate item move request -> 
@@ -193,7 +183,7 @@ update server char inventory data -> client remote func to update character data
 func _gui_input(event):
 	if event is InputEventMouseButton:
 		if event.button_index == BUTTON_LEFT and event.pressed:
-			#print(item_data)
+
 			if item_data.id:
 				AudioControl.play_audio("menuClick")
 
@@ -219,24 +209,18 @@ func inventory_room_check():
 	var count = 0
 	for inventory_slot in Global.player.inventory.equipment:
 		if inventory_slot == null:
-			return slot
+			return count
 		else:
 			count += 1
 	return null
 
 func _on_0_mouse_exited():
-	#print("mouse exit %s" % item_data.id)
 	while dragging:
 		return
 	if item_data == null:
 		pass
-#	elif GameData.itemTable[str(item_data.id)].itemType == "equipment":
-#		#print("equipment tip queue_free")
-#		get_node("EquipInfo").free()
-#	else:
 	item_info_free()
-	#print("mouse exited item slot")
-	
+
 func item_info_free():
 	for node in self.get_children():
 		if "ItemInfo" in node.name:
