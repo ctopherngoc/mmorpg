@@ -23,7 +23,7 @@ func _ready():
 	Signals.connect("toggle_skills", self, "toggle_skills")
 	
 	poplulate_skills()
-
+	
 	# scroll through tabs (equip, use, etc) notmade yet
 func poplulate_skills():
 	# inventory_tabs can be changed to global.player.inventory
@@ -32,7 +32,7 @@ func poplulate_skills():
 	var tabs = skill_tab_ref.keys()
 	#print("keys: %s" % tabs)
 	#print("typeof: %s" % typeof(tabs[0]))
-	ap_label.text = str(Global.player.stats.base.ap)
+	ap_label.text = str(Global.player.stats.base.ap[tab_container.current_tab])
 	
 	# for job tab
 	var count = 0
@@ -74,7 +74,9 @@ func poplulate_skills():
 				else:
 					skill_container_new.get_node("HBoxContainer/NinePatchRect/Icon").texture = skill_container_new.to_gray_scale(load(GameData.skill_class_dictionary[skill_container_new.skill_data.id].icon))
 				# if character ap > 1
-				if Global.player.stats.base.ap == 0 or skill_tab_ref[str(tab_count-1)][str(skill_count)] == GameData.skill_data[str(tab_count-1)][str(skill_count)].maxLevel:
+				print(Global.player.stats.base.ap)
+				print(typeof(Global.player.stats.base.ap[count]))
+				if Global.player.stats.base.ap[count] == 0 or skill_tab_ref[str(tab_count-1)][str(skill_count)] == GameData.skill_data[str(tab_count-1)][str(skill_count)].maxLevel:
 					skill_container_new.get_node("HBoxContainer/VBoxContainer/HBoxContainer2/Button").visible = false
 				skill_tab_new.get_node("ScrollContainer/GridContainer").add_child(skill_container_new, true)
 				skill_count += 1
@@ -83,7 +85,8 @@ func poplulate_skills():
 			
 func update_skills():
 	skill_tab_ref = Global.player.skills
-	ap_label.text = str(Global.player.stats.base.ap)
+	#ap_label.text = str(Global.player.stats.base.ap)
+	ap_label.text = str(Global.player.stats.base.ap[tab_container.current_tab])
 	
 	for job in Global.player.skills.keys():
 		
@@ -114,7 +117,7 @@ func update_skills():
 				skill_container_new.get_node("HBoxContainer/VBoxContainer/HBoxContainer2/Label2").text = str(skill_tab_ref[str(job)][str(skill_count)])
 				
 				# if character ap > 1
-				if Global.player.stats.base.ap == 0 or skill_tab_ref[str(job)][str(skill_count)] == GameData.skill_data[str(job)][str(skill_count)].maxLevel:
+				if Global.player.stats.base.ap[tab_container.current_tab] == 0 or skill_tab_ref[str(job)][str(skill_count)] == GameData.skill_data[str(job)][str(skill_count)].maxLevel:
 					skill_container_new.get_node("HBoxContainer/VBoxContainer/HBoxContainer2/Button").visible = false
 				skill_tab_new.get_node("ScrollContainer/GridContainer").add_child(skill_container_new)
 				skill_count += 1
@@ -132,7 +135,7 @@ func update_skills():
 						if update_skill_container.skill_data.level > 0:
 							update_skill_container.get_node("HBoxContainer/NinePatchRect/Icon").texture = load(GameData.skill_class_dictionary[update_skill_container.skill_data.id].icon)
 						
-						if Global.player.stats.base.ap == 0 or skill_tab_ref[tab][skill] == GameData.skill_data[tab][skill].maxLevel:
+						if Global.player.stats.base.ap[tab_container.current_tab] == 0 or skill_tab_ref[tab][skill] == GameData.skill_data[tab][skill].maxLevel:
 							update_skill_container.get_node("HBoxContainer/VBoxContainer/HBoxContainer2/Button").visible = false
 #		
 
@@ -150,3 +153,7 @@ func _on_Header_gui_input(event):
 
 func toggle_skills():
 	self.visible = not self.visible
+
+
+func _on_TabContainer_tab_changed(tab):
+	ap_label.text = str(Global.player.stats.base.ap[tab_container.current_tab])
