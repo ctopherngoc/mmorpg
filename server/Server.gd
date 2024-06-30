@@ -577,61 +577,12 @@ remote func add_stat(stat: String) -> void:
 		send_client_notification(player_id, "added 1 to %s" % stat)
 	else:
 		send_client_notification(player_id, "not enough sp")
-######################################################################
-# test buttons
-func _on_Button_pressed():
-	$Test/PlayerContainer.attack(0)
-
-# function takes current_character
-func _on_Button2_pressed():
-	Global.calculate_stats($Test/PlayerContainer.current_character)
-func _on_Button3_pressed():
-#	print("dropping potion")
-#	Global.dropSpawn("100001", Vector2(231, -405), {"300000": 1}, "PlayerContainer")
-#	print("testcase 1")
-#	print("dropping leather pants")
-	var bottom = {"500003": 1, "accuracy":0, "attack":15, "avoidability":0, "bossPercent":5, "critRate":0, "damagePercent":0, "defense":0, "dexterity":4, "job":0, "jumpSpeed":0, "luck":5, "magic":0, "magicDefense":0, "maxHealth":0, "maxMana":0, "movementSpeed":0, "name":"Leather Bottom", "slot":7, "speed":5, "strength":5, "type":"bottom", "wisdom":5, "uniqueID": 100000000}
-	Global.dropSpawn("100001",  Vector2(231, -405), {"500003": bottom}, "testing123")
-	#print("dropping  200 gold")
-	#Global.dropSpawn("100001",  Vector2(231, -405), {"100000": 200}, "testing123")
-#	print("cuurent gold: %s" % Global.testplayer.current_character.inventory["100000"])
-	
-	#print("setting testplayer max gold")
-	#Global.testplayer.current_character.inventory["100000"] = Global.max_int -10
-	#print("cuurent gold: %s" % Global.testplayer.current_character.inventory["100000"])
-
-func _on_Button4_pressed():
-	#print("testing loot request")
-	var test_player = $Test/PlayerContainer
-	test_player.loot_request()
-	#print("cuurent gold: %s" % Global.testplayer.current_character.inventory["100000"])
-
-
-func _on_Button5_pressed():
-#	print("firebase button press")
-#	var server_dict = ServerData.characters_data["testing222"].duplicate(true)
-#	server_dict.inventory.use[3] = {"id": "300001", "q": 123}
-	#server_dict.inventory.use[3] = null
-	#server_dict.equipment.rweapon = {"accuracy":0, "type": "1h_sword", "id": 10000}
-	#server_dict.equipment.rweapon =  {"accuracy":0, "attack":15, "avoidability":0, "bossPercent":5, "critRate":0, "damagePercent":0, "defense":0, "dexterity":4, "id":"200001", "job":0, "jumpSpeed":0, "luck":5, "magic":0, "magicDefense":0, "maxHealth":0, "maxMana":0, "movementSpeed":0, "name":"Training Sword", "slot":7, "speed":5, "strength":5, "type":"1h_sword", "wisdom":5, "uniqueID": 100000000}
-	#server_dict.equipment.rweapon = ServerData.characters_data["duma123"].equipment.rweapon
-	#server_dict.equipment.top = {"id": 500000}
-	#save("res://save.json",fb_data)
-	#Firebase.test_update_document("characters/testing222", server_dict)
-	#print(ServerData.characters_data["testing222"]["inventory"]["equipment"][0])
-	#var actual_equip = ServerData.characters_data["testing222"]["inventory"]["equipment"][0]
-	#var server_dict =  {"owner": "testing222", "accuracy":0, "attack":15, "avoidability":0, "bossPercent":5, "critRate":0, "damagePercent":0, "defense":0, "dexterity":4, "id":"200001", "job":0, "jumpSpeed":0, "luck":5, "magic":0, "magicDefense":0, "maxHealth":0, "maxMana":0, "movementSpeed":0, "name":"Training Sword", "slot":7, "movementSpeed":5, "strength":5, "type":"1h_sword", "wisdom":5, "uniqueID": 10000002}
-	#print(server_dict)
-	var server_dict =  {"owner": "testing222", "id":"200001", "uniqueID": "10000002", "name": "test_item", "type": "1h_sword"}
-	Firebase.test_update_document("items/%s" % str(server_dict.id + str(server_dict.uniqueID)), server_dict)
 	
 func save(var path : String, var thing_to_save):
 	var file = File.new()
 	file.open(path, File.WRITE)
 	file.store_line(JSON.print(thing_to_save, "\t"))
 	file.close()
-
-####################################################################################
 
 remote func send_chat(text: String, chat_type: int) -> void:
 	var player_id = get_tree().get_rpc_sender_id()
@@ -738,8 +689,6 @@ remote func remove_keybind(key: String) -> void:
 remote func skill_request(skill: String) -> void:
 	var player_id = get_tree().get_rpc_sender_id()
 	var player_container = _Server_Get_Player_Container(player_id)
-	#print(player_container)
-	#print(player_container.position)
 	var skill_class
 	var skill_data
 	
@@ -754,8 +703,8 @@ remote func skill_request(skill: String) -> void:
 				skill_data = ServerData.skill_data[skill_class.location[0]][skill_class.location[1]]
 				# get skill level
 				var player_skill_data = player_container.current_character.skills[skill_class.location[0]][skill_class.location[1]]
-				
-				player_container.current_character.stats.base.mana = player_container.current_character.stats.base.maxMana
+				if player_container.current_character.displayname == "111111":
+					player_container.current_character.stats.base.mana = player_container.current_character.stats.base.maxMana
 				# check mana cost
 				if player_container.current_character.stats.base.mana >= skill_data.mana[player_skill_data - 1]:
 					# update mana
@@ -845,25 +794,25 @@ remote func increase_skill(skill_id: String, level: int) -> void:
 	
 	if skill_class.location[0] == "0" or player_container.current_player.stats.job in skill_class.class:
 		print("inside")
-				
+
 		var skill_data = ServerData.skill_data[skill_class.location[0]][skill_class.location[1]]
 		var player_skill_level = player_container.current_character.skills[skill_class.location[0]][skill_class.location[1]]
 		print("maxLevel %s, player skill level: %s" % [skill_data.maxLevel, player_skill_level])
 		
-		if player_skill_level == level and player_container.current_character.stats.base.ap > 0 and player_skill_level < skill_data.maxLevel:
+		if player_skill_level == level and player_container.current_character.stats.base.ap[skill_class.job] > 0 and player_skill_level < skill_data.maxLevel:
 			print("inside 2")
-			print("before %s %s lvl %s" %[player_container.current_character.stats.base.ap, skill_id, player_skill_level])
-			player_container.current_character.stats.base.ap -= 1
+			print("before %s %s lvl %s" %[player_container.current_character.stats.base.ap[skill_class.job], skill_id, player_skill_level])
+			player_container.current_character.stats.base.ap[skill_class.job] -= 1
 			player_container.current_character.skills[skill_class.location[0]][skill_class.location[1]] += 1
-			print("after %s %s lvl %s" %[player_container.current_character.stats.base.ap, skill_id, player_container.current_character.skills[skill_class.location[0]][skill_class.location[1]]])
+			print("after %s %s lvl %s" %[player_container.current_character.stats.base.ap[skill_class.job], skill_id, player_container.current_character.skills[skill_class.location[0]][skill_class.location[1]]])
 			
 			update_player_stats(player_container)
 
 remote func equipment_request(equipment_slot, inventory_slot) -> void:
 	var player_id = get_tree().get_rpc_sender_id()
 	var player_container = _Server_Get_Player_Container(player_id)
-	print(equipment_slot)
-	print(inventory_slot)
+	#print(equipment_slot)
+	#print(inventory_slot)
 	# get slot item type
 	var item = player_container.current_character.inventory.equipment[inventory_slot]
 	var equipment = player_container.current_character.equipment[equipment_slot]
@@ -872,7 +821,7 @@ remote func equipment_request(equipment_slot, inventory_slot) -> void:
 		player_container.current_character.equipment[equipment_slot] = item
 		player_container.current_character.inventory.equipment[inventory_slot] = temp_equipment
 
-		print(player_container.current_character.inventory.equipment[inventory_slot])
+		#print(player_container.current_character.inventory.equipment[inventory_slot])
 		# remove unequiped item stats
 		if equipment:
 			for stats in player_container.current_character.stats.equipment.keys():
@@ -891,6 +840,7 @@ remote func remove_equipment_request(equipment_slot, inventory_slot) -> void:
 	var player_container = _Server_Get_Player_Container(player_id)
 	
 	var equipment = player_container.current_character.equipment[equipment_slot]
+	#print(equipment_slot, " ", inventory_slot)
 	
 	if not player_container.current_character.inventory.equipment[inventory_slot]:
 		player_container.current_character.inventory.equipment[inventory_slot] = equipment
