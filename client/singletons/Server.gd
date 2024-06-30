@@ -362,6 +362,7 @@ func send_equipment_request(equipment_slot, inventory_slot) -> void:
 	
 func remove_equipment_request(equipment_slot, inventory_slot) -> void:
 	print("remove_equipment_request succcess")
+	print(equipment_slot, " ", inventory_slot)
 	rpc_id(1, "remove_equipment_request", equipment_slot, inventory_slot)
 
 #remote func return_remove_equipment_() -> void:
