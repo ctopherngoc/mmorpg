@@ -46,9 +46,9 @@ onready var skill_data = {
 }
 
 onready var skill_class_dictionary = {
-	"600000" : {"class":[0,1,2,3,4], "location": ["0","0"]},
-	"600001" : {"class":[0,1,2,3,4], "location": ["0","1"]},
-	"600002" : {"class":[0,1,2,3,4], "location": ["0","2"]},
+	"600000" : {"class":[0,1,2,3,4], "location": ["0","0"], "job": 0},
+	"600001" : {"class":[0,1,2,3,4], "location": ["0","1"], "job": 0},
+	"600002" : {"class":[0,1,2,3,4], "location": ["0","2"], "job": 0},
 }
 
 var monsters = {
@@ -106,7 +106,13 @@ var static_data = {
 							#"class": {'integerValue': null},
 							"job": {'integerValue': null},
 							"sp": {'integerValue': null},
-							"ap": {'integerValue': null},
+							"ap": {'arrayValue':
+								{'values':[
+									{"integerValue": null},
+									{"integerValue": null},
+									{"integerValue": null},
+									{"integerValue": null}]},
+								},
 							"strength": {'integerValue': null},
 							"wisdom": {'integerValue': null},
 							"dexterity": {'integerValue': null},
@@ -233,7 +239,7 @@ var static_data = {
 				#"class": 0,
 				"job": 0,
 				"sp": 0,
-				"ap": 0,
+				"ap": [0,0,0,0,0],
 				"strength": 4,
 				"wisdom": 4,
 				"dexterity": 4,
