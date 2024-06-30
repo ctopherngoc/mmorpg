@@ -179,39 +179,33 @@ func _gui_input(event):
 func _on_0_gui_input(event):
 	if event is InputEventMouseButton:
 		if event.button_index == BUTTON_LEFT and event.pressed and event.is_doubleclick():
-			#print("double click,use item: %s %s" % [item_data.id, item_data.item])
 			if item_data.id == null:
 				print("empty")
 			elif GameData.itemTable[item_data.id].itemType == "use":
-				#print("use")
 				var q = int(label.text) -1
-				#print(q)
 				label.text = str(q)
 				Server.use_item(item_data.id, slot_index)
-				#print(GameData.itemTable[item_data.id].description)
+			elif GameData.itemTable[item_data.id].itemType == "equipment":
+				if GameData.equipmentTable[item_data.id].type == "weapon":
+					Server.send_equipment_request("rweapon", slot_index)
+				elif GameData.equipmentTable[item_data.id].type == "shield":
+					Server.send_equipment_request("lweapon", slot_index)
+				else:
+					Server.send_equipment_request(GameData.equipmentTable[item_data.id].type, slot_index)
 			else:
 				pass
-				#print("not use")
-				#print(GameData.itemTable[item_data.id].description)
-#		elif event.button_index == BUTTON_LEFT and event.pressed:
-#			print("I've been clicked D:")
-
 
 func _on_0_mouse_entered():
 	if item_data.id == null:
 		pass
 	else:
-		#print(item_data.id)
 		if GameData.itemTable[str(item_data.id)].itemType == "equipment" and tab == "equipment":
 			var equip_tip = equip_info.instance()
 			equip_tip.origin = "Inventory"
 			equip_tip.slot = slot_index
 			equip_tip.tab = tab
-			#var inventory_origin = get_node("/root/currentScene/UI/Control/Inventory").get_global_transform_with_canvas().origin
 			var inventory_origin = get_node("/root/GameWorld/UI/Control/Inventory").rect_global_position
-			#equip_tip.rect_position.x = inventory_origin.x - (equip_tip.rect_size.x * equip_tip.rect_scale.x)
 			equip_tip.rect_position.x = inventory_origin.x - (equip_tip.rect_size.x * .72)
-			#print((equip_tip.rect_size.x * .7))
 			equip_tip.rect_position.y = inventory_origin.y
 			add_child(equip_tip)
 			yield(get_tree().create_timer(0.35), "timeout")
@@ -235,17 +229,12 @@ func _on_0_mouse_entered():
 				get_node("ItemInfo").show()
 
 func _on_0_mouse_exited():
-	#print("mouse exit %s" % item_data.id)
 	while dragging:
 		return
 	if item_data.id == null:
 		pass
-#	elif GameData.itemTable[str(item_data.id)].itemType == "equipment":
-#		#print("equipment tip queue_free")
-#		get_node("EquipInfo").free()
-#	else:
 	item_info_free()
-	#print("mouse exited item slot")
+
 	
 func item_info_free():
 	for node in self.get_children():
