@@ -132,7 +132,7 @@ func normal_attack() -> void:
 				for mob in mobs_hit:
 					var mob_parent = mob.get_parent()
 					var damage_list = Global.damage_formula(1, current_character, mob_parent.stats)
-					Global.npc_hit(damage_list, mob_parent, self.name)
+					Global.npc_hit(damage_list, mob_parent, self)
 		# singe mob physical basic attack
 		else:
 			var closest = null
@@ -145,7 +145,7 @@ func normal_attack() -> void:
 			var mob_parent = closest.get_parent()
 			var damage_list = Global.damage_formula(1, current_character, mob_parent.stats)
 			#mob_parent.npc_hit(damage, self.name)
-			Global.npc_hit(damage_list, mob_parent, self.name)
+			Global.npc_hit(damage_list, mob_parent, self)
 	# uses skill
 	attacking = false
 
@@ -171,7 +171,7 @@ func skill_attack(skill_data: Dictionary, skill_level: int) -> void:
 					for mob in mobs_hit:
 						var mob_parent = mob.get_parent()
 						var damage_array = Global.damage_formula(skill_data["damangeType"], current_character, mob_parent.stats, skill_data.hitAmount[skill_level], skill_data.damagePercent[skill_level])
-						Global.npc_hit(damage_array, mob_parent, self.name)
+						Global.npc_hit(damage_array, mob_parent, self)
 			# singe mob physical basic attack
 			else:
 				var closest = null
@@ -184,7 +184,7 @@ func skill_attack(skill_data: Dictionary, skill_level: int) -> void:
 				var mob_parent = closest.get_parent()
 				var damage_array = Global.damage_formula(1, current_character, mob_parent.stats)
 				#mob_parent.npc_hit(damage, self.name)
-				Global.npc_hit(damage_array, mob_parent, self.name)
+				Global.npc_hit(damage_array, mob_parent, self)
 
 func overlapping_bodies() -> void:
 	#if $attack_range.get_overlapping_areas().size() > 0:
