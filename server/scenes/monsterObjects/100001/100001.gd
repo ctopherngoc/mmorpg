@@ -15,17 +15,17 @@ var gravity = 1600
 var speed_factor = 0.5
 var move_state
 var attackers = {}
-onready var hit_timer = $Timer2
 onready var target_node
 onready var target_position
+onready var knockback_position
+onready var knockback_power = 1000
 
 func _ready():
 	stats = ServerData.monsterTable[self.id].duplicate(true)
 	
 func _process(delta):
 	touch_damage()
-	
-	if state != "hit":
+	if state != "Hit":
 		if is_on_floor():
 			#var _my_random_number = rng.randi_range(1, 100)
 			var target = get_target()
@@ -34,12 +34,16 @@ func _process(delta):
 					target_node = get_node(ServerData.player_location[ServerData.ign_id_dict[target]] + "/%s" % ServerData.ign_id_dict[target])
 					target_position = get_distance_from_target(target_node)
 				# if target does not change or new target
-				if target == target_node.current_character.displayname:
+				if is_instance_valid(target_node) and target == target_node.current_character.displayname:
 					# if not at destination target_position -> keep moving towards it
 					#print(self.position, " ",target_position)
 					if floor(self.position.x) != floor(target_position.x):
 						#print("here")
 						var current_position = self.position
+						if target_position.x >= self.position.x:
+							direction = Vector2.RIGHT
+						else:
+							direction = Vector2.LEFT
 						position = position.move_toward(target_position, stats.movementSpeed * delta * speed_factor)
 						# walking into wall
 						#print(self.position, " ", current_position)
@@ -53,15 +57,22 @@ func _process(delta):
 							target_position = get_distance_from_target(target_node)
 					# if at destination -> get new location to move to -> move
 					else:
-						print("ontop")
 						# player_container still in scene, player ign in dict, player in same map
 						target_position = get_distance_from_target(target_node)
+						if target_position.x >= self.position.x:
+							direction = Vector2.RIGHT
+						else:
+							direction = Vector2.LEFT
 						position = position.move_toward(target_position, stats.movementSpeed * delta * speed_factor)
 				
 				# if new target != previous target
 				else:
 					var target_node = get_node(ServerData.player_location[ServerData.ign_id_dict[target]] + "/%s" % ServerData.ign_id_dict[target])
 					target_position = get_distance_from_target(target_node)
+					if target_position.x >= self.position.x:
+						direction = Vector2.RIGHT
+					else:
+						direction = Vector2.LEFT
 					position = position.move_toward(target_position, stats.movementSpeed * delta * speed_factor)
 			else:
 				if move_state == 1:
@@ -76,9 +87,13 @@ func _process(delta):
 					velocity.x = 0
 		velocity.y += gravity * delta
 		velocity = move_and_slide(velocity, Vector2.UP)
-
-	velocity.y += gravity * delta
-	velocity = move_and_slide(velocity, Vector2.UP)
+	else:
+		# if hit apply knockback
+		#print("knockback")
+		position = position.move_toward(knockback_position, knockback_power * delta * speed_factor)
+		if position == knockback_position:
+			#print("reset idle state")
+			self.state = "idle"
 
 func _on_Timer_timeout():
 	move_state = floor(rand_range(0,3))
@@ -97,15 +112,7 @@ func die():
 func update_state() -> void:
 	parent.enemy_list[int(self.name)]["DamageList"] = damage_taken.duplicate(true)
 	damage_taken.clear()
-	
-func knockback(dmg: int) -> void:
-	print("test kockback")
 
-func _on_Timer2_timeout() -> void:
-	self.state = "idle"
-
-func start_hit_timer() -> void:
-	hit_timer.start()
 func get_target() -> String:
 	if attackers.empty():
 		return "none"
@@ -146,3 +153,13 @@ func if_player_in_map(display_name) -> bool:
 		if map_id in ServerData.player_location[ServerData.ign_id_dict[display_name]] + "/%s" % ServerData.ign_id_dict[display_name]:
 			return true
 	return false
+
+func knockback(damage, player_position) -> void:
+	#print("knockback: ", damage, " ", player_position)
+	if damage > 0:
+		# get direction
+		var hit_direction = self.position.x - player_position.x
+		if hit_direction > 0:
+			knockback_position = Vector2(self.position.x + 25, self.position.y)
+		elif hit_direction < 0:
+			knockback_position = Vector2(self.position.x - 25, self.position.y)
