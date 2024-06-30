@@ -147,4 +147,5 @@ margin_right = 40.0
 margin_bottom = 40.0
 
 [connection signal="gui_input" from="Background/M/V/Header" to="." method="_on_Header_gui_input"]
+[connection signal="tab_changed" from="Background/M/V/TabContainer" to="." method="_on_TabContainer_tab_changed"]
 [connection signal="tab_selected" from="Background/M/V/TabContainer" to="." method="_on_TabContainer_tab_selected"]
