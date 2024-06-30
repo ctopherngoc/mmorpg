@@ -248,10 +248,18 @@ func experience(experience: int) -> void:
 			#print("%s Level Up" % current_character.displayname)
 			
 			# add ability point skill points
-			if current_character.stats.base.job != 0:
-				current_character.stats.base.ap += 3
+			####################################################################################
+			if current_character.stats.level <= 10:
+				current_character.stats.base.ap[0] += 1
+			elif current_character.stats.level > 10 and current_character.stats.level <= 30:
+				current_character.stats.base.ap[1] += 3
+			elif current_character.stats.level > 30 and current_character.stats.level <= 70:
+				current_character.stats.base.ap[2] += 3
+			elif current_character.stats.level > 70 and current_character.stats.level <= 120:
+				current_character.stats.base.ap[3] += 3
 			else:
-				current_character.stats.base.ap += 1
+				current_character.stats.base.ap[4] += 3
+			#####################################################################################
 			# update exp_limit for multiple levels
 			get_node("/root/Server").update_player_stats(self)
 			exp_limit = ServerData.static_data.experience_table[str(current_character.stats.base.level)]
