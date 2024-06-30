@@ -703,7 +703,7 @@ remote func skill_request(skill: String) -> void:
 				skill_data = ServerData.skill_data[skill_class.location[0]][skill_class.location[1]]
 				# get skill level
 				var player_skill_data = player_container.current_character.skills[skill_class.location[0]][skill_class.location[1]]
-				if player_container.current_character.displayname == "111111":
+				if player_container.current_character.displayname == "1111111":
 					player_container.current_character.stats.base.mana = player_container.current_character.stats.base.maxMana
 				# check mana cost
 				if player_container.current_character.stats.base.mana >= skill_data.mana[player_skill_data - 1]:
