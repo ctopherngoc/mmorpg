@@ -124,7 +124,10 @@ func _physics_process(_delta: float) -> void:
 									monster_node.on_death()
 							else:
 								var new_position = lerp(world_state_buffer[1]["E"][monster]["EnemyLocation"], world_state_buffer[2]["E"][monster]["EnemyLocation"], interpolation_factor)
-								monster_node.move(new_position)
+								#print(monster_node.monster_id)
+								#print(world_state_buffer[2]["E"][monster]["EnemyState"])
+								#print(world_state_buffer[2]["E"][monster]["Direction"])
+								monster_node.move(new_position, world_state_buffer[2]["E"][monster]["EnemyState"], world_state_buffer[2]["E"][monster]["Direction"])
 								#monster_node.health(world_state_buffer[1]["E"][monster]["EnemyHealth"])
 						else:
 							# if actually alive respawned monster
@@ -244,7 +247,7 @@ func _physics_process(_delta: float) -> void:
 									monster_node.on_death()
 							else:
 								var new_position = world_state_buffer[1]["E"][monster]["EnemyLocation"]
-								monster_node.move(new_position)
+								monster_node.move(new_position, world_state_buffer[1]["E"][monster]["EnemyState"], world_state_buffer[1]["E"][monster]["Direction"])
 						else:
 							# if actually alive respawned monster
 							if world_state_buffer[1]["E"][monster]['time_out'] != 0 && world_state_buffer[1]["E"][monster]['EnemyState'] != "Dead":
@@ -388,18 +391,18 @@ func server_reconciliation(server_input_data: Dictionary) -> void:
 				#print("server: ", serverx," ", servery, " ", "client: ", clientx, " ", clienty)
 				var player_node = get_node("/root/GameWorld/MapNode/%s/Player" % Global.current_map)
 				if abs(serverx - clientx) > 1 and player_node.is_climbing:
-					print("climbing fix")
-					print("server: ", serverx," ", servery, " ", "client: ", clientx, " ", clienty)
+					#print("climbing fix")
+					#print("server: ", serverx," ", servery, " ", "client: ", clientx, " ", clienty)
 					var recon_position = lerp(input_queue[i]["P"],server_input_data["P"], 0.85)
 					player_node.set_position(recon_position)
 					#print("recon")
 					#print("server: ", server_input_data["P"], " client: ",input_queue[i]["P"])
 				elif not player_node.is_on_floor() and not player_node.is_climbing:
-					print("jumping")
+					#print("jumping")
 					pass
 				elif abs(serverx - clientx) > 50 or abs(servery - clienty) > 50:
-					print("greater than 15")
-					print("server: ", serverx," ", servery, " ", "client: ", clientx, " ", clienty)
+					#print("greater than 15")
+					#print("server: ", serverx," ", servery, " ", "client: ", clientx, " ", clienty)
 					var recon_position = lerp(input_queue[i]["P"],server_input_data["P"], 0.85)
 					#var new_position = lerp(Vector2(clientx, clienty), Vector2(serverx, servery), interpolation_factor)
 					#var new_position = lerp(input_queue[i]["P"], server_input_data["P"], .75)
