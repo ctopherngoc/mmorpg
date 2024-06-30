@@ -58,6 +58,7 @@ func _process(_delta):
 				enemy_list[monster_id]['EnemyLocation'] = monster_container.position
 				enemy_list[monster_id]['EnemyHealth'] = monster_container.stats.currentHP
 				enemy_list[monster_id]['EnemyState'] = monster_container.state
+				enemy_list[monster_id]['Direction'] = monster_container.direction.x
 				enemy_list[monster_id]['MissCounter'] = monster_container.miss_counter
 				if monster_container.damage_taken.size() > 0:
 					counter = 0
@@ -91,6 +92,7 @@ func SpawnEnemy():
 				########################################### 
 				# spawns server enemy in map
 				var new_enemy = enemy_types[i].instance()
+				new_enemy.id = new_enemy.name
 				new_enemy.map_id = map_id
 				new_enemy.position = location
 				new_enemy.name = str(i)
