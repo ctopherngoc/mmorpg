@@ -76,6 +76,8 @@ func get_drag_data(_pos):
 func can_drop_data(position, data):
 	if data.has("keybind_data") or data.has("item_data") or data.has("skill_data"):
 		return true
+	else:
+		return false
 		
 func drop_data(_pos, data):
 	print("attmepting to assign item to hotkey %s" % key)
@@ -194,8 +196,8 @@ func update_hotkey() -> void:
 			hotkey_data["q"] = 0
 			quantity_label.text = "0"
 
-func can_drop_data(_pos, data):
-	if data.has("keybind_data") or data.has("spell_data"):
-		return true
-	else:
-		return false
+#func can_drop_data(_pos, data):
+#	if data.has("keybind_data") or data.has("spell_data"):
+#		return true
+#	else:
+#		return false
