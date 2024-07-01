@@ -57,7 +57,7 @@ tile_data = PoolIntArray( -1245186, 7, 0, -1179650, 8, 0, -1114114, 8, 0, -10485
 [node name="Projectiles" type="YSort" parent="."]
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
-position = Vector2( 102, -275 )
+position = Vector2( -93, -332 )
 
 [node name="Ammo" parent="Player/CompositeSprite" index="0"]
 frame = 16
