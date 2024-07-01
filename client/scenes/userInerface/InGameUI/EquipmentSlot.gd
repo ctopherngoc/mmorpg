@@ -211,9 +211,9 @@ func _on_0_mouse_entered():
 		var equip_tip = equip_info.instance()
 		equip_tip.origin = "Equipment"
 		equip_tip.tab = slot
-		var inventory_origin = get_node("/root/GameWorld/UI/Control/Equipment").rect_global_position
-		equip_tip.rect_position.x = inventory_origin.x + (equip_tip.rect_size.x * equip_tip.rect_scale.x) - 5
-		equip_tip.rect_position.y = inventory_origin.y
+		var inventory_origin = get_node("/root/GameWorld/UI/Control/Equipment")
+		equip_tip.rect_position.x = inventory_origin.rect_global_position.x + (inventory_origin.rect_size.x * inventory_origin.rect_scale.x)
+		equip_tip.rect_position.y = inventory_origin.rect_global_position.y
 		add_child(equip_tip)
 		yield(get_tree().create_timer(0.35), "timeout")
 		if has_node("ItemInfo") and get_node("ItemInfo").valid:
