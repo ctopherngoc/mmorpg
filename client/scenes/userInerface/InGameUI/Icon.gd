@@ -205,7 +205,7 @@ func _on_0_mouse_entered():
 			equip_tip.slot = slot_index
 			equip_tip.tab = tab
 			var inventory_origin = get_node("/root/GameWorld/UI/Control/Inventory").rect_global_position
-			equip_tip.rect_position.x = inventory_origin.x - (equip_tip.rect_size.x * .72)
+			equip_tip.rect_position.x = inventory_origin.x - (equip_tip.rect_size.x *  equip_tip.rect_scale.x) + 5
 			equip_tip.rect_position.y = inventory_origin.y
 			add_child(equip_tip)
 			yield(get_tree().create_timer(0.35), "timeout")
@@ -220,7 +220,7 @@ func _on_0_mouse_entered():
 			item_tip.tab = tab
 			#var inventory_origin = get_node("/root/currentScene/UI/Control/Inventory").get_global_transform_with_canvas().origin
 			var inventory_origin = get_node("/root/GameWorld/UI/Control/Inventory").rect_global_position
-			item_tip.rect_position.x = inventory_origin.x - (item_tip.rect_size.x * item_tip.rect_scale.x)
+			item_tip.rect_position.x = inventory_origin.x - (item_tip.rect_size.x * item_tip.rect_scale.x) + 5
 			item_tip.rect_position.y = inventory_origin.y
 			add_child(item_tip)
 			yield(get_tree().create_timer(0.35), "timeout")

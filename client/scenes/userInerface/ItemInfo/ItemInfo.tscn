@@ -5,6 +5,7 @@
 [ext_resource path="res://assets/UI/background/window_background2.png" type="Texture" id=3]
 
 [node name="ItemInfo" type="Popup"]
+visible = true
 margin_right = 382.0
 margin_bottom = 242.0
 rect_min_size = Vector2( 382, 242 )
@@ -88,7 +89,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="Label" type="Label" parent="Background/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
-margin_right = 179.0
+margin_right = 174.0
 margin_bottom = 204.0
 rect_min_size = Vector2( 166, 192 )
 rect_pivot_offset = Vector2( 1069, -103 )

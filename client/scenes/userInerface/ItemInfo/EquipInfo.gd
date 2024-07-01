@@ -8,15 +8,15 @@ var valid: bool = false
 
 var itemStat = preload("res://scenes/userInerface/ItemInfo/ItemStatsLine.tscn")
 
-onready var extraStats = $N/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer
-onready var itemName = $N/MarginContainer/VBoxContainer/Label
-onready var reqLevel = $N/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/LevelJob/Level/Label2
-onready var reqJob = $N/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/LevelJob/Job/Label2
-onready var reqStr = $N/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ReqStats/STRLUK/Str/Label2
-onready var reqLuk = $N/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ReqStats/STRLUK/Luk/Label2
-onready var reqDex = $N/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ReqStats/DEXWIS/Dex/Label2
-onready var reqWis = $N/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ReqStats/DEXWIS/Wis/Label2
-onready var itemIcon = $N/MarginContainer/VBoxContainer/HBoxContainer/TextureRect
+onready var extraStats = $Background/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer
+onready var itemName = $Background/MarginContainer/VBoxContainer/Label
+onready var reqLevel = $Background/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/LevelJob/Level/Label2
+onready var reqJob = $Background/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/LevelJob/Job/Label2
+onready var reqStr = $Background/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ReqStats/STRLUK/Str/Label2
+onready var reqLuk = $Background/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ReqStats/STRLUK/Luk/Label2
+onready var reqDex = $Background/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ReqStats/DEXWIS/Dex/Label2
+onready var reqWis = $Background/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ReqStats/DEXWIS/Wis/Label2
+onready var itemIcon = $Background/MarginContainer/VBoxContainer/HBoxContainer/TextureRect
 onready var item_path = "res://assets/itemSprites/"
 
 func _ready() -> void:
