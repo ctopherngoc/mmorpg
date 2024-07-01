@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/OurMusicBox - Miles To Go.mp3-e30a8a6fa90b6fd60fbbe1fa057c8fdb.mp3str"
+
+[deps]
+
+source_file="res://resources/sounds/bgm/OurMusicBox - Miles To Go.mp3"
+dest_files=[ "res://.import/OurMusicBox - Miles To Go.mp3-e30a8a6fa90b6fd60fbbe1fa057c8fdb.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

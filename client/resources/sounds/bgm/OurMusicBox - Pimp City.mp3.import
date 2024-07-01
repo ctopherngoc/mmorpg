@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/OurMusicBox - Pimp City.mp3-c04fb123656366d35c1d91366186852c.mp3str"
+
+[deps]
+
+source_file="res://resources/sounds/bgm/OurMusicBox - Pimp City.mp3"
+dest_files=[ "res://.import/OurMusicBox - Pimp City.mp3-c04fb123656366d35c1d91366186852c.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

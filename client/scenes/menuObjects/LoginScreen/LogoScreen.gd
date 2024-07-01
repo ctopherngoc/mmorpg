@@ -4,8 +4,8 @@ extends Control
 onready var login_scene = preload("res://scenes/menuObjects/LoginScreen/LoginScreen.tscn")
 
 func _ready() -> void:
-	var sfx_index= AudioServer.get_bus_index("Master")
-	AudioServer.set_bus_volume_db(sfx_index, linear2db(0.40))
+	var sfx_index = AudioServer.get_bus_index("Master")
+	AudioServer.set_bus_volume_db(sfx_index, linear2db(0.10))
 
 func _on_Timer_timeout() -> void:
 	$AnimationPlayer.play("dissolve logo")

@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/OurMusicBox - Dramatic Danger.mp3-b09fcdddc123d45d071da6f37c5cf528.mp3str"
+
+[deps]
+
+source_file="res://resources/sounds/bgm/OurMusicBox - Dramatic Danger.mp3"
+dest_files=[ "res://.import/OurMusicBox - Dramatic Danger.mp3-b09fcdddc123d45d071da6f37c5cf528.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

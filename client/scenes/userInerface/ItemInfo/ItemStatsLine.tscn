@@ -1,13 +1,16 @@
 [gd_scene format=2]
 
 [node name="ItemStats" type="HBoxContainer"]
-margin_top = 36.0
 margin_right = 118.0
-margin_bottom = 50.0
+margin_bottom = 14.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
 
 [node name="StatLabel" type="Label" parent="."]
 margin_right = 43.0
 margin_bottom = 14.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 text = "Speed:"
 
@@ -15,5 +18,7 @@ text = "Speed:"
 margin_left = 47.0
 margin_right = 79.0
 margin_bottom = 14.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 text = "+900"

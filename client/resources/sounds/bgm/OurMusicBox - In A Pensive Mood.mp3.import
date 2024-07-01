@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/OurMusicBox - In A Pensive Mood.mp3-239e61b4b2539252ccaf32db8be28f77.mp3str"
+
+[deps]
+
+source_file="res://resources/sounds/bgm/OurMusicBox - In A Pensive Mood.mp3"
+dest_files=[ "res://.import/OurMusicBox - In A Pensive Mood.mp3-239e61b4b2539252ccaf32db8be28f77.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

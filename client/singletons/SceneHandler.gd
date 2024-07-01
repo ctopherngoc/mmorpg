@@ -54,7 +54,7 @@ func load_window_settings():
 		file.close()
 	save_file.open(option_path, File.READ)
 	var settings_data = JSON.parse(save_file.get_as_text())
-	print(typeof(settings_data.result))
+	#print(typeof(settings_data.result))
 	if "video" in settings_data.result.keys():
 		video_settings = settings_data.result["video"]
 		load_video_settings(SceneHandler.video_settings)
@@ -90,25 +90,14 @@ func change_scene(scene: String) -> void:
 			get_tree().change_scene("res://scenes/maps/GameWorld/GameWorld.tscn")
 			# if in map
 		else:
-		#print(Global.current_map, " ", GameData.map_dict[scene]["name"])
 			# warning-ignore:return_value_discarded
 			Global.current_map = scene
 			get_node("/root/GameWorld").load_map(GameData.map_dict[scene]["path"])
-			#get_tree().change_scene(GameData.map_dict[scene]["path"])
 		# if map different bgm
 		if GameData.map_dict[scene]["bgm"] != current_bgm:
-			#print("%s != %s" % [GameData.map_dict[scene]["bgm"], current_bgm])
 			current_bgm = GameData.map_dict[scene]["bgm"]
 			AudioControl.bgm.set_stream(GameData.bgm_dict[GameData.map_dict[scene]["bgm"]])
 			AudioControl.bgm.play()
 	$AnimationPlayer.play_backwards("dissolve")
 	if Global.in_game:
 		get_node("/root/GameWorld").visible = true
-
-#func _unhandled_input(event):
-#	if event.pressed and event.scancode == KEY_SPACE:
-#		get_node("/root/currentScene").visible = false
-#		$AnimationPlayer.play("dissolve")
-#		yield($AnimationPlayer, "animation_finished")
-#		get_node("/root/currentScene").visible = true
-#		$AnimationPlayer.play_backwards("dissolve")

@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/OurMusicBox - In Light Of Darkness.mp3-39bc350c217f7c5d2998a4f5ecbdb0f9.mp3str"
+
+[deps]
+
+source_file="res://resources/sounds/bgm/OurMusicBox - In Light Of Darkness.mp3"
+dest_files=[ "res://.import/OurMusicBox - In Light Of Darkness.mp3-39bc350c217f7c5d2998a4f5ecbdb0f9.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

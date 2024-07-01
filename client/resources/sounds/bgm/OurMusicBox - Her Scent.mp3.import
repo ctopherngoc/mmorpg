@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/OurMusicBox - Her Scent.mp3-65f90b5caf45c007d1876ccea8cf3245.mp3str"
+
+[deps]
+
+source_file="res://resources/sounds/bgm/OurMusicBox - Her Scent.mp3"
+dest_files=[ "res://.import/OurMusicBox - Her Scent.mp3-65f90b5caf45c007d1876ccea8cf3245.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

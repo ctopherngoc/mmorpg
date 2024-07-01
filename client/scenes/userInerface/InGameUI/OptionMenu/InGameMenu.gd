@@ -9,6 +9,7 @@ onready var ConfirmMenu = $QuitConfirm
 onready var confirmButton
 onready var cancelButton
 
+
 func _ready():
 	#confirmButton = ConfirmMenu.get_ok()
 	#cancelButton = ConfirmMenu.get_cancel()

@@ -1,0 +1,23 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/Craft.wav-dd9000449038c93def1780046b9840ed.sample"
+
+[deps]
+
+source_file="res://resources/sounds/effects/Craft.wav"
+dest_files=[ "res://.import/Craft.wav-dd9000449038c93def1780046b9840ed.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

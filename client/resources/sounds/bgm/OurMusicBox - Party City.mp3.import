@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/OurMusicBox - Party City.mp3-d5c70b0c0de11a6c0246f06b565be26f.mp3str"
+
+[deps]
+
+source_file="res://resources/sounds/bgm/OurMusicBox - Party City.mp3"
+dest_files=[ "res://.import/OurMusicBox - Party City.mp3-d5c70b0c0de11a6c0246f06b565be26f.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

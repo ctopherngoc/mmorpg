@@ -8,6 +8,8 @@ onready var damage_timer = $Timers/DamageTimer
 onready var animation = $AnimationPlayer
 onready var loot_node = $loot_box
 onready var loot_timer = $Timers/loot_timer
+onready var CDTimer = get_node("Timers/CDTimer")
+onready var BuffTimer = get_node("Timers/BuffTimer")
 #contains token and id
 var db_info = {}
 onready var loggedin = true
@@ -19,6 +21,8 @@ var email = ""
 var characters = []
 var characters_info_list = []
 var current_character
+onready var cooldowns: Dictionary = {}
+onready var buffs: Dictionary = {}
 #################
 
 var mobs_hit = []
@@ -31,13 +35,17 @@ var velocity = Vector2.ZERO
 var is_climbing = false
 var can_climb = false
 
-var velocity_multiplier = 1
-var max_horizontal_speed = null
-var jump_speed = null
+#var velocity_multiplier = 1
+#var max_horizontal_speed = null
+#var jump_speed = null
+
+
+var vertical_speed: int
+var horizontal_speed: int
 var gravity = 800
 
-# 0 = right, 1 = left
-var direction = 0
+# 1 = right, -1 = left
+var direction = 1
 var input = [0,0,0,0,0,0]
 var attacking = false
 var hittable = true
@@ -73,8 +81,14 @@ func _physics_process(delta: float) -> void:
 	if loggedin:
 		if "Map" in str(self.get_path()):
 			movement_loop(delta)
-	if animation_state.a:
-		print("attacking")
+			
+			if animation_state.a:
+				pass
+				#print("attacking")
+			if not cooldowns.empty() and CDTimer.is_stopped():
+				CDTimer.start()
+			if not buffs.empty() and BuffTimer.is_stopped():
+				BuffTimer.start()
 
 func get_animation() -> Dictionary:
 	if self.is_on_floor():
@@ -89,39 +103,75 @@ func get_animation() -> Dictionary:
 	return animation_state
 
 func load_player_stats() -> void:
-	max_horizontal_speed = current_character.stats.base.movementSpeed
-	jump_speed = current_character.stats.base.jumpSpeed
-	#print(typeof(current_character.inventory["100000"]))
+	get_directional_speed()
 
-func attack(move_id: int) -> void:
+func normal_attack() -> void:
 	attacking = true
 	
 	#basic attack
-	if move_id == 0:
+	var equipment = current_character.equipment
+	if equipment.rweapon.weaponType == "1h_sword":
+		animation.play("1h_sword",-1, ServerData.static_data.weapon_speed[equipment.rweapon.attackSpeed])
+		yield(animation, "animation_finished")
+	elif equipment.rweapon.weaponType == "2h_sword":
+		pass
+#	elif equipment.weapon.type == "bow":
+#	# else ranged weapon:
+#		if equipment.ammo.amount > 0:
+#			animation.play("bow",-1, ServerData.static_data.weapon_speed[equipment.rweapon.attackSspeed])
+#		else:
+#			return "not enough ammo"
+	# no mobs overlap
+	if mobs_hit.size() == 0:
+		print("no mobs hit")
+	# there are mobs overlap
+	else:
+		# physical mobbing auto attack class
+		if current_character.stats.base.job == 10:
+			if mobs_hit.size() < 6:
+				for mob in mobs_hit:
+					var mob_parent = mob.get_parent()
+					var damage_list = Global.damage_formula(1, current_character, mob_parent.stats)
+					Global.npc_hit(damage_list, mob_parent, self)
+		# singe mob physical basic attack
+		else:
+			var closest = null
+			for monster in mobs_hit:
+				if closest == null:
+					closest = monster
+				else:
+					if pow((monster.position.x - self.position.x), 2) > pow((monster.position.x - self.position.x ), 2):
+						closest = monster
+			var mob_parent = closest.get_parent()
+			var damage_list = Global.damage_formula(1, current_character, mob_parent.stats)
+			#mob_parent.npc_hit(damage, self.name)
+			Global.npc_hit(damage_list, mob_parent, self)
+	# uses skill
+	attacking = false
+
+func skill_attack(skill_data: Dictionary, skill_level: int) -> void:
+	attacking = true
+	
+	#basic attack
+	if not skill_data["weaponType"] or current_character.equipment.rweapon.weaponType in skill_data["weaponType"]:
 		var equipment = current_character.equipment
-		if equipment.rweapon.type == "1h_sword":
+		if equipment.rweapon.weaponType == "1h_sword":
 			animation.play("1h_sword",-1, ServerData.static_data.weapon_speed[equipment.rweapon.attackSpeed])
 			yield(animation, "animation_finished")
-		elif equipment.rweapon.type == "2h_sword":
+		elif equipment.rweapon.weaponType == "2h_sword":
 			pass
-		elif equipment.weapon.type == "bow":
-		# else ranged weapon:
-			if equipment.ammo.amount > 0:
-				animation.play("bow",-1, ServerData.static_data.weapon_speed[equipment.rweapon.attackSspeed])
-			else:
-				return "not enough ammo"
-		# no mobs overlap
+		
 		if mobs_hit.size() == 0:
 			print("no mobs hit")
 		# there are mobs overlap
 		else:
 			# physical mobbing auto attack class
-			if current_character.stats.base.job == 10:
-				if mobs_hit.size() < 6:
+			if skill_data.targetCount[skill_level] > 1:
+				if mobs_hit.size() < skill_data.targetCount[skill_level]:
 					for mob in mobs_hit:
 						var mob_parent = mob.get_parent()
-						var damage = Global.damage_formula(1, current_character, mob_parent.stats)
-						Global.npc_hit(damage, mob_parent, self.name)
+						var damage_array = Global.damage_formula(skill_data["damangeType"], current_character, mob_parent.stats, skill_data.hitAmount[skill_level], skill_data.damagePercent[skill_level])
+						Global.npc_hit(damage_array, mob_parent, self)
 			# singe mob physical basic attack
 			else:
 				var closest = null
@@ -132,10 +182,9 @@ func attack(move_id: int) -> void:
 						if pow((monster.position.x - self.position.x), 2) > pow((monster.position.x - self.position.x ), 2):
 							closest = monster
 				var mob_parent = closest.get_parent()
-				var damage = Global.damage_formula(1, current_character, mob_parent.stats)
+				var damage_array = Global.damage_formula(1, current_character, mob_parent.stats)
 				#mob_parent.npc_hit(damage, self.name)
-				Global.npc_hit(damage, mob_parent, self.name)
-	attacking = false
+				Global.npc_hit(damage_array, mob_parent, self)
 
 func overlapping_bodies() -> void:
 	#if $attack_range.get_overlapping_areas().size() > 0:
@@ -199,10 +248,18 @@ func experience(experience: int) -> void:
 			#print("%s Level Up" % current_character.displayname)
 			
 			# add ability point skill points
-			if current_character.stats.base.job != 0:
-				current_character.stats.base.ap += 3
+			####################################################################################
+			if current_character.stats.level <= 10:
+				current_character.stats.base.ap[0] += 1
+			elif current_character.stats.level > 10 and current_character.stats.level <= 30:
+				current_character.stats.base.ap[1] += 3
+			elif current_character.stats.level > 30 and current_character.stats.level <= 70:
+				current_character.stats.base.ap[2] += 3
+			elif current_character.stats.level > 70 and current_character.stats.level <= 120:
+				current_character.stats.base.ap[3] += 3
 			else:
-				current_character.stats.base.ap += 1
+				current_character.stats.base.ap[4] += 3
+			#####################################################################################
 			# update exp_limit for multiple levels
 			get_node("/root/Server").update_player_stats(self)
 			exp_limit = ServerData.static_data.experience_table[str(current_character.stats.base.level)]
@@ -213,6 +270,7 @@ func experience(experience: int) -> void:
 	#print("EXP: %s" % current_character.stats.base.experience)
 
 func movement_loop(delta: float) -> void:
+	get_directional_speed()
 	var move_vector = get_movement_vector()
 	recon_arr["m_vector"] = move_vector
 	change_direction()
@@ -229,9 +287,6 @@ func movement_loop(delta: float) -> void:
 		velocity = move_and_slide(velocity, Vector2.UP)
 	if is_climbing:
 		velocity.x = 0
-	#if recon_arr["input_arr"] != [0,0,0,0,0] and recon_arr["input_arr"] != []:
-		#print(recon_arr)
-	#return self.global_position
 
 func get_movement_vector() -> Vector2:
 	var moveVector = Vector2.ZERO
@@ -246,9 +301,9 @@ func get_movement_vector() -> Vector2:
 	recon_arr["input_arr"] = input
 	# calculating x vector, allow x-axis jump off ropes or idle on floor
 	if (!attacking && is_on_floor()) or (input[1] == 1 or input[3] == 1) and input[4] == 1:
-		moveVector.x = (input[3] - input[1]) * velocity_multiplier
+		moveVector.x = (input[3] - input[1])
 	else:
-		moveVector.x = 0	
+		moveVector.x = 0
 	# calculating y vector, allow jump off ropes
 	if is_climbing:
 		if (input[1] == 1 or input[3] == 1) and input[4] == 1:
@@ -263,7 +318,7 @@ func get_movement_vector() -> Vector2:
 	return moveVector
 
 func get_velocity(move_vector: Vector2, delta: float) -> void:
-	velocity.x += move_vector.x * max_horizontal_speed
+	velocity.x += move_vector.x * horizontal_speed
 	# slow down movement
 	if(move_vector.x == 0):
 		# allows forward jumping
@@ -272,7 +327,7 @@ func get_velocity(move_vector: Vector2, delta: float) -> void:
 			velocity.x = 0
 
 	# allows maximum velocity
-	velocity.x = clamp(velocity.x, -max_horizontal_speed, max_horizontal_speed)
+	velocity.x = clamp(velocity.x, -horizontal_speed, horizontal_speed)
 	if can_climb:
 		if is_climbing:
 			velocity.y = 0
@@ -289,19 +344,19 @@ func get_velocity(move_vector: Vector2, delta: float) -> void:
 			elif input[4] == 1 && (input[1] == 1 or input[3] == 1):
 				is_climbing = false
 				Global.send_climb_data(int(self.name), 1)
-				velocity.y = move_vector.y * jump_speed * .8
+				velocity.y = move_vector.y * vertical_speed
 				velocity.x = move_vector.x * 200
 		# can climb but not climbing
 		else:
 			#if moving
 			if (move_vector.y < 0 && is_on_floor()):
-					velocity.y = move_vector.y * jump_speed
+				velocity.y = move_vector.y * vertical_speed
 			# press up on ladder initiates climbing
 			elif input[0] == 1:
-					is_climbing = true
-					Global.send_climb_data(int(self.name), 2)
-					velocity.y = 0
-					velocity.x = 0
+				is_climbing = true
+				Global.send_climb_data(int(self.name), 2)
+				velocity.y = 0
+				velocity.x = 0
 			# over lapping ladder pressing nothing allows gravity
 			else:
 				velocity.y += gravity * delta
@@ -309,7 +364,7 @@ func get_velocity(move_vector: Vector2, delta: float) -> void:
 	else:
 		# normal movement
 		if (move_vector.y < 0 && is_on_floor()):
-			velocity.y = move_vector.y * jump_speed
+			velocity.y = move_vector.y * vertical_speed
 		else:
 			velocity.y += gravity * delta
 	if !can_climb:
@@ -323,15 +378,17 @@ func change_direction() -> void:
 		if input[3] == 1 && !attacking:
 			if velocity.x < 0 && is_on_floor():
 				velocity.x = 0
-			if direction == 1:
-				direction = 0
+			#if left -> right
+			if direction == -1:
+				direction = 1
 				self.set_scale(Vector2(1,1))
 				self.set_rotation(0.0)
 		elif input[1] == 1 && !attacking:
 			if velocity.x > 0 && is_on_floor():
 				velocity.x  = 0
-			if direction == 0:
-				direction = 1
+			# if right -> left
+			if direction == 1:
+				direction = -1
 				self.set_scale(Vector2(-1,1))
 				self.set_rotation(0.0)
 
@@ -409,7 +466,35 @@ func update_sprite_array():
 	sprite[15] = str(temp_dict.glove)
 	sprite[16] = str(temp_dict.tattoo)
 	
-
-
 func _on_loot_timer_timeout():
 	looting = false
+
+func _on_CDTimer_timeout():
+	if not cooldowns.empty():
+		var skills = cooldowns.keys()
+		for skill in skills:
+			if cooldowns[skill] == 1:
+# warning-ignore:return_value_discarded
+				cooldowns.erase(skill)
+			else:
+				cooldowns[skill] -= 1
+	else:
+		CDTimer.stop()
+
+func _on_BuffTimer_timeout():
+	if not buffs.empty():
+		var buff_list = buffs.keys()
+		for buff in buff_list:
+			if buffs[buff] == 1:
+# warning-ignore:return_value_discarded
+				buffs.erase(buff)
+				Global.cancel_buff(self, buff)
+			else:
+				buffs[buff] -= 1
+	else:
+		BuffTimer.stop()
+
+
+func get_directional_speed() -> void:
+	vertical_speed = current_character.stats.base.jumpSpeed + current_character.stats.equipment.jumpSpeed + current_character.stats.buff.jumpSpeed
+	horizontal_speed = current_character.stats.base.movementSpeed + current_character.stats.equipment.movementSpeed + current_character.stats.buff.movementSpeed

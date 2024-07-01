@@ -43,6 +43,7 @@ func connect_to_server() -> void:
 	network.connect("connection_failed", self, "_on_connection_failed")
 	network.connect("connection_succeeded", self, "_on_connection_succeeded")
 	network.connect("server_disconnected", self, "_on_server_disconnect")
+# warning-ignore:return_value_discarded
 	Signals.connect("drop_quantity", self, "drop_request")
 
 func _on_connection_failed() -> void:
@@ -193,9 +194,9 @@ remote func receive_despawn_player(player_id) -> void:
 	print("receive_despawn_player: %s" % typeof(player_id))
 	Global.despawn_player(player_id)
 	
-func send_attack(skill_id: int) -> void:
+func send_input(skill_id: int) -> void:
 	#print("server.gd: send_attack")
-	rpc_id(1, "receive_attack", skill_id)
+	rpc_id(1, "receive_input", skill_id)
 
 ########################################################################################################
 #not used
@@ -213,6 +214,9 @@ remote func receive_attack(player_id, attack_time):
 ########################################################################################################	
 
 remote func update_player_stats(player_stats: Dictionary) -> void:
+	#print(player_stats.stats.buff)
+	print("update player stats")
+	#print(player_stats)
 	for character in Global.character_list:
 		if character["displayname"] == player_stats["displayname"]:
 			character = player_stats
@@ -223,7 +227,9 @@ remote func update_player_stats(player_stats: Dictionary) -> void:
 
 				# lose health
 				if player_stats["stats"]["base"]["health"] < Global.player["stats"]["base"]["health"]:
-					print("Player took %s damage." % str(Global.player["stats"]["base"]["health"] - player_stats["stats"]["base"]["health"]))
+					var damage_taken = Global.player["stats"]["base"]["health"] - player_stats["stats"]["base"]["health"]
+					Signals.emit_signal("take_damage", damage_taken)
+					print("Player took %s damage." % str(damage_taken))
 				# gained health
 				else:
 					var heal_value = abs(Global.player["stats"]["base"]["health"] - player_stats["stats"]["base"]["health"])
@@ -258,6 +264,31 @@ remote func update_player_stats(player_stats: Dictionary) -> void:
 			#if player_stats["inventory"].hash() != Global.player["inventory"].hash():
 				Global.player["inventory"] = player_stats["inventory"]
 				Signals.emit_signal("update_inventory")
+			
+			#if not dictionary_comparison(Global.player["equipment"], player_stats["equipment"]):
+			if player_stats["equipment"].hash() != Global.player["equipment"].hash():
+				print("pls work")
+				Global.player["equipment"] = player_stats["equipment"]
+				Signals.emit_signal("update_equipment")
+				Signals.emit_signal("update_sprite")
+			
+			if not dictionary_comparison(Global.player["skills"], player_stats["skills"]):
+			#if player_stats["inventory"].hash() != Global.player["inventory"].hash():
+				Global.player.stats = player_stats["stats"]
+				Global.player["skills"] = player_stats["skills"]
+				Signals.emit_signal("update_skills")
+				
+			if player_stats.stats.hash() != Global.player.stats.hash():
+			#if not dictionary_comparison(Global.player.stats.buff, player_stats.stats.buff):
+			#if player_stats["inventory"].hash() != Global.player["inventory"].hash():
+				Global.player.stats = player_stats.stats
+			
+			if not dictionary_comparison(Global.player["keybind"], player_stats["keybind"]):
+			#if player_stats["inventory"].hash() != Global.player["inventory"].hash():
+				print("update keybinds")
+				Global.player["keybind"] = player_stats["keybind"]
+				Signals.emit_signal("update_keybinds")
+			
 			break
 
 func dictionary_comparison(client_dict: Dictionary, server_dict: Dictionary) -> bool:
@@ -292,7 +323,6 @@ remote func return_player_input(server_input_results):
 
 remote func receive_climb_data(climb_data: int) -> void:
 	if Global.in_game:
-		#var player = get_node("/root/GameWorld/Player")
 		var player = get_node("/root/GameWorld/MapNode/%s/Player" % Global.current_map)
 		if climb_data == 2:
 			#print("server: is climbing")
@@ -323,6 +353,21 @@ func send_inventory_movement(tab: int, from: int, to: int) -> void:
 	"""
 	rpc_id(1, "move_item", [tab, from, to])
 
+func send_equipment_request(equipment_slot, inventory_slot) -> void:
+	print("send_equipment_request succcess")
+	rpc_id(1, "equipment_request", equipment_slot, inventory_slot)
+
+#remote func return_equipment_request() -> void:
+#	pass
+	
+func remove_equipment_request(equipment_slot, inventory_slot) -> void:
+	print("remove_equipment_request succcess")
+	print(equipment_slot, " ", inventory_slot)
+	rpc_id(1, "remove_equipment_request", equipment_slot, inventory_slot)
+
+#remote func return_remove_equipment_() -> void:
+#	pass
+	
 remote func server_message(message: String):
 	print("received messge %s" % message)
 	
@@ -338,7 +383,7 @@ remote func loot_data(_item_data: Dictionary) -> void:
 
 remote func update_messages(player_name: String, message: String ,group: int) -> void:
 	print("%s said %s in %s" % [player_name, message, group])
-	Global.ui.ui_nodes.chat_box.update_message(player_name, message,  group) 
+	Global.ui.ui_nodes.chat_box.update_message(player_name, message, group) 
 	# insert script to edit notification var with message
 
 func use_item(item_id: String, slot_index: int) -> void:
@@ -354,3 +399,21 @@ func send_chat(text: String, chat_type: int) -> void:
 
 func drop_request(slot: int, tab: String, quantity: int = 1) -> void:
 	rpc_id(1, "drop_request", slot, tab, quantity)
+	
+func update_keybind(key: String, type: String, id: String) -> void:
+	print("%s: %s" % [type,id])
+	rpc_id(1, "update_keybind", key, type, id)
+
+func swap_keybind(key1, key2) -> void:
+	rpc_id(1, "swap_keybind", key1, key2)
+
+func remove_keybind(key) -> void:
+	rpc_id(1, "remove_keybind", key)
+	
+func use_skill(id: String) -> void:
+	Signals.emit_signal("use_skill", GameData.animation_dict[id])
+	print("attempt to use skill %s" % id)
+	rpc_id(1, "skill_request", id)
+	
+func increase_skill(id: String, level: int) -> void:
+	rpc_id(1, "increase_skill", id, level)

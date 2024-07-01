@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/OurMusicBox - Beyond The Hills.mp3-d54f451364f1d0c61542777dbb61f438.mp3str"
+
+[deps]
+
+source_file="res://resources/sounds/bgm/OurMusicBox - Beyond The Hills.mp3"
+dest_files=[ "res://.import/OurMusicBox - Beyond The Hills.mp3-d54f451364f1d0c61542777dbb61f438.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

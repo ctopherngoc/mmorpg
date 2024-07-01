@@ -1,14 +1,18 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://scenes/userInerface/InGameUI/PlayerHUD.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/userInerface/UI.gd" type="Script" id=2]
 [ext_resource path="res://scenes/userInerface/InGameUI/OptionMenu/InGameMenu.tscn" type="PackedScene" id=3]
-[ext_resource path="res://scenes/userInerface/Inventory.tscn" type="PackedScene" id=4]
-[ext_resource path="res://scenes/userInerface/PlayerStats.tscn" type="PackedScene" id=5]
+[ext_resource path="res://scenes/userInerface/InGameUI/Inventory.tscn" type="PackedScene" id=4]
+[ext_resource path="res://scenes/userInerface/InGameUI/PlayerStats.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scenes/userInerface/UIWindowControl.gd" type="Script" id=6]
 [ext_resource path="res://scenes/userInerface/InGameUI/ChatBox.tscn" type="PackedScene" id=7]
-[ext_resource path="res://scenes/userInerface/InGameUI/KeyBinds.tscn" type="PackedScene" id=8]
-[ext_resource path="res://scenes/userInerface/Skills.tscn" type="PackedScene" id=9]
+[ext_resource path="res://scenes/userInerface/InGameUI/HotKeyBar.tscn" type="PackedScene" id=8]
+[ext_resource path="res://scenes/userInerface/InGameUI/Skills.tscn" type="PackedScene" id=9]
+[ext_resource path="res://scenes/userInerface/InGameUI/KeybindUI.tscn" type="PackedScene" id=10]
+[ext_resource path="res://scenes/userInerface/DebugWindow/DebuggerWindow.tscn" type="PackedScene" id=11]
+[ext_resource path="res://scenes/userInerface/InGameUI/Equipment.tscn" type="PackedScene" id=12]
+[ext_resource path="res://scenes/userInerface/InGameUI/ButtonBar.tscn" type="PackedScene" id=13]
 
 [node name="UI" type="CanvasLayer"]
 script = ExtResource( 2 )
@@ -18,33 +22,13 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 6 )
 
-[node name="Control" type="Control" parent="Control"]
-visible = false
-anchor_right = 1.0
-anchor_bottom = 0.893
-margin_top = 583.0
-margin_right = 1.0
-margin_bottom = 0.039978
-
-[node name="KeyBinds" parent="Control/Control" instance=ExtResource( 8 )]
-
-[node name="ChatBox" parent="Control/Control" instance=ExtResource( 7 )]
-anchor_top = 1.0
-anchor_bottom = 1.0
-margin_top = -57.0
-margin_right = 607.0
-margin_bottom = -1.0
-
 [node name="PlayerStats" parent="Control" instance=ExtResource( 5 )]
 visible = false
-anchor_left = -0.00546875
-anchor_top = -0.00555556
-anchor_right = -0.00546875
-anchor_bottom = -0.00555556
-margin_left = 8.0
-margin_top = 409.0
-margin_right = 463.0
-margin_bottom = 647.0
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_top = -93.0
+margin_right = 267.0
+margin_bottom = 93.0
 
 [node name="Inventory" parent="Control" instance=ExtResource( 4 )]
 visible = false
@@ -55,6 +39,48 @@ anchor_bottom = 0.0
 margin_left = -296.0
 margin_bottom = 432.0
 rect_scale = Vector2( 0.7, 0.7 )
+
+[node name="Skills" parent="Control" instance=ExtResource( 9 )]
+visible = false
+anchor_left = 0.0
+anchor_top = 0.00694444
+anchor_right = 0.231249
+anchor_bottom = 0.713889
+rect_scale = Vector2( 0.7, 0.7 )
+
+[node name="KeyBinds" parent="Control" instance=ExtResource( 10 )]
+visible = false
+
+[node name="Equipment" parent="Control" instance=ExtResource( 12 )]
+visible = false
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 0.0
+margin_top = 0.0
+margin_right = 306.0
+margin_bottom = 509.0
+rect_scale = Vector2( 0.7, 0.7 )
+
+[node name="ChatBox" parent="Control" instance=ExtResource( 7 )]
+margin_left = 1.0
+margin_top = -136.0
+margin_right = 625.0
+margin_bottom = -80.0
+
+[node name="HotKeys" parent="Control" instance=ExtResource( 8 )]
+visible = false
+margin_left = -655.0
+margin_top = -134.0
+margin_right = 19.0
+margin_bottom = -80.0
+
+[node name="ButtonBar" parent="Control" instance=ExtResource( 13 )]
+margin_left = 625.0
+margin_top = 616.0
+margin_right = 1280.0
+margin_bottom = 640.0
 
 [node name="PlayerHUD" parent="Control" instance=ExtResource( 1 )]
 anchor_left = 0.00078125
@@ -70,9 +96,8 @@ margin_top = 19.0
 margin_right = -22.0
 margin_bottom = -21.0
 
-[node name="Skills" parent="Control" instance=ExtResource( 9 )]
-visible = false
-anchor_left = 0.0
-anchor_top = 0.00694444
-anchor_right = 0.231249
-anchor_bottom = 0.713889
+[node name="DebuggerWindow" parent="Control" instance=ExtResource( 11 )]
+
+[connection signal="gui_input" from="Control/KeyBinds" to="Control/KeyBinds" method="_on_KeyBinds_gui_input"]
+
+[editable path="Control/ButtonBar"]

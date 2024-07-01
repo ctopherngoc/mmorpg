@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/OurMusicBox - Grand Fury.mp3-9bc026a86deb9a0eded37f7e77469355.mp3str"
+
+[deps]
+
+source_file="res://resources/sounds/bgm/OurMusicBox - Grand Fury.mp3"
+dest_files=[ "res://.import/OurMusicBox - Grand Fury.mp3-9bc026a86deb9a0eded37f7e77469355.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

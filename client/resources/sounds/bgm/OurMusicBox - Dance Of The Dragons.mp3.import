@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/OurMusicBox - Dance Of The Dragons.mp3-90646d4b9684ec685f6f1ff1c5132e6b.mp3str"
+
+[deps]
+
+source_file="res://resources/sounds/bgm/OurMusicBox - Dance Of The Dragons.mp3"
+dest_files=[ "res://.import/OurMusicBox - Dance Of The Dragons.mp3-90646d4b9684ec685f6f1ff1c5132e6b.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

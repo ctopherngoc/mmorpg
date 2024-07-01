@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/OurMusicBox - O Come All Ye Faithful.mp3-fea5c7db42e88053921fdcac81cc791b.mp3str"
+
+[deps]
+
+source_file="res://resources/sounds/bgm/OurMusicBox - O Come All Ye Faithful.mp3"
+dest_files=[ "res://.import/OurMusicBox - O Come All Ye Faithful.mp3-fea5c7db42e88053921fdcac81cc791b.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

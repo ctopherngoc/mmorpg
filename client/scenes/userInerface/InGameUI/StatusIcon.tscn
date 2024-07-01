@@ -1,0 +1,14 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://scenes/userInerface/InGameUI/StatusIcon.gd" type="Script" id=1]
+[ext_resource path="res://assets/UI/statusIcons/StatusIcons.png" type="Texture" id=2]
+
+[sub_resource type="ImageTexture" id=1]
+
+[node name="StatusIcon" type="Sprite"]
+texture = ExtResource( 2 )
+normal_map = SubResource( 1 )
+hframes = 4
+vframes = 3
+frame = 1
+script = ExtResource( 1 )

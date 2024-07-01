@@ -9,7 +9,7 @@ extends Node
 var network = NetworkedMultiplayerENet.new()
 var port: int = 2733
 var max_players:int = 100
-var stats
+#var stats
 # example tokens added
 var expected_tokens = []
 onready var player_verification_process = get_node("PlayerVerification")
@@ -65,6 +65,7 @@ func _Server_Data_Remove_Player(player_id: int) -> void:
 	ServerData.player_state_collection.erase(player_id)
 	ServerData.logged_emails.erase(ServerData.player_id_emails[str(player_id)])
 	ServerData.player_id_emails.erase(str(player_id))
+	ServerData.ign_id_dict.erase(ServerData.username_list[str(player_id)])
 	ServerData.username_list.erase(str(player_id))
 	
 func return_token_verification_results(player_id: int, result: bool) -> void:
@@ -133,6 +134,9 @@ func create_characters():
 		#player_id, username, playerContainer, requester
 		var character_array = character_creation_queue[0]
 		character_creation_queue.remove(0)
+		"""
+		[player_id, char_dict, player_container, requester]
+		"""
 		
 		if character_array[1]["un"] in ServerData.characters_data.keys():
 			print("%s already taken." % character_array[1])
@@ -142,7 +146,8 @@ func create_characters():
 			character_array[2].characters.append(character_array[1]["un"])
 			var new_char = character_array[1]
 			var temp_player = _Server_New_Character(new_char)
-			print(temp_player)
+			temp_player["buff"] = ServerData.buff_stats.duplicate(true)
+			#print(temp_player)
 
 			print("creating character")
 			var firebase_call2 = Firebase.update_document("characters/%s" % temp_player["displayname"], character_array[2].http2, character_array[2].db_info["token"], temp_player)
@@ -152,6 +157,11 @@ func create_characters():
 
 			var firebase_call3 = Firebase.update_document("users/%s" % character_array[2].db_info["id"], character_array[2].http, character_array[2].db_info["token"], character_array[2])
 			yield(firebase_call3, 'completed')
+			
+			Global.http_requests.append([character_array[1].equipment.top, character_array[2]])
+			Global.http_requests.append([character_array[1].equipment.bottom, character_array[2]])
+			Global.http_requests.append([character_array[1].equipment.rweapon, character_array[2]])
+			
 			character_array[2].characters_info_list.append(temp_player)
 
 			# update client with new character
@@ -183,18 +193,35 @@ func _Server_New_Character(new_char: Dictionary):
 	var equips = temp_player["equipment"]
 	#print(new_char["o"])
 	if new_char["o"] == 0:
-		equips["top"] = ServerData.static_data.starter_equips[0][0]
-		equips["bottom"] = ServerData.static_data.starter_equips[0][1]
-	elif new_char["o"] == 1:
-		equips["top"] = ServerData.static_data.starter_equips[1][0]
-		equips["bottom"] = ServerData.static_data.starter_equips[1][1]
-	else:
-		equips["top"] = ServerData.static_data.starter_equips[2][0]
-		equips["bottom"] = ServerData.static_data.starter_equips[2][1]
+		var top = ServerData.equipmentTable[ServerData.static_data.starter_equips[0][0]].duplicate(true)
+		top["uniqueID"] = str(Global.generate_unique_id(ServerData.static_data.starter_equips[0][0]))
+		equips["top"] = top
 		
-	############################################################################
-	#temp add weapon
-	equips.rweapon = {"accuracy":0, "attack":15, "avoidability":0, "bossPercent":5, "critRate":0, "damagePercent":0, "defense":0, "dexterity":4, "id":"200001", "job":0, "jumpSpeed":0, "luck":5, "magic":0, "magicDefense":0, "maxHealth":0, "maxMana":0, "movementSpeed":0, "name":"Training Sword", "slot":7, "attackSpeed":5, "strength":5, "type":"1h_sword", "wisdom":5, "uniqueID": str(Global.rng.randi_range(1, 1000000000))}
+		var bottom = ServerData.equipmentTable[ServerData.static_data.starter_equips[0][1]].duplicate(true)
+		top["uniqueID"] = str(Global.generate_unique_id(ServerData.static_data.starter_equips[0][1]))
+		equips["bottom"] = bottom
+		
+	elif new_char["o"] == 1:
+		var top = ServerData.equipmentTable[ServerData.static_data.starter_equips[1][0]].duplicate(true)
+		top["uniqueID"] = str(Global.generate_unique_id(ServerData.static_data.starter_equips[1][0]))
+		equips["top"] = top
+		
+		var bottom = ServerData.equipmentTable[ServerData.static_data.starter_equips[1][1]].duplicate(true)
+		top["uniqueID"] = str(Global.generate_unique_id(ServerData.static_data.starter_equips[1][1]))
+		equips["bottom"] = bottom
+		
+	else:
+		var top = ServerData.equipmentTable[ServerData.static_data.starter_equips[2][0]].duplicate(true)
+		top["uniqueID"] = str(Global.generate_unique_id(ServerData.static_data.starter_equips[2][0]))
+		equips["top"] = top
+		
+		var bottom = ServerData.equipmentTable[ServerData.static_data.starter_equips[2][1]].duplicate(true)
+		top["uniqueID"] = str(Global.generate_unique_id(ServerData.static_data.starter_equips[2][1]))
+		equips["bottom"] = bottom
+	
+	var weapon = ServerData.equipmentTable["200000"].duplicate(true)
+	weapon["uniqueID"] = str(Global.generate_unique_id("200000"))
+	equips.rweapon = weapon
 	#############################################################################
 	
 	return temp_player
@@ -207,6 +234,7 @@ remote func choose_character(requester: int, display_name: String) -> void:
 			player_container.current_character = ServerData.characters_data[display_name]
 			#print(player_container.current_character.inventory)
 			ServerData.username_list[str(player_id)] = display_name
+			ServerData.ign_id_dict[(display_name)] = str(player_id)
 			break
 	var map = player_container.current_character['map']
 	var temp_dict = player_container.current_character.avatar
@@ -219,21 +247,20 @@ remote func choose_character(requester: int, display_name: String) -> void:
 	# character creation is front facing while in game is side profile. 
 	player_container.sprite.append(str(temp_dict.bcolor))
 	player_container.sprite.append(str(temp_dict.mouth))
-
+	
+	var equipment_list = ["headgear", "top", "bottom", "rweapon", "lweapon", "eyeacc", "earring", "faceacc", "glove", "tattoo"]
 	temp_dict = player_container.current_character.equipment
-	player_container.sprite.append(str(temp_dict.headgear))
-	player_container.sprite.append(str(temp_dict.top))
-	player_container.sprite.append(str(temp_dict.bottom))
-	player_container.sprite.append(str(temp_dict.rweapon.id))
-	player_container.sprite.append(str(temp_dict.lweapon))
-	player_container.sprite.append(str(temp_dict.eyeacc))
-	player_container.sprite.append(str(temp_dict.earring))
-	player_container.sprite.append(str(temp_dict.faceacc))
-	player_container.sprite.append(str(temp_dict.glove))
-	player_container.sprite.append(str(temp_dict.tattoo))
+	for equip in equipment_list:
+		if temp_dict[equip]:
+			player_container.sprite.append(str(temp_dict[equip].id))
+		else:
+			player_container.sprite.append(null)
 	
 	# move user container to the map
-	move_player_container(player_id, player_container, map, 'spawn')
+	if map == "100001" and int(player_container.current_character.stats.base.level) == 1 and int(player_container.current_character.stats.base.experience) == 0:
+		move_player_container(player_id, player_container, map, 'start')
+	else:
+		move_player_container(player_id, player_container, map, 'spawn')
 	player_container.load_player_stats()
 	player_container.start_idle_timer()
 	Global.calculate_stats(player_container.current_character)
@@ -316,12 +343,15 @@ func move_player_container(player_id: int, player_container: KinematicBody2D, ma
 	var map_node = get_node("/root/Server/World/Maps/%s" % str(map_id))
 	var map_position = map_node.get_global_position()
 
-	if typeof(position) == TYPE_STRING:
+	if typeof(position) == TYPE_STRING and position == "spawn":
 		position = Vector2(map_node.spawn_position.x, map_node.spawn_position.y)
+	elif typeof(position) == TYPE_STRING and position == "start":
+		position = Vector2(map_node.first_spawn.x, map_node.first_spawn.y)
 
 	player.position = position
 
 func get_player_data(player_id):
+	
 	var player_container = _Server_Get_Player_Container(player_id)
 	# warning-ignore:unused_variable
 	var character_count = player_container.db_info
@@ -338,6 +368,7 @@ remote func portal(portal_id):
 
 	#get nextmap name
 	var map_id = get_node(ServerData.player_location[str(player_id)].replace("YSort/Players", "")).map_id
+	print(map_id, " ", portal_id, " ", ServerData.portal_data[map_id][portal_id]['map'])
 	var next_map = ServerData.portal_data[map_id][portal_id]['map']
 	# get mapname, move user container to the map
 	#print("move character container to %s" % next_map)
@@ -402,12 +433,12 @@ func send_world_state(player_list: Array, map_state: PoolByteArray):
 
 ###############################################################################
 # server combat functions
-remote func receive_attack(move_id):
+remote func receive_input(move_id):
 	var player_id = get_tree().get_rpc_sender_id()
 	var player_container = _Server_Get_Player_Container(player_id)
 	# basic attack
 	if move_id == 0:
-		player_container.attack(0)
+		player_container.normal_attack()
 	#uses skill
 	else:
 		if move_id in ServerData.job_skills[player_container.current_character.stats.job]:
@@ -486,12 +517,12 @@ remote func use_item(item: Array) -> void:
 	item_id[0] = item_id
 	item_id[1] = index slot
 	"""
-	print("in use_item")
+	#print("in use_item")
 	# get player container
 	var player_id = get_tree().get_rpc_sender_id()
 	var player_container = _Server_Get_Player_Container(player_id)
 	# if item in inventory
-	print(item)
+	#print(item)
 	if item[0] == player_container.current_character.inventory.use[item[1]].id:
 		# if item count > 0 decrement
 		if player_container.current_character.inventory.use[item[1]].q > 0:
@@ -551,61 +582,12 @@ remote func add_stat(stat: String) -> void:
 		send_client_notification(player_id, "added 1 to %s" % stat)
 	else:
 		send_client_notification(player_id, "not enough sp")
-######################################################################
-# test buttons
-func _on_Button_pressed():
-	$Test/PlayerContainer.attack(0)
-
-# function takes current_character
-func _on_Button2_pressed():
-	Global.calculate_stats($Test/PlayerContainer.current_character)
-func _on_Button3_pressed():
-#	print("dropping potion")
-#	Global.dropSpawn("100001", Vector2(231, -405), {"300000": 1}, "PlayerContainer")
-#	print("testcase 1")
-#	print("dropping leather pants")
-	var bottom = {"500003": 1, "accuracy":0, "attack":15, "avoidability":0, "bossPercent":5, "critRate":0, "damagePercent":0, "defense":0, "dexterity":4, "job":0, "jumpSpeed":0, "luck":5, "magic":0, "magicDefense":0, "maxHealth":0, "maxMana":0, "movementSpeed":0, "name":"Leather Bottom", "slot":7, "speed":5, "strength":5, "type":"bottom", "wisdom":5, "uniqueID": 100000000}
-	Global.dropSpawn("100001",  Vector2(231, -405), {"500003": bottom},  1, "testing123")
-	#print("dropping  200 gold")
-	#Global.dropSpawn("100001",  Vector2(231, -405), {"100000": 200}, "testing123")
-#	print("cuurent gold: %s" % Global.testplayer.current_character.inventory["100000"])
-	
-	#print("setting testplayer max gold")
-	#Global.testplayer.current_character.inventory["100000"] = Global.max_int -10
-	#print("cuurent gold: %s" % Global.testplayer.current_character.inventory["100000"])
-
-func _on_Button4_pressed():
-	#print("testing loot request")
-	var test_player = $Test/PlayerContainer
-	test_player.loot_request()
-	#print("cuurent gold: %s" % Global.testplayer.current_character.inventory["100000"])
-
-
-func _on_Button5_pressed():
-#	print("firebase button press")
-#	var server_dict = ServerData.characters_data["testing222"].duplicate(true)
-#	server_dict.inventory.use[3] = {"id": "300001", "q": 123}
-	#server_dict.inventory.use[3] = null
-	#server_dict.equipment.rweapon = {"accuracy":0, "type": "1h_sword", "id": 10000}
-	#server_dict.equipment.rweapon =  {"accuracy":0, "attack":15, "avoidability":0, "bossPercent":5, "critRate":0, "damagePercent":0, "defense":0, "dexterity":4, "id":"200001", "job":0, "jumpSpeed":0, "luck":5, "magic":0, "magicDefense":0, "maxHealth":0, "maxMana":0, "movementSpeed":0, "name":"Training Sword", "slot":7, "speed":5, "strength":5, "type":"1h_sword", "wisdom":5, "uniqueID": 100000000}
-	#server_dict.equipment.rweapon = ServerData.characters_data["duma123"].equipment.rweapon
-	#server_dict.equipment.top = {"id": 500000}
-	#save("res://save.json",fb_data)
-	#Firebase.test_update_document("characters/testing222", server_dict)
-	#print(ServerData.characters_data["testing222"]["inventory"]["equipment"][0])
-	#var actual_equip = ServerData.characters_data["testing222"]["inventory"]["equipment"][0]
-	#var server_dict =  {"owner": "testing222", "accuracy":0, "attack":15, "avoidability":0, "bossPercent":5, "critRate":0, "damagePercent":0, "defense":0, "dexterity":4, "id":"200001", "job":0, "jumpSpeed":0, "luck":5, "magic":0, "magicDefense":0, "maxHealth":0, "maxMana":0, "movementSpeed":0, "name":"Training Sword", "slot":7, "movementSpeed":5, "strength":5, "type":"1h_sword", "wisdom":5, "uniqueID": 10000002}
-	#print(server_dict)
-	var server_dict =  {"owner": "testing222", "id":"200001", "uniqueID": "10000002", "name": "test_item", "type": "1h_sword"}
-	Firebase.test_update_document("items/%s" % str(server_dict.id + str(server_dict.uniqueID)), server_dict)
 	
 func save(var path : String, var thing_to_save):
 	var file = File.new()
 	file.open(path, File.WRITE)
 	file.store_line(JSON.print(thing_to_save, "\t"))
 	file.close()
-
-####################################################################################
 
 remote func send_chat(text: String, chat_type: int) -> void:
 	var player_id = get_tree().get_rpc_sender_id()
@@ -641,8 +623,310 @@ remote func drop_request(slot: int, tab: String, quantity: int) -> void:
 	# check if has item
 	
 func _unhandled_input(event):
-	if event is InputEventKey:if event.pressed and event.scancode == KEY_SPACE:
-		var test_dict = ServerData.static_data.player_info.duplicate(true)
-		Firebase.server_dictionary_converter(ServerData.characters_data["1111111"], test_dict)
-		#print(test_dict)
-		print(test_dict.skills)
+	pass
+
+remote func update_keybind(key: String, type: String, id: String) -> void:
+	var player_id = get_tree().get_rpc_sender_id()
+	var player_container = _Server_Get_Player_Container(player_id)
+	#print("items should be 3XXXXX, skills should be 6XXXXX")
+	print(type, " and ", id)
+	
+	if type == "use":
+		# check item is in inventory
+		for item in player_container.current_character.inventory.use:
+			if not item == null:
+				# if item is in inventory
+				if item.id == id:
+					# if item bind to different keybind
+					for keybind in player_container.current_character.keybind.keys():
+						if player_container.current_character.keybind[keybind] == id:
+							player_container.current_character.keybind[keybind] = null
+							break
+					# assign item to new keybind
+					player_container.current_character.keybind[key] = id
+					update_player_stats(player_container)
+					print("update %s keybind: key %s with %s %s" % [player_id, key, type, id])
+					break
+					
+	elif type == "skill":
+		# if character id has skill
+		if id in ServerData.skill_class_dictionary.keys():
+			# get skill location in dictionary
+			var location = ServerData.skill_class_dictionary[id].location
+			# if skill level > 1
+			if player_container.current_character.skills[location[0]][location[1]] != 0:
+				# check if skill bound to different keybind
+				for keybind in player_container.current_character.keybind.keys():
+					if player_container.current_character.keybind[keybind] == id:
+						player_container.current_character.keybind[keybind] = null
+						break
+				player_container.current_character.keybind[key] = id
+				update_player_stats(player_container)
+				print("update %s keybind: key %s with %s %s" % [player_id, key, type, id])
+	else:
+		for keybind in player_container.current_character.keybind.keys():
+					if player_container.current_character.keybind[keybind] == id:
+						player_container.current_character.keybind[keybind] = null
+						break
+						
+		player_container.current_character.keybind[key] = id
+		update_player_stats(player_container)
+		print("update %s keybind: key %s with %s %s" % [player_id, key, type, id])
+		
+remote func swap_keybind(key1: String, key2: String) -> void:
+	var player_id = get_tree().get_rpc_sender_id()
+	var player_container = _Server_Get_Player_Container(player_id)
+	
+	var temp_key = player_container.current_character.keybind[key1]
+	player_container.current_character.keybind[key1] = player_container.current_character.keybind[key2]
+	player_container.current_character.keybind[key2] = temp_key
+	update_player_stats(player_container)
+	print("player %s swap key %s and key %s" % [player_id, key1, key2])
+
+remote func remove_keybind(key: String) -> void:
+	var player_id = get_tree().get_rpc_sender_id()
+	var player_container = _Server_Get_Player_Container(player_id)
+	
+	player_container.current_character.keybind[key] = null
+	update_player_stats(player_container)
+	print("player %s remove keybind %s" % [player_id, key])
+
+remote func skill_request(skill: String) -> void:
+	var player_id = get_tree().get_rpc_sender_id()
+	var player_container = _Server_Get_Player_Container(player_id)
+	var skill_class
+	var skill_data
+	
+	if ServerData.skill_class_dictionary.has(skill):
+		skill_class = ServerData.skill_class_dictionary[skill]
+		
+		# not on cd
+		if not player_container.cooldowns.has(skill):
+			# if beginner skill or player job in job skills
+			if skill_class.location[0] == "0" or player_container.current_player.stats.job in skill_class.class:
+				
+				skill_data = ServerData.skill_data[skill_class.location[0]][skill_class.location[1]]
+				# get skill level
+				var player_skill_data = player_container.current_character.skills[skill_class.location[0]][skill_class.location[1]]
+				if player_container.current_character.displayname == "1111111":
+					player_container.current_character.stats.base.mana = player_container.current_character.stats.base.maxMana
+				# check mana cost
+				if player_container.current_character.stats.base.mana >= skill_data.mana[player_skill_data - 1]:
+					# update mana
+					player_container.current_character.stats.base.mana -= skill_data.mana[player_skill_data - 1]
+					
+					# if buff
+					if skill_data.type == "buff": 
+						if not player_container.buffs.has(skill):
+							var keys = skill_data.stat.keys()
+							for key in keys:
+								if "Percent" in key and "strength" in key:
+										player_container.current_character.stats.buff["strength"] += floor(player_container.current_character.stats.base.strength * skill_data.stat[key][player_skill_data - 1])
+								elif "Percent" in key and "dexterity" in key:
+									player_container.current_character.stats.buff["dexterity"] += floor(player_container.current_character.stats.base.dexterity * skill_data.stat[key][player_skill_data - 1])
+								elif "Percent" in key and "wisdom" in key:
+									player_container.current_character.stats.buff["wisdom"] += floor(player_container.current_character.stats.base.wisdom * skill_data.stat[key][player_skill_data - 1])
+								elif "Percent" in key and "luck" in key:
+									player_container.current_character.stats.buff["luck"] += floor(player_container.current_character.stats.base.luck * skill_data.stat[key][player_skill_data - 1])
+								elif "Percent" in key and "health" in key:
+									player_container.current_character.stats.buff["maxHealth"] += floor(player_container.current_character.stats.base.maxHealth * skill_data.stat[key][player_skill_data - 1])
+								elif "Percent" in key and "mana" in key:
+									player_container.current_character.stats.buff["maxMana"] += floor(player_container.current_character.stats.base.maxMana * skill_data.stat[key][player_skill_data - 1])
+								else:
+									player_container.current_character.stats.buff[key] += skill_data.stat[key][player_skill_data - 1]
+							#player_container.current_character.stats.buff[skill] = {"stat": skill_data.statType, "A": skill_data.type, "D": skill_data.duration[player_skill_data - 1]}
+						player_container.buffs[skill] = skill_data.duration[player_skill_data - 1]
+						print(player_container.current_character.stats.buff)
+						update_player_stats(player_container)
+						
+					elif skill_data.type == "heal":
+						print("attempt to heal")
+						var keys = skill_data.stat.keys()
+						for key in keys:
+							if key == "health":
+								if player_container.current_character.stats.base.health + skill_data.stat[key][player_skill_data - 1] > player_container.current_character.stats.base.maxHealth + player_container.current_character.stats.buff.maxHealth:
+									player_container.current_character.stats.base.health = player_container.current_character.stats.base.maxHealth + player_container.current_character.stats.buff.maxHealth
+								else:
+									player_container.current_character.stats.base.health += skill_data.stat[key][player_skill_data - 1]
+									
+							elif key == "mana":
+								if player_container.current_character.stats.base.mana + skill_data.stat[key][player_skill_data - 1] > player_container.current_character.stats.base.maxMana + player_container.current_character.stats.buff.maxMana:
+									player_container.current_character.stats.base.mana = player_container.current_character.stats.base.maxMana + player_container.current_character.stats.buff.maxMana
+								else:
+									player_container.current_character.stats.base.mana += skill_data.stat[key][player_skill_data - 1]
+							else:
+								player_container.current_character.stats.buff[key] += skill_data.stat[key][player_skill_data - 1]
+						update_player_stats(player_container)
+						
+					# if attack
+					elif skill_data.type == "attack":
+						# if projectile
+						if skill_data.attackType == "projectile":
+							var projectile = ServerData.projectile_dict[skill].object.instance()
+							projectile.id = skill
+							projectile.skill_data = skill_data
+							projectile.skill_level = player_skill_data - 1
+							if player_container.direction == 1:
+								projectile.position = player_container.position + ServerData.projectile_dict[skill].distance
+							else:
+								projectile.position = Vector2(player_container.position.x - ServerData.projectile_dict[skill].distance.x, player_container.position.y + ServerData.projectile_dict[skill].distance.y)
+							projectile.player = player_container
+							projectile.direction = player_container.direction
+							get_node(str(ServerData.player_location[str(player_id)])).get_parent().get_node("Projectiles").add_child(projectile, true)
+							# create projectile
+						elif skill_data.attackType == "melee":
+							player_container.skill_attack(skill, skill_data)
+							
+						elif skill_data.attackType == "aoe":
+							pass
+						
+						
+					# set cd
+					var cooldown = skill_data.cooldown[player_skill_data - 1]
+					if cooldown > 0:
+						player_container.cooldowns[skill] = int(cooldown)
+					else:
+						print("%s does not have cooldown limit" % skill)
+		else:
+			print("%s has %s is on cooldown" % [player_id, skill])
+	else:
+		print("%s not in skill data")
+
+remote func increase_skill(skill_id: String, level: int) -> void:
+	var player_id = get_tree().get_rpc_sender_id()
+	var player_container = _Server_Get_Player_Container(player_id)
+	var skill_class = ServerData.skill_class_dictionary[skill_id]
+	
+	if skill_class.location[0] == "0" or player_container.current_player.stats.job in skill_class.class:
+		print("inside")
+
+		var skill_data = ServerData.skill_data[skill_class.location[0]][skill_class.location[1]]
+		var player_skill_level = player_container.current_character.skills[skill_class.location[0]][skill_class.location[1]]
+		print("maxLevel %s, player skill level: %s" % [skill_data.maxLevel, player_skill_level])
+		
+		if player_skill_level == level and player_container.current_character.stats.base.ap[skill_class.job] > 0 and player_skill_level < skill_data.maxLevel:
+			print("inside 2")
+			print("before %s %s lvl %s" %[player_container.current_character.stats.base.ap[skill_class.job], skill_id, player_skill_level])
+			player_container.current_character.stats.base.ap[skill_class.job] -= 1
+			player_container.current_character.skills[skill_class.location[0]][skill_class.location[1]] += 1
+			print("after %s %s lvl %s" %[player_container.current_character.stats.base.ap[skill_class.job], skill_id, player_container.current_character.skills[skill_class.location[0]][skill_class.location[1]]])
+			
+			update_player_stats(player_container)
+
+remote func equipment_request(equipment_slot, inventory_slot) -> void:
+	var player_id = get_tree().get_rpc_sender_id()
+	var player_container = _Server_Get_Player_Container(player_id)
+	#print(equipment_slot)
+	#print(inventory_slot)
+	# get slot item type
+	var item = player_container.current_character.inventory.equipment[inventory_slot]
+	var equipment = player_container.current_character.equipment[equipment_slot]
+	if equipment_swap_check(player_container, equipment_slot, equipment, item):
+		var temp_equipment = equipment
+		player_container.current_character.equipment[equipment_slot] = item
+		player_container.current_character.inventory.equipment[inventory_slot] = temp_equipment
+
+		#print(player_container.current_character.inventory.equipment[inventory_slot])
+		# remove unequiped item stats
+		if equipment:
+			for stats in player_container.current_character.stats.equipment.keys():
+				player_container.current_character.stats.equipment[stats] -= player_container.current_character.inventory.equipment[inventory_slot][stats]
+			
+		# add new equiped item stats
+		for stats in player_container.current_character.stats.equipment.keys():
+			player_container.current_character.stats.equipment[stats] += player_container.current_character.equipment[equipment_slot][stats]
+		
+		# calcluate total stats
+	Global.calculate_stats(player_container.current_character)	
+	update_player_stats(player_container)
+
+remote func remove_equipment_request(equipment_slot, inventory_slot) -> void:
+	var player_id = get_tree().get_rpc_sender_id()
+	var player_container = _Server_Get_Player_Container(player_id)
+	
+	var equipment = player_container.current_character.equipment[equipment_slot]
+	#print(equipment_slot, " ", inventory_slot)
+	
+	if not player_container.current_character.inventory.equipment[inventory_slot]:
+		player_container.current_character.inventory.equipment[inventory_slot] = equipment
+		player_container.current_character.equipment[equipment_slot] = null
+		
+		for stats in player_container.current_character.stats.equipment.keys():
+			player_container.current_character.stats.equipment[stats] -= player_container.current_character.inventory.equipment[inventory_slot][stats]
+	else:
+		print("inventory slot not null")
+	Global.calculate_stats(player_container.current_character)
+	update_player_stats(player_container)
+	#rpc_id(player_id, "return_remove_equipment", equipment_slot)
+
+func equipment_swap_check(player, equipment_slot, equipment, item) -> bool:
+	## JOB CHECK ###
+	if not ServerData.equipmentTable[item.id].job == null and not ServerData.equipmentTable[item.id].job == player.current_character.stats.base.job:
+		print("wrong job")
+		return false
+	## LEVEL CHECK ###
+	if not ServerData.equipmentTable[item.id].reqLevel <= player.current_character.stats.base.level:
+		print("wrong level")
+		return false
+	## STAT CHECK ###
+	print("equipment slot check stats")
+	if equipment:
+		if not ServerData.equipmentTable[item.id].reqStr <= player.current_character.stats.base.strength + player.current_character.stats.buff.strength + player.current_character.stats.equipment.strength - equipment.strength:
+			print("not enough str")
+			return false
+		if not ServerData.equipmentTable[item.id].reqWis <= player.current_character.stats.base.wisdom + player.current_character.stats.buff.wisdom + player.current_character.stats.equipment.wisdom - equipment.wisdom:
+			print("not enough wis")
+			return false
+		if not ServerData.equipmentTable[item.id].reqLuk <= player.current_character.stats.base.luck + player.current_character.stats.buff.luck + player.current_character.stats.equipment.luck - equipment.luck:
+			print("not enough luk")
+			return false
+		if not ServerData.equipmentTable[item.id].reqDex <= player.current_character.stats.base.dexterity + player.current_character.stats.buff.dexterity + player.current_character.stats.equipment.dexterity - equipment.dexterity:
+			print("not enough dex")
+			return false
+	## STAT CHECK ###
+	else:
+		print("equipment slot check no equipment")
+		if not ServerData.equipmentTable[item.id].reqStr <= player.current_character.stats.base.strength + player.current_character.stats.buff.strength + player.current_character.stats.equipment.strength:
+			print("not enough str")
+			return false
+		if not ServerData.equipmentTable[item.id].reqWis <= player.current_character.stats.base.wisdom + player.current_character.stats.buff.wisdom + player.current_character.stats.equipment.wisdom:
+			print("not enough wis")
+			return false
+		if not ServerData.equipmentTable[item.id].reqLuk <= player.current_character.stats.base.luck + player.current_character.stats.buff.luck + player.current_character.stats.equipment.luck:
+			print("not enough luk")
+			return false
+		if not ServerData.equipmentTable[item.id].reqDex <= player.current_character.stats.base.dexterity + player.current_character.stats.buff.dexterity + player.current_character.stats.equipment.dexterity:
+			print("not enough dex")
+			return false
+		
+	## TYPE CHECK ###
+	# if weapon right hand true
+	print("pass equipment stat check")
+	print(ServerData.equipmentTable[item.id])
+	print(equipment)
+	print(equipment_slot)
+	if ServerData.equipmentTable[item.id].type == "weapon":
+		print("checking weapon")
+		if equipment_slot == "rweapon":
+			print("righthand")
+			return true
+		elif equipment_slot == "lweapon":
+			print("lefthand")
+			if player.current_character.stats.base.job in []:
+				print("job in dual wield")
+				return true
+			else:
+				print("job not in dual wield")
+				return false
+		else:
+			print("weapon but not right hand or left hand")
+			return false
+	elif ServerData.equipmentTable[item.id].type == "shield" and equipment_slot == "lhand":
+		print("sheild and left hand")
+		return true
+	elif ServerData.equipmentTable[item.id].type == equipment_slot:
+		print("equipment and slot same type")
+		return true
+	else:
+		print("incorrect slot")
+		return false

@@ -1,0 +1,142 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://scenes/monsterObjects/Label.tscn" type="PackedScene" id=1]
+[ext_resource path="res://assets/monsters/SpritesWithShadow/100009.png" type="Texture" id=2]
+[ext_resource path="res://scenes/monsterObjects/normalMonsterScript.gd" type="Script" id=3]
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 79.1071, 85 )
+
+[sub_resource type="Animation" id=6]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0 ]
+}
+
+[sub_resource type="Animation" id=7]
+resource_name = "attack"
+step = 0.063
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.063, 0.126, 0.189, 0.252, 0.315, 0.378, 0.441, 0.504, 0.567, 0.63, 0.693, 0.756, 0.819, 0.882, 0.945 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47 ]
+}
+
+[sub_resource type="Animation" id=8]
+resource_name = "die"
+step = 0.063
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.063, 0.126, 0.189, 0.252, 0.315, 0.378, 0.441, 0.504, 0.567, 0.63, 0.693, 0.756, 0.819, 0.882, 0.945 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63 ]
+}
+
+[sub_resource type="Animation" id=10]
+resource_name = "hit"
+step = 0.063
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 48 ]
+}
+
+[sub_resource type="Animation" id=5]
+resource_name = "idle"
+step = 0.063
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.063, 0.126, 0.189, 0.252, 0.315, 0.378, 0.441, 0.504, 0.567, 0.63, 0.693, 0.756, 0.819, 0.882 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 ]
+}
+
+[sub_resource type="Animation" id=9]
+resource_name = "walk"
+loop = true
+step = 0.063
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.063, 0.126, 0.189, 0.252, 0.315, 0.378, 0.441, 0.504, 0.567, 0.63, 0.693, 0.756, 0.819, 0.882, 0.945 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31 ]
+}
+
+[node name="100009" type="KinematicBody2D"]
+collision_layer = 0
+collision_mask = 16
+script = ExtResource( 3 )
+
+[node name="Sprite" type="Sprite" parent="."]
+scale = Vector2( -0.7, 0.4 )
+texture = ExtResource( 2 )
+hframes = 16
+vframes = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+position = Vector2( 6.375, 6 )
+scale = Vector2( 0.7, 0.4 )
+shape = SubResource( 2 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/RESET = SubResource( 6 )
+anims/attack = SubResource( 7 )
+anims/die = SubResource( 8 )
+anims/hit = SubResource( 10 )
+anims/idle = SubResource( 5 )
+anims/walk = SubResource( 9 )
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 1.5
+
+[node name="Label" parent="." instance=ExtResource( 1 )]
+margin_left = -50.0
+margin_top = 32.0
+margin_right = 63.0
+margin_bottom = 68.0
+text = "Wild Rooster"
+
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

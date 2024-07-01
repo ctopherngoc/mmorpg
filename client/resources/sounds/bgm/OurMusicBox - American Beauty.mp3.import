@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/OurMusicBox - American Beauty.mp3-cc7fb07b6ef44bedf6d4e2173424df9b.mp3str"
+
+[deps]
+
+source_file="res://resources/sounds/bgm/OurMusicBox - American Beauty.mp3"
+dest_files=[ "res://.import/OurMusicBox - American Beauty.mp3-cc7fb07b6ef44bedf6d4e2173424df9b.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

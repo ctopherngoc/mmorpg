@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/OurMusicBox - East River.mp3-4d9e18bc0cdf8aa7a13a59dcce5bb725.mp3str"
+
+[deps]
+
+source_file="res://resources/sounds/bgm/OurMusicBox - East River.mp3"
+dest_files=[ "res://.import/OurMusicBox - East River.mp3-4d9e18bc0cdf8aa7a13a59dcce5bb725.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

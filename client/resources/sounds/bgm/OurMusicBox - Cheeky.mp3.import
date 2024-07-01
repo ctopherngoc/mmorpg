@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/OurMusicBox - Cheeky.mp3-957a577902b1d8515131bd7b1f7f06a2.mp3str"
+
+[deps]
+
+source_file="res://resources/sounds/bgm/OurMusicBox - Cheeky.mp3"
+dest_files=[ "res://.import/OurMusicBox - Cheeky.mp3-957a577902b1d8515131bd7b1f7f06a2.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

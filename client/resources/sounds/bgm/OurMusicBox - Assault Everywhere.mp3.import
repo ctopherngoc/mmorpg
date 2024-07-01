@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/OurMusicBox - Assault Everywhere.mp3-5e54860eb1262afd282336cc683a2e85.mp3str"
+
+[deps]
+
+source_file="res://resources/sounds/bgm/OurMusicBox - Assault Everywhere.mp3"
+dest_files=[ "res://.import/OurMusicBox - Assault Everywhere.mp3-5e54860eb1262afd282336cc683a2e85.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

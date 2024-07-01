@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/OurMusicBox - Picket Fences.mp3-729ca8c88d81ff9d504bfdd8f85b98bb.mp3str"
+
+[deps]
+
+source_file="res://resources/sounds/bgm/OurMusicBox - Picket Fences.mp3"
+dest_files=[ "res://.import/OurMusicBox - Picket Fences.mp3-729ca8c88d81ff9d504bfdd8f85b98bb.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

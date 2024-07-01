@@ -1,4 +1,4 @@
-extends Node2D
+	extends Node2D
 
 onready var ammo = $Ammo
 onready var body = $Body
@@ -67,6 +67,7 @@ func _ready() -> void:
 	update_avatar("equipment")
 # warning-ignore:return_value_discarded
 	Signals.connect("level_up", self, "play_level_up")
+	Signals.connect("update_sprite", self, "avatar_check")
 
 # warning-ignore:unused_argument
 func _physics_process(delta: float) -> void:
@@ -77,6 +78,7 @@ func _physics_process(delta: float) -> void:
 # warning-ignore:unused_argument
 func update_avatar(data: String) -> void:
 	if data == "avatar":
+		avatar = Global.player.avatar
 		#body
 		var sprite = load(GameData.avatar_sprite.body + str(avatar['bcolor']) + str(avatar['body']) + ".png")
 		body.set_texture(sprite)
@@ -120,8 +122,9 @@ func update_avatar(data: String) -> void:
 		mouth.set_texture(sprite)
 		
 	if data == "equipment":
+		equipment = Global.player.equipment
 		for key in equipment.keys():
-			if str(equipment[key]) == "-1":
+			if equipment[key] == null:
 				var sprite = load(GameData.equipment_sprite.default + "empty_16_11_spritesheet.png")
 				if key == "earring":
 					rearring.set_texture(sprite)
@@ -131,7 +134,8 @@ func update_avatar(data: String) -> void:
 					lglove.set_texture(sprite)
 					rglove.set_texture(sprite)
 				else:
-					sprite_dict[key].set_texture(sprite)
+					if not "ring" in key:
+						sprite_dict[key].set_texture(sprite)
 
 			else:
 				if key == "earring":
@@ -147,20 +151,18 @@ func update_avatar(data: String) -> void:
 					lleg.set_texture(sprite)
 
 				else:
+					######################################
 					var sprite
 					if equipment[key] is Dictionary:
 						sprite = load(GameData.equipment_sprite[key] + str(equipment[key]["id"])+".png")
 					else:
 						sprite = load(GameData.equipment_sprite[key] + str(equipment[key])+".png")
 					sprite_dict[key].set_texture(sprite)
+					######################################
 
 func avatar_check() -> void:
-	if avatar != Global.player.avatar:
-		avatar = Global.player.avatar
-		update_avatar(avatar)
-	if equipment != Global.player.equipment:
-		equipment = Global.player.equipment
-		update_avatar(equipment)
+		update_avatar("avatar")
+		update_avatar("equipment")
 
 # warning-ignore:unused_argument
 func change_equipment(equipment_slot, item_id):
@@ -169,8 +171,13 @@ func change_equipment(equipment_slot, item_id):
 func _on_AnimationPlayer_animation_finished(anim_name: String) -> void:
 	if anim_name == "slash":
 		self.get_parent().attacking = false
+		print(self.get_parent().attacking)
 	elif anim_name == "update_level":
 		print("level up finished")
+	elif anim_name == "ready":
+		if self.get_parent().attacking == true:
+			self.get_parent().attacking = false
+			print("ready ", self.get_parent().attacking)
 
 func play_level_up() -> void:
 	AudioControl.play_audio("levelUp")

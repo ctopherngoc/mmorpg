@@ -5,6 +5,7 @@ var username_list = {}
 var player_state_collection = {}
 var user_characters = {}
 var characters_data = {}
+var equipment_data = []
 
 var monsterTable
 var itemTable
@@ -26,12 +27,29 @@ func _ready():
 	#print(monsterTable)
 	#print(equipmentTable)
 	
-	
+onready var ign_id_dict = {}
 #	var skill_data_file = File.new()
 #	skill_data_file.open("res://Data/SkillData - Sheet1.json", File.READ)
 #	var skill_data_json = JSON.parse(skill_data_file.get_as_text())
-#	skill_data_file.close()
-#	skill_data = skill_data_json.result
+#	skill_data_file.close()s
+
+onready var skill_data = {
+	"0" : {
+		"0": {"name": "Godot Ball", "id": "600000",  "maxLevel": 3, "targetCount": [1,1,1], "description": "Throw a projectile forward", "stat": {"damagePercent": [1.3, 1.5, 1.7]}, "mana": [25, 20, 15], "cooldown": [0, 0, 0], "type": "attack", "attackType": "projectile", "weaponType": null, "damageType": 1, "hitAmount": [2,3,4]},
+		"1": {"name": "Tenacious Heal", "id": "600001",  "maxLevel": 3, "description": "Heals for a small amount", "stat": {"health": [25, 50, 100]}, "mana": [30,20,10], "cooldown": [180, 120, 60], "type": "heal", "healType": "self"},
+		"2": {"name": "Swift Speed", "id": "600002", "maxLevel": 3, "description": "Incrase speed for a short time", "stat": {"movementSpeed": [10, 20, 30]}, "mana":[30,20,10], "duration": [30,30,30], "cooldown": [180, 120, 60], "type": "buff", "buffType": "self"},
+		},
+	"1" : {},
+	"2" : {},
+	"3" : {},
+	"4" : {},
+}
+
+onready var skill_class_dictionary = {
+	"600000" : {"class":[0,1,2,3,4], "location": ["0","0"], "job": 0},
+	"600001" : {"class":[0,1,2,3,4], "location": ["0","1"], "job": 0},
+	"600002" : {"class":[0,1,2,3,4], "location": ["0","2"], "job": 0},
+}
 
 var monsters = {
 	"100001" : {},
@@ -47,6 +65,13 @@ var items = {
 	"100004" : {},
 }
 
+var projectiles = {
+	"100001" : {},
+	"100002" : {},
+	"100003" : {},
+	"100004" : {},
+}
+
 # current emails logged in
 var logged_emails = []
 var player_id_emails = {}
@@ -55,7 +80,7 @@ var player_id_emails = {}
 var static_data = {
 	"job_skills" : 
 		{
-		0: [],
+		0: ["600000", "600001", "600002"],
 		1: [],
 		2: [],
 		3: [],
@@ -81,7 +106,13 @@ var static_data = {
 							#"class": {'integerValue': null},
 							"job": {'integerValue': null},
 							"sp": {'integerValue': null},
-							"ap": {'integerValue': null},
+							"ap": {'arrayValue':
+								{'values':[
+									{"integerValue": null},
+									{"integerValue": null},
+									{"integerValue": null},
+									{"integerValue": null}]},
+								},
 							"strength": {'integerValue': null},
 							"wisdom": {'integerValue': null},
 							"dexterity": {'integerValue': null},
@@ -141,18 +172,21 @@ var static_data = {
 		}, # avatar
 		"equipment" : {"mapValue":
 			{"fields": 
-				{"ammo": {'integerValue': null},
-				"headgear": {'integerValue': null},
-				"faceacc": {'integerValue': null},
-				"eyeacc": {'integerValue': null},
-				"top": {'integerValue': null},
-				"bottom": {'integerValue': null},
-				"earring": {'integerValue': null},
-				"glove": {'integerValue': null},
-				"pocket": {'integerValue': null},
-				"lweapon": {'integerValue': null},
-				"rweapon": {'integerValue': null},
-				"tattoo": {'integerValue': null},
+				{"ammo": {'nullValue': null},
+				"headgear": {'nullValue': null},
+				"faceacc": {'nullValue': null},
+				"eyeacc": {'nullValue': null},
+				"top": {'mapValue': null},
+				"bottom": {'mapValue': null},
+				"earring": {'nullValue': null},
+				"glove": {'nullValue': null},
+				"pocket": {'nullValue': null},
+				"lweapon": {'nullValue': null},
+				"rweapon": {'mapValue': null},
+				"tattoo": {'nullValue': null},
+				"ring1": {'nullValue': null},
+				"ring2": {'nullValue': null},
+				"ring3": {'nullValue': null},
 				}#fields
 			}#mapvalue
 		}, #equipment
@@ -177,6 +211,17 @@ var static_data = {
 				}#fields
 			}#mapvalue
 		}, #inventory
+		"keybind": {'mapValue': 
+			{"fields":
+				{'shift': {"nullValue": null}, 'ins': {"nullValue": null}, 'home': {"nullValue": null}, 'pgup': {"nullValue": null}, 'ctrl': {"stringValue": "attack"},  'del': {"nullValue": null}, 'end': {"nullValue": null}, 'pgdn': {"nullValue": null},
+				'`': {"nullValue": null}, '1': {"nullValue": null}, '2': {"nullValue": null}, '3': {"nullValue": null}, '4': {"nullValue": null}, '5': {"nullValue": null}, '6': {"nullValue": null}, '7': {"nullValue": null}, '8': {"nullValue": null}, '9': {"nullValue": null}, '0': {"nullValue": null}, '-': {"nullValue": null}, '=': {"nullValue": null},
+				 'f1': {"nullValue": null}, 'f2': {"nullValue": null}, 'f3': {"nullValue": null}, 'f4': {"nullValue": null}, 'f5': {"nullValue": null}, 'f6': {"nullValue": null}, 'f7': {"nullValue": null}, 'f8': {"nullValue": null}, 'f9': {"nullValue": null}, 'f10': {"nullValue": null}, 'f11': {"nullValue": null}, 'f12': {"nullValue": null},
+				'q': {"nullValue": null}, 'w': {"nullValue": null}, 'e': {"stringValue": "equipment"}, 'r': {"nullValue": null}, 't': {"nullValue": null}, 'y': {"nullValue": null}, 'u': {"nullValue": null}, 'i': {"stringValue": 'inventory'}, 'o': {"nullValue": null}, 'p': {"nullValue": null}, '[': {"nullValue": null}, ']': {"nullValue": null},
+				'a': {"nullValue": null}, 's': {"stringValue": "stat"}, 'd': {"nullValue": null}, 'f': {"nullValue": null}, 'g': {"nullValue": null}, 'h': {"nullValue": null}, 'j': {"nullValue": null}, 'k': {"stringValue": 'skill'}, 'l': {"nullValue": null}, ';': {"nullValue": null}, "'": {"nullValue": null},
+				'z': {"stringValue": 'loot'}, 'x': {"nullValue": null}, 'c': {"nullValue": null}, 'v': {"nullValue": null}, 'b': {"nullValue": null}, 'n': {"nullValue": null}, 'm': {"nullValue": null}, ',': {"nullValue": null}, '.': {"nullValue": null}, '/': {"nullValue": null}, 'space': {"nullValue": null}
+				},
+			},
+		},
 	},
 	"player_template" : {
 		"displayname": null,
@@ -194,7 +239,7 @@ var static_data = {
 				#"class": 0,
 				"job": 0,
 				"sp": 0,
-				"ap": 0,
+				"ap": [0,0,0,0,0],
 				"strength": 4,
 				"wisdom": 4,
 				"dexterity": 4,
@@ -248,25 +293,37 @@ var static_data = {
 			"ecolor": null,
 		},
 		"equipment" : {
-				"ammo": -1,
-				"headgear": -1,
-				"faceacc": -1,
-				"eyeacc": -1,
-				"earring":-1,
+				"ammo": null,
+				"headgear": null,
+				"faceacc": null,
+				"eyeacc": null,
+				"earring":null,
 				"top": null,
 				"bottom": null,
-				"glove": -1,
-				"lweapon": -1,
-				"rweapon": -1,
+				"glove": null,
+				"lweapon": null,
+				"rweapon": null,
 				#"rweapon": {"accuracy":0, "attack":15, "avoidability":0, "bossPercent":0, "critRate":0, "damagePercent":0, "defense":0, "dexterity":4, "id":"200001", "job":0, "jumpSpeed":0, "luck":5, "magic":0, "magicDefense":0, "maxHealth":0, "maxMana":0, "movementSpeed":0, "name":"Training Sword", "slot":7, "speed":5, "strength":5, "type":"1h_sword", "uniqueID":1000000, "wisdom":5},
-				"pocket": -1,
-				"tattoo": -1,
+				"pocket": null,
+				"tattoo": null,
+				"ring1": null,
+				"ring2": null,
+				"ring3": null,
 				}, #equipment
 		 "inventory":{"100000":0,
-		"equipment": [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+			"equipment": [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
 			"etc": [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
-			"use": [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]} #inventory
-	},
+			"use": [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+			}, #inventory
+		"keybind": {
+			'shift': null, 'ins': null, 'home': null, 'pgup': null, 'ctrl': "attack",  'del': null, 'end': null, 'pgdn': null,
+			'`': null, '1': null, '2': null, '3': null, '4': null, '5': null, '6': null, '7': null, '8': null, '9': null, '0': null, '-': null, '=': null,
+			'f1': null, 'f2': null, 'f3': null, 'f4': null, 'f5': null, 'f6': null, 'f7': null, 'f8': null, 'f9': null, 'f10': null, 'f11': null, 'f12': null,
+			'q': null, 'w': null, 'e': "equipment", 'r': null, 't': null, 'y': null, 'u': null, 'i': "inventory", 'o': null, 'p': null, '[': null, ']': null,
+			'a': null, 's': "stat", 'd': null, 'f': null, 'g': null, 'h': null, 'j': null, 'k': "skill", 'l': null, ';': null, "'": null,
+			'z': "loot", 'x': null, 'c': null, 'v': null, 'b': null, 'n': null, 'm': null, ',': null, '.': null, '/': null, 'space': null,
+			}, # keybind
+		}, #player_template
 	"starter_equips" : 
 		[
 			[500000, 500001],
@@ -318,7 +375,8 @@ var static_data = {
 			"critRate": 0,
 		},
 	"weapon_ratio" : {
-		"1h_sword": 1.2,
+		"dagger": 1.2,
+		"1h_sword": 1.3,
 		"2h_sword": 1.5,
 		"staff": 0.8,},
 	"weapon_speed" : {
@@ -369,6 +427,7 @@ var static_data = {
 		'29': 59511,
 		'30': 65462,
 	},
+	
 	"fb_equipment_template" : {
 		"owner": {"stringValue": ""},
 		"id": {"stringValue": ""},
@@ -395,22 +454,78 @@ var static_data = {
 		"damagePercent": {"integerValue": 0},
 		"critRate": {"integerValue": 0},
 		"attackSpeed": {"integerValue": 0},
+		"reqLuk": {"integerValue": 0},
+		"reqStr": {"integerValue": 0},
+		"reqDex": {"integerValue": 0},
+		"reqWis": {"integerValue": 0},
+		"reqLevel": {"integerValue": 0},
+		"weaponType": {"integerValue": 0},
 		},
+	"server_keybind_template": {
+	'shift': null, 'ins': null, 'home': null, 'pgup': null, 'ctrl': null,  'del': null, 'end': null, 'pgdn': null,
+	'`': null, '1': null, '2': null, '3': null, '4': null, '5': null, '6': null, '7': null, '8': null, '9': null, '0': null, '-': null, '=': null,
+	 'f1': null, 'f2': null, 'f3': null, 'f4': null, 'f5': null, 'f6': null, 'f7': null, 'f8': null, 'f9': null, 'f10': null, 'f11': null, 'f12': null,
+	'q': null, 'w': null, 'e': null, 'r': null, 't': null, 'y': null, 'u': null, 'i': null, 'o': null, 'p': null, '[': null, ']': null,
+	'a': null, 's': null, 'd': null, 'f': null, 'g': null, 'h': null, 'j': null, 'k': null, 'l': null, ';': null, "'": null,
+	'z': null, 'x': null, 'c': null, 'v': null, 'b': null, 'n': null, 'm': null, ',': null, '.': null, '/': null, 'space': null
+	},
+	"default_keybind": {
+	'shift': null, 'ins': null, 'home': null, 'pgup': null, 'ctrl': "attack",  'del': null, 'end': null, 'pgdn': null,
+	'`': null, '1': null, '2': null, '3': null, '4': null, '5': null, '6': null, '7': null, '8': null, '9': null, '0': null, '-': null, '=': null,
+	 'f1': null, 'f2': null, 'f3': null, 'f4': null, 'f5': null, 'f6': null, 'f7': null, 'f8': null, 'f9': null, 'f10': null, 'f11': null, 'f12': null,
+	'q': null, 'w': null, 'e': "equipment", 'r': null, 't': null, 'y': null, 'u': null, 'i': 'inventory', 'o': null, 'p': null, '[': null, ']': null,
+	'a': null, 's': "stat", 'd': null, 'f': null, 'g': null, 'h': null, 'j': null, 'k': 'skill', 'l': null, ';': null, "'": null,
+	'z': 'loot', 'x': null, 'c': null, 'v': null, 'b': null, 'n': null, 'm': null, ',': null, '.': null, '/': null, 'space': null,
+	},
 }
 
 var portal_data = {
 	"100001": {
-		'P1': {'map': '100002',
-					'spawn': Vector2(110, -275)},
-	},
-	'100002': {
-		'P1': {'map': '100001',
-					'spawn': Vector2(837, -108)},
-		'P2': {'map': '100003',
-					'spawn': Vector2(103, -290)}
+		'P1': {'map': '100002', 'spawn': Vector2(103, -260)}},
+	'100002': {'P1': {'map': '100001', 'spawn': Vector2(833, -100)},
+				'P2': {'map': '100003', 'spawn': Vector2(28, -280)}
 	},
 	'100003' : {
-		'P1': {'map': '100002',
-					'spawn': Vector2(904, -252)}
-	},
+		'P1': {'map': '100002','spawn': Vector2(1933, -280)},
+		'P2': {'map': '100004','spawn': Vector2(1933, -280)},
+		},
+}
+
+onready var buff_stats = {
+				"maxHealth": 0,
+				"maxMana": 0,
+				"strength": 0,
+				"wisdom": 0,
+				"dexterity": 0,
+				"luck": 0,
+				"movementSpeed": 0,
+				"jumpSpeed": 0,
+				"avoidability": 0,
+				"defense": 0,
+				"magicDefense": 0,
+				"accuracy": 0,
+				"bossPercent": 0,
+				"damagePercent": 0,
+				"critRate": 0,}
+				
+onready var projectile_dict = {
+	"600000": {"object": preload("res://scenes/skillObjects/Projectile.tscn"), "distance": Vector2(44,25),}
+}
+
+onready var equipment_string  = {
+	"faceacc": "face",
+	"headgear": "head",
+	"earring": "earring",
+	"ammo": "ammo",
+	"top": "top",
+	"glove": "glove",
+	"lweapon": "lhand",
+	"bottom": "bottom",
+	"rweapon": "rhand",
+	"eyeacc": "eye",
+	"tattoo": "tattoo",
+	"pocket": "pocket",
+	"ring1":"ring",
+	"ring2": "ring",
+	"ring3": "ring",
 }

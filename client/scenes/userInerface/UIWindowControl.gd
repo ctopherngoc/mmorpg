@@ -3,15 +3,14 @@ extends Control
 onready var quantity_popup = preload("res://scenes/menuObjects/PopupMenus/drop_quantity_popup.tscn")
 onready var drop_confirm_popup = preload("res://scenes/menuObjects/PopupMenus/drop_confirm_popup.tscn")
 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
-var non_movable_windows = ["InGameMenu", "PlayerHUD", "ChatBox", "Control"]
+var non_movable_windows = ["InGameMenu", "PlayerHUD", "ChatBox", "Control", "DebuggerWindow", "HotKeys", "ButtonBar"]
 onready var ui_nodes = {
 	'player_stats': get_node("PlayerStats"),
 	'inventory': get_node("Inventory"),
-	'chat_box': $Control/ChatBox,
-	'player_hud':  get_node("PlayerHUD")
+	'chat_box': $ChatBox,
+	'player_hud':  get_node("PlayerHUD"),
+	"key_binds": get_node("KeyBinds"),
+	'hot_keys': $HotKeys,
 }
 
 # Called when the node enters the scene tree for the first time.
@@ -23,7 +22,7 @@ func _ready():
 			window.connect('move_to_top', self, 'move_window_to_top')
 
 func move_window_to_top(node):
-	move_child(node, get_child_count() - 3)
+	move_child(node, get_child_count() - 6)
 
 """
 data["origin_node"] = self
@@ -33,8 +32,6 @@ data["origin_node"] = self
 		data["tab"] = tab
 		"""
 func drop_data(_pos, data):
-	print("attempt dropped item")
-	# dropping item from inventory
 	if data.has("item_data"):
 		if not GameData.itemTable[data.item_data.id].droppable:
 			print("are you sure you want to drop?")
@@ -64,8 +61,23 @@ func drop_data(_pos, data):
 			data["tab"] = tab
 			"""
 			Server.drop_request(data.from_slot, data.tab)
+	else:
+		if data.keybind_data.id in GameData.mandatory_keys:
+			print("emitting signal for attak")
+			Signals.emit_signal("reset_default_keybind", data.keybind_data.id)
+		data.origin_node.icon.texture = null
+		data.origin_node.quantity_label.text = ""
+		data.origin_node.hotkey_data = null
+		data.origin_node.bg.texture = load(data.origin_node.empty_bg)
+		Server.remove_keybind(data.origin_node.name)
+		
+		
 	
+	
+# warning-ignore:unused_argument
 func can_drop_data(_pos, data):
 	#print("in can drop data")
+	if data.has("slot"):
+		return false
 	return true
 

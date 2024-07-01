@@ -41,7 +41,26 @@ signal drop_quantity
 signal toggle_skills
 # warning-ignore:unused_signal
 signal update_skills
-
+# warning-ignore:unused_signal
+signal toggle_keybinds
+# warning-ignore:unused_signal
+signal update_keybinds
+# warning-ignore:unused_signal
+signal attack
+# warning-ignore:unused_signal
+signal use_skill
+# warning-ignore:unused_signal
+signal take_damage
+# warning-ignore:unused_signal
+signal update_equipment
+# warning-ignore:unused_signal
+signal toggle_equipment
+# warning-ignore:unused_signal
+signal update_sprite
+# warning-ignore:unused_signal
+signal reset_default_keybind
+# warning-ignore:unused_signal
+signal key_in_use
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

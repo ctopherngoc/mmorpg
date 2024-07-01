@@ -92,19 +92,21 @@ func _on_CheckBox_toggled(_button_pressed):
 func _on_LineEdit_focus_exited():
 	save_settings(savelogin)
 
+# warning-ignore:unused_argument
 func save_settings(save: bool) -> void:
-	var email = $VBoxContainer/username/LineEdit.text
 	var file = File.new()
 	file.open(login_file_path, file.WRITE)
 	var data
-	if save:
-		data ={ "login" : {"email": email,
+	if $VBoxContainer/loginButton/CheckBox.pressed:
+		var email = $VBoxContainer/username/LineEdit.text
+		data = { "login" : {"email": email,
 					"save": true}}
 	else:
-		data ={ "login" : {"save": true}}	
+		data ={ "login" : {
+					"save": false}}
 	file.store_line(JSON.print(data, "\t"))
 	file.close()
-	
+
 func load_settings() -> void:
 	var save_file = File.new()
 	if not save_file.file_exists(login_file_path):
@@ -113,8 +115,9 @@ func load_settings() -> void:
 	var settings_data = JSON.parse(save_file.get_as_text())
 	var login_settings = settings_data.result["login"]
 	if login_settings.save:
-		$VBoxContainer/username/LineEdit.text = login_settings.email
-		$VBoxContainer/loginButton/CheckBox.pressed = true
+		if login_settings.has("email"):
+			$VBoxContainer/username/LineEdit.text = login_settings.email
+			$VBoxContainer/loginButton/CheckBox.pressed = true
 	print("Email Loaded")
 	save_file.close()
 	loaded = true

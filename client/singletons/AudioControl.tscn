@@ -1,6 +1,6 @@
 [gd_scene load_steps=19 format=2]
 
-[ext_resource path="res://resources/sounds/bgm/menu_bgm.mp3" type="AudioStream" id=1]
+[ext_resource path="res://resources/sounds/bgm/Dream Sakura_Loop.ogg" type="AudioStream" id=1]
 [ext_resource path="res://singletons/AudioControl.gd" type="Script" id=2]
 [ext_resource path="res://resources/sounds/menu/button_click.mp3" type="AudioStream" id=3]
 [ext_resource path="res://resources/sounds/menu/button_hover.mp3" type="AudioStream" id=4]
@@ -47,6 +47,7 @@ bus = "Effects"
 
 [node name="typing" type="AudioStreamPlayer" parent="menu"]
 stream = ExtResource( 18 )
+bus = "Effects"
 
 [node name="combat" type="Node" parent="."]
 
