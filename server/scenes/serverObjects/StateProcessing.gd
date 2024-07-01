@@ -21,6 +21,7 @@ func _physics_process(_delta: float) -> void:
 			"""
 			for map_node in map_list:
 				var map_state = {}
+				map_state["ID"] = map_node.name
 				map_state["E"] = ServerData.monsters[map_node.name].duplicate(true)
 				map_state["I"] = ServerData.items[map_node.name].duplicate(true)
 				map_state["P"] = {}
