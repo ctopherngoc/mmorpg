@@ -257,7 +257,10 @@ remote func choose_character(requester: int, display_name: String) -> void:
 			player_container.sprite.append(null)
 	
 	# move user container to the map
-	move_player_container(player_id, player_container, map, 'spawn')
+	if map == "100001" and int(player_container.current_character.stats.base.level) == 1 and int(player_container.current_character.stats.base.experience) == 0:
+		move_player_container(player_id, player_container, map, 'start')
+	else:
+		move_player_container(player_id, player_container, map, 'spawn')
 	player_container.load_player_stats()
 	player_container.start_idle_timer()
 	Global.calculate_stats(player_container.current_character)
@@ -340,8 +343,10 @@ func move_player_container(player_id: int, player_container: KinematicBody2D, ma
 	var map_node = get_node("/root/Server/World/Maps/%s" % str(map_id))
 	var map_position = map_node.get_global_position()
 
-	if typeof(position) == TYPE_STRING:
+	if typeof(position) == TYPE_STRING and position == "spawn":
 		position = Vector2(map_node.spawn_position.x, map_node.spawn_position.y)
+	elif typeof(position) == TYPE_STRING and position == "start":
+		position = Vector2(map_node.first_spawn.x, map_node.first_spawn.y)
 
 	player.position = position
 
