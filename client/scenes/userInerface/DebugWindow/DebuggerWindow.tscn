@@ -3,6 +3,7 @@
 [ext_resource path="res://scenes/userInerface/DebugWindow/DebuggerWindow.gd" type="Script" id=1]
 
 [node name="DebuggerWindow" type="Control"]
+visible = false
 margin_right = 406.0
 margin_bottom = 187.0
 mouse_filter = 2
