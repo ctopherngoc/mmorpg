@@ -46,7 +46,7 @@ Down:    Climb Down<br />
 Left:    Move Left<br />
 Right:   Move Right<br />
 Z:       Loot Drops<br />
-Keybinds: \<br />
+Keybinds: BackSlash <br />
 Options: ESC<br /><br />
 
 Preset controls (alterable)
