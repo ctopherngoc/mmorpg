@@ -91,7 +91,7 @@ func parse_keybind(input: InputEventKey) -> void:
 				#Global.player_node.input = keybind
 			# item
 			elif GameData.itemTable.has(keybind):
-				Server.use_item(keybind.id,find_item(keybind))
+				Server.use_item(str(keybind), find_item(str(keybind)))
 			else:
 				#print("inputmanager.gd -> parse_keybind else: %s input" % input.as_text())
 				var key = Global.player.keybind[keybind_dict[input.as_text()]]
@@ -102,7 +102,7 @@ func parse_keybind(input: InputEventKey) -> void:
 			Signals.emit_signal("toggle_keybinds")
 		
 func find_item(id: String) -> int:
-	var inv_ref = Global.player.inventory
+	var inv_ref = Global.player.inventory.use
 	var count = 0
 	for item in inv_ref:
 		if item.id == id:
