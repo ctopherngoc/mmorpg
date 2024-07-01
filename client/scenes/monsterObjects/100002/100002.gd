@@ -18,7 +18,7 @@ onready var dmg_text_height = 10
 
 func _ready():
 	pass
-	
+
 # new functions
 func move(new_position, state, direction):
 	if despawn == 1:
@@ -49,8 +49,7 @@ func damage_taken(health, damage_array: Array) -> void:
 		add_child(damage_text)
 		lines += 1
 		health_bar_update()
-		yield(get_tree().create_timer(0.1),"timeout")
-		
+		yield(get_tree().create_timer(0.1),"timeout")	
 
 # health bar above monsters head on hit/death, not implemented yet
 func health_bar_update():
@@ -72,7 +71,6 @@ func animation_control(animation):
 		$AnimationPlayer.play("idle")
 	else:
 		$AnimationPlayer.play("walk")
-
 
 func _on_Timer_timeout():
 	self.queue_free()
