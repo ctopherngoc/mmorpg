@@ -4,6 +4,7 @@ onready var icon = $Icon
 onready var background = $TextureRect
 onready var empty_bg = "res://assets/UI/background/inventorySlots2.png"
 onready var used_bg = "res://assets/UI/backgroundSource/Green.png"
+onready var equip_info = preload("res://scenes/userInerface/ItemInfo/EquipInfo.tscn")
 onready var label = $Label
 var dragging = false
 var slot
@@ -203,7 +204,21 @@ func _on_0_gui_input(event):
 			print("equipment %s been clicked D:" % slot)
 
 func _on_0_mouse_entered():
-	pass
+	if item_data.id == null:
+		print(slot)
+	else:
+		print("populate equipment window")
+		var equip_tip = equip_info.instance()
+		equip_tip.origin = "Equipment"
+		equip_tip.tab = slot
+		var inventory_origin = get_node("/root/GameWorld/UI/Control/Equipment").rect_global_position
+		equip_tip.rect_position.x = inventory_origin.x + (equip_tip.rect_size.x * equip_tip.rect_scale.x) - 5
+		equip_tip.rect_position.y = inventory_origin.y
+		add_child(equip_tip)
+		yield(get_tree().create_timer(0.35), "timeout")
+		if has_node("ItemInfo") and get_node("ItemInfo").valid:
+			#print("Show equipinfo")
+			get_node("ItemInfo").show()
 
 func inventory_room_check():
 	var count = 0
