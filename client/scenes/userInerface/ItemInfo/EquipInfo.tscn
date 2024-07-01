@@ -1,188 +1,203 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://scenes/userInerface/ItemInfo/EquipInfo.gd" type="Script" id=1]
+[ext_resource path="res://assets/UI/background/window_background2.png" type="Texture" id=2]
 [ext_resource path="res://assets/itemSprites/equipItems/500000.png" type="Texture" id=3]
 
 [node name="ItemInfo" type="Popup"]
-margin_left = -6.0
-margin_right = 307.003
-margin_bottom = 242.0
+visible = true
+margin_right = 385.0
+margin_bottom = 268.0
+rect_min_size = Vector2( 385, 242 )
 rect_scale = Vector2( 0.6, 0.6 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
 script = ExtResource( 1 )
 
-[node name="N" type="Control" parent="."]
-anchor_right = 1.195
+[node name="Background" type="NinePatchRect" parent="."]
+anchor_right = 1.0
 anchor_bottom = 1.0
-margin_top = 2.0
-margin_right = -0.0356445
-mouse_filter = 2
+rect_min_size = Vector2( 382, 242 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 2 )
+region_rect = Rect2( 0, 0, 48, 48 )
+patch_margin_left = 16
+patch_margin_top = 16
+patch_margin_right = 16
+patch_margin_bottom = 16
 
-[node name="ColorRect" type="ColorRect" parent="N"]
+[node name="ColorRect" type="ColorRect" parent="."]
 modulate = Color( 1, 1, 1, 0.847059 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 5.0
-margin_top = -0.333333
-margin_right = 5.0
-margin_bottom = -0.333328
+margin_top = 5.0
+margin_right = -5.0
+margin_bottom = -5.0
 mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 color = Color( 0, 0.0509804, 0.243137, 1 )
 
-[node name="MarginContainer" type="MarginContainer" parent="N"]
+[node name="MarginContainer" type="MarginContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 15.0
-margin_top = 15.0
-margin_right = -15.0
-margin_bottom = -15.0
+margin_left = 10.0
+margin_top = 10.0
+margin_right = -10.0
+margin_bottom = -10.0
 mouse_filter = 2
-size_flags_horizontal = 0
-size_flags_vertical = 0
-__meta__ = {
-"_edit_use_anchors_": true
-}
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="N/MarginContainer"]
-margin_right = 344.0
-margin_bottom = 210.0
-size_flags_vertical = 0
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+margin_right = 370.0
+margin_bottom = 248.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
-[node name="Label" type="Label" parent="N/MarginContainer/VBoxContainer"]
-margin_right = 344.0
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
+margin_right = 370.0
 margin_bottom = 14.0
 size_flags_vertical = 0
 text = "<itemName>"
 align = 1
 valign = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="N/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 margin_top = 18.0
-margin_right = 344.0
-margin_bottom = 210.0
+margin_right = 370.0
+margin_bottom = 248.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
-[node name="TextureRect" type="TextureRect" parent="N/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 margin_right = 192.0
-margin_bottom = 192.0
+margin_bottom = 230.0
 texture = ExtResource( 3 )
 
-[node name="VBoxContainer" type="VBoxContainer" parent="N/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 margin_left = 196.0
-margin_right = 327.0
-margin_bottom = 192.0
+margin_right = 370.0
+margin_bottom = 230.0
+rect_min_size = Vector2( 174, 0 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
-[node name="LevelJob" type="HBoxContainer" parent="N/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
-margin_right = 131.0
+[node name="LevelJob" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+margin_right = 174.0
 margin_bottom = 14.0
 
-[node name="Level" type="HBoxContainer" parent="N/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/LevelJob"]
+[node name="Level" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/LevelJob"]
 margin_right = 70.0
 margin_bottom = 14.0
 rect_min_size = Vector2( 70, 0 )
 
-[node name="Label" type="Label" parent="N/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/LevelJob/Level"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/LevelJob/Level"]
 margin_right = 38.0
 margin_bottom = 14.0
 text = "Level:"
 
-[node name="Label2" type="Label" parent="N/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/LevelJob/Level"]
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/LevelJob/Level"]
 margin_left = 42.0
 margin_right = 66.0
 margin_bottom = 14.0
 text = "100"
 
-[node name="Job" type="HBoxContainer" parent="N/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/LevelJob"]
+[node name="Job" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/LevelJob"]
 margin_left = 74.0
 margin_right = 118.0
 margin_bottom = 14.0
 
-[node name="Label" type="Label" parent="N/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/LevelJob/Job"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/LevelJob/Job"]
 margin_right = 23.0
 margin_bottom = 14.0
 text = "Job:"
 
-[node name="Label2" type="Label" parent="N/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/LevelJob/Job"]
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/LevelJob/Job"]
 margin_left = 27.0
 margin_right = 44.0
 margin_bottom = 14.0
 text = "All"
 
-[node name="ReqStats" type="VBoxContainer" parent="N/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+[node name="ReqStats" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
 margin_top = 18.0
-margin_right = 131.0
+margin_right = 174.0
 margin_bottom = 50.0
 
-[node name="STRLUK" type="HBoxContainer" parent="N/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ReqStats"]
-margin_right = 131.0
+[node name="STRLUK" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ReqStats"]
+margin_right = 174.0
 margin_bottom = 14.0
 
-[node name="Str" type="HBoxContainer" parent="N/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ReqStats/STRLUK"]
+[node name="Str" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ReqStats/STRLUK"]
 margin_right = 70.0
 margin_bottom = 14.0
 rect_min_size = Vector2( 70, 14 )
 
-[node name="Label" type="Label" parent="N/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ReqStats/STRLUK/Str"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ReqStats/STRLUK/Str"]
 margin_right = 26.0
 margin_bottom = 14.0
 text = "STR:"
 
-[node name="Label2" type="Label" parent="N/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ReqStats/STRLUK/Str"]
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ReqStats/STRLUK/Str"]
 margin_left = 30.0
 margin_right = 54.0
 margin_bottom = 14.0
 rect_min_size = Vector2( 24, 14 )
 text = "100"
 
-[node name="Luk" type="HBoxContainer" parent="N/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ReqStats/STRLUK"]
+[node name="Luk" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ReqStats/STRLUK"]
 margin_left = 74.0
 margin_right = 131.0
 margin_bottom = 14.0
 rect_min_size = Vector2( 57, 14 )
 
-[node name="Label" type="Label" parent="N/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ReqStats/STRLUK/Luk"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ReqStats/STRLUK/Luk"]
 margin_right = 29.0
 margin_bottom = 14.0
 text = "LUK:"
 
-[node name="Label2" type="Label" parent="N/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ReqStats/STRLUK/Luk"]
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ReqStats/STRLUK/Luk"]
 margin_left = 33.0
 margin_right = 57.0
 margin_bottom = 14.0
 rect_min_size = Vector2( 24, 14 )
 text = "0"
 
-[node name="DEXWIS" type="HBoxContainer" parent="N/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ReqStats"]
+[node name="DEXWIS" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ReqStats"]
 margin_top = 18.0
-margin_right = 131.0
+margin_right = 174.0
 margin_bottom = 32.0
 
-[node name="Dex" type="HBoxContainer" parent="N/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ReqStats/DEXWIS"]
+[node name="Dex" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ReqStats/DEXWIS"]
 margin_right = 70.0
 margin_bottom = 14.0
 rect_min_size = Vector2( 70, 0 )
 
-[node name="Label" type="Label" parent="N/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ReqStats/DEXWIS/Dex"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ReqStats/DEXWIS/Dex"]
 margin_right = 29.0
 margin_bottom = 14.0
 text = "DEX:"
 
-[node name="Label2" type="Label" parent="N/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ReqStats/DEXWIS/Dex"]
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ReqStats/DEXWIS/Dex"]
 margin_left = 33.0
 margin_right = 57.0
 margin_bottom = 14.0
 rect_min_size = Vector2( 24, 14 )
 text = "0"
 
-[node name="Wis" type="HBoxContainer" parent="N/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ReqStats/DEXWIS"]
+[node name="Wis" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ReqStats/DEXWIS"]
 margin_left = 74.0
 margin_right = 115.0
 margin_bottom = 14.0
 
-[node name="Label" type="Label" parent="N/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ReqStats/DEXWIS/Wis"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ReqStats/DEXWIS/Wis"]
 margin_right = 29.0
 margin_bottom = 14.0
 text = "WIS:"
 
-[node name="Label2" type="Label" parent="N/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ReqStats/DEXWIS/Wis"]
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ReqStats/DEXWIS/Wis"]
 margin_left = 33.0
 margin_right = 41.0
 margin_bottom = 14.0
