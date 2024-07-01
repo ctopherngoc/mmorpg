@@ -22,60 +22,53 @@ anchor_bottom = 1.0
 rect_min_size = Vector2( 600, 24 )
 
 [node name="Stat" type="Button" parent="HBoxContainer"]
-margin_left = 5.0
-margin_top = 1.0
-margin_right = 48.0
-margin_bottom = 22.0
+margin_right = 43.0
+margin_bottom = 24.0
 rect_min_size = Vector2( 40, 22 )
 custom_fonts/font = SubResource( 2 )
 text = "stats"
 icon_align = 1
 
 [node name="Skill" type="Button" parent="HBoxContainer"]
-margin_left = 52.0
-margin_top = 1.0
-margin_right = 98.0
-margin_bottom = 22.0
+margin_left = 47.0
+margin_right = 93.0
+margin_bottom = 24.0
 rect_min_size = Vector2( 40, 22 )
 custom_fonts/font = SubResource( 2 )
 text = "skills"
 icon_align = 1
 
 [node name="Inventory" type="Button" parent="HBoxContainer"]
-margin_left = 103.0
-margin_top = 1.0
-margin_right = 170.0
-margin_bottom = 22.0
+margin_left = 97.0
+margin_right = 164.0
+margin_bottom = 24.0
 rect_min_size = Vector2( 40, 22 )
 custom_fonts/font = SubResource( 2 )
 text = "inventory"
 icon_align = 1
 
 [node name="Equipment" type="Button" parent="HBoxContainer"]
-margin_left = 173.0
-margin_top = 1.0
-margin_right = 241.0
-margin_bottom = 22.0
+margin_left = 168.0
+margin_right = 236.0
+margin_bottom = 24.0
 rect_min_size = Vector2( 40, 22 )
 custom_fonts/font = SubResource( 2 )
 text = "equipment"
 icon_align = 1
 
 [node name="Keybind" type="Button" parent="HBoxContainer"]
-margin_left = 245.0
-margin_top = 1.0
-margin_right = 305.0
-margin_bottom = 22.0
+margin_left = 240.0
+margin_right = 300.0
+margin_bottom = 24.0
 rect_min_size = Vector2( 40, 22 )
 custom_fonts/font = SubResource( 2 )
 text = "keybinds"
 icon_align = 1
 
 [node name="Option" type="Button" parent="HBoxContainer"]
-margin_left = 309.0
-margin_top = 1.0
-margin_right = 360.0
-margin_bottom = 22.0
+margin_left = 304.0
+margin_right = 355.0
+margin_bottom = 24.0
 rect_min_size = Vector2( 40, 20 )
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 2 )

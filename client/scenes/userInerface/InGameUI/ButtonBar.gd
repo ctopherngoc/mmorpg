@@ -10,7 +10,7 @@ func _on_Stat_pressed():
 
 
 func _on_Skill_pressed():
-	Signals.emit_signal("toggle_stats")
+	Signals.emit_signal("toggle_skills")
 
 
 func _on_Inventory_pressed():
