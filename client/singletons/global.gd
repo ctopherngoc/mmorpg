@@ -6,8 +6,8 @@
 ######################################################################
 
 extends Node
-onready var version: String = "3.3.4"
-onready var local: bool = true
+onready var version: String = "4.0.0"
+onready var local: bool = false
 onready var ip: String
 onready var input_queue: Array = []
 onready var interpolation_offset: int = 200
@@ -57,6 +57,7 @@ func update_world_state(world_state: Dictionary) -> void:
 		world_state_buffer.append(world_state)
 
 func _physics_process(_delta: float) -> void:
+# warning-ignore:unused_variable
 	# Current turn off client process of other characters and enemy because
 	# working on item drop, data load from json/spreadsheet etc
 	if in_game and !Server.testing:
@@ -68,8 +69,6 @@ func _physics_process(_delta: float) -> void:
 				world_state_buffer.remove(0)
 			# has future state
 			if world_state_buffer.size() > 2:
-				if world_state_buffer[2]["ID"] != Global.current_map:
-					return
 				despawn_players(world_state_buffer[2]["P"].keys())
 				var interpolation_factor = float(render_time - world_state_buffer[1]["T"]) / float(world_state_buffer[2]["T"] - world_state_buffer[0]["T"])
 				for player_state in world_state_buffer[2]["P"].keys():
@@ -194,8 +193,6 @@ func _physics_process(_delta: float) -> void:
 				#####################################################################################
 			# we have no future world_state
 			elif render_time > world_state_buffer[1].T:
-				if world_state_buffer[1]["ID"] != Global.current_map:
-					return
 				despawn_players(world_state_buffer[1]["P"].keys())
 				var extrapolation_factor = float(render_time - world_state_buffer[0]["T"]) / float(world_state_buffer[1]["T"] - world_state_buffer[0]["T"]) - 1.00
 				for player_state in world_state_buffer[1]["P"].keys():
@@ -389,9 +386,9 @@ func server_reconciliation(server_input_data: Dictionary) -> void:
 					player_node.set_position(recon_position)
 					#print("recon")
 					#print("server: ", server_input_data["P"], " client: ",input_queue[i]["P"])
-#				elif not player_node.is_on_floor() and not player_node.is_climbing:
-#					#print("jumping")
-#					pass
+				elif not player_node.is_on_floor() and not player_node.is_climbing:
+					#print("jumping")
+					pass
 				elif abs(serverx - clientx) > 50 or abs(servery - clienty) > 50:
 					#print("greater than 15")
 					#print("server: ", serverx," ", servery, " ", "client: ", clientx, " ", clienty)
