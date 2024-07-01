@@ -49,7 +49,7 @@ Z:       Loot Drops<br />
 Backslash: Keybinds<br />
 ESC: Options<br /><br />
 
-Preset controls (alterable)
+Preset controls (alterable)<br />
 S: Stats<br />
 I: Inventory<br />
 E: Equipment<br />
