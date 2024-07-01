@@ -481,7 +481,7 @@ var static_data = {
 
 var portal_data = {
 	"100001": {
-		'P1': {'map': '100002', 'spawn': Vector2(103	, -260)}},
+		'P1': {'map': '100002', 'spawn': Vector2(103, -260)}},
 	'100002': {'P1': {'map': '100001', 'spawn': Vector2(833, -100)},
 				'P2': {'map': '100003', 'spawn': Vector2(28, -280)}
 	},
