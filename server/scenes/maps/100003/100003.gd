@@ -4,7 +4,7 @@ var map_name = "Grassy Road 3"
 
 var enemy_id_counter = 0
 var enemy_maximum = 19
-var spawn_position = Vector2(350, -550)
+var spawn_position = Vector2(350, -700)
 
 var bull_rooster = preload("res://scenes/monsterObjects/100010/100010.tscn")
 
