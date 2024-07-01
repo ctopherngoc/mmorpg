@@ -1,11 +1,11 @@
 extends Node2D
-var map_id = "100002"
-var map_name = "Grassy Road 2"
-
+var map_id = "100003"
+var map_name = "Grassy Road 3"
+onready var monsters = $Monsters
 var spawn_location = Vector2.ZERO
 
 var map_bound = {
-	"left": -242,
+	"left": -296,
 	"right": 1678,
 	"bottom": 30,
 	"top": -10000,

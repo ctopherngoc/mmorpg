@@ -1,6 +1,8 @@
 extends Node2D
 var map_id = "100001"
 var map_name = "Grassy Road 1"
+onready var monsters = $Monsters
+onready var max_monsters = 2
 
 var spawn_location = Vector2.ZERO
 
@@ -26,3 +28,4 @@ func _ready():
 		$Player.global_position = Global.last_portal
 	else:
 		$Player.global_position = spawn_location
+

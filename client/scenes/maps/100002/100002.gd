@@ -1,6 +1,7 @@
 extends Node2D
 var map_id = "100002"
 var map_name = "Grassy Road 2"
+onready var monsters = $Monsters
 
 var spawn_location = Vector2.ZERO
 
