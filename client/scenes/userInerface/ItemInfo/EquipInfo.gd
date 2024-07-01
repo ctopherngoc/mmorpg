@@ -25,10 +25,11 @@ func _ready() -> void:
 			stats = Global.player.inventory.equipment[slot]
 			valid = true
 			#print("stats: %s" % stats)
-	else:
-		# if hovering equiped item 
-		# if Global.player.equipment[slot] != null:
-		pass
+	if origin == "Equipment":
+		print(tab)
+		if Global.player.equipment[tab] != null:
+			stats = Global.player.equipment[tab]
+			valid = true
 	
 	if valid:
 		# equip name
