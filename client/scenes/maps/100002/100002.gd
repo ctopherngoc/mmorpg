@@ -3,7 +3,7 @@ var map_id = "100002"
 var map_name = "Grassy Road 2"
 onready var monsters = $Monsters
 
-var spawn_location = Vector2.ZERO
+var spawn_location = Vector2(237, -683)
 
 var map_bound = {
 	"left": 0,
