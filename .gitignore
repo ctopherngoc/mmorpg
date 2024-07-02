@@ -13,6 +13,9 @@ export_presets.cfg
 .mono/
 mono_crash.*.json
 
-**server.json
-**x509_Key.key
-**X509_Certificate.crt
+authentication/data/server.json
+server/data/server.json
+client/data/server.json
+client/resources/Certificate/X509_Certificate.crt
+gateway/resources/Certificate/X509_Certificate.crt
+gateway/resources/Certificate/x509_Key.key

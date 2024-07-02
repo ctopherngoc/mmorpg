@@ -4,8 +4,8 @@ var network = NetworkedMultiplayerENet.new()
 var gateway_api = MultiplayerAPI.new()
 var port = 2734
 var max_players = 100
-var cert = load("res://Resources/Certificate/X509_Certificate.crt")
-var key = load("res://Resources/Certificate/x509_Key.key")
+var cert = load("res://resources/Certificate/X509_Certificate.crt")
+var key = load("res://resources/Certificate/x509_Key.key")
 onready var game_version = "4.0.1"
 
 func _ready():
