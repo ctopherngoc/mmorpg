@@ -64,7 +64,7 @@ K: Abilities<br />
 5. In Firebase Authentication, create two accounts GameServer and AuthenticationServer<br />
 6. Enable email registration and login in Firebase Authentication<br />
 7. In Firebase Database, create three collections: users, characters, items (see image below)<br />
-(local_instance/readme_images/database_structure.png)<br />
+/local_instance/readme_images/database_structure.png<br />
 8. Clone Blossom Repository<br />
 9. Navigate and open /local_instance/client/data/server.json<br />
 10. Update json with API Key and Project Name <br />
