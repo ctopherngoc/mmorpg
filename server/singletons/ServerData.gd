@@ -326,9 +326,9 @@ var static_data = {
 		}, #player_template
 	"starter_equips" : 
 		[
-			[500000, 500001],
-			[500002, 500003],
-			[500004, 500005],
+			["500000", "500001"],
+			["500002", "500003"],
+			["500004", "500005"],
 		],
 	"equipment_data_template" : {
 		"id": "",
@@ -459,7 +459,7 @@ var static_data = {
 		"reqDex": {"integerValue": 0},
 		"reqWis": {"integerValue": 0},
 		"reqLevel": {"integerValue": 0},
-		"weaponType": {"integerValue": 0},
+		"weaponType": {},
 		},
 	"server_keybind_template": {
 	'shift': null, 'ins': null, 'home': null, 'pgup': null, 'ctrl': null,  'del': null, 'end': null, 'pgdn': null,

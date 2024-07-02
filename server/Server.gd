@@ -146,22 +146,25 @@ func create_characters():
 			character_array[2].characters.append(character_array[1]["un"])
 			var new_char = character_array[1]
 			var temp_player = _Server_New_Character(new_char)
-			temp_player["buff"] = ServerData.buff_stats.duplicate(true)
-			#print(temp_player)
-
+			temp_player.equipment.top.owner = temp_player.displayname
+			temp_player.equipment.bottom.owner = temp_player.displayname
+			temp_player.equipment.rweapon.owner = temp_player.displayname
+			
 			print("creating character")
 			var firebase_call2 = Firebase.update_document("characters/%s" % temp_player["displayname"], character_array[2].http2, character_array[2].db_info["token"], temp_player)
 			yield(firebase_call2, 'completed')
+			
+			temp_player.stats["buff"] = ServerData.buff_stats.duplicate(true)
 			
 			ServerData.characters_data[temp_player.displayname] = temp_player
 
 			var firebase_call3 = Firebase.update_document("users/%s" % character_array[2].db_info["id"], character_array[2].http, character_array[2].db_info["token"], character_array[2])
 			yield(firebase_call3, 'completed')
-			
-			Global.http_requests.append([character_array[1].equipment.top, character_array[2]])
-			Global.http_requests.append([character_array[1].equipment.bottom, character_array[2]])
-			Global.http_requests.append([character_array[1].equipment.rweapon, character_array[2]])
-			
+
+			Global.http_requests.append([temp_player.equipment.top, character_array[2]])
+			Global.http_requests.append([temp_player.equipment.bottom, character_array[2]])
+			Global.http_requests.append([temp_player.equipment.rweapon, character_array[2]])
+
 			character_array[2].characters_info_list.append(temp_player)
 
 			# update client with new character
@@ -169,7 +172,7 @@ func create_characters():
 
 func _Server_New_Character(new_char: Dictionary):
 	var temp_player = ServerData.static_data.player_template.duplicate(true)
-	print("temp_player in _server_new_char: %s: " % temp_player)
+	#print("temp_player in _server_new_char: %s: " % temp_player)
 	temp_player['displayname'] = new_char["un"]
 	
 	var sprite = temp_player["avatar"]
@@ -194,36 +197,42 @@ func _Server_New_Character(new_char: Dictionary):
 	#print(new_char["o"])
 	if new_char["o"] == 0:
 		var top = ServerData.equipmentTable[ServerData.static_data.starter_equips[0][0]].duplicate(true)
+		top["id"] = str((ServerData.static_data.starter_equips[0][0]))
 		top["uniqueID"] = str(Global.generate_unique_id(ServerData.static_data.starter_equips[0][0]))
 		equips["top"] = top
 		
 		var bottom = ServerData.equipmentTable[ServerData.static_data.starter_equips[0][1]].duplicate(true)
-		top["uniqueID"] = str(Global.generate_unique_id(ServerData.static_data.starter_equips[0][1]))
+		bottom["id"] = str(ServerData.static_data.starter_equips[0][1])
+		bottom["uniqueID"] = str(Global.generate_unique_id(ServerData.static_data.starter_equips[0][1]))
 		equips["bottom"] = bottom
 		
 	elif new_char["o"] == 1:
 		var top = ServerData.equipmentTable[ServerData.static_data.starter_equips[1][0]].duplicate(true)
+		top["id"] = str((ServerData.static_data.starter_equips[1][0]))
 		top["uniqueID"] = str(Global.generate_unique_id(ServerData.static_data.starter_equips[1][0]))
 		equips["top"] = top
 		
 		var bottom = ServerData.equipmentTable[ServerData.static_data.starter_equips[1][1]].duplicate(true)
-		top["uniqueID"] = str(Global.generate_unique_id(ServerData.static_data.starter_equips[1][1]))
+		bottom["id"] = str(ServerData.static_data.starter_equips[1][1])
+		bottom["uniqueID"] = str(Global.generate_unique_id(ServerData.static_data.starter_equips[1][1]))
 		equips["bottom"] = bottom
 		
 	else:
 		var top = ServerData.equipmentTable[ServerData.static_data.starter_equips[2][0]].duplicate(true)
+		top["id"] = str((ServerData.static_data.starter_equips[2][0]))
 		top["uniqueID"] = str(Global.generate_unique_id(ServerData.static_data.starter_equips[2][0]))
 		equips["top"] = top
 		
 		var bottom = ServerData.equipmentTable[ServerData.static_data.starter_equips[2][1]].duplicate(true)
-		top["uniqueID"] = str(Global.generate_unique_id(ServerData.static_data.starter_equips[2][1]))
+		bottom["id"] = str(ServerData.static_data.starter_equips[2][1])
+		bottom["uniqueID"] = str(Global.generate_unique_id(ServerData.static_data.starter_equips[2][1]))
 		equips["bottom"] = bottom
 	
 	var weapon = ServerData.equipmentTable["200000"].duplicate(true)
+	weapon["id"] = "200000"
 	weapon["uniqueID"] = str(Global.generate_unique_id("200000"))
 	equips.rweapon = weapon
 	#############################################################################
-	
 	return temp_player
 	
 remote func choose_character(requester: int, display_name: String) -> void:

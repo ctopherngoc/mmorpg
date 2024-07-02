@@ -9,7 +9,7 @@ var skill_data = {"id": null,
 				"level": null}
 
 func _ready():
-	pass
+	skill_icon.skill_data = skill_data.duplicate(true)
 
 
 func _on_Button_pressed():
@@ -38,4 +38,3 @@ func to_gray_scale(texture):
 	var image_texture = ImageTexture.new()
 	image_texture.create_from_image(image)
 	return image_texture
-	

@@ -7,7 +7,8 @@ func _ready() -> void:
 	var data_file = File.new()
 	data_file.open("res://data/server.json", File.READ)
 	var server_json = JSON.parse(data_file.get_as_text())
-	REGISTER_URL = "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=%s" % server_json.result["API_KEY"]
+	REGISTER_URL = "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=%s" % server_json.result["API_KEY"]
+	
 	if Global.local:
 		Global.ip = server_json.result["LOCAL_IP"]
 	else:

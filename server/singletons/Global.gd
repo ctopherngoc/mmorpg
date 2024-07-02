@@ -114,7 +114,7 @@ func damage_formula(type: bool, player_dict: Dictionary, target_stats: Dictionar
 				damage_list.append([final_damage, "C"])
 		count += 1
 		#print("final damage: %s" % final_damage)
-	print(damage_list)
+	#print(damage_list)
 	return damage_list
 
 func calculate_crit(crit_rate: int) -> float:
@@ -295,7 +295,7 @@ func player_drop_item(player_container: KinematicBody2D, position: Vector2, map:
 	else:
 		# call drop item -> pass map, location, drop_dict
 		player_container.current_character.inventory[tab][slot] = null
-		item_dict.owner = player_container.name
+		item_dict.owner = null
 		http_requests.append([item_dict, player_container])
 		#add_item_database(item_data)
 		playerDropSpawn(map, position, item_data)
@@ -460,8 +460,12 @@ func lootDrop(player: KinematicBody2D, item_container: KinematicBody2D) -> void:
 				ServerData.items[item_container.map].erase(item_container.name)
 				server.update_player_stats(player)
 				# remove item node from map
+				#### ISSUE???######
+				####################################################################################################
 				var item_dict = item_container.stats
+				#item_dict.owner = player.current_chracter.displayname
 				item_dict.owner = player.name
+				#######################################################################################################
 				#print("item_dict: \n %s" % item_dict)
 				http_requests.append([item_dict, player])
 				server.send_loot_data(player.name, {"id": item_container.id})
@@ -557,12 +561,7 @@ func add_item_database(data_dict: Dictionary, player_container: KinematicBody2D 
 	unique item ownership is important in case of trading.
 	"""
 	#print("inside add_item_database")
-	#print(data_dict)
-	#print(player_container)
-#	if player_container:
-#		data_dict["owner"] = player_container.current_character.displayname
-#	else:
-#		data_dict["owner"] = null
+	#print(data_dict.weaponType)
 	var path = "items/%s" % (data_dict.id + str(data_dict.uniqueID)) 
 	#print(data_dict)
 
