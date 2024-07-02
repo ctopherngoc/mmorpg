@@ -557,7 +557,7 @@ func add_item_database(data_dict: Dictionary, player_container: KinematicBody2D 
 	unique item ownership is important in case of trading.
 	"""
 	#print("inside add_item_database")
-	#print(data_dict)
+	print(data_dict)
 	#print(player_container)
 #	if player_container:
 #		data_dict["owner"] = player_container.current_character.displayname
