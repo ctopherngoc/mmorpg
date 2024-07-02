@@ -60,7 +60,7 @@ K: Abilities<br />
 1. Download [Godot 3.5](https://godotengine.org/article/godot-3-5-cant-stop-wont-stop/) (this project does not work with Godot 4)<br />
 2. Create a [Google Firebase](https://firebase.google.com/) project (record the project name)<br />
 3. Navigate to your Firebase console Project Overview and open up the Project Settings (record project API Key)<br />
-4. Setup Firebase Authentication and Firebase Database within the Firebase Console<br />
+4. Setup Firebase Authentication and Cloud Firebase within the Firebase Console<br />
 5. In Firebase Authentication, create two accounts GameServer and AuthenticationServer<br />
 6. Enable email registration and login in Firebase Authentication<br />
 7. In Firebase Database, create three collections: users, characters, items (see image below)<br />
