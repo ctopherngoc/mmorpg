@@ -46,11 +46,6 @@ func save_document(path: String, fields: Dictionary, http: HTTPRequest, token: S
 # saving characters/updating information
 # creating new characters in /users
 func update_document(path: String, http: HTTPRequest, token: String, data) -> void:
-	#path: user: data = array
-	#path: character: data = dictionary
-	#path: items: data = dictionary
-
-	#print("direct update fb from char")
 	if 'users/' in path:
 		# convert
 		var character_array = []
@@ -508,6 +503,9 @@ func server_dictionary_converter(server_data: Dictionary, firebase_data: Diction
 		fb_skill_dict[job] = {"mapValue": {'fields': {}}}
 		fb_skill_dict[job]["mapValue"]["fields"] = skill_dict.duplicate(true)
 	firebase_data['skills']['mapValue']['fields'] = fb_skill_dict.duplicate(true)
+	
+#	print("after fb skills")
+#	print(firebase_data['skills']['mapValue']['fields'])
 	#################################################################################################
 	# equipment
 	shortcut = server_data["equipment"]
@@ -519,7 +517,7 @@ func server_dictionary_converter(server_data: Dictionary, firebase_data: Diction
 		# currently rweapon
 		elif typeof(shortcut[key]) == TYPE_DICTIONARY:
 			# weapon dict
-			var temp_dict = ServerData.static_data.equipment_data_template.duplicate(true)
+			var temp_dict = ServerData.static_data.fb_equipment_template.duplicate(true)
 			# [equipment][rweapon]
 			var shortcut2 = shortcut[key]
 			var keys2 = shortcut2.keys()
@@ -534,6 +532,8 @@ func server_dictionary_converter(server_data: Dictionary, firebase_data: Diction
 			fb_shortcut[key] = {'mapValue':{'fields': temp_dict}}
 		elif typeof(shortcut[key]) == TYPE_NIL:
 			fb_shortcut[key]['nullValue'] = null
+	#print("after fb equipment")
+	#print(firebase_data['equipment']['mapValue']['fields'])
 #####################################################################################################
 	#inventory
 	shortcut = server_data["inventory"]
@@ -587,6 +587,8 @@ func server_dictionary_converter(server_data: Dictionary, firebase_data: Diction
 						item_shortcut[count] = {'nullValue': null}
 					count += 1
 	
+#	print("after fb inventory")
+#	print(firebase_data['inventory']['mapValue']['fields'])
 	# keybinds
 	shortcut = server_data["keybind"]
 	fb_shortcut = firebase_data['keybind']['mapValue']['fields']
@@ -605,6 +607,7 @@ func save(var path : String, var thing_to_save: Dictionary):
 func item_data_converter(before: Dictionary, after: Dictionary) -> Dictionary:
 	#var skip_list = ["reqStr", "reqDex", "reqLuk", "reqWis", "weaponType"]
 	for stat in before.keys():
+		#print(before[stat])
 		#if not stat in skip_list:
 		if typeof(before[stat]) == TYPE_STRING:
 			after[stat]["stringValue"] = before[stat]
@@ -612,4 +615,6 @@ func item_data_converter(before: Dictionary, after: Dictionary) -> Dictionary:
 			after[stat]["integerValue"] = before[stat]
 		elif typeof(before[stat]) == TYPE_NIL:
 			after[stat]["nullValue"] = null
-	return{'mapValue':{'fields': after}}
+			#print(after[stat])
+	#print({'mapValue':{'fields': after}})
+	return {'mapValue':{'fields': after}}

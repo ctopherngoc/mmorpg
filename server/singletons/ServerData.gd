@@ -459,7 +459,7 @@ var static_data = {
 		"reqDex": {"integerValue": 0},
 		"reqWis": {"integerValue": 0},
 		"reqLevel": {"integerValue": 0},
-		"weaponType": {"integerValue": 0},
+		"weaponType": {},
 		},
 	"server_keybind_template": {
 	'shift': null, 'ins': null, 'home': null, 'pgup': null, 'ctrl': null,  'del': null, 'end': null, 'pgdn': null,
