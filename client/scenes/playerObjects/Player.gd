@@ -15,7 +15,8 @@ onready var can_climb = false
 onready var is_climbing = false
 onready var attacking = false
 onready var player_state
-onready var sprite = $CompositeSprite/AnimationPlayer
+onready var sprite = $CompositeSprite
+
 var floating_text = preload("res://scenes/userInerface/FloatingText.tscn")
 onready var input
 onready var hit_timer = $Timer
@@ -106,7 +107,10 @@ func movement_loop(delta, input_arr):
 	if is_on_floor() or !is_climbing:
 		velocity = move_and_slide(velocity, Vector2.UP)
 	if is_climbing:
+		sprite.set_climb()
 		velocity.x = 0
+	else:
+		sprite.unset_climb()
 	update_animation(move_vector)
 	
 # warning-ignore:shadowed_variable
@@ -149,15 +153,19 @@ func get_velocity(move_vector, input, delta):
 			velocity.y = 0
 			# up press
 			if input[0] == 1:
+				sprite.climb_anim.play("climb")
 				velocity.y = -100
 			# down press
 			elif input[2] == 1 :
+				sprite.climb_anim.play("climb")
 				velocity.y = 100
 				if is_on_floor():
 					is_climbing = false
+					sprite.unset_climb()
 			# jump off rope
 			elif input[4] == 1 && (input[1] == 1 or input[3] == 1):
 				is_climbing = false
+				sprite.unset_climb()
 				velocity.y = move_vector.y * (vertical_speed)
 				velocity.x = move_vector.x * 200
 		# can climb but not climbing
@@ -194,7 +202,7 @@ func update_animation(move_vector):
 			if last_input in ["slash", "attack"]:
 				attacking = true
 				#sprite.play("slash",-1, GameData.weapon_speed[str(Global.player.equipment.rweapon.speed)])
-				sprite.play("slash",-1, GameData.weapon_speed[str(Global.player.equipment.rweapon.attackSpeed)])
+				sprite.normal_anim.play("slash",-1, GameData.weapon_speed[str(Global.player.equipment.rweapon.attackSpeed)])
 				#### insert sound play
 				determine_weapon_noise()
 				"""
@@ -205,21 +213,21 @@ func update_animation(move_vector):
 					Server.send_input(0)
 			else:
 				attacking = true
-				sprite.play("ready",-1, GameData.weapon_speed[str(Global.player.equipment.rweapon.attackSpeed)])
+				sprite.normal_anim.play("ready",-1, GameData.weapon_speed[str(Global.player.equipment.rweapon.attackSpeed)])
 				#### insert sound play
 				#determine_weapon_noise()
 		last_input = null
 	else:
 		if(!is_on_floor()):
 			pass
-			sprite.play("jump")
+			sprite.normal_anim.play("jump")
 		elif(move_vector.x != 0):
-			sprite.play("walk")
+			sprite.normal_anim.play("walk")
 		else:
 			if hit_timer.time_left != 0:
-				sprite.play("hit")
+				sprite.normal_anim.play("hit")
 			else:
-				sprite.play("idle")
+				sprite.normal_anim.play("idle")
 
 func determine_weapon_noise() -> void:
 	if Global.player.equipment.rweapon.weaponType in ["dagger", "1h_sword", "1h_axe", "staff", "wand"]:
@@ -233,7 +241,7 @@ func movable_switch():
 	Global.movable = true
 	
 func flip_sprite(d):
-	for _i in $CompositeSprite.get_children():
+	for _i in sprite.normal.get_children():
 		if _i.get_class() != "AnimationPlayer":
 			if d:
 				_i.set_flip_h(true)
