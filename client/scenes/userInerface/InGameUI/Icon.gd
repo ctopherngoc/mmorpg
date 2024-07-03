@@ -232,6 +232,9 @@ func item_info_free():
 	for node in self.get_children():
 		if "ItemInfo" in node.name:
 			node.queue_free()
+		if "EquipInfo" in node.name:
+			node.queue_free()
+		
 
 # checking of item in inventory slot matches the slot equipped is dragging from
 func equipment_check(data) -> bool:
