@@ -31,7 +31,6 @@ func _process(delta):
 	touch_damage()
 	if state != "Hit":
 		if is_on_floor():
-			#var _my_random_number = rng.randi_range(1, 100)
 			var target = get_target()
 			if target != "none":
 				if not target_node:

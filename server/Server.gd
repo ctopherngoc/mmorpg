@@ -81,7 +81,6 @@ func return_token_verification_results(player_id: int, result: bool) -> void:
 		print("playercontainer empty probably big issue")
 
 func fetch_token(player_id: int):
-	#print(get_tree().multiplayer.get_network_connected_peers())
 	rpc_id(player_id, "fetch_token")
 	
 func _on_TokenExpiration_timeout():
@@ -93,7 +92,6 @@ func _on_TokenExpiration_timeout():
 			var token_time = int(expected_tokens[i].right(936))
 			# deletes tokens older or future
 			if current_time - token_time >= 30 or current_time - token_time < 0:
-				#print(i)
 				expected_tokens.remove(i)
 		print("Expected Tokens:")
 		print(expected_tokens)
@@ -121,6 +119,7 @@ func _Server_Get_Player_Container(player_id):
 func _Server_Get_Player_Map(player_id):
 	#eturn get_node(ServerData.player_location[str(player_id)].get_parent().get_parent())
 	return get_node(ServerData.player_location[str(player_id)].replace("YSort/Players", "")).map_id
+	
 ######################################################################
 # pre-spawn server functions
 
@@ -170,7 +169,6 @@ func create_characters():
 
 func _Server_New_Character(new_char: Dictionary):
 	var temp_player = ServerData.static_data.player_template.duplicate(true)
-	#print("temp_player in _server_new_char: %s: " % temp_player)
 	temp_player['displayname'] = new_char["un"]
 	
 	var sprite = temp_player["avatar"]
@@ -192,7 +190,6 @@ func _Server_New_Character(new_char: Dictionary):
 		2: top: 500004, bottom: 500005
 	"""
 	var equips = temp_player["equipment"]
-	#print(new_char["o"])
 	if new_char["o"] == 0:
 		var top = ServerData.equipmentTable[ServerData.static_data.starter_equips[0][0]].duplicate(true)
 		top["id"] = str((ServerData.static_data.starter_equips[0][0]))
@@ -367,7 +364,6 @@ remote func portal(portal_id):
 	var player_id = get_tree().get_rpc_sender_id()
 	var player_container = _Server_Get_Player_Container(player_id)
 	# validate
-	#print(portal_id)
 	var portal = ServerData.player_location[str(player_id)].replace("YSort/Players", "MapObjects/%s" % portal_id)
 	# get portal node
 	get_node(portal).over_lapping_bodies(player_id)
@@ -375,10 +371,8 @@ remote func portal(portal_id):
 
 	#get nextmap name
 	var map_id = get_node(ServerData.player_location[str(player_id)].replace("YSort/Players", "")).map_id
-	#print(map_id, " ", portal_id, " ", ServerData.portal_data[map_id][portal_id]['map'])
 	var next_map = ServerData.portal_data[map_id][portal_id]['map']
 	# get mapname, move user container to the map
-	#print("move character container to %s" % next_map)
 	move_player_container(player_id, player_container, next_map, ServerData.portal_data[map_id][portal_id]['spawn'])
 	#print('update current character last map')
 	player_container.current_character['map'] = next_map
@@ -391,7 +385,6 @@ remote func portal(portal_id):
 			character['map'] = player_container.current_character['map']
 
 	# send rpc to client to change map
-	#print('sending signal to client to change map')
 	rpc_id(player_id, "change_map", next_map, ServerData.portal_data[map_id][portal_id]['spawn'])
 	# put some where if world state != current map ignore
 #######################################################
@@ -455,7 +448,6 @@ remote func receive_input(move_id):
 				if player_container.current_character.stats.mana > 0:
 					if move_id.type == "buff":
 						print("playey use buff ", move_id)
-						#player_container.buff(move_id)
 					# move == attack
 					else:
 						if ServerData.job_dict[player_container.current_character.stats.job]["Range"] == 1 && ServerData.job_dict[player_container.current_character.equipment.ammo["quantity"]] == 0:
@@ -493,7 +485,6 @@ remote func move_item(inv_data: Array):
 	else:
 		player_container.current_character.inventory[tab[inv_data[0]]][inv_data[2]] = item1
 		player_container.current_character.inventory[tab[inv_data[0]]][inv_data[1]] = null
-	#print(player_container.current_character.inventory[tab[inv_data[0]]])
 	# update client
 	update_player_stats(player_container)
 

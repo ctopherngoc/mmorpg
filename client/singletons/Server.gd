@@ -214,9 +214,6 @@ remote func receive_attack(player_id, attack_time):
 ########################################################################################################	
 
 remote func update_player_stats(player_stats: Dictionary) -> void:
-	#print(player_stats.stats.buff)
-	print("update player stats")
-	#print(player_stats)
 	for character in Global.character_list:
 		if character["displayname"] == player_stats["displayname"]:
 			character = player_stats
@@ -233,7 +230,7 @@ remote func update_player_stats(player_stats: Dictionary) -> void:
 				# gained health
 				else:
 					var heal_value = abs(Global.player["stats"]["base"]["health"] - player_stats["stats"]["base"]["health"])
-					print("Player healed %s health." % str(heal_value))
+					#print("Player healed %s health." % str(heal_value))
 					Global.player_node.heal(heal_value)
 				Global.player["stats"]["base"]["health"] = player_stats["stats"]["base"]["health"]
 				Signals.emit_signal("update_health")
@@ -243,7 +240,6 @@ remote func update_player_stats(player_stats: Dictionary) -> void:
 				
 			# level check -> exp check
 			if player_stats["stats"]["base"]["level"] != Global.player["stats"]["base"]["level"]:
-				#AudioControl.play_audio("levelUp")
 				print("Level up")
 				Global.player["stats"]["base"]["experience"] = player_stats["stats"]["base"]["experience"]
 				Global.player["stats"]["base"]["level"] = player_stats["stats"]["base"]["level"]
@@ -279,8 +275,6 @@ remote func update_player_stats(player_stats: Dictionary) -> void:
 				Signals.emit_signal("update_skills")
 				
 			if player_stats.stats.hash() != Global.player.stats.hash():
-			#if not dictionary_comparison(Global.player.stats.buff, player_stats.stats.buff):
-			#if player_stats["inventory"].hash() != Global.player["inventory"].hash():
 				Global.player.stats = player_stats.stats
 			
 			if not dictionary_comparison(Global.player["keybind"], player_stats["keybind"]):
@@ -288,7 +282,6 @@ remote func update_player_stats(player_stats: Dictionary) -> void:
 				print("update keybinds")
 				Global.player["keybind"] = player_stats["keybind"]
 				Signals.emit_signal("update_keybinds")
-			
 			break
 
 func dictionary_comparison(client_dict: Dictionary, server_dict: Dictionary) -> bool:
@@ -325,11 +318,9 @@ remote func receive_climb_data(climb_data: int) -> void:
 	if Global.in_game:
 		var player = get_node("/root/GameWorld/MapNode/%s/Player" % Global.current_map)
 		if climb_data == 2:
-			#print("server: is climbing")
 			player.can_climb = true
 			player.is_climbing = true
 		elif climb_data == 1:
-			#print("server: can climb")
 			player.is_climbing = false
 			player.can_climb = true
 		else:
