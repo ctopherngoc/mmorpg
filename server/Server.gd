@@ -9,7 +9,7 @@ extends Node
 var network = NetworkedMultiplayerENet.new()
 var port: int = 2733
 var max_players:int = 100
-#var stats
+
 # example tokens added
 var expected_tokens = []
 onready var player_verification_process = get_node("PlayerVerification")
@@ -19,7 +19,6 @@ onready var character_creation_queue = []
 # server netcode
 #server start 
 func _ready() -> void:
-	Firebase.httprequest = $HTTPRequest
 	start_server()
 	Firebase.get_data(Firebase.FB_USERNAME, Firebase.FB_PASSWORD)
 
@@ -33,7 +32,6 @@ func start_server() -> void:
 
 func _process(_delta: float) -> void:
 	create_characters()
-	#print(typeof(ServerData.characters_data.scrubaduck.inventory.equipment[0].magic))
 
 # Player connect
 func _Peer_Connected(player_id: int) -> void:
@@ -49,7 +47,7 @@ func _Peer_Disconnected(player_id: int) -> void:
 		var player_container = _Server_Get_Player_Container(player_id)
 		if not "CharacterSelect" in ServerData.player_location[str(player_id)]:
 			var cur_character = player_container.current_character
-			var firebase = Firebase.update_document("characters/%s" % str(cur_character['displayname']), player_container.http2, player_container.db_info["token"], cur_character)
+			var firebase = Firebase.update_document("characters/%s" % str(cur_character['displayname']), player_container.db_info["token"], cur_character)
 			yield(firebase, 'completed')
 		else:
 			print("dc in characterselect did not save")
@@ -151,14 +149,14 @@ func create_characters():
 			temp_player.equipment.rweapon.owner = temp_player.displayname
 
 			print("creating character")
-			var firebase_call2 = Firebase.update_document("characters/%s" % temp_player["displayname"], character_array[2].http2, character_array[2].db_info["token"], temp_player)
+			var firebase_call2 = Firebase.update_document("characters/%s" % temp_player["displayname"], character_array[2].db_info["token"], temp_player)
 			yield(firebase_call2, 'completed')
 			
 			temp_player.stats["buff"] = ServerData.buff_stats.duplicate(true)
 			
 			ServerData.characters_data[temp_player.displayname] = temp_player
 
-			var firebase_call3 = Firebase.update_document("users/%s" % character_array[2].db_info["id"], character_array[2].http, character_array[2].db_info["token"], character_array[2])
+			var firebase_call3 = Firebase.update_document("users/%s" % character_array[2].db_info["id"], character_array[2].db_info["token"], character_array[2])
 			yield(firebase_call3, 'completed')
 
 			Global.http_requests.append([temp_player.equipment.top, character_array[2]])
@@ -310,10 +308,10 @@ remote func delete_character(requester, display_name: String) -> void:
 	player_container.characters.remove(index)
 	player_container.characters_info_list.remove(index)
 
-	var firebase_call = Firebase.update_document("users/%s" % player_container.db_info["id"], player_container.http, player_container.db_info["token"], player_container)
+	var firebase_call = Firebase.update_document("users/%s" % player_container.db_info["id"], player_container.db_info["token"], player_container)
 	yield(firebase_call, "completed")
 	# warning-ignore:void_assignment
-	var firebase_call2 = Firebase.delete_document("characters/%s" % display_name, player_container.http2, player_container.db_info["token"])
+	var firebase_call2 = Firebase.delete_document("characters/%s" % display_name, player_container.db_info["token"])
 	yield(firebase_call2, "completed")
 	rpc_id(player_id, "return_delete_character", player_container.characters_info_list, requester)
 

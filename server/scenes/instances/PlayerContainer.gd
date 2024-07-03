@@ -1,7 +1,5 @@
 extends KinematicBody2D
 
-onready var http = $HTTP/HTTPRequest
-onready var http2 = $HTTP/HTTPRequest2
 onready var timer =$Timers/Timer
 onready var idle_timer =$Timers/idle_timer
 onready var damage_timer = $Timers/DamageTimer
@@ -34,11 +32,6 @@ var velocity = Vector2.ZERO
 # change to one variable
 var is_climbing = false
 var can_climb = false
-
-#var velocity_multiplier = 1
-#var max_horizontal_speed = null
-#var jump_speed = null
-
 
 var vertical_speed: int
 var horizontal_speed: int

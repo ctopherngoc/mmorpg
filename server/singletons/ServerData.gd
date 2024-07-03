@@ -23,10 +23,7 @@ func _ready():
 	monsterTable = gamedata_json.result["MonsterTable"]
 	itemTable = gamedata_json.result["ItemTable"]
 	equipmentTable = gamedata_json.result["EquipmentTable"]
-	
-	#print(monsterTable)
-	#print(equipmentTable)
-	
+
 onready var ign_id_dict = {}
 #	var skill_data_file = File.new()
 #	skill_data_file.open("res://Data/SkillData - Sheet1.json", File.READ)

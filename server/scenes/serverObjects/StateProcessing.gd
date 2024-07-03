@@ -2,14 +2,11 @@ extends Node
 
 var sync_clock_counter = 0
 
-#var world_state = {}
-
 func _physics_process(_delta: float) -> void:
 	sync_clock_counter += 1
 	if sync_clock_counter == 3:
 		sync_clock_counter = 0
-		#print(ServerData.monsters)
-			
+
 		if not ServerData.player_state_collection.empty():
 			var map_list = Global.maps.get_children()
 			

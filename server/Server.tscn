@@ -44,8 +44,6 @@ __meta__ = {
 [node name="100003" parent="World/Maps" instance=ExtResource( 8 )]
 position = Vector2( 3294, 162 )
 
-[node name="HTTPRequest" type="HTTPRequest" parent="."]
-
 [node name="StateProcessing" type="Node" parent="."]
 script = ExtResource( 3 )
 
