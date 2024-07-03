@@ -129,6 +129,10 @@ click={
 2d_physics/layer_11="noCol"
 2d_physics/layer_12="offMap"
 
+[network]
+
+ssl/certificates="res://resources/Certificate/X509_Certificate.crt"
+
 [physics]
 
 common/enable_pause_aware_picking=true
