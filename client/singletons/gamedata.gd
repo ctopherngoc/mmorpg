@@ -86,6 +86,12 @@ onready var avatar_sprite = {
 	"rleg" : "res://assets/character/spritesheet/rleg/",
 	}
 	
+onready var climb_sprite = {
+	"body": "res://assets/character/spritesheet/body/",
+	"hair": "res://assets/character/spritesheet/hair/",
+	"ear" : "res://assets/character/spritesheet/earc/",
+	}
+	
 onready var equipment_sprite = {
 	"headgear" : "res://assets/character/spritesheet/headgear/",
 	"bottom" : "res://assets/character/spritesheet/bottom/",
@@ -282,3 +288,5 @@ onready var animation_dict: Dictionary = {
 	"600001": "ready",
 	"600002": "ready",
 }
+
+onready var full_headgear_list = ["500006"]
