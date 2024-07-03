@@ -274,16 +274,17 @@ func _server_get_document(path: String)-> void:
 	var result_body := JSON.parse(result[3].get_string_from_ascii()).result as Dictionary
 
 	if "users" in path:
-		var document_list = result_body["documents"]
-		for document in document_list:
-			var doc_id = document["name"].replace("projects/%s/databases/(default)/documents/users/" % PROJECT_ID, "")
-			var character_list = []
-			if document["fields"]['characters']['arrayValue'].size() > 0:
-				for character in document["fields"]['characters']['arrayValue']['values']:
-					character_list.append(character["stringValue"])
-				ServerData.user_characters[doc_id] = character_list
-			else:
-				ServerData.user_characters[doc_id] = []
+		if "documents" in result_body.keys():
+			var document_list = result_body["documents"]
+			for document in document_list:
+				var doc_id = document["name"].replace("projects/%s/databases/(default)/documents/users/" % PROJECT_ID, "")
+				var character_list = []
+				if document["fields"]['characters']['arrayValue'].size() > 0:
+					for character in document["fields"]['characters']['arrayValue']['values']:
+						character_list.append(character["stringValue"])
+					ServerData.user_characters[doc_id] = character_list
+				else:
+					ServerData.user_characters[doc_id] = []
 
 	# currently specific character
 	elif "characters" in path:
