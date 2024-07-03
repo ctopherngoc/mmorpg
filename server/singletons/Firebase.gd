@@ -67,8 +67,11 @@ func update_document(path: String, http: HTTPRequest, token: String, data) -> vo
 		var body := to_json(document)
 		var url := DATABASE_URL + path
 		# warning-ignore:return_value_discarded
-		httprequest.request(url, _get_request_headers(server_token), false, HTTPClient.METHOD_PATCH, body)
+		var temp_HTTP = HTTPRequest.new()
+		self.add_child(temp_HTTP)
+		temp_HTTP.request(url, _get_request_headers(server_token), false, HTTPClient.METHOD_PATCH, body)
 		yield(httprequest, "request_completed")
+		temp_HTTP.queue_free()
 	elif 'characters/' in path:
 		# update /character
 		var fb_data = ServerData.static_data.player_info.duplicate(true)
@@ -619,4 +622,5 @@ func item_data_converter(before: Dictionary, after: Dictionary) -> Dictionary:
 			after[stat]["nullValue"] = null
 			#print(after[stat])
 	#print({'mapValue':{'fields': after}})
+	print(after)
 	return {'mapValue':{'fields': after}}
