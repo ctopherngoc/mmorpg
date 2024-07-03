@@ -2,15 +2,14 @@ extends KinematicBody2D
 
 onready var velocity_multiplier = 1
 # dynamic player variables
-#onready var jump_speed
-#onready var max_horizontal_speed
+
 onready var velocity = Vector2.ZERO
 onready var camera = $Camera2D
 onready var last_input = null
 
 # static player varaibles
 onready var gravity = 800
-onready var temp_delta
+
 # player states
 onready var can_climb = false
 onready var is_climbing = false
@@ -44,19 +43,11 @@ func _ready():
 	Signals.connect("use_skill", self, "use_skill")
 # warning-ignore:return_value_discarded
 	Signals.connect("take_damage", self, "start_hit_timer")
-	#jump_speed = (Global.player.stats.base.jumpSpeed)
 	Global.player_node = self
 	Global.in_game = true
-#	var tilemap_rect = get_parent().get_node("TileMap").get_used_rect()
-#	var tilemap_cell_size = get_parent().get_node("TileMap").cell_size
-#	camera.limit_left = tilemap_rect.position.x * tilemap_cell_size.x
-#	camera.limit_right = tilemap_rect.end.x * tilemap_cell_size.x
-#	camera.limit_top = tilemap_rect.position.y * tilemap_cell_size.y
-#	camera.limit_bottom = tilemap_rect.end.y * tilemap_cell_size.y
 
 func _physics_process(delta):
 	if Global.in_game:
-		temp_delta = delta
 
 		get_directional_speed()
 	# warning-ignore:shadowed_variable
@@ -81,19 +72,14 @@ func get_input():
 	var temp_input = [0,0,0,0,0,0]
 	if Input.is_action_pressed("ui_up"):
 		temp_input[0] = 1
-		#last_input = "up"
 	if Input.is_action_pressed("ui_left"):
 		temp_input[1] = 1
-		#last_input = "left"
 	if Input.is_action_pressed("ui_down"):
 		temp_input[2] = 1
-		#last_input = "right"
 	if Input.is_action_pressed("ui_right"):
 		temp_input[3] = 1
-		#last_input = "right"
 	if Input.is_action_pressed("jump"):
 		temp_input[4] = 1
-		#last_input = "jump"
 	if Input.is_action_pressed("loot") and recon_arr["input_arr"][5] != 1:
 		temp_input[5] = 1
 		
@@ -144,7 +130,6 @@ func get_movement_vector(input):
 
 # warning-ignore:shadowed_variable
 func get_velocity(move_vector, input, delta):
-	#velocity.x += move_vector.x * max_horizontal_speed
 	velocity.x += move_vector.x * horizontal_speed
 	# slow down movement
 	if(move_vector.x == 0):
@@ -166,11 +151,9 @@ func get_velocity(move_vector, input, delta):
 				velocity.y = 100
 				if is_on_floor():
 					is_climbing = false
-					#Global.send_climb_data(self.name, 1)
 			# jump off rope
 			elif input[4] == 1 && (input[1] == 1 or input[3] == 1):
 				is_climbing = false
-				#Global.send_climb_data(self.name, 1)
 				velocity.y = move_vector.y * (vertical_speed)
 				velocity.x = move_vector.x * 200
 		# can climb but not climbing
@@ -198,12 +181,10 @@ func get_velocity(move_vector, input, delta):
 
 func update_animation(move_vector):
 	if(attacking):
-		#print("%s pass" % attacking)
 		last_input = null
 		pass
 
 	# send rpc to server
-	#elif(Input.is_action_pressed("attack") && !is_climbing && Global.movable):
 	elif last_input:
 		if(!is_climbing && Global.movable):
 			if last_input in ["slash", "attack"]:
@@ -228,17 +209,13 @@ func update_animation(move_vector):
 		if(!is_on_floor()):
 			pass
 			sprite.play("jump")
-
 		elif(move_vector.x != 0):
 			sprite.play("walk")
-	#	elif(tookDamage):
-	#		$AnimationPlayer.play("ready")
 		else:
 			if hit_timer.time_left != 0:
 				sprite.play("hit")
 			else:
 				sprite.play("idle")
-	#input = null
 
 func determine_weapon_noise() -> void:
 	if Global.player.equipment.rweapon.weaponType in ["dagger", "1h_sword", "1h_axe", "staff", "wand"]:

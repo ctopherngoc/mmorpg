@@ -87,12 +87,11 @@ func _physics_process(_delta: float) -> void:
 								player_container.update_sprite(new_sprite)
 						# check if character map == client map
 						else:
-							#print("Spawning Player")
 							spawn_new_player(player_state, world_state_buffer[2]["P"][player_state])
 					# probably not used after chunking
 					else:
 						if get_node("/root/GameWorld/MapNode/%s/OtherPlayers" % Global.current_map).has_node(str(player_state)):
-							print("what 5677")
+							print("Global Stop 1")
 							#despawn_player(player_state)
 				# map keys can be empty
 				if world_state_buffer[2]["E"].size() > 0:
@@ -113,7 +112,7 @@ func _physics_process(_delta: float) -> void:
 
 							if world_state_buffer[2]["E"][monster]["EnemyHealth"] <= 0:
 								if monster_node.despawn != 0:
-									print("hrtr543654")
+									print("Global Stop 2")
 									monster_node.on_death()
 							else:
 								var new_position = lerp(world_state_buffer[1]["E"][monster]["EnemyLocation"], world_state_buffer[2]["E"][monster]["EnemyLocation"], interpolation_factor)
@@ -140,7 +139,6 @@ func _physics_process(_delta: float) -> void:
 							var ws2 = Vector2(floor(world_state_buffer[2]["I"][item]["P"].x), floor(world_state_buffer[2]["I"][item]["P"].y))
 							# if they are equal dont update the location
 							if ws1 != ws2:
-								#print(ws1, ws2)
 								var item_node = get_node("/root/GameWorld/MapNode/%s/Items/" % Global.current_map + str(item))
 								
 								var new_position = lerp(world_state_buffer[1]["I"][item]["P"], world_state_buffer[2]["I"][item]["P"], interpolation_factor)
@@ -158,7 +156,6 @@ func _physics_process(_delta: float) -> void:
 							i.queue_free()
 				###################################################################################
 				if world_state_buffer[2]["M"].size() > 0:
-					#print(world_state_buffer[2]["M"].size())
 					var current_projectile_nodes = get_node("/root/GameWorld/MapNode/%s/Projectiles" % Global.current_map).get_children()
 					# remove items if current state has item but future does not have it
 # warning-ignore:shadowed_variable
@@ -176,11 +173,9 @@ func _physics_process(_delta: float) -> void:
 							var ws2 = Vector2(floor(world_state_buffer[2]["M"][projectile]["P"].x), floor(world_state_buffer[2]["M"][projectile]["P"].y))
 							# if they are equal dont update the location
 							if ws1 != ws2:
-								#print(ws1, ws2)
 								var projectile_node = get_node("/root/GameWorld/MapNode/%s/Projectiles/" % Global.current_map + str(projectile))
 
 								var new_position = lerp(world_state_buffer[1]["M"][projectile]["P"], world_state_buffer[2]["M"][projectile]["P"], interpolation_factor)
-								#print(projectile_node)
 								projectile_node.position = new_position
 						# spawn projectile
 						else:
@@ -232,7 +227,7 @@ func _physics_process(_delta: float) -> void:
 							# monster dead on server
 							if world_state_buffer[1]["E"][monster]["EnemyHealth"] <= 0:
 								if monster_node.despawn != 0:
-									print("here 1123")
+									print("Global Stop 3")
 									monster_node.on_death()
 							else:
 								var new_position = world_state_buffer[1]["E"][monster]["EnemyLocation"]
@@ -258,7 +253,6 @@ func _physics_process(_delta: float) -> void:
 							var ws2 = Vector2(floor(world_state_buffer[1]["I"][item]["P"].x), floor(world_state_buffer[1]["I"][item]["P"].y))
 							# if they are equal dont update the location
 							if ws1 != ws2:
-								#print(ws1, ws2)
 								var item_node = get_node("/root/GameWorld/MapNode/%s/Items/" % Global.current_map + str(item))
 								var new_position = world_state_buffer[1]["I"][item]["P"]
 								item_node.position = new_position
@@ -292,7 +286,6 @@ func _physics_process(_delta: float) -> void:
 							var ws2 = Vector2(floor(world_state_buffer[1]["M"][projectile]["P"].x), floor(world_state_buffer[1]["M"][projectile]["P"].y))
 							# if they are equal dont update the location
 							if ws1 != ws2:
-								#print(ws1, ws2)
 								var projectile_node = get_node("/root/GameWorld/MapNode/%s/Projectiles/" % Global.current_map + str(projectile))
 								var new_position = world_state_buffer[1]["M"][projectile]["P"]
 								projectile_node.position = new_position
@@ -310,8 +303,6 @@ func spawn_new_player(player_id: int, player_state: Dictionary) -> void:
 		pass
 	else:
 		var new_player = player_template.instance()
-		#new_player.sprite = player_state["S"]
-		#var new_player = other_player.instance()
 		new_player.position = get_node("/root/GameWorld/MapNode/%s" % Global.current_map).spawn_location
 		new_player.name = str(player_id)
 		get_node("/root/GameWorld/MapNode/%s/OtherPlayers" % Global.current_map).add_child(new_player)
@@ -321,14 +312,11 @@ func spawn_new_player(player_id: int, player_state: Dictionary) -> void:
 
 func despawn_player(player_id: int) -> void:
 	if get_node("/root/GameWorld/MapNode/%s/OtherPlayers" % Global.current_map).has_node(str(player_id)):
-		#print("despawning %s" % player_id)
 		var character_node = get_node("/root/GameWorld/MapNode/%s/OtherPlayers/%s" % [Global.current_map, str(player_id)])
 		character_node.visible = false
 		character_node.queue_free()
 		
 func spawn_monster(monster_id: int, monster_dict: Dictionary) -> void:
-	#var monster = get_node("/root/currentScene").monster_list[monster_dict['id']].instance()
-	#print(monster_dict)
 	var monster = GameData.monster_preload[monster_dict['id']].instance()
 	monster.monster_id = monster_dict['id']
 	monster.position = monster_dict["EnemyLocation"]
@@ -349,7 +337,6 @@ func spawn_item(name: String, item_dict: Dictionary) -> void:
 		item.name = name
 		get_node("/root/GameWorld/MapNode/%s/Items" % Global.current_map).add_child(item, true)
 	else:
-		#print(item_dict)
 		var item = GameData.item_preload["item"].instance()
 		item.position = item_dict["P"]
 		item.name = name
@@ -377,27 +364,15 @@ func server_reconciliation(server_input_data: Dictionary) -> void:
 				var servery = int(server_input_data["P"].y)
 				var clientx = int(input_queue[i]["P"].x)
 				var clienty = int(input_queue[i]["P"].y)
-				#print("server: ", serverx," ", servery, " ", "client: ", clientx, " ", clienty)
 				var player_node = get_node("/root/GameWorld/MapNode/%s/Player" % Global.current_map)
 				if abs(serverx - clientx) > 1 and player_node.is_climbing:
-					#print("climbing fix")
-					#print("server: ", serverx," ", servery, " ", "client: ", clientx, " ", clienty)
 					var recon_position = lerp(input_queue[i]["P"],server_input_data["P"], 0.85)
 					player_node.set_position(recon_position)
-					#print("recon")
-					#print("server: ", server_input_data["P"], " client: ",input_queue[i]["P"])
 				elif not player_node.is_on_floor() and not player_node.is_climbing:
-					#print("jumping")
 					pass
 				elif abs(serverx - clientx) > 50 or abs(servery - clienty) > 50:
-					#print("greater than 15")
-					#print("server: ", serverx," ", servery, " ", "client: ", clientx, " ", clienty)
 					var recon_position = lerp(input_queue[i]["P"],server_input_data["P"], 0.85)
-					#var new_position = lerp(Vector2(clientx, clienty), Vector2(serverx, servery), interpolation_factor)
-					#var new_position = lerp(input_queue[i]["P"], server_input_data["P"], .75)
-					#get_node("/root/GameWorld/Player").set_position(recon_position)
 					player_node.set_position(recon_position)
-					#get_node("/root/currentScene/Player").set_position(server_input_data['P'])
 			input_queue = input_queue.slice(i+1, input_queue.size(), 1, true)
 			return
 
@@ -419,7 +394,6 @@ func log_out() -> void:
 
 func despawn_players(world_state_players: Array) -> void:
 	var player_nodes = get_node("/root/GameWorld/MapNode/%s/OtherPlayers" % Global.current_map).get_children()
-	#print(typeof(world_state_players[0]))
 	for temp_player_node in player_nodes:
 		if not int(temp_player_node.name) in world_state_players:
 			temp_player_node.queue_free()

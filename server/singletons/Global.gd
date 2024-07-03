@@ -164,8 +164,6 @@ func npc_hit(dmg_list: Array, npc: KinematicBody2D, player: KinematicBody2D):
 		# if dead change state and make it unhittable
 		if npc.stats.currentHP <= 0 and npc.state != "Dead":
 			npc.state = "Dead"
-			#print("kill 3")
-			#print(npc.attackers.keys())
 			for attacker in npc.attackers.keys():
 				var highest_attacker = null
 				var  damage = null

@@ -40,7 +40,6 @@ func _process(delta):
 				# if target does not change or new target
 				if is_instance_valid(target_node) and target == target_node.current_character.displayname:
 					# if not at destination target_position -> keep moving towards it
-					#print(self.position, " ",target_position)
 					if floor(self.position.x) != floor(target_position.x):
 						#print("here")
 						var current_position = self.position
@@ -50,7 +49,6 @@ func _process(delta):
 							direction = Vector2.LEFT
 						position = position.move_toward(target_position, stats.movementSpeed * delta * speed_factor)
 						# walking into wall
-						#print(self.position, " ", current_position)
 						if floor(self.position.x) == floor(current_position.x):
 							if if_player_in_map(target):
 								target_position = get_distance_from_target(target_node)
@@ -93,10 +91,8 @@ func _process(delta):
 		velocity = move_and_slide(velocity, Vector2.UP)
 	else:
 		# if hit apply knockback
-		#print("knockback")
 		position = position.move_toward(knockback_position, knockback_power * delta * speed_factor)
 		if position == knockback_position:
-			#print("reset idle state")
 			self.state = "idle"
 		
 func _on_Timer_timeout():
@@ -165,7 +161,6 @@ func if_player_in_map(display_name) -> bool:
 	return false
 
 func knockback(damage, player_position) -> void:
-	#print("knockback: ", damage, " ", player_position)
 	if damage > 0:
 		# get direction
 		var hit_direction = self.position.x - player_position.x

@@ -19,11 +19,9 @@ onready var ready = 1
 onready var hitbox = get_node("Hitbox")
 onready var rangebox = get_node("Range")
 onready var player
-#onready var target_count
 onready var skill_level
 onready var skill_data
 
-#onready var damageType
 
 func _ready():
 	get_closest_target()
@@ -49,31 +47,20 @@ func _physics_process(delta: float) -> void:
 			position = position.move_toward(target.position, max_speed * delta)
 		else:
 			target = null
-	
-#	if target:
-#		if target in hitbox.get_overlapping_areas():
-#			print("target hit")
-		
+
 func get_closest_target() -> void:
 	var enemy_array = rangebox.get_overlapping_areas()
-	print(enemy_array)
-	#print(enemy_array)
-	#print("enemy array: ", enemy_array)
 	if not enemy_array.empty():
 		if skill_data["targetCount"][skill_level] == 1:
 			var closest_target: KinematicBody2D
 			var closest_target_distance
 			for monster in enemy_array:
-				#print("monster: %s" % monster)
 				var monster_body = monster.get_parent()
-				#print(monster_body)
 				# 1 = right -1 = left
 				if direction == 1 and self.position.x < monster_body.position.x:
 					var distance = distance_squared(monster_body.position)
-					#print("distance: %s" % distance)
 					if closest_target == null or distance < closest_target_distance:
 						closest_target = monster_body
-						#print("closests target %s" % closest_target)
 						closest_target_distance = distance
 				elif direction == -1 and self.position.x > monster_body.position.x:
 					var distance = distance_squared(monster_body.position)
@@ -81,7 +68,6 @@ func get_closest_target() -> void:
 						closest_target = monster_body
 						closest_target_distance = distance
 			if closest_target:
-				#print("closest target: %s, distance: %s" % [closest_target.name, closest_target_distance])
 				target = closest_target
 		# more than  one target
 		else:
@@ -89,7 +75,6 @@ func get_closest_target() -> void:
 			var closest_target_distances: Array = []
 			for monster in enemy_array:
 				var monster_body = monster.get_parent()
-				#print(monster_body)
 				# 1 = right -1 = left
 				if direction == 1 and self.position.x < monster_body.position.x:
 					if closest_target_distances.size() < skill_data.targetCount[skill_level]:
@@ -123,13 +108,8 @@ func get_closest_target() -> void:
 		if not max_distance:
 # warning-ignore:narrowing_conversion
 			max_distance = self.position.x + (max_speed * direction)
-			#print("direction %s, max distance %s position %s" % [direction, max_distance, self.position])
 	
 func distance_squared(monster_position) -> float:
-#	print("x: ", self.position.x - monster_position.x)
-#	print("x2 ", pow(self.position.x - monster_position.x, 2))
-#	print("y: ", self.position.y - monster_position.y)
-#	print("y2 ", pow(self.position.y - monster_position.y, 2))
 	return pow(pow(self.position.x - monster_position.x, 2) + pow(self.position.y - monster_position.y, 2), 1/2.0)
 
 func _on_Hitbox_area_entered(area):

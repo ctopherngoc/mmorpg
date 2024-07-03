@@ -5,7 +5,6 @@ onready var LOGIN_URL: String
 onready var FB_USERNAME: String
 onready var FB_PASSWORD: String
 var user_info := {}
-#var httprequest = null
 var server_token = ""
 
 func _ready():
@@ -24,10 +23,6 @@ func _get_request_headers(token_id: String) -> PoolStringArray:
 		"Content-Type: application/json",
 		"Authorization: Bearer %s" % token_id
 	])
-# used only by playerContainers (client user)
-###############################################################################
-###############################################################################
-###############################################################################
 
 # only when creating an account
 # create baseline in /users and chreating new character in /characters
@@ -41,7 +36,6 @@ func save_document(path: String, fields: Dictionary, token: String)-> void:
 	if "users/" in path:
 		temp_HTTP.request(url, _get_request_headers(token),false, HTTPClient.METHOD_POST, body)
 		yield(temp_HTTP, "request_completed")
-		#var result := yield(http, "request_completed") as Array
 	else:
 # warning-ignore:return_value_discarded
 		temp_HTTP.request(url, _get_request_headers(token),false, HTTPClient.METHOD_POST, body)
@@ -221,7 +215,6 @@ func firebase_dictionary_converter(database_data: Dictionary, client_data: Array
 ###############################################################################
 func _get_user_info(result: Array) -> Dictionary:
 	var result_body := JSON.parse(result[3].get_string_from_ascii()).result as Dictionary
-	#return result_body.idToken
 	return {
 		"token" : result_body.idToken,
 		"id" : result_body.localId,
@@ -330,9 +323,7 @@ func server_firebase_dictionary_converter(database_data: Dictionary) -> Dictiona
 		for key2 in keys2:
 			# added situation if value saved as integervalue
 			if key2 == "ap":
-				#print(shortcut[key]["mapValue"]["fields"]["ap"])
 				var ap_array = []
-				#print(shortcut2[key2]["arrayValue"])
 				for ap in shortcut2[key2]["arrayValue"]["values"]:
 					ap_array.append(int(ap['integerValue']))
 				temp_dict['stats'][key][key2] = ap_array
@@ -411,10 +402,9 @@ func server_firebase_dictionary_converter(database_data: Dictionary) -> Dictiona
 			# tab keys [equips, use, etc]
 			else:
 				temp_dict['inventory'][key] = []
-				var inventory_shortcut = shortcut[key]['arrayValue']['values'] # [item_dict, item_dict2, item_dict3]
+				var inventory_shortcut = shortcut[key]['arrayValue']['values']
 				# in equips
 				if key == "equipment":
-					#print(inventory_shortcut)
 					#currently have [equip_dict1, equip_dict2...]
 					var count = 0
 					for equip_dict in inventory_shortcut:
@@ -425,7 +415,6 @@ func server_firebase_dictionary_converter(database_data: Dictionary) -> Dictiona
 						else:
 							# now in equip{}
 							var equip_shortcut = equip_dict["mapValue"]["fields"]
-							#temp_dict['equipment'][count].append({})
 							var inv_equip_keys = equip_shortcut.keys()
 							temp_dict['inventory'][key].append({})
 							for equip_key in inv_equip_keys:
@@ -434,10 +423,8 @@ func server_firebase_dictionary_converter(database_data: Dictionary) -> Dictiona
 								for key2 in keys2:
 									if 'integerValue' in equip_shortcut[key2]:
 										temp_dict['inventory'][key][count][key2] = int(equip_shortcut[key2]['integerValue'])
-										#print("should be int:2 %s" % typeof(temp_dict['inventory'][key][count][key2]))
 									else:
 										temp_dict['inventory'][key][count][key2] = str(equip_shortcut[key2]['stringValue'])
-										#print("should be string:4 %s" % typeof(temp_dict['inventory'][key][count][key2]))
 						count += 1
 				# for use, etc tab
 				else:
@@ -472,7 +459,6 @@ func server_firebase_dictionary_converter(database_data: Dictionary) -> Dictiona
 		temp_dict['keybind'] = ServerData.static_data.default_keybind.duplicate(true)
 	
 	temp_dict.stats["buff"] = ServerData.buff_stats.duplicate(true)
-	#print(temp_dict)
 	return temp_dict
 
 func server_dictionary_converter(server_data: Dictionary, firebase_data: Dictionary) -> void:
@@ -498,12 +484,10 @@ func server_dictionary_converter(server_data: Dictionary, firebase_data: Diction
 					for job_ap in shortcut[key]["ap"]:
 						ap.append({"integerValue": job_ap})
 					fb_shortcut[key]['mapValue']['fields']["ap"]["arrayValue"]["values"] = ap
-					#print(fb_shortcut[key]['mapValue']['fields'])
 					########################################
 				else:
 					fb_shortcut[key]['mapValue']['fields'][key2]['integerValue'] = int(shortcut[key][key2])
-#	print("stats")
-#	print(firebase_data["stats"])
+
 	# avatar
 	shortcut = server_data["avatar"]
 	fb_shortcut = firebase_data['avatar']['mapValue']['fields']
@@ -526,10 +510,8 @@ func server_dictionary_converter(server_data: Dictionary, firebase_data: Diction
 		fb_skill_dict[job] = {"mapValue": {'fields': {}}}
 		fb_skill_dict[job]["mapValue"]["fields"] = skill_dict.duplicate(true)
 	firebase_data['skills']['mapValue']['fields'] = fb_skill_dict.duplicate(true)
-	
-#	print("after fb skills")
-#	print(firebase_data['skills'])
 	#################################################################################################
+	
 	# equipment
 	shortcut = server_data["equipment"]
 	fb_shortcut = firebase_data['equipment']['mapValue']['fields']
@@ -555,9 +537,8 @@ func server_dictionary_converter(server_data: Dictionary, firebase_data: Diction
 			fb_shortcut[key] = {'mapValue':{'fields': temp_dict}}
 		elif typeof(shortcut[key]) == TYPE_NIL:
 			fb_shortcut[key]['nullValue'] = null
-#	print("after fb equipment top")
-#	print(firebase_data['equipment']["mapValue"]["fields"]["top"])
 #####################################################################################################
+
 	#inventory
 	shortcut = server_data["inventory"]
 	fb_shortcut = firebase_data['inventory']['mapValue']['fields']
@@ -568,16 +549,13 @@ func server_dictionary_converter(server_data: Dictionary, firebase_data: Diction
 		else:
 			# inventory equipment
 			if key == "equipment":
-				#fb_shortcut[key] = {'arrayValue':{'values':[]}}
 				var fb_equip_shortcut = fb_shortcut[key]["arrayValue"]["values"]
 				# for dict in dict_array
 				var count = 0
 				for equip in shortcut["equipment"]:
 					if equip != null:
 						var temp_dict = ServerData.static_data.equipment_data_template.duplicate(true)
-						# [inventory][equipment][equip] = {keys: values}
 						# equip dict
-						##### temp fix to firebase 
 						for stat in equip.keys():
 							if stat in ['id', 'uniqueID', 'type', 'name', 'owner']:
 								temp_dict[stat] = {'stringValue' : str(equip[stat])}
@@ -587,12 +565,9 @@ func server_dictionary_converter(server_data: Dictionary, firebase_data: Diction
 					count += 1
 			# etc, use
 			else:
-				#fb_shortcut[key] = {'arrayValue':{'values':[]}}
 				var item_shortcut = fb_shortcut[key]['arrayValue']['values']
 				var count = 0
 				for item in shortcut[key]:
-#					if key == "use":
-#						print(key, " ", item)
 					if item != null:
 						# temp item dictionary
 						var item_dict = {}
@@ -609,9 +584,7 @@ func server_dictionary_converter(server_data: Dictionary, firebase_data: Diction
 					else:
 						item_shortcut[count] = {'nullValue': null}
 					count += 1
-	
-#	print("after fb inventory")
-#	print(firebase_data['inventory']['mapValue']['fields'])
+
 	# keybinds
 	shortcut = server_data["keybind"]
 	fb_shortcut = firebase_data['keybind']['mapValue']['fields']
@@ -628,9 +601,8 @@ func save(var path : String, var thing_to_save: Dictionary):
 	file.close()
 
 func item_data_converter(before: Dictionary, after: Dictionary) -> Dictionary:
-	#var skip_list = ["reqStr", "reqDex", "reqLuk", "reqWis", "weaponType"]
 	for stat in before.keys():
-		#print(before[stat])
+
 		#if not stat in skip_list:
 		if typeof(before[stat]) == TYPE_STRING:
 			after[stat]["stringValue"] = before[stat]
@@ -638,7 +610,4 @@ func item_data_converter(before: Dictionary, after: Dictionary) -> Dictionary:
 			after[stat]["integerValue"] = before[stat]
 		elif typeof(before[stat]) == TYPE_NIL:
 			after[stat]["nullValue"] = null
-			#print(after[stat])
-	#print({'mapValue':{'fields': after}})
-	print(after)
 	return {'mapValue':{'fields': after}}

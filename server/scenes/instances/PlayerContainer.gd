@@ -214,7 +214,6 @@ func experience(experience: int) -> void:
 	if current_exp >= exp_limit:
 		# multiple levels
 		while current_exp >= exp_limit:
-			#print("current xp: %s, exp max: %s, ending xp: %s" % [current_exp, exp_limit,   current_exp - exp_limit])
 			current_exp %= exp_limit
 			#("new current xp: %s" % current_exp)
 			current_character.stats.base.level += 1
@@ -230,7 +229,6 @@ func experience(experience: int) -> void:
 			current_character.stats.base.health = current_character.stats.base.maxHealth
 			# insert mp increase here
 			var new_mana = int(round( 20 + (current_character.stats.base.wisdom * 0.4)))
-			#print("new mana: %s" % new_mana)
 			if current_character.stats.base.job in [888888888]:
 				# look up skill level add more mp based on skill level
 				pass
@@ -238,7 +236,6 @@ func experience(experience: int) -> void:
 			current_character.stats.base.maxMana += new_mana
 			current_character.stats.base.mana = current_character.stats.base.maxMana
 			# heal to full hp and mp
-			#print("%s Level Up" % current_character.displayname)
 			
 			# add ability point skill points
 			####################################################################################
@@ -259,8 +256,6 @@ func experience(experience: int) -> void:
 	current_character.stats.base.experience = current_exp
 	get_node("/root/Server").update_player_stats(self)
 	Global.store_character_data(self.name, current_character.displayname)
-	#print("Level: %s" % current_character.stats.base.level)
-	#print("EXP: %s" % current_character.stats.base.experience)
 
 func movement_loop(delta: float) -> void:
 	get_directional_speed()
@@ -441,7 +436,6 @@ func update_sprite_array():
 	sprite[0] = str(temp_dict.bcolor) + str(temp_dict.body)
 	sprite[1] = str(temp_dict.brow)
 	sprite[2] = str(temp_dict.bcolor) + str(temp_dict.ear)
-	#sprite[3] = temp_dict.bcolor + temp_dict.ear
 	sprite[3] = str(temp_dict.ecolor) + str(temp_dict.eye)
 	sprite[4] = str(temp_dict.hcolor) + str(temp_dict.hair)
 	sprite[5] = str(temp_dict.head)
