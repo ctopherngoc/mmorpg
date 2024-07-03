@@ -229,7 +229,7 @@ func login(email: String, password: String, results: Array) -> void:
 		'password': password,
 		'returnSecureToken': true
 	}
-# warning-ignore:return_value_discarded
+	# warning-ignore:return_value_discarded
 	temp_HTTP.request(LOGIN_URL, [], false, HTTPClient.METHOD_POST, to_json(body))
 	var result := yield(temp_HTTP, "request_completed") as Array
 
@@ -268,7 +268,7 @@ func _server_get_document(path: String)-> void:
 	var temp_HTTP = HTTPRequest.new()
 	self.add_child(temp_HTTP)
 	var url := DATABASE_URL + path
-# warning-ignore:return_value_discarded
+	# warning-ignore:return_value_discarded
 	temp_HTTP.request(url, _get_request_headers(server_token), false, HTTPClient.METHOD_GET)
 	var result := yield(temp_HTTP, "request_completed") as Array
 	var result_body := JSON.parse(result[3].get_string_from_ascii()).result as Dictionary
@@ -299,7 +299,9 @@ func _server_get_document(path: String)-> void:
 			for document in document_list:
 				var item = document["name"].replace("projects/%s/databases/(default)/documents/items/" % PROJECT_ID, "")
 				ServerData.equipment_data.append(str(item))
-
+	
+	temp_HTTP.queue_free()
+	
 func server_firebase_dictionary_converter(database_data: Dictionary) -> Dictionary:
 	"""
 	takes firebase json dictionary converts to normal dictionary and appends to an array
