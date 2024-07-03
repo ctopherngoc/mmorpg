@@ -149,7 +149,7 @@ func create_characters():
 			temp_player.equipment.top.owner = temp_player.displayname
 			temp_player.equipment.bottom.owner = temp_player.displayname
 			temp_player.equipment.rweapon.owner = temp_player.displayname
-			
+
 			print("creating character")
 			var firebase_call2 = Firebase.update_document("characters/%s" % temp_player["displayname"], character_array[2].http2, character_array[2].db_info["token"], temp_player)
 			yield(firebase_call2, 'completed')
@@ -377,7 +377,7 @@ remote func portal(portal_id):
 
 	#get nextmap name
 	var map_id = get_node(ServerData.player_location[str(player_id)].replace("YSort/Players", "")).map_id
-	print(map_id, " ", portal_id, " ", ServerData.portal_data[map_id][portal_id]['map'])
+	#print(map_id, " ", portal_id, " ", ServerData.portal_data[map_id][portal_id]['map'])
 	var next_map = ServerData.portal_data[map_id][portal_id]['map']
 	# get mapname, move user container to the map
 	#print("move character container to %s" % next_map)
@@ -745,7 +745,7 @@ remote func skill_request(skill: String) -> void:
 									player_container.current_character.stats.buff[key] += skill_data.stat[key][player_skill_data - 1]
 							#player_container.current_character.stats.buff[skill] = {"stat": skill_data.statType, "A": skill_data.type, "D": skill_data.duration[player_skill_data - 1]}
 						player_container.buffs[skill] = skill_data.duration[player_skill_data - 1]
-						print(player_container.current_character.stats.buff)
+						#print(player_container.current_character.stats.buff)
 						update_player_stats(player_container)
 						
 					elif skill_data.type == "heal":

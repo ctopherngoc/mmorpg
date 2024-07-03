@@ -564,9 +564,11 @@ func add_item_database(data_dict: Dictionary, player_container: KinematicBody2D 
 	#print(data_dict.weaponType)
 	var path = "items/%s" % (data_dict.id + str(data_dict.uniqueID)) 
 	#print(data_dict)
-
-	var firebase = Firebase.update_document(path, player_container.http, player_container.db_info["token"], data_dict)
+	var temp_HTTP = HTTPRequest.new()
+	self.add_child(temp_HTTP)
+	var firebase = Firebase.update_document(path, temp_HTTP, player_container.db_info["token"], data_dict)
 	yield(firebase, 'completed')
+	temp_HTTP.queue_free()
 
 	#print("added %s to firebase. owner is %s" % [data_dict.name, player_container.name])
 	

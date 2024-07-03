@@ -1,5 +1,6 @@
 extends Node
 
+onready var PROJECT_ID: String
 onready var DATABASE_URL: String
 onready var LOGIN_URL: String
 onready var REGISTER_URL: String
@@ -14,6 +15,8 @@ func _ready():
 	var data_file = File.new()
 	data_file.open("res://data/server.json", File.READ)
 	var server_json = JSON.parse(data_file.get_as_text())
+	
+	PROJECT_ID = server_json.result["PROJECT_ID"]
 	REGISTER_URL = "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=%s" % server_json.result["API_KEY"]
 	DATABASE_URL = "https://firestore.googleapis.com/v1/projects/%s/databases/(default)/documents/" % server_json.result["PROJECT_ID"]
 	LOGIN_URL = "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=%s" % server_json.result["API_KEY"]
@@ -83,7 +86,7 @@ func _server_get_document(path: String, http: HTTPRequest)-> void:
 	#print(result_body)
 	var document_list = result_body["documents"]
 	for document in document_list:
-		var doc_id = document["name"].replace("projects/godotproject-ef224/databases/(default)/documents/users/", "")
+		var doc_id = document["name"].replace("projects/%s/databases/(default)/documents/users/" % PROJECT_ID, "")
 		if not account_id_list.has(str(doc_id)):
 			account_id_list.append(str(doc_id))
 			

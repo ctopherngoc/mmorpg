@@ -1,5 +1,5 @@
 extends Node
-
+onready var PROJECT_ID
 onready var DATABASE_URL: String
 onready var LOGIN_URL: String
 onready var FB_USERNAME: String
@@ -12,6 +12,7 @@ func _ready():
 	var data_file = File.new()
 	data_file.open("res://data/server.json", File.READ)
 	var server_json = JSON.parse(data_file.get_as_text())
+	PROJECT_ID = server_json.result["PROJECT_ID"]
 	DATABASE_URL = "https://firestore.googleapis.com/v1/projects/%s/databases/(default)/documents/" % server_json.result["PROJECT_ID"]
 	LOGIN_URL = "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=%s" % server_json.result["API_KEY"]
 	FB_USERNAME = server_json.result["USERNAME"]
@@ -66,8 +67,11 @@ func update_document(path: String, http: HTTPRequest, token: String, data) -> vo
 		var body := to_json(document)
 		var url := DATABASE_URL + path
 		# warning-ignore:return_value_discarded
-		httprequest.request(url, _get_request_headers(server_token), false, HTTPClient.METHOD_PATCH, body)
+		var temp_HTTP = HTTPRequest.new()
+		self.add_child(temp_HTTP)
+		temp_HTTP.request(url, _get_request_headers(server_token), false, HTTPClient.METHOD_PATCH, body)
 		yield(httprequest, "request_completed")
+		temp_HTTP.queue_free()
 	elif 'characters/' in path:
 		# update /character
 		var fb_data = ServerData.static_data.player_info.duplicate(true)
@@ -262,7 +266,7 @@ func _server_get_document(path: String, http: HTTPRequest)-> void:
 	if "users" in path:
 		var document_list = result_body["documents"]
 		for document in document_list:
-			var doc_id = document["name"].replace("projects/godotproject-ef224/databases/(default)/documents/users/", "")
+			var doc_id = document["name"].replace("projects/%s/databases/(default)/documents/users/" % PROJECT_ID, "")
 			var character_list = []
 			if document["fields"]['characters']['arrayValue'].size() > 0:
 				for character in document["fields"]['characters']['arrayValue']['values']:
@@ -275,14 +279,14 @@ func _server_get_document(path: String, http: HTTPRequest)-> void:
 		if "documents" in result_body.keys():
 			var document_list = result_body["documents"]
 			for document in document_list:
-				var character = document["name"].replace("projects/godotproject-ef224/databases/(default)/documents/characters/", "")
+				var character = document["name"].replace("projects/%s/databases/(default)/documents/characters/" % PROJECT_ID, "")
 				ServerData.characters_data[character] = server_firebase_dictionary_converter(document["fields"])
 				
 	elif "items" in path:
 		if "documents" in result_body.keys():
 			var document_list = result_body["documents"]
 			for document in document_list:
-				var item = document["name"].replace("projects/godotproject-ef224/databases/(default)/documents/items/", "")
+				var item = document["name"].replace("projects/%s/databases/(default)/documents/items/" % PROJECT_ID, "")
 				ServerData.equipment_data.append(str(item))
 
 func server_firebase_dictionary_converter(database_data: Dictionary) -> Dictionary:
@@ -480,7 +484,8 @@ func server_dictionary_converter(server_data: Dictionary, firebase_data: Diction
 					########################################
 				else:
 					fb_shortcut[key]['mapValue']['fields'][key2]['integerValue'] = int(shortcut[key][key2])
-	
+#	print("stats")
+#	print(firebase_data["stats"])
 	# avatar
 	shortcut = server_data["avatar"]
 	fb_shortcut = firebase_data['avatar']['mapValue']['fields']
@@ -505,7 +510,7 @@ func server_dictionary_converter(server_data: Dictionary, firebase_data: Diction
 	firebase_data['skills']['mapValue']['fields'] = fb_skill_dict.duplicate(true)
 	
 #	print("after fb skills")
-#	print(firebase_data['skills']['mapValue']['fields'])
+#	print(firebase_data['skills'])
 	#################################################################################################
 	# equipment
 	shortcut = server_data["equipment"]
@@ -527,13 +532,13 @@ func server_dictionary_converter(server_data: Dictionary, firebase_data: Diction
 					temp_dict[key2] = {'stringValue' : shortcut2[key2]}
 				elif typeof(shortcut2[key2]) == TYPE_INT:
 					temp_dict[key2] = {'integerValue': shortcut2[key2]}
-#				elif typeof(shortcut2[key2]) == TYPE_NIL:
-#					temp_dict[key2] = {'nullValue': null}
+				elif typeof(shortcut2[key2]) == TYPE_NIL:
+					temp_dict[key2] = {'nullValue': null}
 			fb_shortcut[key] = {'mapValue':{'fields': temp_dict}}
 		elif typeof(shortcut[key]) == TYPE_NIL:
 			fb_shortcut[key]['nullValue'] = null
-	#print("after fb equipment")
-	#print(firebase_data['equipment']['mapValue']['fields'])
+#	print("after fb equipment top")
+#	print(firebase_data['equipment']["mapValue"]["fields"]["top"])
 #####################################################################################################
 	#inventory
 	shortcut = server_data["inventory"]
@@ -617,4 +622,5 @@ func item_data_converter(before: Dictionary, after: Dictionary) -> Dictionary:
 			after[stat]["nullValue"] = null
 			#print(after[stat])
 	#print({'mapValue':{'fields': after}})
+	print(after)
 	return {'mapValue':{'fields': after}}

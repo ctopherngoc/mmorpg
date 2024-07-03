@@ -1,7 +1,7 @@
 # Blossom
 
 This is a personal project to create a Maplestory-like 2D side scrolling mmorpg game using the Godot 3.5 game engine. It is broken up into a game server, authentication server, gateway server and client executable.
-The current release (v4.0.1) allows dedicated server hosting of the server, the authentication server and gateway server, (it was designed to run on Docker containers). It is possible to open up multiple
+The current release (v4.0.2) allows dedicated server hosting of the server, the authentication server and gateway server, (it was designed to run on Docker containers). It is possible to open up multiple
 client executables to replicate multiple users logging into the server given the user has access to the login information. The server has three working map that populates monsters and players. You are able to navigate around the maps. 
 Basic combat system and experience/character progression works. The death/revive animation currently does not work (have not converted to server authoritative death) but players can lose all their hp (can even go negative). There is a working inventory system
 and monster have a chance to drop equipments use items and gold. Health recovery is possible through idle standing, double clicking items in inventory or pressing set key-binds. Possible rubber banding could occur if server de-sync happens. This could happen due to hardware reasons in
@@ -17,10 +17,10 @@ The game is currently hosted on a VPS server and local play has been discontinue
 Install Godot 3.5 on the running machine (possibly needed?)
 
 ### Installing/Executing
-Current release (v4.0.1) is server authoritative model with server reconciliation and client prediction has been implemented. Although it is implemented, it is not true server authoritative because Godot kinematic is not fully deterministic (uses delta:floats for calculations).<br />
+Current release (v4.0.2) is server authoritative model with server reconciliation and client prediction has been implemented. Although it is implemented, it is not true server authoritative because Godot kinematic is not fully deterministic (uses delta:floats for calculations).<br />
 <br />
 Install: <br />
-Download the current release (v4.0.1) .zip and unzip from the release section<br />
+Download the current release (v4.0.2) .zip and unzip from the release section<br />
 <br />
 Run the Client executable.<br />
 <br />

@@ -6,7 +6,7 @@ var port = 2734
 var max_players = 100
 var cert = load("res://resources/Certificate/X509_Certificate.crt")
 var key = load("res://resources/Certificate/x509_Key.key")
-onready var game_version = "4.0.1"
+onready var game_version = "4.0.2"
 
 func _ready():
 	start_server()
