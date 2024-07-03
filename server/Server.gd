@@ -701,9 +701,12 @@ remote func skill_request(skill: String) -> void:
 		# not on cd
 		if not player_container.cooldowns.has(skill):
 			# if beginner skill or player job in job skills
-			if skill_class.location[0] == "0" or player_container.current_player.stats.job in skill_class.class:
+			if skill_class.location[0] == "0" or player_container.current_character.stats.job in skill_class.class:
 				
 				skill_data = ServerData.skill_data[skill_class.location[0]][skill_class.location[1]]
+				if skill_data.type == "attack" and player_container.is_climbing:
+					print("%s used attack still but is climbing" % player_container.current_character.displayname)
+					return
 				# get skill level
 				var player_skill_data = player_container.current_character.skills[skill_class.location[0]][skill_class.location[1]]
 				if player_container.current_character.displayname == "1111111":
