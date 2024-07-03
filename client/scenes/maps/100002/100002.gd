@@ -19,7 +19,6 @@ func _ready():
 	Global.change_background()
 	if Global.player.map != get_filename():
 		Global.update_lastmap(get_filename())
-		spawn_location = Vector2(234, -437)
 	
 	$Player.camera.limit_left = map_bound["left"]
 	$Player.camera.limit_right = map_bound["right"]
