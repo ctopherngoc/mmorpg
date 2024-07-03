@@ -25,11 +25,11 @@ var enemy_types = [green_guy, green_guy, blue_guy, blue_guy,
 					wildRooster, bullRooster, green_guy
 ]				
 
-var enemy_spawn_points = [Vector2(367, -93), Vector2(631, -93), Vector2(355, -433), Vector2(631, -433),
-							Vector2(407, -414), Vector2(564, -414), Vector2(856, -414), Vector2(987, -414),
-							Vector2(1109, -414), Vector2(1223, -414), Vector2(1392, -414), Vector2(1587, -414),
-							Vector2(1758, -414), Vector2(550, -71), Vector2(878, -71), Vector2(1089, -71),
-							Vector2(1247, -414), Vector2(1503, -71), Vector2(1740, -71),
+var enemy_spawn_points = [Vector2(367, -70.5), Vector2(631, -70.5), Vector2(355, -414.5), Vector2(631, -414.5),
+							Vector2(407, -415), Vector2(564, -415), Vector2(856, -414.5), Vector2(987, -414.5),
+							Vector2(1109, -415), Vector2(1223, -397), Vector2(1392, -397), Vector2(1587, -360.5),
+							Vector2(1758, -375.5), Vector2(550, -83.5), Vector2(878, -84.5), Vector2(1089, -85),
+							Vector2(1247, -412.5), Vector2(1503, -88.5), Vector2(1740, -70.5),
 ]
 
 var open_locations = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]
