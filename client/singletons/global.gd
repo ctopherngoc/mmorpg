@@ -71,6 +71,8 @@ func _physics_process(_delta: float) -> void:
 			if world_state_buffer.size() > 2:
 				despawn_players(world_state_buffer[2]["P"].keys())
 				var interpolation_factor = float(render_time - world_state_buffer[1]["T"]) / float(world_state_buffer[2]["T"] - world_state_buffer[0]["T"])
+				if current_map != world_state_buffer[2]["ID"]:
+					return
 				for player_state in world_state_buffer[2]["P"].keys():
 					if player_state == get_tree().get_network_unique_id():
 						continue
@@ -189,6 +191,8 @@ func _physics_process(_delta: float) -> void:
 			# we have no future world_state
 			elif render_time > world_state_buffer[1].T:
 				despawn_players(world_state_buffer[1]["P"].keys())
+				if current_map != world_state_buffer[1]["ID"]:
+					return
 				var extrapolation_factor = float(render_time - world_state_buffer[0]["T"]) / float(world_state_buffer[1]["T"] - world_state_buffer[0]["T"]) - 1.00
 				for player_state in world_state_buffer[1]["P"].keys():
 					if player_state == get_tree().get_network_unique_id():
