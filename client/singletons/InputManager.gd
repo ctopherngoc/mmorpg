@@ -16,7 +16,7 @@ func _ready():
 	Signals.connect("toggle_option_bool", self, "toggle_options")
 
 func _input(event) -> void:
-	if Global.in_game:
+	if Global.in_game and not SceneHandler.transition:
 		if event is InputEventKey:
 			if event.pressed:
 				#if chat focused

@@ -8,7 +8,7 @@ onready var camera = $Camera2D
 onready var last_input = null
 
 # static player varaibles
-onready var gravity = 800
+onready var gravity = 0
 
 # player states
 onready var can_climb = false
@@ -35,6 +35,8 @@ onready var recon_arr = {
 ########
 
 func _ready():
+	
+	gravity = 800
 	# warning-ignore:return_value_discarded
 	Signals.connect("dialog_closed", self, "movable_switch")
 # warning-ignore:return_value_discarded
@@ -70,18 +72,20 @@ func define_player_state(input_array):
 func get_input():
 # warning-ignore:shadowed_variable
 	var temp_input = [0,0,0,0,0,0]
-	if Input.is_action_pressed("ui_up"):
-		temp_input[0] = 1
-	if Input.is_action_pressed("ui_left"):
-		temp_input[1] = 1
-	if Input.is_action_pressed("ui_down"):
-		temp_input[2] = 1
-	if Input.is_action_pressed("ui_right"):
-		temp_input[3] = 1
-	if Input.is_action_pressed("jump"):
-		temp_input[4] = 1
-	if Input.is_action_pressed("loot") and recon_arr["input_arr"][5] != 1:
-		temp_input[5] = 1
+	if not SceneHandler.transition:
+	
+		if Input.is_action_pressed("ui_up"):
+			temp_input[0] = 1
+		if Input.is_action_pressed("ui_left"):
+			temp_input[1] = 1
+		if Input.is_action_pressed("ui_down"):
+			temp_input[2] = 1
+		if Input.is_action_pressed("ui_right"):
+			temp_input[3] = 1
+		if Input.is_action_pressed("jump"):
+			temp_input[4] = 1
+		if Input.is_action_pressed("loot") and recon_arr["input_arr"][5] != 1:
+			temp_input[5] = 1
 		
 	recon_arr["input_arr"] = temp_input
 	return temp_input
