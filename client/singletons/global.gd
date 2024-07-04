@@ -6,7 +6,7 @@
 ######################################################################
 
 extends Node
-onready var version: String = "4.0.2"
+onready var version: String = "4.1.0"
 onready var local: bool = true
 onready var ip: String
 onready var input_queue: Array = []

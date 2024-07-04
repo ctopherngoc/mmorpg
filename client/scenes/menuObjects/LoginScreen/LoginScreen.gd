@@ -122,3 +122,7 @@ func load_settings() -> void:
 	save_file.close()
 	loaded = true
 
+
+
+func _on_Button3_pressed():
+	OS.shell_open("https://github.com/ctopherngoc/Blossom/releases")

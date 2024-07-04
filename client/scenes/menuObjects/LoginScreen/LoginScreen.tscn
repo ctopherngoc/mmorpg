@@ -1,8 +1,15 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://scenes/menuObjects/LoginScreen/LoginScreen.gd" type="Script" id=1]
 [ext_resource path="res://scenes/menuObjects/Background.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/menuObjects/Options/Options.tscn" type="PackedScene" id=3]
+
+[sub_resource type="DynamicFontData" id=1]
+font_path = "res://assets/fonts/xolonium/xolonium-fonts-4.1/ttf/Xolonium-Regular.ttf"
+
+[sub_resource type="DynamicFont" id=2]
+size = 11
+font_data = SubResource( 1 )
 
 [node name="LogIn" type="Control"]
 anchor_right = 1.0
@@ -75,18 +82,10 @@ placeholder_text = "password"
 caret_blink = true
 caret_blink_speed = 0.5
 
-[node name="notification" type="HBoxContainer" parent="VBoxContainer"]
+[node name="loginButton" type="HBoxContainer" parent="VBoxContainer"]
 margin_top = 74.0
 margin_right = 243.0
-margin_bottom = 88.0
-
-[node name="Label" type="Label" parent="VBoxContainer/notification"]
-margin_bottom = 14.0
-
-[node name="loginButton" type="HBoxContainer" parent="VBoxContainer"]
-margin_top = 92.0
-margin_right = 243.0
-margin_bottom = 116.0
+margin_bottom = 98.0
 size_flags_horizontal = 3
 
 [node name="Button" type="Button" parent="VBoxContainer/loginButton"]
@@ -116,19 +115,40 @@ custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Save username"
 
 [node name="options" type="HBoxContainer" parent="VBoxContainer"]
-margin_top = 120.0
+margin_top = 102.0
 margin_right = 243.0
-margin_bottom = 140.0
+margin_bottom = 122.0
 
 [node name="Button2" type="Button" parent="VBoxContainer/options"]
 margin_right = 56.0
 margin_bottom = 20.0
 text = "Option"
 
-[node name="Testing" type="HBoxContainer" parent="VBoxContainer"]
-margin_top = 144.0
+[node name="Button3" type="Button" parent="VBoxContainer/options"]
+margin_left = 60.0
+margin_right = 143.0
+margin_bottom = 20.0
+text = "Client Page"
+
+[node name="notification" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 126.0
 margin_right = 243.0
-margin_bottom = 144.0
+margin_bottom = 176.0
+rect_min_size = Vector2( 0, 50 )
+
+[node name="Label" type="Label" parent="VBoxContainer/notification"]
+margin_right = 243.0
+margin_bottom = 50.0
+rect_min_size = Vector2( 0, 50 )
+size_flags_horizontal = 3
+size_flags_vertical = 7
+custom_fonts/font = SubResource( 2 )
+autowrap = true
+
+[node name="Testing" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 180.0
+margin_right = 243.0
+margin_bottom = 180.0
 
 [node name="Button1" type="Button" parent="VBoxContainer/Testing"]
 visible = false
@@ -155,5 +175,7 @@ visible = false
 [connection signal="toggled" from="VBoxContainer/loginButton/CheckBox" to="." method="_on_CheckBox_toggled"]
 [connection signal="mouse_entered" from="VBoxContainer/options/Button2" to="." method="_on_Button_mouse_entered"]
 [connection signal="pressed" from="VBoxContainer/options/Button2" to="." method="_on_Button2_pressed"]
+[connection signal="mouse_entered" from="VBoxContainer/options/Button3" to="." method="_on_Button_mouse_entered"]
+[connection signal="pressed" from="VBoxContainer/options/Button3" to="." method="_on_Button3_pressed"]
 [connection signal="mouse_entered" from="VBoxContainer/Testing/Button1" to="." method="_on_Button_mouse_entered"]
 [connection signal="pressed" from="VBoxContainer/Testing/Button1" to="." method="_on_Button1_pressed"]

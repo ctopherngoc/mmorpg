@@ -68,8 +68,10 @@ remote func return_login_request(results: Array) -> void:
 		# pass email to below
 		Server.connect_to_server()
 	elif results[0] == 2733:
-		print("wrong version. please update game client")
-		login_node.notification.text = "incorrect version. please update game client"
+		print("wrong version. please update game client to version %s", results[1])
+		login_node.notification.modulate = Color(1.0,0.0,0.0,1.0)
+		login_node.notification.text = ("incorrect version.\n\nplease update client to version %s" % results[1])
+		Signals.emit_signal("fail_login")
 	else:
 		print("Please provide correct username and pasword")
 		Signals.emit_signal("fail_login")
