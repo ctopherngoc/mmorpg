@@ -174,22 +174,26 @@ func get_velocity(move_vector, input, delta):
 			if (move_vector.y < 0 && is_on_floor()):
 					velocity.y = move_vector.y * (Global.player.stats.base.jumpSpeed + Global.player.stats.equipment.jumpSpeed + Global.player.stats.buff.jumpSpeed)
 			# press up on ladder initiates climbing
-			elif input[0] == 1:
+			elif input[0] == 1 or input[2] == 1:
 					is_climbing = true
 					velocity.y = 0
 					velocity.x = 0
+					if input[2] == 1:
+						#self.set_collision_layer_bit(1, false)
+						self.position.y += 1
+						#self.set_collision_layer_bit(1, true)
 			# over lapping ladder pressing nothing allows gravity
 			else:
 				velocity.y += gravity * delta
 	# not climbable state
 	else:
+		if is_climbing:
+			is_climbing = false
 		# normal movement
 		if (move_vector.y < 0 && is_on_floor()):
 			velocity.y = move_vector.y * (Global.player.stats.base.jumpSpeed + Global.player.stats.equipment.jumpSpeed + Global.player.stats.buff.jumpSpeed)
 		else:
 			velocity.y += gravity * delta
-	if !can_climb:
-		is_climbing = false
 
 func update_animation(move_vector):
 	if(attacking):
@@ -199,7 +203,9 @@ func update_animation(move_vector):
 	# send rpc to server
 	elif last_input:
 		if(!is_climbing && Global.movable):
-			if last_input in ["slash", "attack"]:
+			if not Global.player.equipment.rweapon:
+				print("no weapon equip no attack")
+			elif last_input in ["slash", "attack"]:
 				attacking = true
 				#sprite.play("slash",-1, GameData.weapon_speed[str(Global.player.equipment.rweapon.speed)])
 				sprite.normal_anim.play("slash",-1, GameData.weapon_speed[str(Global.player.equipment.rweapon.attackSpeed)])
