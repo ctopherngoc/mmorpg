@@ -32,7 +32,7 @@ func _physics_process(delta: float) -> void:
 	if decimal_collector >= 1.00:
 		client_clock += 1
 		decimal_collector -= 1.00
-
+	#print(latency_array)
 ######################################################################
 # Server connection/latency functions
 func connect_to_server() -> void:
@@ -73,6 +73,7 @@ func _on_server_disconnect() -> void:
 # ping calulation. Should be used when lag compensation is implemented 
 # with server reconciliation
 func determine_latency() -> void:
+	#rpc_id(1, "fetch_server_time", OS.get_system_time_msecs())
 	rpc_id(1, "determine_latency", OS.get_system_time_msecs())
 
 # sync client clock with server clock
