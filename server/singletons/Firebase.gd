@@ -247,6 +247,7 @@ func login(email: String, password: String, results: Array) -> void:
 	temp_HTTP.queue_free()
 
 func get_data(username: String, password: String):
+	print("starting to get data")
 	var results = []
 	var firebaseStatus = login(username, password, results)
 	yield(firebaseStatus, "completed")
@@ -262,9 +263,11 @@ func get_data(username: String, password: String):
 		yield(characters_call, 'completed')
 		var items_call = _server_get_document("items/")
 		yield(items_call, 'completed')
-		Global.fb_loaded = true
+		print("data loaded")
+		Global.server.start_server()
+		HubConnection.connect_to_server()
 		
-func _server_get_document(path: String)-> void:
+func _server_get_document(path: String) -> void:
 	var temp_HTTP = HTTPRequest.new()
 	self.add_child(temp_HTTP)
 	var url := DATABASE_URL + path
@@ -302,6 +305,7 @@ func _server_get_document(path: String)-> void:
 				ServerData.equipment_data.append(str(item))
 	
 	temp_HTTP.queue_free()
+	return 0
 	
 func server_firebase_dictionary_converter(database_data: Dictionary) -> Dictionary:
 	"""
