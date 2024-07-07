@@ -269,8 +269,7 @@ remote func update_player_stats(player_stats: Dictionary) -> void:
 				Signals.emit_signal("update_equipment")
 				Signals.emit_signal("update_sprite")
 			
-			if not dictionary_comparison(Global.player["skills"], player_stats["skills"]):
-			#if player_stats["inventory"].hash() != Global.player["inventory"].hash():
+			if player_stats["stats"].hash() != Global.player["stats"].hash():
 				Global.player.stats = player_stats["stats"]
 				Global.player["skills"] = player_stats["skills"]
 				Signals.emit_signal("update_skills")

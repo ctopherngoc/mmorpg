@@ -55,6 +55,7 @@ d: direction 0:L 1:R
 a: attack 0 not 1 is
 """
 onready var animation_state = {
+	"c": 0,
 	"f": 1,
 	"d": 1,
 	"a": 0,
@@ -74,11 +75,11 @@ onready var recon_arr = {
 func _physics_process(delta: float) -> void:
 	if loggedin:
 		if "Map" in str(self.get_path()):
+			if attacking:
+				animation_state.a = 0
+				attacking = false
+				
 			movement_loop(delta)
-			
-			if animation_state.a:
-				pass
-				#print("attacking")
 			if not cooldowns.empty() and CDTimer.is_stopped():
 				CDTimer.start()
 			if not buffs.empty() and BuffTimer.is_stopped():
@@ -90,9 +91,7 @@ func get_animation() -> Dictionary:
 	else:
 		animation_state.f = 0
 	animation_state.d = direction
-	if attacking:
-		animation_state.a = 1
-	else:
+	if not attacking:
 		animation_state.a = 0
 	return animation_state
 
@@ -101,23 +100,12 @@ func load_player_stats() -> void:
 
 func normal_attack() -> void:
 	attacking = true
+	animation_state["a"] = 1
 	
 	#basic attack
 	var equipment = current_character.equipment
-	if "1h" in equipment.rweapon.weaponType:
-		animation.play("1h",-1, ServerData.static_data.weapon_speed[equipment.rweapon.attackSpeed])
-		#yield(animation, "animation_finished")
-	elif "2h" in equipment.rweapon.weaponType:
-		animation.play("2h",-1, ServerData.static_data.weapon_speed[equipment.rweapon.attackSpeed])
-#	elif equipment.rweapon.weaponType == "dagger":
-#		animation.play("dagger",-1, ServerData.static_data.weapon_speed[equipment.rweapon.attackSpeed])
-	elif equipment.rweapon.weaponType == "dagger":
-		var weapon_area = get_node("attack_range/dagger")
-		#weapon_area.disabled = false
-		overlapping_bodies()
-		#weapon_area.disabled = true
-		#animation.play("dagger",-1, ServerData.static_data.weapon_speed[equipment.rweapon.attackSpeed])
-	#yield(animation, "animation_finished")
+
+	overlapping_bodies()
 #	elif equipment.weapon.type == "bow":
 #	# else ranged weapon:
 #		if equipment.ammo.amount > 0:
@@ -150,23 +138,22 @@ func normal_attack() -> void:
 			print(damage_list)
 			#mob_parent.npc_hit(damage, self.name)
 			Global.npc_hit(damage_list, mob_parent, self)
-	# uses skill
-	attacking = false
 
 func skill_attack(skill_data: Dictionary, skill_level: int) -> void:
 	attacking = true
 	
 	#basic attack
 	if not skill_data["weaponType"] or current_character.equipment.rweapon.weaponType in skill_data["weaponType"]:
+		animation_state["a"] = 1
 		var equipment = current_character.equipment
-		if equipment.rweapon.weaponType == "1h_sword":
-			animation.play("1h_sword",-1, ServerData.static_data.weapon_speed[equipment.rweapon.attackSpeed])
-			yield(animation, "animation_finished")
+		
+		overlapping_bodies()
 		
 		if mobs_hit.size() == 0:
 			print("no mobs hit")
 		# there are mobs overlap
 		else:
+			animation_state["a"] = 2
 			# physical mobbing auto attack class
 			if skill_data.targetCount[skill_level] > 1:
 				if mobs_hit.size() < skill_data.targetCount[skill_level]:
@@ -250,13 +237,13 @@ func experience(experience: int) -> void:
 			
 			# add ability point skill points
 			####################################################################################
-			if current_character.stats.level <= 10:
+			if current_character.stats.base.level <= 10:
 				current_character.stats.base.ap[0] += 1
-			elif current_character.stats.level > 10 and current_character.stats.level <= 30:
+			elif current_character.stats.base.level > 10 and current_character.stats.base.level <= 30:
 				current_character.stats.base.ap[1] += 3
-			elif current_character.stats.level > 30 and current_character.stats.level <= 70:
+			elif current_character.stats.base.level > 30 and current_character.stats.base.level <= 70:
 				current_character.stats.base.ap[2] += 3
-			elif current_character.stats.level > 70 and current_character.stats.level <= 120:
+			elif current_character.stats.base.level > 70 and current_character.stats.base.level <= 120:
 				current_character.stats.base.ap[3] += 3
 			else:
 				current_character.stats.base.ap[4] += 3
@@ -285,7 +272,10 @@ func movement_loop(delta: float) -> void:
 	if is_on_floor() or !is_climbing:
 		velocity = move_and_slide(velocity, Vector2.UP)
 	if is_climbing:
+		animation_state["c"] = 1
 		velocity.x = 0
+	else:
+		animation_state["c"] = 0
 
 func get_movement_vector() -> Vector2:
 	var moveVector = Vector2.ZERO

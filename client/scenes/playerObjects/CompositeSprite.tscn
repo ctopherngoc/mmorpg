@@ -3058,170 +3058,172 @@ visible = false
 texture = ExtResource( 18 )
 hframes = 16
 vframes = 11
-frame = 16
+frame = 80
 
 [node name="Lleg" type="Sprite" parent="Normal"]
 texture = ExtResource( 4 )
 hframes = 16
 vframes = 11
-frame = 16
+frame = 80
 region_rect = Rect2( -1198.01, 369.614, 0, 0 )
 
 [node name="Rleg" type="Sprite" parent="Normal"]
 texture = ExtResource( 8 )
 hframes = 16
 vframes = 11
-frame = 16
+frame = 80
 
 [node name="Larm" type="Sprite" parent="Normal"]
 texture = ExtResource( 9 )
 hframes = 16
 vframes = 11
-frame = 16
+frame = 80
 
 [node name="Lhand" type="Sprite" parent="Normal"]
 texture = ExtResource( 13 )
 hframes = 16
 vframes = 11
-frame = 16
+frame = 80
 
 [node name="LWeapon" type="Sprite" parent="Normal"]
 texture = ExtResource( 19 )
 hframes = 16
 vframes = 11
-frame = 16
+frame = 80
 
 [node name="Lfinger" type="Sprite" parent="Normal"]
 texture = ExtResource( 16 )
 hframes = 16
 vframes = 11
-frame = 16
+frame = 80
 
 [node name="Body" type="Sprite" parent="Normal"]
 texture = ExtResource( 3 )
 hframes = 16
 vframes = 11
-frame = 16
+frame = 80
 
 [node name="Bottom" type="Sprite" parent="Normal"]
 position = Vector2( 0, 1 )
 texture = ExtResource( 15 )
 hframes = 16
 vframes = 11
-frame = 16
+frame = 80
 
 [node name="LGlove" type="Sprite" parent="Normal"]
 texture = ExtResource( 20 )
 hframes = 16
 vframes = 11
-frame = 16
+frame = 80
 
 [node name="Lear" type="Sprite" parent="Normal"]
 texture = ExtResource( 22 )
 hframes = 16
 vframes = 11
-frame = 16
+frame = 80
 
 [node name="Top" type="Sprite" parent="Normal"]
 texture = ExtResource( 7 )
 hframes = 16
 vframes = 11
-frame = 16
+frame = 80
 region_rect = Rect2( 40, -710, 150, 510 )
 
 [node name="Learring" type="Sprite" parent="Normal"]
 texture = ExtResource( 27 )
 hframes = 16
 vframes = 11
+frame = 80
 
 [node name="Head" type="Sprite" parent="Normal"]
 texture = ExtResource( 1 )
 hframes = 16
 vframes = 11
-frame = 16
+frame = 80
 
 [node name="Mouth" type="Sprite" parent="Normal"]
 texture = ExtResource( 5 )
 hframes = 16
 vframes = 11
-frame = 16
+frame = 80
 
 [node name="Brow" type="Sprite" parent="Normal"]
 texture = ExtResource( 2 )
 hframes = 16
 vframes = 11
-frame = 16
+frame = 80
 
 [node name="Eye" type="Sprite" parent="Normal"]
 texture = ExtResource( 11 )
 hframes = 16
 vframes = 11
-frame = 16
+frame = 80
 
 [node name="Hair" type="Sprite" parent="Normal"]
 texture = ExtResource( 17 )
 hframes = 16
 vframes = 11
-frame = 16
+frame = 80
 
 [node name="Rear" type="Sprite" parent="Normal"]
 texture = ExtResource( 14 )
 hframes = 16
 vframes = 11
-frame = 16
+frame = 80
 
 [node name="Rearring" type="Sprite" parent="Normal"]
 texture = ExtResource( 24 )
 hframes = 16
 vframes = 11
+frame = 80
 
 [node name="Tattoo" type="Sprite" parent="Normal"]
 texture = ExtResource( 25 )
 hframes = 16
 vframes = 11
-frame = 32
+frame = 80
 
 [node name="Eyeacc" type="Sprite" parent="Normal"]
 texture = ExtResource( 26 )
 hframes = 16
 vframes = 11
-frame = 32
+frame = 80
 
 [node name="Faceacc" type="Sprite" parent="Normal"]
 texture = ExtResource( 28 )
 hframes = 16
 vframes = 11
-frame = 33
+frame = 80
 
 [node name="Headgear" type="Sprite" parent="Normal"]
 texture = ExtResource( 21 )
 hframes = 16
 vframes = 11
-frame = 16
+frame = 80
 
 [node name="Rarm" type="Sprite" parent="Normal"]
 texture = ExtResource( 10 )
 hframes = 16
 vframes = 11
-frame = 16
+frame = 80
 
 [node name="Rweapon" type="Sprite" parent="Normal"]
 texture = ExtResource( 6 )
 hframes = 16
 vframes = 11
-frame = 16
+frame = 80
 
 [node name="Rhand" type="Sprite" parent="Normal"]
 texture = ExtResource( 12 )
 hframes = 16
 vframes = 11
-frame = 16
+frame = 80
 
 [node name="RGlove" type="Sprite" parent="Normal"]
 texture = ExtResource( 23 )
 hframes = 16
 vframes = 11
-frame = 16
+frame = 80
 
 [node name="Pocket" type="Sprite" parent="Normal"]
 visible = false
