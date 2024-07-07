@@ -649,6 +649,17 @@
       "useType": null,
       "useAmount": null,
       "equipmentType": "bottom"
+    },
+    "900000": {
+      "itemName": "Red Apple",
+      "itemType": "use",
+      "dropRate": 0,
+      "stackable": 0,
+      "droppable": 0,
+      "description": "Juicy red apple. Recovers 20 health",
+      "useType": "health",
+      "useAmount": 20,
+      "equipmentType": null
     }
   },
   "EquipmentTable": {
@@ -1133,6 +1144,65 @@
     },
     "30": {
       "experience": 65462
+    }
+  },
+  "QuestTable": {
+    "0": {
+      "title": "Starting the Journey",
+      "description": "[Start your journey with consuming an apple]",
+      "npcStart": 100000,
+      "reward": [
+        "[[experience",
+        "20]]"
+      ],
+      "questReq": "[900000]",
+      "type": "[use]",
+      "npcEnd": "[100000]",
+      "preReq": "[]"
+    },
+    "1": {
+      "title": "Meet your training instructor",
+      "description": "[Speak to Instructor Kevin]",
+      "npcStart": 100000,
+      "reward": null,
+      "questReq": null,
+      "type": "[]",
+      "npcEnd": "[100001]",
+      "preReq": "[0]"
+    },
+    "2": {
+      "title": "Combat Training",
+      "description": "[Start your combat training with slaying some green guys]",
+      "npcStart": 100001,
+      "reward": [
+        "[[experience",
+        "25]",
+        "[300000",
+        "5]]"
+      ],
+      "questReq": [
+        "[[100001",
+        "5]]"
+      ],
+      "type": "[hunt]",
+      "npcEnd": "[100001]",
+      "preReq": "[1]"
+    },
+    "3": {
+      "title": "Combat Training II",
+      "description": "Continue your combat training with slaying some blue guys]",
+      "npcStart": 100001,
+      "reward": [
+        "[[experience",
+        "45]]"
+      ],
+      "questReq": [
+        "[[100002",
+        "5]]"
+      ],
+      "type": "[hunt]",
+      "npcEnd": "[100001]",
+      "preReq": "[2]"
     }
   }
 }
