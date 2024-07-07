@@ -12,10 +12,13 @@ onready var savelogin = false
 onready var login_file_path = "user://login.dat"
 onready var logging_in_bool = false
 onready var loaded = false
+onready var version_label = $Label
 
 func _ready() -> void:
+	version_label.text = "V%s" % Global.version
 	# warning-ignore:return_value_discarded
 	Signals.connect("fail_login", self, "_fail_login")
+	Signals.connect("server_offline", self, "_server_offline")
 	load_settings()
 	Gateway.login_node = self
 
@@ -122,7 +125,10 @@ func load_settings() -> void:
 	save_file.close()
 	loaded = true
 
-
+func _server_offline() -> void:
+	login_button.disabled = false
+	logging_in_bool = false
+	notification.text = "Server Offline"
 
 func _on_Button3_pressed():
 	OS.shell_open("https://github.com/ctopherngoc/Blossom/releases")

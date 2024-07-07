@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://scenes/menuObjects/LoginScreen/LoginScreen.gd" type="Script" id=1]
 [ext_resource path="res://scenes/menuObjects/Background.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/menuObjects/Options/Options.tscn" type="PackedScene" id=3]
+[ext_resource path="res://resources/Fonts/Oswald/static/Oswald-SemiBold.ttf" type="DynamicFontData" id=4]
 
 [sub_resource type="DynamicFontData" id=1]
 font_path = "res://assets/fonts/xolonium/xolonium-fonts-4.1/ttf/Xolonium-Regular.ttf"
@@ -10,6 +11,10 @@ font_path = "res://assets/fonts/xolonium/xolonium-fonts-4.1/ttf/Xolonium-Regular
 [sub_resource type="DynamicFont" id=2]
 size = 11
 font_data = SubResource( 1 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 24
+font_data = ExtResource( 4 )
 
 [node name="LogIn" type="Control"]
 anchor_right = 1.0
@@ -158,6 +163,16 @@ text = "Testing"
 
 [node name="Options" parent="." instance=ExtResource( 3 )]
 visible = false
+
+[node name="Label" type="Label" parent="."]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -180.0
+margin_right = -6.0
+margin_bottom = 36.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 3 )
+text = "Version XXXXXXXX"
 
 [connection signal="focus_entered" from="VBoxContainer/username/LineEdit" to="." method="_on_LineEdit_focus_entered"]
 [connection signal="focus_exited" from="VBoxContainer/username/LineEdit" to="." method="_on_LineEdit_focus_exited"]
