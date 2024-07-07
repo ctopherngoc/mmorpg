@@ -377,12 +377,12 @@ var static_data = {
 		"2h_sword": 1.5,
 		"staff": 0.8,},
 	"weapon_speed" : {
-		1 : null,
-		2 : null,
-		3 : null,
+		1 : 1.4,
+		2 : 1.6,
+		3 : 1.8,
 		4 : 2.0,
 		5 : 2.2,
-		6 : null,
+		6 : 2.4,
 		},
 	"job_dict" : {
 		0: {"job": "Beginner", "Weapon": [], "Range": 0, "HealthMin": 15, "HealthMax": 20},
