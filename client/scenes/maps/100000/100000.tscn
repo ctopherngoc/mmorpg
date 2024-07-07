@@ -1,21 +1,13 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://scenes/playerObjects/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://resources/background/maps/BaseLevel.jpg" type="Texture" id=2]
 [ext_resource path="res://assets/tiles/0001/tile.tscn" type="PackedScene" id=3]
-[ext_resource path="res://scenes/userInerface/UI.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scenes/maps/100001/100001.gd" type="Script" id=5]
 [ext_resource path="res://scenes/npcObjects/000001/000001.tscn" type="PackedScene" id=6]
 [ext_resource path="res://assets/tiles/0001/platform.tscn" type="PackedScene" id=7]
 [ext_resource path="res://scenes/mapObjects/Portal.tscn" type="PackedScene" id=8]
-[ext_resource path="res://scenes/monsterObjects/100003/100003.tscn" type="PackedScene" id=9]
 [ext_resource path="res://scenes/mapObjects/Ladder.tscn" type="PackedScene" id=10]
-[ext_resource path="res://scenes/monsterObjects/100004/100004.tscn" type="PackedScene" id=11]
-[ext_resource path="res://scenes/monsterObjects/100006/100006.tscn" type="PackedScene" id=12]
-[ext_resource path="res://scenes/monsterObjects/100008/100008.tscn" type="PackedScene" id=13]
-[ext_resource path="res://scenes/monsterObjects/100007/100007.tscn" type="PackedScene" id=14]
-[ext_resource path="res://scenes/monsterObjects/100010/100010.tscn" type="PackedScene" id=15]
-[ext_resource path="res://scenes/monsterObjects/100009/100009.tscn" type="PackedScene" id=16]
 
 [node name="Map" type="Node2D"]
 script = ExtResource( 5 )
@@ -57,27 +49,3 @@ position = Vector2( 356, -409 )
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
 position = Vector2( 194, -108 )
-
-[node name="UI" parent="." instance=ExtResource( 4 )]
-layer = 2
-
-[node name="100005" parent="." instance=ExtResource( 12 )]
-position = Vector2( 286, -92 )
-
-[node name="100006" parent="." instance=ExtResource( 14 )]
-position = Vector2( 365, -109 )
-
-[node name="100007" parent="." instance=ExtResource( 13 )]
-position = Vector2( 449, -109 )
-
-[node name="100003" parent="." instance=ExtResource( 9 )]
-position = Vector2( 507, -77 )
-
-[node name="100004" parent="." instance=ExtResource( 11 )]
-position = Vector2( 233, -85 )
-
-[node name="100008" parent="." instance=ExtResource( 15 )]
-position = Vector2( 549, -91 )
-
-[node name="100009" parent="." instance=ExtResource( 16 )]
-position = Vector2( 619, -93 )
