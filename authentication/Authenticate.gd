@@ -27,9 +27,11 @@ remote func authenticate_player(username, password, player_id):
 	var gateway_id = get_tree().get_rpc_sender_id()
 	
 	print("Starting authentication")
+	if Server.server_list.size() == 0:
+		rpc_id(gateway_id, "authentication_results", ["Server is offline"], player_id)
 	#print("this is http: %s" % http)
 	var results = []
-	var firebaseStatus = Firebase.login(username, password, http, results)
+	var firebaseStatus = Firebase.login(username, password, results)
 	yield(firebaseStatus, "completed")
 	#print(results)
 	if results[0] != 200:
