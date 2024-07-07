@@ -19,7 +19,4 @@ align = 1
 [node name="CompositeSprite" parent="." instance=ExtResource( 1 )]
 script = ExtResource( 3 )
 
-[node name="Ammo" parent="CompositeSprite" index="11"]
-visible = false
-
 [editable path="CompositeSprite"]
