@@ -19,8 +19,8 @@ onready var character_creation_queue = []
 # server netcode
 #server start 
 func _ready() -> void:
-	start_server()
 	Firebase.get_data(Firebase.FB_USERNAME, Firebase.FB_PASSWORD)
+	
 
 func start_server() -> void:
 	network.create_server(port, max_players)
@@ -267,6 +267,7 @@ remote func choose_character(requester: int, display_name: String) -> void:
 		move_player_container(player_id, player_container, map, 'spawn')
 	player_container.load_player_stats()
 	player_container.start_idle_timer()
+	update_attack_range(player_container)
 	Global.calculate_stats(player_container.current_character)
 	rpc_id(player_id, "return_choose_character", requester)
 
@@ -464,6 +465,7 @@ remote func receive_input(move_id):
 # 0 = no climb
 # 1 = can climb
 func send_climb_data(player_id: int, climb_data: int):
+	#print("%s climb data %s" % [player_id, climb_data])
 	rpc_id(int(player_id), "receive_climb_data", climb_data)
 
 remote func move_item(inv_data: Array):
@@ -832,14 +834,16 @@ remote func equipment_request(equipment_slot, inventory_slot) -> void:
 		if equipment:
 			for stats in player_container.current_character.stats.equipment.keys():
 				player_container.current_character.stats.equipment[stats] -= player_container.current_character.inventory.equipment[inventory_slot][stats]
-			
+		
 		# add new equiped item stats
 		for stats in player_container.current_character.stats.equipment.keys():
 			player_container.current_character.stats.equipment[stats] += player_container.current_character.equipment[equipment_slot][stats]
+		if equipment_slot == "rweapon":
+			update_attack_range(player_container)
 		
 		# calcluate total stats
-	Global.calculate_stats(player_container.current_character)	
-	update_player_stats(player_container)
+		Global.calculate_stats(player_container.current_character)
+		update_player_stats(player_container)
 
 remote func remove_equipment_request(equipment_slot, inventory_slot) -> void:
 	var player_id = get_tree().get_rpc_sender_id()
@@ -854,10 +858,13 @@ remote func remove_equipment_request(equipment_slot, inventory_slot) -> void:
 		
 		for stats in player_container.current_character.stats.equipment.keys():
 			player_container.current_character.stats.equipment[stats] -= player_container.current_character.inventory.equipment[inventory_slot][stats]
+		
+		if equipment_slot == "rweapon":
+			update_attack_range(player_container)
+		Global.calculate_stats(player_container.current_character)
+		update_player_stats(player_container)
 	else:
 		print("inventory slot not null")
-	Global.calculate_stats(player_container.current_character)
-	update_player_stats(player_container)
 	#rpc_id(player_id, "return_remove_equipment", equipment_slot)
 
 func equipment_swap_check(player, equipment_slot, equipment, item) -> bool:
@@ -903,9 +910,9 @@ func equipment_swap_check(player, equipment_slot, equipment, item) -> bool:
 	## TYPE CHECK ###
 	# if weapon right hand true
 	print("pass equipment stat check")
-	print(ServerData.equipmentTable[item.id])
-	print(equipment)
-	print(equipment_slot)
+#	print(ServerData.equipmentTable[item.id])
+#	print(equipment)
+#	print(equipment_slot)
 	if ServerData.equipmentTable[item.id].type == "weapon":
 		print("checking weapon")
 		if equipment_slot == "rweapon":
@@ -931,3 +938,19 @@ func equipment_swap_check(player, equipment_slot, equipment, item) -> bool:
 	else:
 		print("incorrect slot")
 		return false
+
+func update_attack_range(player) -> void:
+	var weapon = player.current_character.equipment.rweapon
+	var attack_range_list = player.attack_range.get_children()
+	if weapon:
+		for i in attack_range_list:
+			if i.name in weapon.weaponType:
+				i.disabled = false
+				i.visible = true
+			else:
+				i.disabled = true
+				i.visible = false
+	else:
+		for i in attack_range_list:
+			i.disabled = true
+			i.visible = false
