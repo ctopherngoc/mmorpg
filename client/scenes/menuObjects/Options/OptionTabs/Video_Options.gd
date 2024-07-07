@@ -5,6 +5,7 @@ onready var FullscreenToggle = $VideoOptions/Windowed/ResoToggle
 onready var VsyncToggle = $VideoOptions/VSYNC/VsyncToggle
 onready var MSAASlider = $VideoOptions/MSAA/MSAASLIDER
 onready var FXAAToggle = $VideoOptions/FXAA/FxaaToggle
+onready var FPSOptionButton = $VideoOptions/FPS/FPSOptionButton
 
 var current_res = "1280x720"
 
@@ -20,6 +21,15 @@ var Resolutions: Dictionary = {"3840x2160":Vector2(3840,2160),
 								"1600x900":Vector2(1600,900),
 								"1024x576":Vector2(1024,576),
 								"800x600": Vector2(800,600)}
+								
+var FPS: Dictionary = {"Off": 0,
+						"30":30,
+						"60":60,
+						"120":120,
+						"144":144,
+						"165":165,
+						"240":240,
+						}
 
 var FullScreen: bool
 # Called when the node enters the scene tree for the first time.
@@ -91,6 +101,15 @@ func load_settings(settings: Dictionary) -> void:
 		ResolutionOptionButton.set_disabled(true)
 		ResolutionOptionButton.set_text(String(OS.get_screen_size().x)+"x"+String(OS.get_screen_size().y))
 		print(String(OS.get_screen_size().x)+"x"+String(OS.get_screen_size().y))
+	if settings.has("fps"):
+		var index = 0
+		for r in FPS.keys():
+			if r  == settings.fps:
+				FPSOptionButton._select_int(index)
+				Engine.set_target_fps(int(settings.fps))
+				break
+			else:
+				index += 1
 	else:
 		var index = 0
 		for r in Resolutions.keys():
@@ -101,4 +120,12 @@ func load_settings(settings: Dictionary) -> void:
 				index += 1
 
 func _on_ResolutionOptionButton_pressed():
+	AudioControl.play_audio("menuClick")
+
+func _on_FPSOptionButton_item_selected(index):
+	AudioControl.play_audio("menuClick")
+	var fps = FPS.get(FPSOptionButton.get_item_text(index))
+	Engine.set_target_fps(int(fps))
+
+func _on_FPSOptionButton_pressed():
 	AudioControl.play_audio("menuClick")
