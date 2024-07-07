@@ -20,7 +20,7 @@ func _ready():
 	pass
 
 # new functions
-func move(new_position, state, direction):
+func move(new_position, _state, direction):
 	if despawn == 1:
 		var curr_position = self.get_position()
 		#turn right
