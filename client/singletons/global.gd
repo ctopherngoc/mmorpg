@@ -64,6 +64,7 @@ func _physics_process(_delta: float) -> void:
 		interpolation_offset = OS.get_system_time_msecs() - Server.client_clock
 		#print(OS.get_system_time_msecs(), " ", Server.client_clock, " ", OS.get_system_time_msecs() - Server.client_clock)
 		var render_time = OS.get_system_time_msecs() - interpolation_offset
+		#var render_time = Server.client_clock
 		if world_state_buffer.size() > 1 && Server.server_status:
 			while world_state_buffer.size() > 2 and render_time > world_state_buffer[2].T:
 				world_state_buffer.remove(0)
@@ -223,7 +224,7 @@ func _physics_process(_delta: float) -> void:
 						if get_node("/root/GameWorld/MapNode/%s/Monsters" % Global.current_map).has_node(str(monster)):
 							var monster_node = get_node("/root/GameWorld/MapNode/%s/Monsters/" % Global.current_map + str(monster))
 							if world_state_buffer[0]["E"][monster]["EnemyHealth"] > monster_node.current_hp:
-									monster_node.damage_taken(world_state_buffer[0]["E"][monster]["EnemyHealth"], world_state_buffer[0]["E"][monster]["DamageList"])
+								monster_node.damage_taken(world_state_buffer[0]["E"][monster]["EnemyHealth"], world_state_buffer[0]["E"][monster]["DamageList"])
 							else:
 								if world_state_buffer[1]["E"][monster]["MissCounter"] > monster_node.miss_counter:
 									monster_node.miss_counter += 1
@@ -368,14 +369,15 @@ func server_reconciliation(server_input_data: Dictionary) -> void:
 				var servery = int(server_input_data["P"].y)
 				var clientx = int(input_queue[i]["P"].x)
 				var clienty = int(input_queue[i]["P"].y)
+# warning-ignore:shadowed_variable
 				var player_node = get_node("/root/GameWorld/MapNode/%s/Player" % Global.current_map)
 				if abs(serverx - clientx) > 1 and player_node.is_climbing:
 					var recon_position = lerp(input_queue[i]["P"],server_input_data["P"], 0.85)
 					player_node.set_position(recon_position)
 				elif not player_node.is_on_floor() and not player_node.is_climbing:
 					pass
-				elif abs(serverx - clientx) > 50 or abs(servery - clienty) > 50:
-					var recon_position = lerp(input_queue[i]["P"],server_input_data["P"], 0.85)
+				elif abs(serverx - clientx) > 25 or abs(servery - clienty) > 50:
+					var recon_position = lerp(input_queue[i]["P"],server_input_data["P"], 0.50)
 					player_node.set_position(recon_position)
 			input_queue = input_queue.slice(i+1, input_queue.size(), 1, true)
 			return
@@ -407,3 +409,6 @@ func array_comparison(future_arr: Array, current_arr: Array) -> bool:
 		return false
 	else:
 		return true
+
+func process_quests_list() -> void:
+	pass
