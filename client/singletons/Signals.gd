@@ -61,6 +61,10 @@ signal update_sprite
 signal reset_default_keybind
 # warning-ignore:unused_signal
 signal key_in_use
+# warning-ignore:unused_signal
+signal server_offline
+# warning-ignore:unused_signal
+signal scene_loaded
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
