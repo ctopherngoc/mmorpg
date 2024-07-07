@@ -9,7 +9,7 @@ var auth_token: String = ""
 onready var username: String
 onready var password: String
 onready var account_id_list = []
-onready var fb_http
+#onready var fb_http
 
 func _ready():
 	var data_file = File.new()
@@ -34,7 +34,9 @@ func _get_user_info(result: Array) -> Dictionary:
 		"timestamp" : OS.get_unix_time(),
 	}
 		
-func login(email: String, password: String, http: HTTPRequest, results: Array):
+func login(email: String, password: String, results: Array):
+	var http = HTTPRequest.new()
+	self.add_child(http)
 	var body := {
 		'email': email,
 		'password': password,
@@ -59,17 +61,19 @@ func login(email: String, password: String, http: HTTPRequest, results: Array):
 	
 	else:
 		results.append(result[1])
+	http.queue_free()
 
 func auth_get_token():
 	var results = []
-	var firebaseStatus = login(username, password, fb_http, results)
+	var firebaseStatus = login(username, password, results)
 	yield(firebaseStatus, "completed")
 	if results[0] != 200:
 		print("auth Signin Unsuccessful")
 	else:
 		print("auth Signin Successful")
 		auth_token = results[1]['token']
-		_server_get_document("users", fb_http)
+		_server_get_document("users")
+		
 		
 func _get_request_headers(token_id: String) -> PoolStringArray:
 	return PoolStringArray([
@@ -77,7 +81,9 @@ func _get_request_headers(token_id: String) -> PoolStringArray:
 		"Authorization: Bearer %s" % token_id
 	])
 
-func _server_get_document(path: String, http: HTTPRequest)-> void:
+func _server_get_document(path: String)-> void:
+	var http = HTTPRequest.new()
+	self.add_child(http)
 	var url := DATABASE_URL + path
 # warning-ignore:return_value_discarded
 	http.request(url, _get_request_headers(auth_token), false, HTTPClient.METHOD_GET)
@@ -89,13 +95,17 @@ func _server_get_document(path: String, http: HTTPRequest)-> void:
 		var doc_id = document["name"].replace("projects/%s/databases/(default)/documents/users/" % PROJECT_ID, "")
 		if not account_id_list.has(str(doc_id)):
 			account_id_list.append(str(doc_id))
+	http.queue_free()
 			
 func update_document(path: String) -> void:
+	var http = HTTPRequest.new()
+	self.add_child(http)
 	var character_list = {"fields": {'characters':{'arrayValue':{'values': []}}}}
 	var body := to_json(character_list)
 	var url := DATABASE_URL + path
 	#print(body)
 	# warning-ignore:return_value_discarded
-	fb_http.request(url, _get_request_headers(auth_token), false, HTTPClient.METHOD_PATCH, body)
-	yield(fb_http, "request_completed")
+	http.request(url, _get_request_headers(auth_token), false, HTTPClient.METHOD_PATCH, body)
+	yield(http, "request_completed")
+	http.queue_free()
 
