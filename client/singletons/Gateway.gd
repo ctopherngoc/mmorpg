@@ -45,7 +45,7 @@ func _on_connection_failed() -> void:
 	print("Failed to conect to login server")
 	print("Pop-up server offline")
 	Server.email = null
-	Signals.emit_signal("fail_login")
+	Signals.emit_signal("server_offline")
 
 func _on_connection_succeeded() -> void:
 	print("Successfully connected to login server")
@@ -72,6 +72,9 @@ remote func return_login_request(results: Array) -> void:
 		login_node.notification.modulate = Color(1.0,0.0,0.0,1.0)
 		login_node.notification.text = ("incorrect version.\n\nplease update client to version %s" % results[1])
 		Signals.emit_signal("fail_login")
+	elif typeof(results[0]) == TYPE_STRING:
+		print("server is offline") 
+		Signals.emit_signal("server_offline")
 	else:
 		print("Please provide correct username and pasword")
 		Signals.emit_signal("fail_login")
