@@ -8,6 +8,7 @@ onready var loot_node = $loot_box
 onready var loot_timer = $Timers/loot_timer
 onready var CDTimer = get_node("Timers/CDTimer")
 onready var BuffTimer = get_node("Timers/BuffTimer")
+onready var attack_range = $attack_range
 #contains token and id
 var db_info = {}
 onready var loggedin = true
@@ -103,11 +104,20 @@ func normal_attack() -> void:
 	
 	#basic attack
 	var equipment = current_character.equipment
-	if equipment.rweapon.weaponType == "1h_sword":
-		animation.play("1h_sword",-1, ServerData.static_data.weapon_speed[equipment.rweapon.attackSpeed])
-		yield(animation, "animation_finished")
-	elif equipment.rweapon.weaponType == "2h_sword":
-		pass
+	if "1h" in equipment.rweapon.weaponType:
+		animation.play("1h",-1, ServerData.static_data.weapon_speed[equipment.rweapon.attackSpeed])
+		#yield(animation, "animation_finished")
+	elif "2h" in equipment.rweapon.weaponType:
+		animation.play("2h",-1, ServerData.static_data.weapon_speed[equipment.rweapon.attackSpeed])
+#	elif equipment.rweapon.weaponType == "dagger":
+#		animation.play("dagger",-1, ServerData.static_data.weapon_speed[equipment.rweapon.attackSpeed])
+	elif equipment.rweapon.weaponType == "dagger":
+		var weapon_area = get_node("attack_range/dagger")
+		#weapon_area.disabled = false
+		overlapping_bodies()
+		#weapon_area.disabled = true
+		#animation.play("dagger",-1, ServerData.static_data.weapon_speed[equipment.rweapon.attackSpeed])
+	#yield(animation, "animation_finished")
 #	elif equipment.weapon.type == "bow":
 #	# else ranged weapon:
 #		if equipment.ammo.amount > 0:
@@ -137,6 +147,7 @@ func normal_attack() -> void:
 						closest = monster
 			var mob_parent = closest.get_parent()
 			var damage_list = Global.damage_formula(1, current_character, mob_parent.stats)
+			print(damage_list)
 			#mob_parent.npc_hit(damage, self.name)
 			Global.npc_hit(damage_list, mob_parent, self)
 	# uses skill
@@ -151,8 +162,6 @@ func skill_attack(skill_data: Dictionary, skill_level: int) -> void:
 		if equipment.rweapon.weaponType == "1h_sword":
 			animation.play("1h_sword",-1, ServerData.static_data.weapon_speed[equipment.rweapon.attackSpeed])
 			yield(animation, "animation_finished")
-		elif equipment.rweapon.weaponType == "2h_sword":
-			pass
 		
 		if mobs_hit.size() == 0:
 			print("no mobs hit")
@@ -183,7 +192,9 @@ func overlapping_bodies() -> void:
 	#if $attack_range.get_overlapping_areas().size() > 0:
 	mobs_hit.clear()
 	# multi hit based on class currently
+	print("starting mob hit")
 	for body in $attack_range.get_overlapping_areas():
+		print(body)
 		#print(body.get_parent())
 		mobs_hit.append(body)
 
@@ -340,24 +351,29 @@ func get_velocity(move_vector: Vector2, delta: float) -> void:
 			if (move_vector.y < 0 && is_on_floor()):
 				velocity.y = move_vector.y * vertical_speed
 			# press up on ladder initiates climbing
-			elif input[0] == 1:
+			elif input[0] == 1 or input[2] == 1:
 				is_climbing = true
 				Global.send_climb_data(int(self.name), 2)
 				velocity.y = 0
 				velocity.x = 0
+				if input[2] == 1:
+					#self.set_collision_layer_bit(1, false)
+					self.position.y += 1
+					#self.set_collision_layer_bit(1, true)
 			# over lapping ladder pressing nothing allows gravity
 			else:
 				velocity.y += gravity * delta
 	# not climbable state
 	else:
+		if is_climbing:
+			is_climbing = false
+			Global.send_climb_data(int(self.name), 0)
 		# normal movement
 		if (move_vector.y < 0 && is_on_floor()):
 			velocity.y = move_vector.y * vertical_speed
 		else:
 			velocity.y += gravity * delta
-	if !can_climb:
-		is_climbing = false
-		Global.send_climb_data(int(self.name), 0)
+		
 
 ################################
 # edit so direction can be sent through world_state
@@ -480,7 +496,6 @@ func _on_BuffTimer_timeout():
 				buffs[buff] -= 1
 	else:
 		BuffTimer.stop()
-
 
 func get_directional_speed() -> void:
 	vertical_speed = current_character.stats.base.jumpSpeed + current_character.stats.equipment.jumpSpeed + current_character.stats.buff.jumpSpeed
