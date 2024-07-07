@@ -30,9 +30,9 @@ custom_constants/separation = 10
 alignment = 1
 
 [node name="RESO" type="HBoxContainer" parent="VideoOptions"]
-margin_top = 316.0
+margin_top = 301.0
 margin_right = 424.0
-margin_bottom = 336.0
+margin_bottom = 321.0
 
 [node name="Resolution" type="Label" parent="VideoOptions/RESO"]
 margin_top = 3.0
@@ -50,10 +50,31 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 align = 1
 
-[node name="Windowed" type="HBoxContainer" parent="VideoOptions"]
-margin_top = 346.0
+[node name="FPS" type="HBoxContainer" parent="VideoOptions"]
+margin_top = 331.0
 margin_right = 424.0
-margin_bottom = 370.0
+margin_bottom = 351.0
+
+[node name="FPS Label" type="Label" parent="VideoOptions/FPS"]
+margin_top = 3.0
+margin_right = 63.0
+margin_bottom = 17.0
+text = "MAX FPS: "
+align = 1
+
+[node name="FPSOptionButton" type="OptionButton" parent="VideoOptions/FPS"]
+margin_left = 67.0
+margin_right = 424.0
+margin_bottom = 20.0
+mouse_default_cursor_shape = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+align = 1
+
+[node name="Windowed" type="HBoxContainer" parent="VideoOptions"]
+margin_top = 361.0
+margin_right = 424.0
+margin_bottom = 385.0
 
 [node name="fullyscreen" type="Label" parent="VideoOptions/Windowed"]
 margin_top = 5.0
@@ -69,9 +90,9 @@ margin_bottom = 24.0
 size_flags_horizontal = 10
 
 [node name="VSYNC" type="HBoxContainer" parent="VideoOptions"]
-margin_top = 380.0
+margin_top = 395.0
 margin_right = 424.0
-margin_bottom = 404.0
+margin_bottom = 419.0
 
 [node name="vsync" type="Label" parent="VideoOptions/VSYNC"]
 margin_top = 5.0
@@ -138,6 +159,9 @@ custom_styles/separator = SubResource( 3 )
 [connection signal="item_selected" from="VideoOptions/RESO/ResolutionOptionButton" to="." method="_on_ResolutionOptionButton_item_selected"]
 [connection signal="mouse_entered" from="VideoOptions/RESO/ResolutionOptionButton" to="." method="_on_Button_mouse_entered"]
 [connection signal="pressed" from="VideoOptions/RESO/ResolutionOptionButton" to="." method="_on_ResolutionOptionButton_pressed"]
+[connection signal="item_selected" from="VideoOptions/FPS/FPSOptionButton" to="." method="_on_FPSOptionButton_item_selected"]
+[connection signal="mouse_entered" from="VideoOptions/FPS/FPSOptionButton" to="." method="_on_Button_mouse_entered"]
+[connection signal="pressed" from="VideoOptions/FPS/FPSOptionButton" to="." method="_on_FPSOptionButton_pressed"]
 [connection signal="toggled" from="VideoOptions/Windowed/ResoToggle" to="." method="_on_ResoToggle_toggled"]
 [connection signal="toggled" from="VideoOptions/VSYNC/VsyncToggle" to="." method="_on_VsyncToggle_toggled"]
 [connection signal="toggled" from="VideoOptions/FXAA/FxaaToggle" to="." method="_on_FxaaToggle_toggled"]
