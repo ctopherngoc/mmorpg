@@ -207,7 +207,7 @@ onready var climb_sprite_dict = {
 var avatar = null
 var equipment = null
 
-var test = true
+var test = false
 func _ready() -> void:
 	#avatar = GameData.test_player.avatar
 	#equipment = GameData.test_player.equipment
