@@ -53,7 +53,7 @@ func _Peer_Disconnected(player_id: int) -> void:
 			print("dc in characterselect did not save")
 		_Server_Data_Remove_Player(player_id)
 		player_container.logging_timer.start()
-		yield(player_container.timer, "timeout")
+		yield(player_container.logging_timer, "timeout")
 		rpc_id(0, "despawn_player", player_id)
 		player_container.queue_free()
 	print("User " + str(player_id) + " Disconnected")
