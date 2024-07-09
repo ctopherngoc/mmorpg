@@ -1,13 +1,14 @@
 extends KinematicBody2D
 
-onready var timer =$Timers/Timer
-onready var idle_timer =$Timers/idle_timer
+onready var attack_timer = $Timers/AttackTimer
+onready var idle_timer = $Timers/IdleTimer
 onready var damage_timer = $Timers/DamageTimer
-onready var animation = $AnimationPlayer
+onready var logging_timer = $Timers/LoggingTimer
+#onready var animation = $AnimationPlayer
 onready var loot_node = $loot_box
-onready var loot_timer = $Timers/loot_timer
-onready var CDTimer = get_node("Timers/CDTimer")
-onready var BuffTimer = get_node("Timers/BuffTimer")
+onready var loot_timer = $Timers/LootTimer
+onready var CDTimer = $Timers/CDTimer
+onready var BuffTimer = $Timers/BuffTimer
 onready var attack_range = $attack_range
 #contains token and id
 var db_info = {}
@@ -52,7 +53,11 @@ onready var sprite = []
 """
 f: is on floor: 0:no 1: yes
 d: direction 0:L 1:R
-a: attack 0 not 1 is
+a: attack key {
+	0 = idle
+	1 = basic attack
+	3 = ready
+}
 """
 onready var animation_state = {
 	"c": 0,
@@ -70,14 +75,15 @@ onready var recon_arr = {
 	"end_pos": Vector2(0,0),
 	"m_vector": null,
 }
+
+onready var equip_array = ["headgear", "top", "bottom", "rweapon", "lweapon", "eyeacc", "earring", "faceacc", "glove", "tattoo"]
 ########
 
 func _physics_process(delta: float) -> void:
 	if loggedin:
 		if "Map" in str(self.get_path()):
-			if attacking:
+			if not attacking:
 				animation_state.a = 0
-				attacking = false
 				
 			movement_loop(delta)
 			if not cooldowns.empty() and CDTimer.is_stopped():
@@ -99,12 +105,10 @@ func load_player_stats() -> void:
 	get_directional_speed()
 
 func normal_attack() -> void:
-	attacking = true
-	animation_state["a"] = 1
-	
+#	attacking = true
+#	animation_state["a"] = 1
 	#basic attack
 	var equipment = current_character.equipment
-
 	overlapping_bodies()
 #	elif equipment.weapon.type == "bow":
 #	# else ranged weapon:
@@ -139,41 +143,49 @@ func normal_attack() -> void:
 			#mob_parent.npc_hit(damage, self.name)
 			Global.npc_hit(damage_list, mob_parent, self)
 
-func skill_attack(skill_data: Dictionary, skill_level: int) -> void:
+func skill(skill_data: Dictionary, skill_level: int) -> void:
 	attacking = true
-	
-	#basic attack
-	if not skill_data["weaponType"] or current_character.equipment.rweapon.weaponType in skill_data["weaponType"]:
-		animation_state["a"] = 1
-		var equipment = current_character.equipment
-		
-		overlapping_bodies()
-		
-		if mobs_hit.size() == 0:
-			print("no mobs hit")
-		# there are mobs overlap
-		else:
-			animation_state["a"] = 2
-			# physical mobbing auto attack class
-			if skill_data.targetCount[skill_level] > 1:
-				if mobs_hit.size() < skill_data.targetCount[skill_level]:
-					for mob in mobs_hit:
-						var mob_parent = mob.get_parent()
-						var damage_array = Global.damage_formula(skill_data["damangeType"], current_character, mob_parent.stats, skill_data.hitAmount[skill_level], skill_data.damagePercent[skill_level])
-						Global.npc_hit(damage_array, mob_parent, self)
-			# singe mob physical basic attack
+	if skill_data.type == "attack":
+		if not skill_data["weaponType"] or current_character.equipment.rweapon.weaponType in skill_data["weaponType"]:
+			animation_state["a"] = skill_data.animation
+			
+			if skill_data.attackType == "projectile":
+				attack_timer.wait_time = 1.0 / ServerData.weapon_speed[current_character.equipment.rweapon.attackSpeed]
+				attack_timer.start()
+				return
 			else:
-				var closest = null
-				for monster in mobs_hit:
-					if closest == null:
-						closest = monster
+				var equipment = current_character.equipment
+				overlapping_bodies()
+				
+				if mobs_hit.size() == 0:
+					print("no mobs hit")
+				# there are mobs overlap
+				else:
+					# physical mobbing auto attack class
+					if skill_data.targetCount[skill_level] > 1:
+						if mobs_hit.size() < skill_data.targetCount[skill_level]:
+							for mob in mobs_hit:
+								var mob_parent = mob.get_parent()
+								var damage_array = Global.damage_formula(skill_data["damangeType"], current_character, mob_parent.stats, skill_data.hitAmount[skill_level], skill_data.damagePercent[skill_level])
+								Global.npc_hit(damage_array, mob_parent, self)
+					# singe mob physical basic attack
 					else:
-						if pow((monster.position.x - self.position.x), 2) > pow((monster.position.x - self.position.x ), 2):
-							closest = monster
-				var mob_parent = closest.get_parent()
-				var damage_array = Global.damage_formula(1, current_character, mob_parent.stats)
-				#mob_parent.npc_hit(damage, self.name)
-				Global.npc_hit(damage_array, mob_parent, self)
+						var closest = null
+						for monster in mobs_hit:
+							if closest == null:
+								closest = monster
+							else:
+								if pow((monster.position.x - self.position.x), 2) > pow((monster.position.x - self.position.x ), 2):
+									closest = monster
+						var mob_parent = closest.get_parent()
+						var damage_array = Global.damage_formula(1, current_character, mob_parent.stats)
+						#mob_parent.npc_hit(damage, self.name)
+						Global.npc_hit(damage_array, mob_parent, self)
+	else:
+		# buff, heal, projectile
+		animation_state["a"] = skill_data.animation
+		attack_timer.wait_time = 1.0 / ServerData.weapon_speed[current_character.equipment.rweapon.attackSpeed]
+		attack_timer.start()
 
 func overlapping_bodies() -> void:
 	#if $attack_range.get_overlapping_areas().size() > 0:
@@ -399,7 +411,6 @@ func _on_DamageTimer_timeout() -> void:
 
 func start_idle_timer() -> void:
 	idle_timer.start(1.0)
-	#print("idle timer start")
 
 # regen 5hp every 5 seconds if idle
 func _on_idle_timer_timeout() -> void:
@@ -428,9 +439,6 @@ func _on_idle_timer_timeout() -> void:
 func do_damage() -> void:
 	print("mob hit")
 
-func _on_Timer_timeout() -> void:
-	pass # Replace with function body.
-
 func loot_request() -> void:
 	#print(self.name, " ", "Pressed Loot")
 	looting = true
@@ -447,18 +455,16 @@ func update_sprite_array():
 	sprite[5] = str(temp_dict.head)
 	sprite[6] = str(temp_dict.mouth)
 
+	var x = 7
 	temp_dict = current_character.equipment
-	sprite[7] = str(temp_dict.headgear)
-	sprite[8] = str(temp_dict.top)
-	sprite[9] = str(temp_dict.bottom)
-	sprite[10] = str(temp_dict.rweapon.id)
-	sprite[11] = str(temp_dict.lweapon)
-	sprite[12] = str(temp_dict.eyeacc)
-	sprite[13] = str(temp_dict.earring)
-	sprite[14] = str(temp_dict.faceacc)
-	sprite[15] = str(temp_dict.glove)
-	sprite[16] = str(temp_dict.tattoo)
 	
+	for i in equip_array:
+		if temp_dict[i]:
+			sprite[x] = temp_dict[i].id
+		else:
+			sprite[x] = null
+		x += 1
+		
 func _on_loot_timer_timeout():
 	looting = false
 
@@ -490,3 +496,8 @@ func _on_BuffTimer_timeout():
 func get_directional_speed() -> void:
 	vertical_speed = current_character.stats.base.jumpSpeed + current_character.stats.equipment.jumpSpeed + current_character.stats.buff.jumpSpeed
 	horizontal_speed = current_character.stats.base.movementSpeed + current_character.stats.equipment.movementSpeed + current_character.stats.buff.movementSpeed
+
+
+func _on_AttackTimer_timeout():
+	print("%s animation finish" % self.name)
+	attacking = false
