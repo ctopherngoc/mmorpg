@@ -222,18 +222,23 @@ shape = SubResource( 22 )
 
 [node name="Timers" type="Node" parent="."]
 
-[node name="idle_timer" type="Timer" parent="Timers"]
+[node name="IdleTimer" type="Timer" parent="Timers"]
 
-[node name="Timer" type="Timer" parent="Timers"]
+[node name="AttackTimer" type="Timer" parent="Timers"]
+one_shot = true
 
 [node name="DamageTimer" type="Timer" parent="Timers"]
 
-[node name="loot_timer" type="Timer" parent="Timers"]
+[node name="LootTimer" type="Timer" parent="Timers"]
 wait_time = 0.2
 
 [node name="CDTimer" type="Timer" parent="Timers"]
 
 [node name="BuffTimer" type="Timer" parent="Timers"]
+
+[node name="LoggingTimer" type="Timer" parent="Timers"]
+wait_time = 3.5
+one_shot = true
 
 [node name="attack_range" type="Area2D" parent="."]
 position = Vector2( 7, 29 )
@@ -269,9 +274,9 @@ anims/RESET = SubResource( 25 )
 anims/bow = SubResource( 27 )
 anims/dagger = SubResource( 30 )
 
-[connection signal="timeout" from="Timers/idle_timer" to="." method="_on_idle_timer_timeout"]
-[connection signal="timeout" from="Timers/Timer" to="." method="_on_Timer_timeout"]
+[connection signal="timeout" from="Timers/IdleTimer" to="." method="_on_idle_timer_timeout"]
+[connection signal="timeout" from="Timers/AttackTimer" to="." method="_on_AttackTimer_timeout"]
 [connection signal="timeout" from="Timers/DamageTimer" to="." method="_on_DamageTimer_timeout"]
-[connection signal="timeout" from="Timers/loot_timer" to="." method="_on_loot_timer_timeout"]
+[connection signal="timeout" from="Timers/LootTimer" to="." method="_on_loot_timer_timeout"]
 [connection signal="timeout" from="Timers/CDTimer" to="." method="_on_CDTimer_timeout"]
 [connection signal="timeout" from="Timers/BuffTimer" to="." method="_on_BuffTimer_timeout"]
