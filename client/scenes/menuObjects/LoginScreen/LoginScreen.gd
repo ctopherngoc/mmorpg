@@ -29,8 +29,10 @@ func _on_Button_pressed() -> void:
 		login_request()
 
 func login_request() -> void:
+	notification.text = ""
 	if username.text.empty() or password.text.empty():
 		notification.text = "Enter username and password"
+		logging_in_bool = false
 	else:
 		login_button.disabled = true
 		Server.email = username.text
