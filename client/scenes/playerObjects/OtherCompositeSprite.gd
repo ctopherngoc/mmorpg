@@ -101,8 +101,6 @@ func _physics_process(delta: float) -> void:
 	
 # warning-ignore:unused_argument
 func update_avatar(data: Array) -> void:
-	print("sprite DATA")
-	print(data)
 	#body
 	var sprite = load(GameData.avatar_sprite.body + str(data[0]) + ".png")
 	body.set_texture(sprite)
@@ -155,12 +153,10 @@ func update_avatar(data: Array) -> void:
 	var empty_sprite2 = load(GameData.equipment_sprite.default + "empty_16_1_spritesheet.png")
 	while index < 17:
 		if data[index] == null:
-			#print("update_avatar compositespriteotherplayer")
 			if item_map[index] == "earring":
 				rearring.set_texture(empty_sprite)
 				learring.set_texture(empty_sprite)
 				climb_earrings.set_texture(empty_sprite2)
-				
 				
 			elif item_map[index] == "glove":
 				lglove.set_texture(empty_sprite)
@@ -168,9 +164,6 @@ func update_avatar(data: Array) -> void:
 				climb_gloves.set_texture(empty_sprite2)
 			else:
 				sprite_dict[item_map[index]].set_texture(sprite)
-				# for now toggle visibility
-				#(print("visible off"))
-				sprite_dict[item_map[index]].visible = false
 				
 			if item_map[index] in ["headgear", "top", "bottom"]:
 					if item_map[index] == "headgear":

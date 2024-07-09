@@ -16,10 +16,12 @@ onready var is_climbing = false
 onready var attacking = false
 onready var player_state
 onready var sprite = $CompositeSprite
+onready var chat_box = $ChatBox
 
 var floating_text = preload("res://scenes/userInerface/FloatingText.tscn")
 onready var input
 onready var hit_timer = $Timer
+onready var label = $Label
 
 onready var horizontal_speed: int
 onready var vertical_speed: int
@@ -36,7 +38,6 @@ onready var recon_arr = {
 ########
 
 func _ready():
-	
 	gravity = 800
 	# warning-ignore:return_value_discarded
 	Signals.connect("dialog_closed", self, "movable_switch")
@@ -48,6 +49,8 @@ func _ready():
 	Signals.connect("take_damage", self, "start_hit_timer")
 	Global.player_node = self
 	Global.in_game = true
+	label.text = Global.player.displayname
+	chat_box.display_name = Global.player.displayname
 
 func _physics_process(delta):
 	if Global.in_game:
