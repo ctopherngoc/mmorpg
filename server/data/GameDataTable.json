@@ -1099,18 +1099,18 @@
     "100000": {
       "name": "Dustin",
       "chatDialog": [
-        "[Dustin need help",
+        "Dustin need help",
         "Monsters everywhere",
         "Please help Dustin",
-        "Monster make Dustin sad]"
+        "Monster make Dustin sad"
       ]
     },
     "100001": {
       "name": "Kevin",
       "chatDialog": [
-        "[Welcome to Blossom! I hope you enjoy your time!",
+        "Welcome to Blossom! I hope you enjoy your time!",
         "Watch out for the monsters!",
-        "Make sure you talk to Dustin!]"
+        "Make sure you talk to Dustin!"
       ]
     }
   },
@@ -1209,11 +1209,11 @@
   "QuestTable": {
     "0": {
       "title": "Starting the Journey",
-      "description": "[Start your journey with consuming an apple]",
+      "description": "Start your journey with consuming an apple",
       "npcStart": 100000,
       "reward": [
-        "[[experience",
-        "20]]"
+        "experience",
+        20
       ],
       "questReq": "[900000]",
       "type": "[use]",
@@ -1222,7 +1222,7 @@
     },
     "1": {
       "title": "Meet your training instructor",
-      "description": "[Speak to Instructor Kevin]",
+      "description": "Speak to Instructor Kevin",
       "npcStart": 100000,
       "reward": null,
       "questReq": null,
@@ -1232,13 +1232,13 @@
     },
     "2": {
       "title": "Combat Training",
-      "description": "[Start your combat training with slaying some green guys]",
+      "description": "Start your combat training with slaying some green guys",
       "npcStart": 100001,
       "reward": [
-        "[[experience",
-        "25]",
-        "[300000",
-        "5]]"
+        "experience",
+        25,
+        300000,
+        5
       ],
       "questReq": [
         "[[100001",
@@ -1250,11 +1250,11 @@
     },
     "3": {
       "title": "Combat Training II",
-      "description": "Continue your combat training with slaying some blue guys]",
+      "description": "Continue your combat training with slaying some blue guys",
       "npcStart": 100001,
       "reward": [
-        "[[experience",
-        "45]]"
+        "experience",
+        45
       ],
       "questReq": [
         "[[100002",
