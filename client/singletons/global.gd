@@ -75,6 +75,7 @@ func _physics_process(_delta: float) -> void:
 				if current_map != world_state_buffer[2]["ID"]:
 					return
 				for player_state in world_state_buffer[2]["P"].keys():
+					#print(world_state_buffer[2]["P"][player_state]["S"])
 					if player_state == get_tree().get_network_unique_id():
 						continue
 					if not world_state_buffer[1]["P"].has(player_state):
@@ -82,6 +83,7 @@ func _physics_process(_delta: float) -> void:
 					if world_state_buffer[1]["P"][player_state]["M"] == Global.current_map:
 						if get_node("/root/GameWorld/MapNode/%s/OtherPlayers" % Global.current_map).has_node(str(player_state)):
 							var player_container = get_node("/root/GameWorld/MapNode/%s/OtherPlayers/" %Global.current_map + str(player_state))
+							player_container.update_sprite(world_state_buffer[2]["P"][player_state]["S"])
 							var new_position = lerp(world_state_buffer[1]["P"][player_state]["P"], world_state_buffer[2]["P"][player_state]["P"], interpolation_factor)
 							var animation = world_state_buffer[2]["P"][player_state]["A"]
 							player_container.move_player(new_position, animation)
@@ -312,7 +314,8 @@ func spawn_new_player(player_id: int, player_state: Dictionary) -> void:
 		new_player.name = str(player_id)
 		get_node("/root/GameWorld/MapNode/%s/OtherPlayers" % Global.current_map).add_child(new_player)
 		var player_container = get_node("/root/GameWorld/MapNode/%s/OtherPlayers/%s" % [Global.current_map,str(player_id)])
-		player_container.username.text = player_state["U"]
+		player_container.display_name.text = player_state["U"]
+		player_container.chat_box.display_name = player_state["U"]
 		player_container.update_sprite(player_state["S"])
 
 func despawn_player(player_id: int) -> void:
