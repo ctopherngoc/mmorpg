@@ -20,7 +20,6 @@ font_path = "res://assets/fonts/xolonium/xolonium-fonts-4.1/ttf/Xolonium-Regular
 font_data = SubResource( 1 )
 
 [node name="Player" type="KinematicBody2D" groups=["player"]]
-position = Vector2( -7, -29 )
 collision_layer = 3776
 collision_mask = 1025
 script = ExtResource( 2 )
@@ -124,8 +123,7 @@ frame = 16
 frame = 16
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
-position = Vector2( 1, -0.5 )
+position = Vector2( 1.5, 0 )
 shape = SubResource( 20 )
 
 [node name="Area2D" type="Area2D" parent="." groups=["climber"]]
