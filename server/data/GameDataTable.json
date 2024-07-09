@@ -540,6 +540,17 @@
       "useAmount": null,
       "equipmentType": null
     },
+    "200009": {
+      "itemName": "Acorn Bottom",
+      "itemType": "equipment",
+      "dropRate": 5,
+      "stackable": 0,
+      "droppable": 1,
+      "description": "bottom armor made of acorns",
+      "useType": null,
+      "useAmount": null,
+      "equipmentType": "bottom"
+    },
     "300000": {
       "itemName": "Health Potion",
       "itemType": "use",
@@ -873,6 +884,36 @@
       "reqDex": 0,
       "reqLuk": 0
     },
+    "200009": {
+      "name": "Acorn Bottom",
+      "type": "equipment",
+      "weaponType": "bottom",
+      "slot": 7,
+      "accuracy": 0,
+      "attack": 0,
+      "bossPercent": 0,
+      "critRate": 0,
+      "damagePercent": 0,
+      "attackSpeed": 0,
+      "avoidability": 1,
+      "defense": 10,
+      "dexterity": 0,
+      "jumpSpeed": 0,
+      "luck": 0,
+      "magic": 0,
+      "magicDefense": 0,
+      "maxHealth": 0,
+      "maxMana": 0,
+      "movementSpeed": 0,
+      "strength": 0,
+      "wisdom": 0,
+      "job": 0,
+      "reqLevel": 0,
+      "reqStr": 0,
+      "reqWis": 0,
+      "reqDex": 0,
+      "reqLuk": 0
+    },
     "500000": {
       "name": "Cloth Shirt",
       "type": "top",
@@ -1052,6 +1093,25 @@
       "reqWis": 0,
       "reqDex": 0,
       "reqLuk": 0
+    }
+  },
+  "NPCTable": {
+    "100000": {
+      "name": "Dustin",
+      "chatDialog": [
+        "[Dustin need help",
+        "Monsters everywhere",
+        "Please help Dustin",
+        "Monster make Dustin sad]"
+      ]
+    },
+    "100001": {
+      "name": "Kevin",
+      "chatDialog": [
+        "[Welcome to Blossom! I hope you enjoy your time!",
+        "Watch out for the monsters!",
+        "Make sure you talk to Dustin!]"
+      ]
     }
   },
   "ExperienceTable": {
