@@ -10,6 +10,7 @@ var equipment_data = []
 var monsterTable
 var itemTable
 var equipmentTable
+var NPCTable
 
 var chat_logs = []
 
@@ -23,6 +24,7 @@ func _ready():
 	monsterTable = gamedata_json.result["MonsterTable"]
 	itemTable = gamedata_json.result["ItemTable"]
 	equipmentTable = gamedata_json.result["EquipmentTable"]
+	NPCTable = gamedata_json.result["NPCTable"]
 
 onready var ign_id_dict = {}
 #	var skill_data_file = File.new()
