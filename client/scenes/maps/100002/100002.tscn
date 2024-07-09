@@ -4,7 +4,7 @@
 [ext_resource path="res://scenes/mapObjects/Portal.tscn" type="PackedScene" id=2]
 [ext_resource path="res://assets/tiles/0001/tile.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scenes/playerObjects/Player.tscn" type="PackedScene" id=4]
-[ext_resource path="res://resources/background/maps/BaseLevel.jpg" type="Texture" id=5]
+[ext_resource path="res://resources/background/maps/Remy.png" type="Texture" id=5]
 [ext_resource path="res://assets/tiles/0001/tileset.tres" type="TileSet" id=6]
 [ext_resource path="res://assets/tiles/0001/platform.tscn" type="PackedScene" id=7]
 [ext_resource path="res://scenes/mapObjects/Ladder.tscn" type="PackedScene" id=8]
@@ -23,10 +23,9 @@ tile_data = PoolIntArray( -1769484, 0, 0, -1769483, 0, 2, -1703948, 0, 65536, -1
 motion_mirroring = Vector2( 1920, 0 )
 
 [node name="BaseLevel" type="Sprite" parent="ParallaxBackground/ParallaxLayer"]
-position = Vector2( 0, -1089 )
-scale = Vector2( 1, 1.42913 )
+position = Vector2( 966, -574 )
+scale = Vector2( 3.36458, 3.70679 )
 texture = ExtResource( 5 )
-centered = false
 
 [node name="MapObjects" type="YSort" parent="."]
 
