@@ -16,6 +16,7 @@ onready var in_game = false
 onready var floating_text = preload("res://scenes/userInerface/FloatingText.tscn")
 onready var projectile = preload("res://scenes/skillObjects/Projectile.tscn")
 onready var last_recon
+onready var login_timer = $Timer
 
 var player_template = preload("res://scenes/playerObjects/OtherPlayerSprite.tscn")
 var player_node
@@ -191,6 +192,14 @@ func _physics_process(_delta: float) -> void:
 					for i in current_projectile_nodes:
 							i.queue_free()
 				#####################################################################################
+				if world_state_buffer[2].has("N") and  world_state_buffer[1].has("N"):
+					#spawn monsters function
+					for npc in world_state_buffer[2]["N"].keys():
+						if get_node("/root/GameWorld/MapNode/%s/NPCs" % Global.current_map).has_node(str(npc)):
+							var npc_node = get_node("/root/GameWorld/MapNode/%s/NPCs/" % Global.current_map + str(npc))
+							var new_position = lerp(world_state_buffer[1]["N"][npc], world_state_buffer[2]["N"][npc], interpolation_factor)
+							npc_node.move(new_position)
+				#####################################################################################
 			# we have no future world_state
 			elif render_time > world_state_buffer[1].T:
 				despawn_players(world_state_buffer[1]["P"].keys())
@@ -305,6 +314,16 @@ func _physics_process(_delta: float) -> void:
 					for i in current_projectile_nodes:
 							i.queue_free()
 				#################################################################
+				if world_state_buffer[1].has("N"):
+					#spawn monsters function
+					for npc in world_state_buffer[1]["N"].keys():
+						if get_node("/root/GameWorld/MapNode/%s/NPCs" % Global.current_map).has_node(str(npc)):
+							var npc_node = get_node("/root/GameWorld/MapNode/%s/NPCs/" % Global.current_map + str(npc))
+							var new_position = world_state_buffer[1]["N"][npc]
+							npc_node.move(new_position)
+				#################################################################
+				
+
 func spawn_new_player(player_id: int, player_state: Dictionary) -> void:
 	if player_id == get_tree().get_network_unique_id():
 		pass
@@ -415,3 +434,7 @@ func array_comparison(future_arr: Array, current_arr: Array) -> bool:
 
 func process_quests_list() -> void:
 	pass
+
+
+func _on_Timer_timeout():
+	Signals.emit_signal("connection_unsuccessful")
