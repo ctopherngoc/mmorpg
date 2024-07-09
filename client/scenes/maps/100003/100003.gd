@@ -30,7 +30,10 @@ func _ready():
 	$Player.camera.limit_top = map_bound["top"]
 	
 	if Global.last_portal:
+		print("spawning here")
+		print("server position: %s" % Global.last_portal)
 		$Player.global_position = Global.last_portal
+		print("player position: %s" % $Player.global_position)
 	else:
 		$Player.global_position = spawn_location
 

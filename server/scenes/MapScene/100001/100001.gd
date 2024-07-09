@@ -28,9 +28,12 @@ func _ready():
 	timer.autostart = true
 	timer.connect("timeout", self, "SpawnEnemy")
 	self.add_child(timer)
-	npc_list = $YSort/NPC.get_children()
+	npc_list = $YSort/NPCs.get_children()
+	if npc_list.size() > 0:
+		ServerData.npcs[self.name] = {}
 	for npc in npc_list:
 		npc_location[npc.name] = npc.position
+	
 
 func _process(_delta):
 	if enemy_list.size() == 0:
@@ -135,4 +138,4 @@ func UpdateMonsterList() -> void:
 func UpdateNPCList() -> void:
 	for npc in get_node("YSort/NPCs").get_children():
 		npc_location[npc.id] = npc.position
-	ServerData.npc_data[self.name] = npc_location.duplicate(true)
+	ServerData.npcs[self.name] = npc_location.duplicate(true)

@@ -18,7 +18,7 @@ tile_data = PoolIntArray( -4849553, 0, 0, -4849552, 0, 2, -4718594, 0, 0, -47185
 [node name="MapObjects" type="Node2D" parent="."]
 
 [node name="P1" parent="MapObjects" instance=ExtResource( 1 )]
-position = Vector2( 28, -270 )
+position = Vector2( 37, -270 )
 
 [node name="P2" parent="MapObjects" instance=ExtResource( 1 )]
 position = Vector2( 1934, -270 )
