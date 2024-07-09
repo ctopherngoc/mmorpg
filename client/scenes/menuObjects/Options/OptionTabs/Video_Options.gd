@@ -104,7 +104,7 @@ func load_settings(settings: Dictionary) -> void:
 	if settings.has("fps"):
 		var index = 0
 		for r in FPS.keys():
-			if r  == settings.fps:
+			if r  == str(settings.fps):
 				FPSOptionButton._select_int(index)
 				Engine.set_target_fps(int(settings.fps))
 				break
