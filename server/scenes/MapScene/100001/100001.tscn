@@ -43,7 +43,7 @@ position = Vector2( 356, -409 )
 
 [node name="Projectiles" type="YSort" parent="YSort"]
 
-[node name="NPC" type="YSort" parent="YSort"]
+[node name="NPCs" type="YSort" parent="YSort"]
 
-[node name="100001" parent="YSort/NPC" instance=ExtResource( 7 )]
+[node name="100001" parent="YSort/NPCs" instance=ExtResource( 7 )]
 position = Vector2( -350, -54 )
