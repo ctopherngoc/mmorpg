@@ -17,9 +17,10 @@ var occupied_locations = {}
 var enemy_list = {}
 var players = []
 onready var player_ysort = $YSort/Players
-onready var npc_ysort = $YSort/NPC
+onready var npc_ysort = $YSort/NPCs
+onready var npc_list: Array
+onready var npc_location: Dictionary = {}
 var counter = 0
-
 
 func _ready():
 	var timer = Timer.new()
@@ -27,6 +28,9 @@ func _ready():
 	timer.autostart = true
 	timer.connect("timeout", self, "SpawnEnemy")
 	self.add_child(timer)
+	npc_list = $YSort/NPC.get_children()
+	for npc in npc_list:
+		npc_location[npc.name] = npc.position
 
 func _process(_delta):
 	if enemy_list.size() == 0:
@@ -53,6 +57,7 @@ func _process(_delta):
 	UpdateItemStateList()
 	UpdateProjectileStateList()
 	UpdateMonsterList()
+	UpdateNPCList()
 	if player_ysort.get_children() != players:
 		players = player_ysort.get_children()
 	
@@ -126,3 +131,8 @@ func UpdateProjectileStateList() -> void:
 
 func UpdateMonsterList() -> void:
 	ServerData.monsters[map_id] = enemy_list.duplicate(true)
+	
+func UpdateNPCList() -> void:
+	for npc in get_node("YSort/NPCs").get_children():
+		npc_location[npc.id] = npc.position
+	ServerData.npc_data[self.name] = npc_location.duplicate(true)
