@@ -12,7 +12,7 @@ onready var ui_nodes = {
 	'chat_box': $ChatBox,
 	'player_hud':  get_node("PlayerHUD"),
 	"key_binds": get_node("KeyBinds"),
-	'hot_keys': $HotKeys,
+	#'hot_keys': $HotKeys,
 }
 
 # Called when the node enters the scene tree for the first time.
