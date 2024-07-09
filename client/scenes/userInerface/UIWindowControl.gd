@@ -5,7 +5,7 @@ onready var drop_confirm_popup = preload("res://scenes/menuObjects/PopupMenus/dr
 onready var fps_counter = $GameInfo/HBoxContainer/FPSCounter
 onready var ping_counter = $GameInfo/HBoxContainer/PingCounter
 
-var non_movable_windows = ["InGameMenu", "PlayerHUD", "ChatBox", "Control", "DebuggerWindow", "HotKeys", "ButtonBar", "GameInfo"]
+var non_movable_windows = ["InGameMenu", "PlayerHUD", "ChatBox", "DebuggerWindow", "HotKeys", "ButtonBar", "GameInfo", "MessageBar"]
 onready var ui_nodes = {
 	'player_stats': get_node("PlayerStats"),
 	'inventory': get_node("Inventory"),
@@ -91,3 +91,4 @@ func _on_Timer_timeout():
 	else:
 		ping_counter.modulate = Color(255, 242, 0)
 	ping_counter.text = "Ping: %sms" % str(Server.latency)
+
