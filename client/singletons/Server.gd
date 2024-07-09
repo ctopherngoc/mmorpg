@@ -163,10 +163,10 @@ remote func return_token_verification_results(result: bool, array: Array) -> voi
 remote func already_logged_in() -> void:
 	print("server.gd: already_logged_in")
 	var login_scene = get_tree().get_current_scene()
-	login_scene.login_button.disabled = false
 	login_scene.notification.text = "Account already logged in"
 	timer.stop()
 	get_tree().set_network_peer(null)
+	Signals.emit_signal("fail_login")
 
 #################################################################################
 # Player functions
@@ -372,10 +372,15 @@ remote func loot_data(_item_data: Dictionary) -> void:
 		# var string = "Picked up %s" % GameData[item_data.id]"
 	#update_message(string)
 
-remote func update_messages(player_name: String, message: String ,group: int) -> void:
-	print("%s said %s in %s" % [player_name, message, group])
-	Global.ui.ui_nodes.chat_box.update_message(player_name, message, group) 
-	# insert script to edit notification var with message
+remote func update_messages(player_id: String, display_name: String, message: String ,group: int) -> void:
+	print("%s said %s in %s" % [display_name, message, group])
+	Global.ui.ui_nodes.chat_box.update_message(display_name, message, group)
+	if group == 0:
+		if display_name == Global.player.displayname:
+			Global.player_node.chat_box.display_text(message)
+		else:
+			if get_node("/root/GameWorld/MapNode/%s/OtherPlayers" % Global.current_map).has_node(str(player_id)):
+				get_node("/root/GameWorld/MapNode/%s/OtherPlayers/" % Global.current_map + str(player_id)).chat_box.display_text(message)
 
 func use_item(item_id: String, slot_index: int) -> void:
 	print("in use_item -> server rpc")
