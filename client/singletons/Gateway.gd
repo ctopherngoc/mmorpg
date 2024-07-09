@@ -32,6 +32,7 @@ func connect_to_server(_username: String, _password: String) -> void:
 	network.set_dtls_certificate(cert)
 	network.connect("connection_failed", self, "_on_connection_failed")
 	network.connect("connection_succeeded", self, "_on_connection_succeeded")
+	Signals.connect("connection_unsuccessful", self, "connection_unsuccessful")
 	
 	username = _username
 	password = _password
@@ -50,12 +51,14 @@ func _on_connection_failed() -> void:
 func _on_connection_succeeded() -> void:
 	print("Successfully connected to login server")
 	request_login()
+	Global.login_timer.stop()
 
 func request_login() -> void:
 	print("Connecting to gateway to request login")
 	rpc_id(1, "login_request", username, password, Global.version)
 	username = ""
 	password = ""
+	Global.login_timer.start()
 
 remote func return_login_request(results: Array) -> void:
 	"""
@@ -79,6 +82,6 @@ remote func return_login_request(results: Array) -> void:
 		print("Please provide correct username and pasword")
 		Signals.emit_signal("fail_login")
 
-# timer_signal:
-# Signals.emit_signal("failed_login")
-# network.close_connection()
+func connection_unsuccessful():
+	network.close_connection()
+	Signals.emit_signal("server_offline")
