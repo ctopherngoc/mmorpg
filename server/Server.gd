@@ -52,7 +52,7 @@ func _Peer_Disconnected(player_id: int) -> void:
 		else:
 			print("dc in characterselect did not save")
 		_Server_Data_Remove_Player(player_id)
-		player_container.timer.start()
+		player_container.logging_timer.start()
 		yield(player_container.timer, "timeout")
 		rpc_id(0, "despawn_player", player_id)
 		player_container.queue_free()
@@ -439,7 +439,12 @@ remote func receive_input(move_id):
 	var player_container = _Server_Get_Player_Container(player_id)
 	# basic attack
 	if move_id == 0:
-		player_container.normal_attack()
+		if player_container.attacking == false and not player_container.current_character.equipment.rweapon == null:
+			player_container.attacking = true
+			player_container.animation_state["a"] = 0
+			player_container.attack_timer.wait_time = 1.0 / ServerData.static_data.weapon_speed[player_container.current_character.equipment.rweapon.attackSpeed]
+			player_container.attack_timer.start()
+			player_container.normal_attack()
 	#uses skill
 	else:
 		if move_id in ServerData.job_skills[player_container.current_character.stats.job]:
@@ -598,7 +603,7 @@ remote func send_chat(text: String, chat_type: int) -> void:
 	if chat_type == 0:
 		var map_player_list = get_node(ServerData.player_location[str(player_id)].replace("YSort/Players", "")).players
 		for player in map_player_list:
-			rpc_id(int(player.name), "update_messages", player_container.current_character.displayname, text, chat_type)
+			rpc_id(int(player.name), "update_messages", str(player_id), player_container.current_character.displayname, text, chat_type)
 	# in friends
 	elif chat_type == 1:
 		pass
@@ -694,106 +699,107 @@ remote func remove_keybind(key: String) -> void:
 remote func skill_request(skill: String) -> void:
 	var player_id = get_tree().get_rpc_sender_id()
 	var player_container = _Server_Get_Player_Container(player_id)
-	var skill_class
-	var skill_data
-	
-	if ServerData.skill_class_dictionary.has(skill):
-		skill_class = ServerData.skill_class_dictionary[skill]
+	if player_container.attacking == false and not player_container.current_character.equipment.rweapon == null:
+		var skill_class
+		var skill_data
 		
-		# not on cd
-		if not player_container.cooldowns.has(skill):
-			# if beginner skill or player job in job skills
-			if skill_class.location[0] == "0" or player_container.current_character.stats.job in skill_class.class:
-				
-				skill_data = ServerData.skill_data[skill_class.location[0]][skill_class.location[1]]
-				if skill_data.type == "attack" and player_container.is_climbing:
-					print("%s used attack still but is climbing" % player_container.current_character.displayname)
-					return
-				# get skill level
-				var player_skill_data = player_container.current_character.skills[skill_class.location[0]][skill_class.location[1]]
-				if player_container.current_character.displayname == "1111111":
-					player_container.current_character.stats.base.mana = player_container.current_character.stats.base.maxMana
-				# check mana cost
-				if player_container.current_character.stats.base.mana >= skill_data.mana[player_skill_data - 1]:
-					# update mana
-					player_container.current_character.stats.base.mana -= skill_data.mana[player_skill_data - 1]
+		if ServerData.skill_class_dictionary.has(skill):
+			skill_class = ServerData.skill_class_dictionary[skill]
+			
+			# not on cd
+			if not player_container.cooldowns.has(skill):
+				# if beginner skill or player job in job skills
+				if skill_class.location[0] == "0" or player_container.current_character.stats.job in skill_class.class:
 					
-					# if buff
-					if skill_data.type == "buff": 
-						if not player_container.buffs.has(skill):
+					skill_data = ServerData.skill_data[skill_class.location[0]][skill_class.location[1]]
+					if skill_data.type == "attack" and player_container.is_climbing:
+						print("%s used attack still but is climbing" % player_container.current_character.displayname)
+						return
+					# get skill level
+					var player_skill_data = player_container.current_character.skills[skill_class.location[0]][skill_class.location[1]]
+					if player_container.current_character.displayname == "1111111":
+						player_container.current_character.stats.base.mana = player_container.current_character.stats.base.maxMana
+					# check mana cost
+					if player_container.current_character.stats.base.mana >= skill_data.mana[player_skill_data - 1]:
+						# update mana
+						player_container.current_character.stats.base.mana -= skill_data.mana[player_skill_data - 1]
+						# if buff
+						player_container.attacking = true
+						if skill_data.type == "buff": 
+							if not player_container.buffs.has(skill):
+								var keys = skill_data.stat.keys()
+								for key in keys:
+									if "Percent" in key and "strength" in key:
+											player_container.current_character.stats.buff["strength"] += floor(player_container.current_character.stats.base.strength * skill_data.stat[key][player_skill_data - 1])
+									elif "Percent" in key and "dexterity" in key:
+										player_container.current_character.stats.buff["dexterity"] += floor(player_container.current_character.stats.base.dexterity * skill_data.stat[key][player_skill_data - 1])
+									elif "Percent" in key and "wisdom" in key:
+										player_container.current_character.stats.buff["wisdom"] += floor(player_container.current_character.stats.base.wisdom * skill_data.stat[key][player_skill_data - 1])
+									elif "Percent" in key and "luck" in key:
+										player_container.current_character.stats.buff["luck"] += floor(player_container.current_character.stats.base.luck * skill_data.stat[key][player_skill_data - 1])
+									elif "Percent" in key and "health" in key:
+										player_container.current_character.stats.buff["maxHealth"] += floor(player_container.current_character.stats.base.maxHealth * skill_data.stat[key][player_skill_data - 1])
+									elif "Percent" in key and "mana" in key:
+										player_container.current_character.stats.buff["maxMana"] += floor(player_container.current_character.stats.base.maxMana * skill_data.stat[key][player_skill_data - 1])
+									else:
+										player_container.current_character.stats.buff[key] += skill_data.stat[key][player_skill_data - 1]
+								#player_container.current_character.stats.buff[skill] = {"stat": skill_data.statType, "A": skill_data.type, "D": skill_data.duration[player_skill_data - 1]}
+							player_container.buffs[skill] = skill_data.duration[player_skill_data - 1]
+							#print(player_container.current_character.stats.buff)
+							update_player_stats(player_container)
+							
+						elif skill_data.type == "heal":
+							print("attempt to heal")
 							var keys = skill_data.stat.keys()
 							for key in keys:
-								if "Percent" in key and "strength" in key:
-										player_container.current_character.stats.buff["strength"] += floor(player_container.current_character.stats.base.strength * skill_data.stat[key][player_skill_data - 1])
-								elif "Percent" in key and "dexterity" in key:
-									player_container.current_character.stats.buff["dexterity"] += floor(player_container.current_character.stats.base.dexterity * skill_data.stat[key][player_skill_data - 1])
-								elif "Percent" in key and "wisdom" in key:
-									player_container.current_character.stats.buff["wisdom"] += floor(player_container.current_character.stats.base.wisdom * skill_data.stat[key][player_skill_data - 1])
-								elif "Percent" in key and "luck" in key:
-									player_container.current_character.stats.buff["luck"] += floor(player_container.current_character.stats.base.luck * skill_data.stat[key][player_skill_data - 1])
-								elif "Percent" in key and "health" in key:
-									player_container.current_character.stats.buff["maxHealth"] += floor(player_container.current_character.stats.base.maxHealth * skill_data.stat[key][player_skill_data - 1])
-								elif "Percent" in key and "mana" in key:
-									player_container.current_character.stats.buff["maxMana"] += floor(player_container.current_character.stats.base.maxMana * skill_data.stat[key][player_skill_data - 1])
+								if key == "health":
+									if player_container.current_character.stats.base.health + skill_data.stat[key][player_skill_data - 1] > player_container.current_character.stats.base.maxHealth + player_container.current_character.stats.buff.maxHealth:
+										player_container.current_character.stats.base.health = player_container.current_character.stats.base.maxHealth + player_container.current_character.stats.buff.maxHealth
+									else:
+										player_container.current_character.stats.base.health += skill_data.stat[key][player_skill_data - 1]
+										
+								elif key == "mana":
+									if player_container.current_character.stats.base.mana + skill_data.stat[key][player_skill_data - 1] > player_container.current_character.stats.base.maxMana + player_container.current_character.stats.buff.maxMana:
+										player_container.current_character.stats.base.mana = player_container.current_character.stats.base.maxMana + player_container.current_character.stats.buff.maxMana
+									else:
+										player_container.current_character.stats.base.mana += skill_data.stat[key][player_skill_data - 1]
 								else:
 									player_container.current_character.stats.buff[key] += skill_data.stat[key][player_skill_data - 1]
-							#player_container.current_character.stats.buff[skill] = {"stat": skill_data.statType, "A": skill_data.type, "D": skill_data.duration[player_skill_data - 1]}
-						player_container.buffs[skill] = skill_data.duration[player_skill_data - 1]
-						#print(player_container.current_character.stats.buff)
-						update_player_stats(player_container)
-						
-					elif skill_data.type == "heal":
-						print("attempt to heal")
-						var keys = skill_data.stat.keys()
-						for key in keys:
-							if key == "health":
-								if player_container.current_character.stats.base.health + skill_data.stat[key][player_skill_data - 1] > player_container.current_character.stats.base.maxHealth + player_container.current_character.stats.buff.maxHealth:
-									player_container.current_character.stats.base.health = player_container.current_character.stats.base.maxHealth + player_container.current_character.stats.buff.maxHealth
-								else:
-									player_container.current_character.stats.base.health += skill_data.stat[key][player_skill_data - 1]
-									
-							elif key == "mana":
-								if player_container.current_character.stats.base.mana + skill_data.stat[key][player_skill_data - 1] > player_container.current_character.stats.base.maxMana + player_container.current_character.stats.buff.maxMana:
-									player_container.current_character.stats.base.mana = player_container.current_character.stats.base.maxMana + player_container.current_character.stats.buff.maxMana
-								else:
-									player_container.current_character.stats.base.mana += skill_data.stat[key][player_skill_data - 1]
-							else:
-								player_container.current_character.stats.buff[key] += skill_data.stat[key][player_skill_data - 1]
-						update_player_stats(player_container)
-						
-					# if attack
-					elif skill_data.type == "attack":
-						# if projectile
-						if skill_data.attackType == "projectile":
-							var projectile = ServerData.projectile_dict[skill].object.instance()
-							projectile.id = skill
-							projectile.skill_data = skill_data
-							projectile.skill_level = player_skill_data - 1
-							if player_container.direction == 1:
-								projectile.position = player_container.position + ServerData.projectile_dict[skill].distance
-							else:
-								projectile.position = Vector2(player_container.position.x - ServerData.projectile_dict[skill].distance.x, player_container.position.y + ServerData.projectile_dict[skill].distance.y)
-							projectile.player = player_container
-							projectile.direction = player_container.direction
-							get_node(str(ServerData.player_location[str(player_id)])).get_parent().get_node("Projectiles").add_child(projectile, true)
-							# create projectile
-						elif skill_data.attackType == "melee":
-							player_container.skill_attack(skill, skill_data)
+							update_player_stats(player_container)
 							
-						elif skill_data.attackType == "aoe":
-							pass
-						
-						
-					# set cd
-					var cooldown = skill_data.cooldown[player_skill_data - 1]
-					if cooldown > 0:
-						player_container.cooldowns[skill] = int(cooldown)
-					else:
-						print("%s does not have cooldown limit" % skill)
+						# if attack
+						elif skill_data.type == "attack":
+							# if projectile
+							if skill_data.attackType == "projectile":
+								var projectile = ServerData.projectile_dict[skill].object.instance()
+								projectile.id = skill
+								projectile.skill_data = skill_data
+								projectile.skill_level = player_skill_data - 1
+								if player_container.direction == 1:
+									projectile.position = player_container.position + ServerData.projectile_dict[skill].distance
+								else:
+									projectile.position = Vector2(player_container.position.x - ServerData.projectile_dict[skill].distance.x, player_container.position.y + ServerData.projectile_dict[skill].distance.y)
+								projectile.player = player_container
+								projectile.direction = player_container.direction
+								get_node(str(ServerData.player_location[str(player_id)])).get_parent().get_node("Projectiles").add_child(projectile, true)
+								# create projectile
+							elif skill_data.attackType == "melee":
+								pass
+							elif skill_data.attackType == "aoe":
+								pass
+						# set cd
+						var cooldown = skill_data.cooldown[player_skill_data - 1]
+						if cooldown > 0:
+							player_container.cooldowns[skill] = int(cooldown)
+						else:
+							print("%s does not have cooldown limit" % skill)
+						player_container.animation_state["a"] = skill_data.animation
+						player_container.attack_timer.wait_time = 1.0 / ServerData.static_data.weapon_speed[player_container.current_character.equipment.rweapon.attackSpeed]
+						player_container.attack_timer.start()
+			else:
+				print("%s has %s is on cooldown" % [player_id, skill])
 		else:
-			print("%s has %s is on cooldown" % [player_id, skill])
-	else:
-		print("%s not in skill data")
+			print("%s not in skill data")
 
 remote func increase_skill(skill_id: String, level: int) -> void:
 	var player_id = get_tree().get_rpc_sender_id()
@@ -844,6 +850,7 @@ remote func equipment_request(equipment_slot, inventory_slot) -> void:
 		# calcluate total stats
 		Global.calculate_stats(player_container.current_character)
 		update_player_stats(player_container)
+		player_container.update_sprite_array()
 
 remote func remove_equipment_request(equipment_slot, inventory_slot) -> void:
 	var player_id = get_tree().get_rpc_sender_id()
@@ -863,6 +870,7 @@ remote func remove_equipment_request(equipment_slot, inventory_slot) -> void:
 			update_attack_range(player_container)
 		Global.calculate_stats(player_container.current_character)
 		update_player_stats(player_container)
+		player_container.update_sprite_array()
 	else:
 		print("inventory slot not null")
 	#rpc_id(player_id, "return_remove_equipment", equipment_slot)
