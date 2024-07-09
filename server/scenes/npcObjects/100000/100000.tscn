@@ -1,6 +1,7 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://scenes/npcObjects/000001/000001.gd" type="Script" id=5]
+[ext_resource path="res://scenes/npcObjects/100000/100000.gd" type="Script" id=5]
+
 
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 23.5, 38.5 )

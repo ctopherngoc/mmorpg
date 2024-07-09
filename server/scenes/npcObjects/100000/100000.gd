@@ -1,6 +1,6 @@
 extends Area2D
-var id = "000001"
-var title = "Kevin"
+var id = ""
+var display_name = ""
 
 func _physics_process(_delta):
 	pass
