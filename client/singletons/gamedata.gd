@@ -4,6 +4,7 @@ var monsterTable: Dictionary
 var itemTable: Dictionary
 var equipmentTable: Dictionary
 var string_validation: Array
+var npcTable
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -14,6 +15,7 @@ func _ready():
 	monsterTable = gamedata_json.result["MonsterTable"]
 	itemTable = gamedata_json.result["ItemTable"]
 	equipmentTable = gamedata_json.result["EquipmentTable"]	
+	npcTable = gamedata_json.result["NPCTable"]	
 	data_file.close()
 	
 # warning-ignore:unused_variable
@@ -84,6 +86,12 @@ onready var avatar_sprite = {
 	"rear" : "res://assets/character/spritesheet/rear/",
 	"rhand" : "res://assets/character/spritesheet/rhand/",
 	"rleg" : "res://assets/character/spritesheet/rleg/",
+	}
+	
+onready var climb_sprite = {
+	"body": "res://assets/character/spritesheet/body/",
+	"hair": "res://assets/character/spritesheet/hair/",
+	"ear" : "res://assets/character/spritesheet/earc/",
 	}
 	
 onready var equipment_sprite = {
@@ -282,3 +290,5 @@ onready var animation_dict: Dictionary = {
 	"600001": "ready",
 	"600002": "ready",
 }
+
+onready var full_headgear_list = ["500006"]

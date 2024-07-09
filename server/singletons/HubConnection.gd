@@ -7,9 +7,6 @@ var port = 2736
 
 onready var server = get_node("/root/Server")
 
-func _ready() -> void:
-	connect_to_server()
-
 func _process(_delta: float) -> void:
 	if get_custom_multiplayer() == null:
 		return

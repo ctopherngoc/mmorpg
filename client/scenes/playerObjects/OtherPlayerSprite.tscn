@@ -1,25 +1,123 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://scenes/playerObjects/CompositeSprite.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/playerObjects/OtherPlayerSprite.gd" type="Script" id=2]
 [ext_resource path="res://scenes/playerObjects/OtherCompositeSprite.gd" type="Script" id=3]
+[ext_resource path="res://scenes/userInerface/PlayerChatBox.tscn" type="PackedScene" id=4]
+
+[sub_resource type="DynamicFontData" id=3]
+font_path = "res://assets/fonts/xolonium/xolonium-fonts-4.1/ttf/Xolonium-Regular.ttf"
+
+[sub_resource type="DynamicFont" id=2]
+font_data = SubResource( 3 )
 
 [node name="PlayerTemplate" type="Sprite" groups=["otherPlayer"]]
 position = Vector2( -7, -29 )
 script = ExtResource( 2 )
 
 [node name="Label" type="Label" parent="."]
-margin_left = -32.0
-margin_top = 59.0
-margin_right = 48.0
+margin_left = -41.0
+margin_top = 56.0
+margin_right = 47.0
 margin_bottom = 73.0
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_constants/shadow_as_outline = 2
+custom_fonts/font = SubResource( 2 )
 text = "Other Player"
 align = 1
 
 [node name="CompositeSprite" parent="." instance=ExtResource( 1 )]
 script = ExtResource( 3 )
 
-[node name="Ammo" parent="CompositeSprite" index="11"]
+[node name="Ammo" parent="CompositeSprite/Normal" index="0"]
+frame = 16
+
+[node name="Lleg" parent="CompositeSprite/Normal" index="1"]
+frame = 16
+
+[node name="Rleg" parent="CompositeSprite/Normal" index="2"]
+frame = 16
+
+[node name="Larm" parent="CompositeSprite/Normal" index="3"]
+frame = 16
+
+[node name="Lhand" parent="CompositeSprite/Normal" index="4"]
+frame = 16
+
+[node name="LWeapon" parent="CompositeSprite/Normal" index="5"]
+frame = 16
+
+[node name="Lfinger" parent="CompositeSprite/Normal" index="6"]
+frame = 16
+
+[node name="Body" parent="CompositeSprite/Normal" index="7"]
+frame = 16
+
+[node name="Bottom" parent="CompositeSprite/Normal" index="8"]
+frame = 16
+
+[node name="LGlove" parent="CompositeSprite/Normal" index="9"]
+frame = 16
+
+[node name="Lear" parent="CompositeSprite/Normal" index="10"]
+frame = 16
+
+[node name="Top" parent="CompositeSprite/Normal" index="11"]
+frame = 16
+
+[node name="Learring" parent="CompositeSprite/Normal" index="12"]
+frame = 0
+
+[node name="Head" parent="CompositeSprite/Normal" index="13"]
+frame = 16
+
+[node name="Mouth" parent="CompositeSprite/Normal" index="14"]
+frame = 16
+
+[node name="Brow" parent="CompositeSprite/Normal" index="15"]
+frame = 16
+
+[node name="Eye" parent="CompositeSprite/Normal" index="16"]
+frame = 16
+
+[node name="Hair" parent="CompositeSprite/Normal" index="17"]
+frame = 16
+
+[node name="Rear" parent="CompositeSprite/Normal" index="18"]
+frame = 16
+
+[node name="Rearring" parent="CompositeSprite/Normal" index="19"]
+frame = 0
+
+[node name="Tattoo" parent="CompositeSprite/Normal" index="20"]
+frame = 32
+
+[node name="Eyeacc" parent="CompositeSprite/Normal" index="21"]
+frame = 32
+
+[node name="Faceacc" parent="CompositeSprite/Normal" index="22"]
+frame = 33
+
+[node name="Headgear" parent="CompositeSprite/Normal" index="23"]
+frame = 16
+
+[node name="Rarm" parent="CompositeSprite/Normal" index="24"]
+frame = 16
+
+[node name="Rweapon" parent="CompositeSprite/Normal" index="25"]
+frame = 16
+
+[node name="Rhand" parent="CompositeSprite/Normal" index="26"]
+frame = 16
+
+[node name="RGlove" parent="CompositeSprite/Normal" index="27"]
+frame = 16
+
+[node name="ChatBox" parent="." instance=ExtResource( 4 )]
 visible = false
+margin_left = -57.0
+margin_top = -84.0
+margin_right = 59.0
+margin_bottom = -64.0
 
 [editable path="CompositeSprite"]

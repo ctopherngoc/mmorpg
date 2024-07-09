@@ -1,10 +1,7 @@
 [gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://scenes/userInerface/InGameUI/Icon.gd" type="Script" id=1]
-
-[sub_resource type="StreamTexture" id=1]
-flags = 4
-load_path = "res://.import/inventorySlots2.png-4cbb87fbbc2dec6546d12e511ff98330.stex"
+[ext_resource path="res://assets/UI/background/inventorySlots2.png" type="Texture" id=2]
 
 [node name="0" type="CenterContainer"]
 margin_right = 60.0
@@ -15,7 +12,7 @@ script = ExtResource( 1 )
 margin_right = 60.0
 margin_bottom = 60.0
 rect_min_size = Vector2( 60, 60 )
-texture = SubResource( 1 )
+texture = ExtResource( 2 )
 expand = true
 stretch_mode = 1
 

@@ -1,35 +1,50 @@
 extends Node2D
 
-onready var ammo = $Ammo
-onready var body = $Body
-onready var bottom = $Bottom
-onready var brow = $Brow
-onready var eye = $Eye
-onready var eyeacc = $Eyeacc
-onready var faceacc = $Faceacc
-onready var hair = $Hair
-onready var head = $Head
-onready var headgear  = $Headgear
-onready var larm = $Larm
-onready var lear = $Lear
-onready var learring = $Learring
-onready var lfinger = $Lfinger
-onready var lglove = $LGlove
-onready var lhand = $Lhand
-onready var lleg = $Lleg
-onready var lwep = $LWeapon
-onready var mouth = $Mouth
-onready var rarm = $Rarm
-onready var rear = $Rear
-onready var rearring = $Rearring
-onready var rglove = $RGlove
-onready var rhand = $Rhand
-onready var rleg = $Rleg
-onready var rwep = $Rweapon
-onready var top = $Top
-onready var tattoo = $Tattoo
-onready var pocket = $Pocket
+onready var normal = $Normal
+onready var normal_anim = $Normal/AnimationPlayer
+onready var ammo = $Normal/Ammo
+onready var body = $Normal/Body
+onready var bottom = $Normal/Bottom
+onready var brow = $Normal/Brow
+onready var eye = $Normal/Eye
+onready var eyeacc = $Normal/Eyeacc
+onready var faceacc = $Normal/Faceacc
+onready var hair = $Normal/Hair
+onready var head = $Normal/Head
+onready var headgear  = $Normal/Headgear
+onready var larm = $Normal/Larm
+onready var lear = $Normal/Lear
+onready var learring = $Normal/Learring
+onready var lfinger = $Normal/Lfinger
+onready var lglove = $Normal/LGlove
+onready var lhand = $Normal/Lhand
+onready var lleg = $Normal/Lleg
+onready var lwep = $Normal/LWeapon
+onready var mouth = $Normal/Mouth
+onready var rarm = $Normal/Rarm
+onready var rear = $Normal/Rear
+onready var rearring = $Normal/Rearring
+onready var rglove = $Normal/RGlove
+onready var rhand = $Normal/Rhand
+onready var rleg = $Normal/Rleg
+onready var rwep = $Normal/Rweapon
+onready var top = $Normal/Top
+onready var tattoo = $Normal/Tattoo
+onready var pocket = $Normal/Pocket
 
+onready var climb_sprite = $Climb
+onready var climb_anim = $Climb/AnimationPlayer
+onready var climb_ammo = $Climb/Ammo
+onready var climb_body = $Climb/Body
+onready var climb_bottom = $Climb/Bottom
+onready var climb_hair = $Climb/Hair
+onready var climb_headgear  = $Climb/Headgear
+onready var climb_ears = $Climb/Ears
+onready var climb_earrings = $Climb/Earrings
+onready var climb_gloves = $Climb/Gloves
+onready var climb_top = $Climb/Top
+
+# no rfinger
 onready var sprite_dict = {
 	"ammo" : ammo,
 	"body" : body,
@@ -50,6 +65,18 @@ onready var sprite_dict = {
 	"rweapon": rwep,
 	"top": top,
 	"tattoo": tattoo,
+	"rarm": rarm,
+	"larm": larm,
+}
+
+onready var climb_sprite_dict = {
+	"ammo" : climb_ammo,
+	"body" : climb_body,
+	"bottom": climb_bottom,
+	"headgear": climb_headgear,
+	"earring": climb_earrings,
+	"glove": climb_gloves,
+	"top": climb_top,
 }
 
 onready var item_map = {
@@ -74,10 +101,11 @@ func _physics_process(delta: float) -> void:
 	
 # warning-ignore:unused_argument
 func update_avatar(data: Array) -> void:
-	#print(data)
 	#body
 	var sprite = load(GameData.avatar_sprite.body + str(data[0]) + ".png")
 	body.set_texture(sprite)
+	sprite = load(GameData.climb_sprite.body + str(data[0]) + "c.png")
+	climb_body.set_texture(sprite)
 	#arms
 	sprite = load(GameData.avatar_sprite.rarm + str(data[0][0]) + ".png")
 	rarm.set_texture(sprite)
@@ -103,12 +131,16 @@ func update_avatar(data: Array) -> void:
 	rear.set_texture(sprite)
 	sprite = load(GameData.avatar_sprite.lear + str(data[2]) + ".png")
 	lear.set_texture(sprite)
+	sprite = load(GameData.climb_sprite.ear + str(data[2]) + ".png")
+	climb_ears.set_texture(sprite)
 	#eye
 	sprite = load(GameData.avatar_sprite.eye + str(data[3]) + ".png")
 	eye.set_texture(sprite)
 	#hair
 	sprite = load(GameData.avatar_sprite.hair + str(data[4]) + ".png")
 	hair.set_texture(sprite)
+	sprite = load(GameData.climb_sprite.hair + str(data[4]) + "c.png")
+	climb_hair.set_texture(sprite)
 	#head
 	sprite = load(GameData.avatar_sprite.head + str(data[5]) + ".png")
 	head.set_texture(sprite)
@@ -117,45 +149,93 @@ func update_avatar(data: Array) -> void:
 	mouth.set_texture(sprite)
 	
 	var index = 7
+	var empty_sprite = load(GameData.equipment_sprite.default + "empty_16_11_spritesheet.png")
+	var empty_sprite2 = load(GameData.equipment_sprite.default + "empty_16_1_spritesheet.png")
 	while index < 17:
-		if str(data[index]) == "-1":
-			#print("update_avatar compositespriteotherplayer")
-			sprite = load(GameData.equipment_sprite.default + "empty_16_11_spritesheet.png")
+		if data[index] == null:
 			if item_map[index] == "earring":
-				rearring.set_texture(sprite)
-				learring.set_texture(sprite)
-				rearring.visible = false
-				learring.visible = false
+				rearring.set_texture(empty_sprite)
+				learring.set_texture(empty_sprite)
+				climb_earrings.set_texture(empty_sprite2)
 				
 			elif item_map[index] == "glove":
-				lglove.set_texture(sprite)
-				rglove.set_texture(sprite)
-				lglove.visible = false
-				rglove.visible = false
+				lglove.set_texture(empty_sprite)
+				rglove.set_texture(empty_sprite)
+				climb_gloves.set_texture(empty_sprite2)
 			else:
 				sprite_dict[item_map[index]].set_texture(sprite)
-				# for now toggle visibility
-				#(print("visible off"))
-				sprite_dict[item_map[index]].visible = false
+				
+			if item_map[index] in ["headgear", "top", "bottom"]:
+					if item_map[index] == "headgear":
+						climb_sprite_dict[item_map[index]].set_texture(empty_sprite2)
+					elif item_map[index] == "top":
+						climb_sprite_dict[item_map[index]].set_texture(empty_sprite2)
+					elif item_map[index] == "bottom":
+						climb_sprite_dict[item_map[index]].set_texture(empty_sprite2)
+						
 			index += 1
 
 		else:
-			if item_map[index] == "earring":
-				sprite = load(GameData.equipment_sprite[rearring] + str(data[index])+".png")
-				rleg.set_texture(sprite)
-				sprite = load(GameData.equipment_sprite[learring] + str(data[index])+".png")
-				lleg.set_texture(sprite)
+			if item_map[index] in ["earring", "glove"]:
+				if item_map[index] == "earring":
+					sprite = load(GameData.equipment_sprite[rearring] + str(data[index])+".png")
+					rleg.set_texture(sprite)
+					sprite = load(GameData.equipment_sprite[learring] + str(data[index])+".png")
+					lleg.set_texture(sprite)
+					sprite = load(GameData.equipment_sprite.earring + str(data[index])+"c.png")
+					climb_earrings.set_texture(sprite)
 
-			elif item_map[index] == "glove":
-				sprite = load(GameData.equipment_sprite[rglove] + str(data[index])+".png")
-				rleg.set_texture(sprite)
-				sprite = load(GameData.equipment_sprite[lglove] + str(data[index])+".png")
-				lleg.set_texture(sprite)
+				elif item_map[index] == "glove":
+					sprite = load(GameData.equipment_sprite[rglove] + str(data[index])+".png")
+					rleg.set_texture(sprite)
+					sprite = load(GameData.equipment_sprite[lglove] + str(data[index])+".png")
+					lleg.set_texture(sprite)
+					sprite = load(GameData.equipment_sprite.glove + str(data[index])+"c.png")
+					climb_gloves.set_texture(sprite)
 
 			else:
 				sprite = load(GameData.equipment_sprite[item_map[index]] + str(data[index])+".png")
 				sprite_dict[item_map[index]].set_texture(sprite)
-			sprite_dict[item_map[index]].visible = true
+				
+				if item_map[index] in ["headgear", "top", "bottom"]:
+						if item_map[index] == "headgear":
+							if str(data[index]) in GameData.full_headgear_list:
+					
+								brow.visible = false
+								eye.visible = false
+								eyeacc.visible = false
+								faceacc.visible = false
+								hair.visible = false
+								learring.visible = false
+								mouth.visible = false
+								rearring.visible = false
+								tattoo.visible = false
+								climb_hair.visible = false
+								climb_ears.visible = false
+								climb_earrings.visible = false
+							
+							else:
+								brow.visible = true
+								eye.visible = true
+								eyeacc.visible = true
+								faceacc.visible = true
+								hair.visible = true
+								learring.visible = true
+								mouth.visible = true
+								rearring.visible = true
+								tattoo.visible = true
+								climb_hair.visible = true
+								climb_ears.visible = true
+								climb_earrings.visible = true
+
+							sprite = load(GameData.equipment_sprite[item_map[index]]  + str(data[index])+"c.png")
+							climb_sprite_dict[item_map[index]].set_texture(sprite)
+						elif item_map[index] == "top":
+							sprite = load(GameData.equipment_sprite[item_map[index]]  + str(data[index])+"c.png")
+							climb_sprite_dict[item_map[index]].set_texture(sprite)
+						elif item_map[index] == "bottom":
+							sprite = load(GameData.equipment_sprite[item_map[index]]  + str(data[index])+"c.png")
+							climb_sprite_dict[item_map[index]].set_texture(sprite)
 			index += 1
 
 # warning-ignore:unused_argument
@@ -165,3 +245,13 @@ func change_equipment(equipment_slot, item_id):
 func _on_AnimationPlayer_animation_finished(anim_name: String) -> void:
 	if anim_name == "slash":
 		self.get_parent().attacking = false
+
+
+func set_climb() -> void:
+	normal.visible = false
+	climb_sprite.visible = true
+
+func unset_climb() -> void:
+	normal.visible = true
+	climb_sprite.visible = false
+	

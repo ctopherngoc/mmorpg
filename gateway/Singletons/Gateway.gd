@@ -6,7 +6,7 @@ var port = 2734
 var max_players = 100
 var cert = load("res://resources/Certificate/X509_Certificate.crt")
 var key = load("res://resources/Certificate/x509_Key.key")
-onready var game_version = "4.0.2"
+onready var game_version = "4.1.0"
 
 func _ready():
 	start_server()
@@ -41,7 +41,7 @@ remote func login_request(username: String, password: String, version: String):
 	if version == game_version:
 		Authenticate.authenticate_player(username, password, player_id)
 	else:
-		return_login_request([2733], player_id)
+		return_login_request([2733, game_version], player_id)
 
 func return_login_request(result, player_id):
 	print("gateway returnloginrequest back to main login")

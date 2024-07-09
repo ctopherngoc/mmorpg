@@ -10,11 +10,11 @@ config_version=4
 
 [application]
 
-config/name="game client"
+config/name="Blossom"
 run/main_scene="res://scenes/menuObjects/LoginScreen/LogoScreen.tscn"
 config/use_custom_user_dir=true
-config/icon="res://Blossom_Logo.png"
-config/windows_native_icon="res://icons/icon256.ico"
+config/icon="res://icons/icon512.png"
+config/windows_native_icon="res://icons/icon.ico"
 
 [autoload]
 
@@ -128,6 +128,10 @@ click={
 2d_physics/layer_10="teleporter"
 2d_physics/layer_11="noCol"
 2d_physics/layer_12="offMap"
+
+[network]
+
+ssl/certificates="res://resources/Certificate/X509_Certificate.crt"
 
 [physics]
 

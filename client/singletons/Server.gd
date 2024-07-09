@@ -32,7 +32,7 @@ func _physics_process(delta: float) -> void:
 	if decimal_collector >= 1.00:
 		client_clock += 1
 		decimal_collector -= 1.00
-
+	#print(latency_array)
 ######################################################################
 # Server connection/latency functions
 func connect_to_server() -> void:
@@ -73,6 +73,7 @@ func _on_server_disconnect() -> void:
 # ping calulation. Should be used when lag compensation is implemented 
 # with server reconciliation
 func determine_latency() -> void:
+	#rpc_id(1, "fetch_server_time", OS.get_system_time_msecs())
 	rpc_id(1, "determine_latency", OS.get_system_time_msecs())
 
 # sync client clock with server clock
@@ -162,10 +163,10 @@ remote func return_token_verification_results(result: bool, array: Array) -> voi
 remote func already_logged_in() -> void:
 	print("server.gd: already_logged_in")
 	var login_scene = get_tree().get_current_scene()
-	login_scene.login_button.disabled = false
 	login_scene.notification.text = "Account already logged in"
 	timer.stop()
 	get_tree().set_network_peer(null)
+	Signals.emit_signal("fail_login")
 
 #################################################################################
 # Player functions
@@ -214,9 +215,6 @@ remote func receive_attack(player_id, attack_time):
 ########################################################################################################	
 
 remote func update_player_stats(player_stats: Dictionary) -> void:
-	#print(player_stats.stats.buff)
-	print("update player stats")
-	#print(player_stats)
 	for character in Global.character_list:
 		if character["displayname"] == player_stats["displayname"]:
 			character = player_stats
@@ -233,7 +231,7 @@ remote func update_player_stats(player_stats: Dictionary) -> void:
 				# gained health
 				else:
 					var heal_value = abs(Global.player["stats"]["base"]["health"] - player_stats["stats"]["base"]["health"])
-					print("Player healed %s health." % str(heal_value))
+					#print("Player healed %s health." % str(heal_value))
 					Global.player_node.heal(heal_value)
 				Global.player["stats"]["base"]["health"] = player_stats["stats"]["base"]["health"]
 				Signals.emit_signal("update_health")
@@ -243,7 +241,6 @@ remote func update_player_stats(player_stats: Dictionary) -> void:
 				
 			# level check -> exp check
 			if player_stats["stats"]["base"]["level"] != Global.player["stats"]["base"]["level"]:
-				#AudioControl.play_audio("levelUp")
 				print("Level up")
 				Global.player["stats"]["base"]["experience"] = player_stats["stats"]["base"]["experience"]
 				Global.player["stats"]["base"]["level"] = player_stats["stats"]["base"]["level"]
@@ -272,15 +269,12 @@ remote func update_player_stats(player_stats: Dictionary) -> void:
 				Signals.emit_signal("update_equipment")
 				Signals.emit_signal("update_sprite")
 			
-			if not dictionary_comparison(Global.player["skills"], player_stats["skills"]):
-			#if player_stats["inventory"].hash() != Global.player["inventory"].hash():
+			if player_stats["stats"].hash() != Global.player["stats"].hash():
 				Global.player.stats = player_stats["stats"]
 				Global.player["skills"] = player_stats["skills"]
 				Signals.emit_signal("update_skills")
 				
 			if player_stats.stats.hash() != Global.player.stats.hash():
-			#if not dictionary_comparison(Global.player.stats.buff, player_stats.stats.buff):
-			#if player_stats["inventory"].hash() != Global.player["inventory"].hash():
 				Global.player.stats = player_stats.stats
 			
 			if not dictionary_comparison(Global.player["keybind"], player_stats["keybind"]):
@@ -288,7 +282,6 @@ remote func update_player_stats(player_stats: Dictionary) -> void:
 				print("update keybinds")
 				Global.player["keybind"] = player_stats["keybind"]
 				Signals.emit_signal("update_keybinds")
-			
 			break
 
 func dictionary_comparison(client_dict: Dictionary, server_dict: Dictionary) -> bool:
@@ -325,11 +318,9 @@ remote func receive_climb_data(climb_data: int) -> void:
 	if Global.in_game:
 		var player = get_node("/root/GameWorld/MapNode/%s/Player" % Global.current_map)
 		if climb_data == 2:
-			#print("server: is climbing")
 			player.can_climb = true
 			player.is_climbing = true
 		elif climb_data == 1:
-			#print("server: can climb")
 			player.is_climbing = false
 			player.can_climb = true
 		else:
@@ -381,10 +372,15 @@ remote func loot_data(_item_data: Dictionary) -> void:
 		# var string = "Picked up %s" % GameData[item_data.id]"
 	#update_message(string)
 
-remote func update_messages(player_name: String, message: String ,group: int) -> void:
-	print("%s said %s in %s" % [player_name, message, group])
-	Global.ui.ui_nodes.chat_box.update_message(player_name, message, group) 
-	# insert script to edit notification var with message
+remote func update_messages(player_id: String, display_name: String, message: String ,group: int) -> void:
+	print("%s said %s in %s" % [display_name, message, group])
+	Global.ui.ui_nodes.chat_box.update_message(display_name, message, group)
+	if group == 0:
+		if display_name == Global.player.displayname:
+			Global.player_node.chat_box.display_text(message)
+		else:
+			if get_node("/root/GameWorld/MapNode/%s/OtherPlayers" % Global.current_map).has_node(str(player_id)):
+				get_node("/root/GameWorld/MapNode/%s/OtherPlayers/" % Global.current_map + str(player_id)).chat_box.display_text(message)
 
 func use_item(item_id: String, slot_index: int) -> void:
 	print("in use_item -> server rpc")

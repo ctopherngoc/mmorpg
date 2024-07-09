@@ -23,7 +23,6 @@ func _ready():
 	Global.change_background()
 	if Global.player.map != get_filename():
 		Global.update_lastmap(get_filename())
-		spawn_location = Vector2(234, -437)
 	
 	$Player.camera.limit_left = map_bound["left"]
 	$Player.camera.limit_right = map_bound["right"]
@@ -31,7 +30,10 @@ func _ready():
 	$Player.camera.limit_top = map_bound["top"]
 	
 	if Global.last_portal:
+		print("spawning here")
+		print("server position: %s" % Global.last_portal)
 		$Player.global_position = Global.last_portal
+		print("player position: %s" % $Player.global_position)
 	else:
 		$Player.global_position = spawn_location
 

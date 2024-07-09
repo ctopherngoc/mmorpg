@@ -1,7 +1,6 @@
 extends CanvasLayer
 
-#onready var current_scene_container = preload("res://scenes/menuObjects/LoginScreen/LoginScreen.tscn")
-#onready var current_scene = "menu"
+onready var transition = false
 onready var current_bgm = "menu"
 onready var option_path = "user://gameOption.dat"
 
@@ -31,6 +30,7 @@ onready var video_settings: Dictionary
 
 func _ready() -> void:
 	load_window_settings()
+	Signals.connect("scene_loaded", self, "scene_loaded")
 
 func _process(_delta):
 	pass
@@ -75,7 +75,8 @@ func change_scene(scene: String) -> void:
 	# if in menu
 	# makes screen black
 	if Global.in_game:
-			get_node("/root/GameWorld").visible = false
+		get_node("/root/GameWorld").visible = false
+	transition = true
 	$AnimationPlayer.play("dissolve")
 	yield($AnimationPlayer, "animation_finished")
 	if scene in menu_scenes.keys():
@@ -93,6 +94,7 @@ func change_scene(scene: String) -> void:
 			# warning-ignore:return_value_discarded
 			Global.current_map = scene
 			get_node("/root/GameWorld").load_map(GameData.map_dict[scene]["path"])
+			yield(get_tree().create_timer(0.5), "timeout")
 		# if map different bgm
 		if GameData.map_dict[scene]["bgm"] != current_bgm:
 			current_bgm = GameData.map_dict[scene]["bgm"]
@@ -101,3 +103,7 @@ func change_scene(scene: String) -> void:
 	$AnimationPlayer.play_backwards("dissolve")
 	if Global.in_game:
 		get_node("/root/GameWorld").visible = true
+
+func _on_AnimationPlayer_animation_finished(anim_name):
+	if anim_name == "dissolve":
+		transition = false

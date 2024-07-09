@@ -30,7 +30,7 @@ var slot
 
 
 func _ready():
-	Signals.connect("toggle_inventory", self, "item_info_free")
+	Signals.connect("toggle_equipment", self, "item_info_free")
 
 var item_data = {
 	"id" : null,

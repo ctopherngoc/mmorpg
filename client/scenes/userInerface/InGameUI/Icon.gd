@@ -92,7 +92,6 @@ func drop_data(_pos,data):
 	# temp vars to hold each slots info
 	var drag_icon = data.item_data
 	var drop_icon = item_data
-	print(data)
 	if data.has("slot"):
 		if item_data.id == null:
 			# send server request
@@ -105,10 +104,6 @@ func drop_data(_pos,data):
 			# update distination slot with beginning slot info
 			icon.texture = data["origin_texture"]
 			item_data = drag_icon
-			
-			print("if")
-			print(item_data)
-			print(data.origin_node.item_data)
 		else:
 			# temp vars to hold each slots info
 			Server.send_equipment_request(data.slot, slot_index)
@@ -124,9 +119,6 @@ func drop_data(_pos,data):
 			# update distination slot with beginning slot info
 			icon.texture = data["origin_texture"]
 			item_data = drag_icon
-			print("else")
-			print(item_data)
-			print(data.origin_node.item_data)
 	else:
 		"""
 		tab: 0 = equip, 1 = use, 2 = etc
@@ -240,13 +232,12 @@ func item_info_free():
 	for node in self.get_children():
 		if "ItemInfo" in node.name:
 			node.queue_free()
+		if "EquipInfo" in node.name:
+			node.queue_free()
+		
 
 # checking of item in inventory slot matches the slot equipped is dragging from
 func equipment_check(data) -> bool:
-	print("inside ")
-	print(data)
-	print("item data")
-	print(item_data)
 	## INVENTORY TYPE CHECK##
 	if not tab == "equipment":
 		return false

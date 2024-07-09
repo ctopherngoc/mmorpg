@@ -29,13 +29,10 @@ func _input(_event):
 			MenuMenu.set_visible(false)
 			OptionMenu.set_visible(false)
 		if !self.visible:
-			#get_tree().set_pause(true)
 			MenuMenu.set_visible(true)
-			#Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 		else:
 			#get_tree().set_pause(false)
 			MenuMenu.set_visible(false)
-			#Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 func _on_Start_button_down():
 	#SoundManager.PlayButtonPressUp()
@@ -58,12 +55,7 @@ func _on_End_button_down():
 func _on_AcceptDialog_confirmed():
 	QuitConfirm.hide()
 	_on_resume_pressed()
-	#SceneManager.ChangeScene("res://Menu/MainMenu/MainMenu2.tscn")
-	#Global.logging_out = true
-	#Global.in_game = false
-	#Global.world_state_buffer.clear()
 	Server.logout()
-	#SceneHandler.change_scene("login")
 
 func LoadNextScene():
 	pass
@@ -71,7 +63,6 @@ func LoadNextScene():
 	#SceneManager.ChangeScene(NextScene)
 
 func _on_back_pressed():
-	#SoundManager.PlayButtonPressDown()
 	MenuMenu.show()
 	OptionMenu.hide()
 
@@ -79,13 +70,9 @@ func _on_resume_pressed():
 	play_button_pressed()
 	Signals.emit_signal("toggle_option_bool")
 	self.hide()
-	#Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-	#get_tree().set_pause(false)
 
 func _on_Back_button_down():
-	#SoundManager.PlayButtonPressDown()
 	MenuMenu.show()
-
 
 func _on_Button_mouse_entered():
 	AudioControl.play_audio("menuHover")

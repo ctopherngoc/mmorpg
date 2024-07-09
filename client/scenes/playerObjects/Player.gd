@@ -2,24 +2,26 @@ extends KinematicBody2D
 
 onready var velocity_multiplier = 1
 # dynamic player variables
-#onready var jump_speed
-#onready var max_horizontal_speed
+
 onready var velocity = Vector2.ZERO
 onready var camera = $Camera2D
 onready var last_input = null
 
 # static player varaibles
-onready var gravity = 800
-onready var temp_delta
+onready var gravity = 0
+
 # player states
 onready var can_climb = false
 onready var is_climbing = false
 onready var attacking = false
 onready var player_state
-onready var sprite = $CompositeSprite/AnimationPlayer
+onready var sprite = $CompositeSprite
+onready var chat_box = $ChatBox
+
 var floating_text = preload("res://scenes/userInerface/FloatingText.tscn")
 onready var input
 onready var hit_timer = $Timer
+onready var label = $Label
 
 onready var horizontal_speed: int
 onready var vertical_speed: int
@@ -36,6 +38,7 @@ onready var recon_arr = {
 ########
 
 func _ready():
+	gravity = 800
 	# warning-ignore:return_value_discarded
 	Signals.connect("dialog_closed", self, "movable_switch")
 # warning-ignore:return_value_discarded
@@ -44,19 +47,13 @@ func _ready():
 	Signals.connect("use_skill", self, "use_skill")
 # warning-ignore:return_value_discarded
 	Signals.connect("take_damage", self, "start_hit_timer")
-	#jump_speed = (Global.player.stats.base.jumpSpeed)
 	Global.player_node = self
 	Global.in_game = true
-#	var tilemap_rect = get_parent().get_node("TileMap").get_used_rect()
-#	var tilemap_cell_size = get_parent().get_node("TileMap").cell_size
-#	camera.limit_left = tilemap_rect.position.x * tilemap_cell_size.x
-#	camera.limit_right = tilemap_rect.end.x * tilemap_cell_size.x
-#	camera.limit_top = tilemap_rect.position.y * tilemap_cell_size.y
-#	camera.limit_bottom = tilemap_rect.end.y * tilemap_cell_size.y
+	label.text = Global.player.displayname
+	chat_box.display_name = Global.player.displayname
 
 func _physics_process(delta):
 	if Global.in_game:
-		temp_delta = delta
 
 		get_directional_speed()
 	# warning-ignore:shadowed_variable
@@ -79,23 +76,20 @@ func define_player_state(input_array):
 func get_input():
 # warning-ignore:shadowed_variable
 	var temp_input = [0,0,0,0,0,0]
-	if Input.is_action_pressed("ui_up"):
-		temp_input[0] = 1
-		#last_input = "up"
-	if Input.is_action_pressed("ui_left"):
-		temp_input[1] = 1
-		#last_input = "left"
-	if Input.is_action_pressed("ui_down"):
-		temp_input[2] = 1
-		#last_input = "right"
-	if Input.is_action_pressed("ui_right"):
-		temp_input[3] = 1
-		#last_input = "right"
-	if Input.is_action_pressed("jump"):
-		temp_input[4] = 1
-		#last_input = "jump"
-	if Input.is_action_pressed("loot") and recon_arr["input_arr"][5] != 1:
-		temp_input[5] = 1
+	if not SceneHandler.transition:
+	
+		if Input.is_action_pressed("ui_up"):
+			temp_input[0] = 1
+		if Input.is_action_pressed("ui_left"):
+			temp_input[1] = 1
+		if Input.is_action_pressed("ui_down"):
+			temp_input[2] = 1
+		if Input.is_action_pressed("ui_right"):
+			temp_input[3] = 1
+		if Input.is_action_pressed("jump"):
+			temp_input[4] = 1
+		if Input.is_action_pressed("loot") and recon_arr["input_arr"][5] != 1:
+			temp_input[5] = 1
 		
 	recon_arr["input_arr"] = temp_input
 	return temp_input
@@ -116,7 +110,10 @@ func movement_loop(delta, input_arr):
 	if is_on_floor() or !is_climbing:
 		velocity = move_and_slide(velocity, Vector2.UP)
 	if is_climbing:
+		sprite.set_climb()
 		velocity.x = 0
+	else:
+		sprite.unset_climb()
 	update_animation(move_vector)
 	
 # warning-ignore:shadowed_variable
@@ -144,7 +141,6 @@ func get_movement_vector(input):
 
 # warning-ignore:shadowed_variable
 func get_velocity(move_vector, input, delta):
-	#velocity.x += move_vector.x * max_horizontal_speed
 	velocity.x += move_vector.x * horizontal_speed
 	# slow down movement
 	if(move_vector.x == 0):
@@ -160,17 +156,19 @@ func get_velocity(move_vector, input, delta):
 			velocity.y = 0
 			# up press
 			if input[0] == 1:
+				sprite.climb_anim.play("climb")
 				velocity.y = -100
 			# down press
 			elif input[2] == 1 :
+				sprite.climb_anim.play("climb")
 				velocity.y = 100
 				if is_on_floor():
 					is_climbing = false
-					#Global.send_climb_data(self.name, 1)
+					sprite.unset_climb()
 			# jump off rope
 			elif input[4] == 1 && (input[1] == 1 or input[3] == 1):
 				is_climbing = false
-				#Global.send_climb_data(self.name, 1)
+				sprite.unset_climb()
 				velocity.y = move_vector.y * (vertical_speed)
 				velocity.x = move_vector.x * 200
 		# can climb but not climbing
@@ -179,37 +177,41 @@ func get_velocity(move_vector, input, delta):
 			if (move_vector.y < 0 && is_on_floor()):
 					velocity.y = move_vector.y * (Global.player.stats.base.jumpSpeed + Global.player.stats.equipment.jumpSpeed + Global.player.stats.buff.jumpSpeed)
 			# press up on ladder initiates climbing
-			elif input[0] == 1:
+			elif input[0] == 1 or input[2] == 1:
 					is_climbing = true
 					velocity.y = 0
 					velocity.x = 0
+					if input[2] == 1:
+						#self.set_collision_layer_bit(1, false)
+						self.position.y += 1
+						#self.set_collision_layer_bit(1, true)
 			# over lapping ladder pressing nothing allows gravity
 			else:
 				velocity.y += gravity * delta
 	# not climbable state
 	else:
+		if is_climbing:
+			is_climbing = false
 		# normal movement
 		if (move_vector.y < 0 && is_on_floor()):
 			velocity.y = move_vector.y * (Global.player.stats.base.jumpSpeed + Global.player.stats.equipment.jumpSpeed + Global.player.stats.buff.jumpSpeed)
 		else:
 			velocity.y += gravity * delta
-	if !can_climb:
-		is_climbing = false
 
 func update_animation(move_vector):
 	if(attacking):
-		#print("%s pass" % attacking)
 		last_input = null
 		pass
 
 	# send rpc to server
-	#elif(Input.is_action_pressed("attack") && !is_climbing && Global.movable):
 	elif last_input:
 		if(!is_climbing && Global.movable):
-			if last_input in ["slash", "attack"]:
+			if not Global.player.equipment.rweapon:
+				print("no weapon equip no attack")
+			elif last_input in ["slash", "attack"]:
 				attacking = true
 				#sprite.play("slash",-1, GameData.weapon_speed[str(Global.player.equipment.rweapon.speed)])
-				sprite.play("slash",-1, GameData.weapon_speed[str(Global.player.equipment.rweapon.attackSpeed)])
+				sprite.normal_anim.play("slash",-1, GameData.weapon_speed[str(Global.player.equipment.rweapon.attackSpeed)])
 				#### insert sound play
 				determine_weapon_noise()
 				"""
@@ -220,25 +222,21 @@ func update_animation(move_vector):
 					Server.send_input(0)
 			else:
 				attacking = true
-				sprite.play("ready",-1, GameData.weapon_speed[str(Global.player.equipment.rweapon.attackSpeed)])
+				sprite.normal_anim.play("ready",-1, GameData.weapon_speed[str(Global.player.equipment.rweapon.attackSpeed)])
 				#### insert sound play
 				#determine_weapon_noise()
 		last_input = null
 	else:
 		if(!is_on_floor()):
 			pass
-			sprite.play("jump")
-
+			sprite.normal_anim.play("jump")
 		elif(move_vector.x != 0):
-			sprite.play("walk")
-	#	elif(tookDamage):
-	#		$AnimationPlayer.play("ready")
+			sprite.normal_anim.play("walk")
 		else:
 			if hit_timer.time_left != 0:
-				sprite.play("hit")
+				sprite.normal_anim.play("hit")
 			else:
-				sprite.play("idle")
-	#input = null
+				sprite.normal_anim.play("idle")
 
 func determine_weapon_noise() -> void:
 	if Global.player.equipment.rweapon.weaponType in ["dagger", "1h_sword", "1h_axe", "staff", "wand"]:
@@ -252,7 +250,7 @@ func movable_switch():
 	Global.movable = true
 	
 func flip_sprite(d):
-	for _i in $CompositeSprite.get_children():
+	for _i in sprite.normal.get_children():
 		if _i.get_class() != "AnimationPlayer":
 			if d:
 				_i.set_flip_h(true)

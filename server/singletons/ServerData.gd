@@ -10,6 +10,7 @@ var equipment_data = []
 var monsterTable
 var itemTable
 var equipmentTable
+var NPCTable
 
 var chat_logs = []
 
@@ -23,10 +24,8 @@ func _ready():
 	monsterTable = gamedata_json.result["MonsterTable"]
 	itemTable = gamedata_json.result["ItemTable"]
 	equipmentTable = gamedata_json.result["EquipmentTable"]
-	
-	#print(monsterTable)
-	#print(equipmentTable)
-	
+	NPCTable = gamedata_json.result["NPCTable"]
+
 onready var ign_id_dict = {}
 #	var skill_data_file = File.new()
 #	skill_data_file.open("res://Data/SkillData - Sheet1.json", File.READ)
@@ -35,9 +34,9 @@ onready var ign_id_dict = {}
 
 onready var skill_data = {
 	"0" : {
-		"0": {"name": "Godot Ball", "id": "600000",  "maxLevel": 3, "targetCount": [1,1,1], "description": "Throw a projectile forward", "stat": {"damagePercent": [1.3, 1.5, 1.7]}, "mana": [25, 20, 15], "cooldown": [0, 0, 0], "type": "attack", "attackType": "projectile", "weaponType": null, "damageType": 1, "hitAmount": [2,3,4]},
-		"1": {"name": "Tenacious Heal", "id": "600001",  "maxLevel": 3, "description": "Heals for a small amount", "stat": {"health": [25, 50, 100]}, "mana": [30,20,10], "cooldown": [180, 120, 60], "type": "heal", "healType": "self"},
-		"2": {"name": "Swift Speed", "id": "600002", "maxLevel": 3, "description": "Incrase speed for a short time", "stat": {"movementSpeed": [10, 20, 30]}, "mana":[30,20,10], "duration": [30,30,30], "cooldown": [180, 120, 60], "type": "buff", "buffType": "self"},
+		"0": {"name": "Godot Ball", "id": "600000",  "maxLevel": 3, "targetCount": [1,1,1], "description": "Throw a projectile forward", "stat": {"damagePercent": [1.3, 1.5, 1.7]}, "mana": [25, 20, 15], "cooldown": [0, 0, 0], "type": "attack", "attackType": "projectile", "weaponType": null, "damageType": 1, "hitAmount": [2,3,4], "animation": 3},
+		"1": {"name": "Tenacious Heal", "id": "600001",  "maxLevel": 3, "description": "Heals for a small amount", "stat": {"health": [25, 50, 100]}, "mana": [30,20,10], "cooldown": [180, 120, 60], "type": "heal", "healType": "self", "animation": 3},
+		"2": {"name": "Swift Speed", "id": "600002", "maxLevel": 3, "description": "Incrase speed for a short time", "stat": {"movementSpeed": [10, 20, 30]}, "mana":[30,20,10], "duration": [30,30,30], "cooldown": [180, 120, 60], "type": "buff", "buffType": "self", "animation": 3},
 		},
 	"1" : {},
 	"2" : {},
@@ -57,6 +56,8 @@ var monsters = {
 	"100003" : {},
 	"100004" : {},
 }
+
+var npcs = {}
 
 var items = {
 	"100001" : {},
@@ -303,7 +304,6 @@ var static_data = {
 				"glove": null,
 				"lweapon": null,
 				"rweapon": null,
-				#"rweapon": {"accuracy":0, "attack":15, "avoidability":0, "bossPercent":0, "critRate":0, "damagePercent":0, "defense":0, "dexterity":4, "id":"200001", "job":0, "jumpSpeed":0, "luck":5, "magic":0, "magicDefense":0, "maxHealth":0, "maxMana":0, "movementSpeed":0, "name":"Training Sword", "slot":7, "speed":5, "strength":5, "type":"1h_sword", "uniqueID":1000000, "wisdom":5},
 				"pocket": null,
 				"tattoo": null,
 				"ring1": null,
@@ -379,13 +379,14 @@ var static_data = {
 		"1h_sword": 1.3,
 		"2h_sword": 1.5,
 		"staff": 0.8,},
+		
 	"weapon_speed" : {
-		1 : null,
-		2 : null,
-		3 : null,
+		1 : 1.4,
+		2 : 1.6,
+		3 : 1.8,
 		4 : 2.0,
 		5 : 2.2,
-		6 : null,
+		6 : 2.4,
 		},
 	"job_dict" : {
 		0: {"job": "Beginner", "Weapon": [], "Range": 0, "HealthMin": 15, "HealthMax": 20},
@@ -480,15 +481,12 @@ var static_data = {
 }
 
 var portal_data = {
-	"100001": {
-		'P1': {'map': '100002', 'spawn': Vector2(103, -260)}},
-	'100002': {'P1': {'map': '100001', 'spawn': Vector2(833, -100)},
-				'P2': {'map': '100003', 'spawn': Vector2(28, -280)}
-	},
-	'100003' : {
-		'P1': {'map': '100002','spawn': Vector2(1933, -280)},
-		'P2': {'map': '100004','spawn': Vector2(1933, -280)},
-		},
+	"100001": {'P1': {'map': '100002', 'spawn': Vector2(112, -290)}},
+	'100002': {'P1': {'map': '100001', 'spawn': Vector2(864, -108)},
+				'P2': {'map': '100003', 'spawn': Vector2(36, -310)}},
+	'100003' : {'P1': {'map': '100002','spawn': Vector2(1938, -290)},
+				'P2': {'map': '100004','spawn': Vector2(1933, -280)},
+				},
 }
 
 onready var buff_stats = {

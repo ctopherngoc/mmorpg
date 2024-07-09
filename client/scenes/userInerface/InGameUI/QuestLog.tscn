@@ -1,0 +1,406 @@
+[gd_scene load_steps=17 format=2]
+
+[ext_resource path="res://scenes/userInerface/InGameUI/QuestLog.gd" type="Script" id=1]
+[ext_resource path="res://resources/Fonts/Oswald/Oswald-VariableFont_wght.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://assets/UI/background/window_background2.png" type="Texture" id=3]
+[ext_resource path="res://assets/npcSprites/100000/100000.png" type="Texture" id=4]
+
+[sub_resource type="Theme" id=3]
+
+[sub_resource type="DynamicFont" id=1]
+size = 24
+outline_size = 2
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 2 )
+
+[sub_resource type="StyleBoxFlat" id=4]
+bg_color = Color( 0.290196, 0.27451, 0.345098, 1 )
+border_width_top = 2
+border_color = Color( 0, 0, 0, 1 )
+
+[sub_resource type="StyleBoxFlat" id=5]
+content_margin_left = 27.0
+content_margin_right = 27.0
+bg_color = Color( 0.290196, 0.27451, 0.345098, 0.701961 )
+border_width_left = 1
+border_width_right = 1
+border_color = Color( 0, 0, 0, 1 )
+
+[sub_resource type="StyleBoxFlat" id=6]
+expand_margin_left = 25.0
+expand_margin_right = 25.0
+
+[sub_resource type="StyleBoxFlat" id=7]
+content_margin_left = 25.0
+content_margin_right = 26.0
+bg_color = Color( 0.290196, 0.27451, 0.345098, 1 )
+border_width_left = 1
+border_width_right = 1
+border_color = Color( 0, 0, 0, 1 )
+
+[sub_resource type="Theme" id=8]
+TabContainer/colors/font_color_bg = Color( 1, 1, 1, 1 )
+TabContainer/colors/font_color_fg = Color( 1, 1, 1, 1 )
+TabContainer/styles/panel = SubResource( 4 )
+TabContainer/styles/tab_bg = SubResource( 5 )
+TabContainer/styles/tab_disabled = SubResource( 6 )
+TabContainer/styles/tab_fg = SubResource( 7 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 18
+outline_size = 1
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFontData" id=9]
+font_path = "res://assets/fonts/droid-sans/DroidSans.ttf"
+
+[sub_resource type="DynamicFont" id=10]
+size = 20
+font_data = SubResource( 9 )
+
+[sub_resource type="DynamicFontData" id=11]
+font_path = "res://assets/fonts/droid-sans/DroidSans.ttf"
+
+[sub_resource type="DynamicFont" id=12]
+size = 20
+font_data = SubResource( 11 )
+
+[node name="QuestLog" type="Control"]
+anchor_left = -0.0015625
+anchor_top = 0.00416667
+anchor_right = 0.166
+anchor_bottom = 0.294
+margin_left = 2.0
+margin_top = -3.0
+margin_right = 213.52
+margin_bottom = 212.32
+rect_scale = Vector2( 0.5, 0.5 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="QuestLog" type="NinePatchRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = SubResource( 3 )
+texture = ExtResource( 3 )
+region_rect = Rect2( 0, 0, 48, 48 )
+patch_margin_left = 16
+patch_margin_top = 16
+patch_margin_right = 16
+patch_margin_bottom = 16
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="ColorRect" type="ColorRect" parent="QuestLog"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 5.0
+margin_top = 5.0
+margin_right = -5.0
+margin_bottom = -5.0
+color = Color( 0, 0, 0, 1 )
+
+[node name="M" type="MarginContainer" parent="QuestLog"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/margin_right = 19
+custom_constants/margin_top = 11
+custom_constants/margin_left = 19
+custom_constants/margin_bottom = 11
+
+[node name="V" type="VBoxContainer" parent="QuestLog/M"]
+margin_left = 19.0
+margin_top = 11.0
+margin_right = 407.0
+margin_bottom = 413.0
+
+[node name="Header" type="HBoxContainer" parent="QuestLog/M/V"]
+margin_right = 388.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 240, 25 )
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="Control" type="Control" parent="QuestLog/M/V/Header"]
+margin_right = 65.0
+margin_bottom = 30.0
+size_flags_horizontal = 3
+
+[node name="TitleBackground" type="TextureRect" parent="QuestLog/M/V/Header"]
+margin_left = 69.0
+margin_right = 319.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 250, 30 )
+expand = true
+
+[node name="Label" type="Label" parent="QuestLog/M/V/Header/TitleBackground"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -125.0
+margin_top = -18.0
+margin_right = 125.0
+margin_bottom = 18.0
+rect_min_size = Vector2( 150, 0 )
+size_flags_horizontal = 3
+custom_fonts/font = SubResource( 1 )
+text = "Quests"
+align = 1
+valign = 1
+
+[node name="Exit" type="Control" parent="QuestLog/M/V/Header"]
+margin_left = 323.0
+margin_right = 388.0
+margin_bottom = 30.0
+size_flags_horizontal = 3
+
+[node name="TextureButton" type="TextureButton" parent="QuestLog/M/V/Header/Exit"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_min_size = Vector2( 25, 25 )
+expand = true
+
+[node name="TabContainer" type="TabContainer" parent="QuestLog/M/V"]
+margin_top = 34.0
+margin_right = 388.0
+margin_bottom = 402.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = SubResource( 8 )
+custom_fonts/font = SubResource( 2 )
+
+[node name="Avaliable" type="Tabs" parent="QuestLog/M/V/TabContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 30.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+scrolling_enabled = false
+
+[node name="ScrollContainer" type="ScrollContainer" parent="QuestLog/M/V/TabContainer/Avaliable"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_vertical = 3
+scroll_horizontal_enabled = false
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="QuestLog/M/V/TabContainer/Avaliable/ScrollContainer"]
+margin_right = 388.0
+margin_bottom = 338.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="In Progress" type="Tabs" parent="QuestLog/M/V/TabContainer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+scrolling_enabled = false
+
+[node name="ScrollContainer" type="ScrollContainer" parent="QuestLog/M/V/TabContainer/In Progress"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = 2.0
+size_flags_vertical = 3
+scroll_horizontal_enabled = false
+
+[node name="VBoxContainer" type="VBoxContainer" parent="QuestLog/M/V/TabContainer/In Progress/ScrollContainer"]
+
+[node name="Completed" type="Tabs" parent="QuestLog/M/V/TabContainer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+scrolling_enabled = false
+
+[node name="ScrollContainer" type="ScrollContainer" parent="QuestLog/M/V/TabContainer/Completed"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = 2.0
+size_flags_vertical = 3
+scroll_horizontal_enabled = false
+
+[node name="VBoxContainer" type="VBoxContainer" parent="QuestLog/M/V/TabContainer/Completed/ScrollContainer"]
+
+[node name="ColorRect" type="ColorRect" parent="QuestLog/M/V"]
+visible = false
+margin_top = 382.0
+margin_right = 388.0
+margin_bottom = 402.0
+rect_min_size = Vector2( 0, 20 )
+color = Color( 0.290196, 0.27451, 0.345098, 1 )
+
+[node name="HBoxContainer" type="HBoxContainer" parent="QuestLog/M/V/ColorRect"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Label" type="Label" parent="QuestLog/M/V/ColorRect/HBoxContainer"]
+margin_top = 3.0
+margin_right = 34.0
+margin_bottom = 17.0
+text = "Gold:"
+
+[node name="goldLabel" type="Label" parent="QuestLog/M/V/ColorRect/HBoxContainer"]
+margin_left = 38.0
+margin_top = 3.0
+margin_right = 256.0
+margin_bottom = 17.0
+rect_min_size = Vector2( 218, 0 )
+align = 2
+
+[node name="QuestInfo" type="NinePatchRect" parent="."]
+visible = false
+anchor_left = 1.00469
+anchor_right = 2.00469
+anchor_bottom = 1.0
+margin_right = -8.00006
+theme = SubResource( 3 )
+texture = ExtResource( 3 )
+region_rect = Rect2( 0, 0, 48, 48 )
+patch_margin_left = 16
+patch_margin_top = 16
+patch_margin_right = 16
+patch_margin_bottom = 16
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="ColorRect" type="ColorRect" parent="QuestInfo"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 5.0
+margin_top = 5.0
+margin_right = -5.0
+margin_bottom = -5.0
+color = Color( 0, 0, 0, 1 )
+
+[node name="M" type="MarginContainer" parent="QuestInfo"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/margin_right = 19
+custom_constants/margin_top = 11
+custom_constants/margin_left = 19
+custom_constants/margin_bottom = 11
+
+[node name="V" type="VBoxContainer" parent="QuestInfo/M"]
+margin_left = 19.0
+margin_top = 11.0
+margin_right = 399.0
+margin_bottom = 413.0
+
+[node name="Header" type="HBoxContainer" parent="QuestInfo/M/V"]
+margin_top = 10.0
+margin_right = 380.0
+margin_bottom = 120.0
+rect_min_size = Vector2( 240, 25 )
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="ColorRect" type="ColorRect" parent="QuestInfo/M/V/Header"]
+margin_right = 380.0
+margin_bottom = 120.0
+rect_min_size = Vector2( 0, 120 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
+color = Color( 0.705882, 0.705882, 0.705882, 1 )
+
+[node name="Exit" type="Control" parent="QuestInfo/M/V/Header/ColorRect"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -25.0
+margin_bottom = 25.0
+
+[node name="TextureButton" type="TextureButton" parent="QuestInfo/M/V/Header/ColorRect/Exit"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_min_size = Vector2( 25, 25 )
+expand = true
+
+[node name="Sprite" type="Sprite" parent="QuestInfo/M/V/Header/ColorRect"]
+position = Vector2( 317, 55 )
+scale = Vector2( 0.9, 0.9 )
+texture = ExtResource( 4 )
+flip_h = true
+hframes = 16
+vframes = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="QuestInfo/M/V/Header/ColorRect"]
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 246.0
+margin_bottom = 114.0
+
+[node name="QuestName" type="Label" parent="QuestInfo/M/V/Header/ColorRect/VBoxContainer"]
+margin_right = 241.0
+margin_bottom = 24.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 10 )
+text = "Quest name"
+clip_text = true
+
+[node name="LevelReq" type="Label" parent="QuestInfo/M/V/Header/ColorRect/VBoxContainer"]
+margin_top = 28.0
+margin_right = 241.0
+margin_bottom = 51.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 12 )
+text = "level: 200"
+
+[node name="ColorRect" type="ColorRect" parent="QuestInfo/M/V/Header/ColorRect"]
+margin_left = 253.0
+margin_top = 3.0
+margin_right = 255.0
+margin_bottom = 118.0
+size_flags_vertical = 3
+color = Color( 0, 0, 0, 1 )
+
+[node name="ColorRect" type="ColorRect" parent="QuestInfo/M/V"]
+margin_top = 139.0
+margin_right = 380.0
+margin_bottom = 392.0
+rect_min_size = Vector2( 0, 20 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
+color = Color( 0.290196, 0.27451, 0.345098, 1 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="QuestInfo/M/V/ColorRect"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 5.0
+margin_top = 5.0
+margin_right = -5.0
+margin_bottom = -5.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Objective" type="Label" parent="QuestInfo/M/V/ColorRect/VBoxContainer"]
+margin_right = 370.0
+margin_bottom = 14.0
+text = "Kill 5 Monsters"
+
+[node name="Description" type="Label" parent="QuestInfo/M/V/ColorRect/VBoxContainer"]
+margin_top = 18.0
+margin_right = 370.0
+margin_bottom = 32.0
+text = "BLAH BLAH BLAH BLAH"
+
+[connection signal="gui_input" from="QuestLog/M/V/Header" to="." method="_on_Header_gui_input"]
+[connection signal="tab_selected" from="QuestLog/M/V/TabContainer" to="." method="_on_TabContainer_tab_selected"]
+[connection signal="gui_input" from="QuestInfo/M/V/Header" to="." method="_on_Header_gui_input"]

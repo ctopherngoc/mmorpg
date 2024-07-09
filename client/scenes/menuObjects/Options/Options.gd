@@ -53,6 +53,7 @@ func save_settings() -> void:
 		"vsync": video_node.VsyncToggle.pressed,
 		"resolution": String(get_viewport().get_size().x)+"x"+String(get_viewport().get_size().y),
 		"fullscreen": video_node.FullscreenToggle.pressed,
+		"fps": Engine.target_fps
 		}
 	}
 	file.store_line(JSON.print(data, "\t"))

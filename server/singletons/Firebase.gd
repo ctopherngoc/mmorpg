@@ -5,7 +5,6 @@ onready var LOGIN_URL: String
 onready var FB_USERNAME: String
 onready var FB_PASSWORD: String
 var user_info := {}
-var httprequest = null
 var server_token = ""
 
 func _ready():
@@ -24,29 +23,30 @@ func _get_request_headers(token_id: String) -> PoolStringArray:
 		"Content-Type: application/json",
 		"Authorization: Bearer %s" % token_id
 	])
-# used only by playerContainers (client user)
-###############################################################################
-###############################################################################
-###############################################################################
 
 # only when creating an account
 # create baseline in /users and chreating new character in /characters
-func save_document(path: String, fields: Dictionary, http: HTTPRequest, token: String)-> void:
+func save_document(path: String, fields: Dictionary, token: String)-> void:
 	var document := {"fields": fields}
 	var body := to_json(document)
 	var url := DATABASE_URL + path
+	var temp_HTTP = HTTPRequest.new()
+	self.add_child(temp_HTTP)
 # warning-ignore:return_value_discarded
 	if "users/" in path:
-		http.request(url, _get_request_headers(token),false, HTTPClient.METHOD_POST, body)
-		yield(http, "request_completed")
-		#var result := yield(http, "request_completed") as Array
+		temp_HTTP.request(url, _get_request_headers(token),false, HTTPClient.METHOD_POST, body)
+		yield(temp_HTTP, "request_completed")
 	else:
 # warning-ignore:return_value_discarded
-		http.request(url, _get_request_headers(token),false, HTTPClient.METHOD_POST, body)
-		yield(http, "request_completed")
+		temp_HTTP.request(url, _get_request_headers(token),false, HTTPClient.METHOD_POST, body)
+		yield(temp_HTTP, "request_completed")
+	temp_HTTP.queue_free()
+	
 # saving characters/updating information
 # creating new characters in /users
-func update_document(path: String, http: HTTPRequest, token: String, data) -> void:
+func update_document(path: String, token: String, data) -> void:
+	var temp_HTTP = HTTPRequest.new()
+	self.add_child(temp_HTTP)
 	if 'users/' in path:
 		# convert
 		var character_array = []
@@ -57,8 +57,9 @@ func update_document(path: String, http: HTTPRequest, token: String, data) -> vo
 		var body := to_json(document)
 		var url := DATABASE_URL + path
 		# warning-ignore:return_value_discarded
-		http.request(url, _get_request_headers(token), false, HTTPClient.METHOD_PATCH, body)
-		yield(http, "request_completed")
+		temp_HTTP.request(url, _get_request_headers(token), false, HTTPClient.METHOD_PATCH, body)
+		yield(temp_HTTP, "request_completed")
+		
 	elif 'items/' in path:
 		var fb_data = ServerData.static_data.fb_equipment_template.duplicate(true)
 # warning-ignore:return_value_discarded
@@ -67,11 +68,9 @@ func update_document(path: String, http: HTTPRequest, token: String, data) -> vo
 		var body := to_json(document)
 		var url := DATABASE_URL + path
 		# warning-ignore:return_value_discarded
-		var temp_HTTP = HTTPRequest.new()
-		self.add_child(temp_HTTP)
 		temp_HTTP.request(url, _get_request_headers(server_token), false, HTTPClient.METHOD_PATCH, body)
-		yield(httprequest, "request_completed")
-		temp_HTTP.queue_free()
+		yield(temp_HTTP, "request_completed")
+		
 	elif 'characters/' in path:
 		# update /character
 		var fb_data = ServerData.static_data.player_info.duplicate(true)
@@ -80,13 +79,19 @@ func update_document(path: String, http: HTTPRequest, token: String, data) -> vo
 		var body := to_json(document)
 		var url := DATABASE_URL + path
 		# warning-ignore:return_value_discarded
-		http.request(url, _get_request_headers(token), false, HTTPClient.METHOD_PATCH, body)
-		yield(http, "request_completed")
+		temp_HTTP.request(url, _get_request_headers(token), false, HTTPClient.METHOD_PATCH, body)
+		yield(temp_HTTP, "request_completed")
+	
+	temp_HTTP.queue_free()
 
-func delete_document(path: String, http: HTTPRequest, token: String) -> void:
+func delete_document(path: String, token: String) -> void:
+	
+	var temp_HTTP = HTTPRequest.new()
+	self.add_child(temp_HTTP)
 	var url := DATABASE_URL + path
-	http.request(url, _get_request_headers(token), false, HTTPClient.METHOD_DELETE)
-	yield(http, "request_completed")
+	temp_HTTP.request(url, _get_request_headers(token), false, HTTPClient.METHOD_DELETE)
+	yield(temp_HTTP, "request_completed")
+	temp_HTTP.queue_free()
 	
 func firebase_dictionary_converter(database_data: Dictionary, client_data: Array) -> void:
 	"""
@@ -210,22 +215,23 @@ func firebase_dictionary_converter(database_data: Dictionary, client_data: Array
 ###############################################################################
 func _get_user_info(result: Array) -> Dictionary:
 	var result_body := JSON.parse(result[3].get_string_from_ascii()).result as Dictionary
-	#return result_body.idToken
 	return {
 		"token" : result_body.idToken,
 		"id" : result_body.localId,
 		"timestamp" : OS.get_unix_time(),
 	}
 
-func login(email: String, password: String, http: HTTPRequest, results: Array) -> void:
+func login(email: String, password: String, results: Array) -> void:
+	var temp_HTTP = HTTPRequest.new()
+	self.add_child(temp_HTTP)
 	var body := {
 		'email': email,
 		'password': password,
 		'returnSecureToken': true
 	}
-# warning-ignore:return_value_discarded
-	http.request(LOGIN_URL, [], false, HTTPClient.METHOD_POST, to_json(body))
-	var result := yield(http, "request_completed") as Array
+	# warning-ignore:return_value_discarded
+	temp_HTTP.request(LOGIN_URL, [], false, HTTPClient.METHOD_POST, to_json(body))
+	var result := yield(temp_HTTP, "request_completed") as Array
 
 	if result[1] == 200:
 		"""
@@ -238,10 +244,12 @@ func login(email: String, password: String, http: HTTPRequest, results: Array) -
 	
 	else:
 		results.append(result[1])
+	temp_HTTP.queue_free()
 
 func get_data(username: String, password: String):
+	print("starting to get data")
 	var results = []
-	var firebaseStatus = login(username, password, httprequest, results)
+	var firebaseStatus = login(username, password, results)
 	yield(firebaseStatus, "completed")
 	if results[0] != 200:
 		print("Server Signin Unsuccessful")
@@ -249,31 +257,38 @@ func get_data(username: String, password: String):
 	else:
 		print("Server Signin Successful")
 		server_token = results[1]['token']
-		var accounts_call = _server_get_document("users/", httprequest)
+		var accounts_call = _server_get_document("users/")
 		yield(accounts_call, 'completed')
-		var characters_call = _server_get_document("characters/", httprequest)
+		var characters_call = _server_get_document("characters/")
 		yield(characters_call, 'completed')
-		var items_call = _server_get_document("items/", httprequest)
+		var items_call = _server_get_document("items/")
 		yield(items_call, 'completed')
-		Global.fb_loaded = true
+		print("data loaded")
+		Global.server.start_server()
+		HubConnection.connect_to_server()
 		
-func _server_get_document(path: String, http: HTTPRequest)-> void:
+func _server_get_document(path: String) -> void:
+	var temp_HTTP = HTTPRequest.new()
+	self.add_child(temp_HTTP)
 	var url := DATABASE_URL + path
-# warning-ignore:return_value_discarded
-	http.request(url, _get_request_headers(server_token), false, HTTPClient.METHOD_GET)
-	var result := yield(http, "request_completed") as Array
+	# warning-ignore:return_value_discarded
+	temp_HTTP.request(url, _get_request_headers(server_token), false, HTTPClient.METHOD_GET)
+	var result := yield(temp_HTTP, "request_completed") as Array
 	var result_body := JSON.parse(result[3].get_string_from_ascii()).result as Dictionary
+
 	if "users" in path:
-		var document_list = result_body["documents"]
-		for document in document_list:
-			var doc_id = document["name"].replace("projects/%s/databases/(default)/documents/users/" % PROJECT_ID, "")
-			var character_list = []
-			if document["fields"]['characters']['arrayValue'].size() > 0:
-				for character in document["fields"]['characters']['arrayValue']['values']:
-					character_list.append(character["stringValue"])
-				ServerData.user_characters[doc_id] = character_list
-			else:
-				ServerData.user_characters[doc_id] = []
+		if "documents" in result_body.keys():
+			var document_list = result_body["documents"]
+			for document in document_list:
+				var doc_id = document["name"].replace("projects/%s/databases/(default)/documents/users/" % PROJECT_ID, "")
+				var character_list = []
+				if document["fields"]['characters']['arrayValue'].size() > 0:
+					for character in document["fields"]['characters']['arrayValue']['values']:
+						character_list.append(character["stringValue"])
+					ServerData.user_characters[doc_id] = character_list
+				else:
+					ServerData.user_characters[doc_id] = []
+
 	# currently specific character
 	elif "characters" in path:
 		if "documents" in result_body.keys():
@@ -281,14 +296,17 @@ func _server_get_document(path: String, http: HTTPRequest)-> void:
 			for document in document_list:
 				var character = document["name"].replace("projects/%s/databases/(default)/documents/characters/" % PROJECT_ID, "")
 				ServerData.characters_data[character] = server_firebase_dictionary_converter(document["fields"])
-				
+
 	elif "items" in path:
 		if "documents" in result_body.keys():
 			var document_list = result_body["documents"]
 			for document in document_list:
 				var item = document["name"].replace("projects/%s/databases/(default)/documents/items/" % PROJECT_ID, "")
 				ServerData.equipment_data.append(str(item))
-
+	
+	temp_HTTP.queue_free()
+	return 0
+	
 func server_firebase_dictionary_converter(database_data: Dictionary) -> Dictionary:
 	"""
 	takes firebase json dictionary converts to normal dictionary and appends to an array
@@ -312,9 +330,7 @@ func server_firebase_dictionary_converter(database_data: Dictionary) -> Dictiona
 		for key2 in keys2:
 			# added situation if value saved as integervalue
 			if key2 == "ap":
-				#print(shortcut[key]["mapValue"]["fields"]["ap"])
 				var ap_array = []
-				#print(shortcut2[key2]["arrayValue"])
 				for ap in shortcut2[key2]["arrayValue"]["values"]:
 					ap_array.append(int(ap['integerValue']))
 				temp_dict['stats'][key][key2] = ap_array
@@ -393,10 +409,9 @@ func server_firebase_dictionary_converter(database_data: Dictionary) -> Dictiona
 			# tab keys [equips, use, etc]
 			else:
 				temp_dict['inventory'][key] = []
-				var inventory_shortcut = shortcut[key]['arrayValue']['values'] # [item_dict, item_dict2, item_dict3]
+				var inventory_shortcut = shortcut[key]['arrayValue']['values']
 				# in equips
 				if key == "equipment":
-					#print(inventory_shortcut)
 					#currently have [equip_dict1, equip_dict2...]
 					var count = 0
 					for equip_dict in inventory_shortcut:
@@ -407,7 +422,6 @@ func server_firebase_dictionary_converter(database_data: Dictionary) -> Dictiona
 						else:
 							# now in equip{}
 							var equip_shortcut = equip_dict["mapValue"]["fields"]
-							#temp_dict['equipment'][count].append({})
 							var inv_equip_keys = equip_shortcut.keys()
 							temp_dict['inventory'][key].append({})
 							for equip_key in inv_equip_keys:
@@ -416,10 +430,8 @@ func server_firebase_dictionary_converter(database_data: Dictionary) -> Dictiona
 								for key2 in keys2:
 									if 'integerValue' in equip_shortcut[key2]:
 										temp_dict['inventory'][key][count][key2] = int(equip_shortcut[key2]['integerValue'])
-										#print("should be int:2 %s" % typeof(temp_dict['inventory'][key][count][key2]))
 									else:
 										temp_dict['inventory'][key][count][key2] = str(equip_shortcut[key2]['stringValue'])
-										#print("should be string:4 %s" % typeof(temp_dict['inventory'][key][count][key2]))
 						count += 1
 				# for use, etc tab
 				else:
@@ -454,7 +466,6 @@ func server_firebase_dictionary_converter(database_data: Dictionary) -> Dictiona
 		temp_dict['keybind'] = ServerData.static_data.default_keybind.duplicate(true)
 	
 	temp_dict.stats["buff"] = ServerData.buff_stats.duplicate(true)
-	#print(temp_dict)
 	return temp_dict
 
 func server_dictionary_converter(server_data: Dictionary, firebase_data: Dictionary) -> void:
@@ -480,12 +491,10 @@ func server_dictionary_converter(server_data: Dictionary, firebase_data: Diction
 					for job_ap in shortcut[key]["ap"]:
 						ap.append({"integerValue": job_ap})
 					fb_shortcut[key]['mapValue']['fields']["ap"]["arrayValue"]["values"] = ap
-					#print(fb_shortcut[key]['mapValue']['fields'])
 					########################################
 				else:
 					fb_shortcut[key]['mapValue']['fields'][key2]['integerValue'] = int(shortcut[key][key2])
-#	print("stats")
-#	print(firebase_data["stats"])
+
 	# avatar
 	shortcut = server_data["avatar"]
 	fb_shortcut = firebase_data['avatar']['mapValue']['fields']
@@ -508,10 +517,8 @@ func server_dictionary_converter(server_data: Dictionary, firebase_data: Diction
 		fb_skill_dict[job] = {"mapValue": {'fields': {}}}
 		fb_skill_dict[job]["mapValue"]["fields"] = skill_dict.duplicate(true)
 	firebase_data['skills']['mapValue']['fields'] = fb_skill_dict.duplicate(true)
-	
-#	print("after fb skills")
-#	print(firebase_data['skills'])
 	#################################################################################################
+	
 	# equipment
 	shortcut = server_data["equipment"]
 	fb_shortcut = firebase_data['equipment']['mapValue']['fields']
@@ -537,9 +544,8 @@ func server_dictionary_converter(server_data: Dictionary, firebase_data: Diction
 			fb_shortcut[key] = {'mapValue':{'fields': temp_dict}}
 		elif typeof(shortcut[key]) == TYPE_NIL:
 			fb_shortcut[key]['nullValue'] = null
-#	print("after fb equipment top")
-#	print(firebase_data['equipment']["mapValue"]["fields"]["top"])
 #####################################################################################################
+
 	#inventory
 	shortcut = server_data["inventory"]
 	fb_shortcut = firebase_data['inventory']['mapValue']['fields']
@@ -550,16 +556,13 @@ func server_dictionary_converter(server_data: Dictionary, firebase_data: Diction
 		else:
 			# inventory equipment
 			if key == "equipment":
-				#fb_shortcut[key] = {'arrayValue':{'values':[]}}
 				var fb_equip_shortcut = fb_shortcut[key]["arrayValue"]["values"]
 				# for dict in dict_array
 				var count = 0
 				for equip in shortcut["equipment"]:
 					if equip != null:
 						var temp_dict = ServerData.static_data.equipment_data_template.duplicate(true)
-						# [inventory][equipment][equip] = {keys: values}
 						# equip dict
-						##### temp fix to firebase 
 						for stat in equip.keys():
 							if stat in ['id', 'uniqueID', 'type', 'name', 'owner']:
 								temp_dict[stat] = {'stringValue' : str(equip[stat])}
@@ -569,12 +572,9 @@ func server_dictionary_converter(server_data: Dictionary, firebase_data: Diction
 					count += 1
 			# etc, use
 			else:
-				#fb_shortcut[key] = {'arrayValue':{'values':[]}}
 				var item_shortcut = fb_shortcut[key]['arrayValue']['values']
 				var count = 0
 				for item in shortcut[key]:
-#					if key == "use":
-#						print(key, " ", item)
 					if item != null:
 						# temp item dictionary
 						var item_dict = {}
@@ -591,9 +591,7 @@ func server_dictionary_converter(server_data: Dictionary, firebase_data: Diction
 					else:
 						item_shortcut[count] = {'nullValue': null}
 					count += 1
-	
-#	print("after fb inventory")
-#	print(firebase_data['inventory']['mapValue']['fields'])
+
 	# keybinds
 	shortcut = server_data["keybind"]
 	fb_shortcut = firebase_data['keybind']['mapValue']['fields']
@@ -610,9 +608,8 @@ func save(var path : String, var thing_to_save: Dictionary):
 	file.close()
 
 func item_data_converter(before: Dictionary, after: Dictionary) -> Dictionary:
-	#var skip_list = ["reqStr", "reqDex", "reqLuk", "reqWis", "weaponType"]
 	for stat in before.keys():
-		#print(before[stat])
+
 		#if not stat in skip_list:
 		if typeof(before[stat]) == TYPE_STRING:
 			after[stat]["stringValue"] = before[stat]
@@ -620,7 +617,4 @@ func item_data_converter(before: Dictionary, after: Dictionary) -> Dictionary:
 			after[stat]["integerValue"] = before[stat]
 		elif typeof(before[stat]) == TYPE_NIL:
 			after[stat]["nullValue"] = null
-			#print(after[stat])
-	#print({'mapValue':{'fields': after}})
-	print(after)
 	return {'mapValue':{'fields': after}}
