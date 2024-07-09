@@ -6,7 +6,6 @@ var player_state_collection = {}
 var user_characters = {}
 var characters_data = {}
 var equipment_data = []
-var npc_data = {}
 
 var monsterTable
 var itemTable
@@ -57,6 +56,8 @@ var monsters = {
 	"100003" : {},
 	"100004" : {},
 }
+
+var npcs = {}
 
 var items = {
 	"100001" : {},
@@ -480,15 +481,12 @@ var static_data = {
 }
 
 var portal_data = {
-	"100001": {
-		'P1': {'map': '100002', 'spawn': Vector2(103, -260)}},
-	'100002': {'P1': {'map': '100001', 'spawn': Vector2(833, -100)},
-				'P2': {'map': '100003', 'spawn': Vector2(28, -280)}
-	},
-	'100003' : {
-		'P1': {'map': '100002','spawn': Vector2(1933, -280)},
-		'P2': {'map': '100004','spawn': Vector2(1933, -280)},
-		},
+	"100001": {'P1': {'map': '100002', 'spawn': Vector2(112, -290)}},
+	'100002': {'P1': {'map': '100001', 'spawn': Vector2(864, -108)},
+				'P2': {'map': '100003', 'spawn': Vector2(36, -310)}},
+	'100003' : {'P1': {'map': '100002','spawn': Vector2(1938, -290)},
+				'P2': {'map': '100004','spawn': Vector2(1933, -280)},
+				},
 }
 
 onready var buff_stats = {
