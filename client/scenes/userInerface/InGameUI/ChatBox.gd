@@ -1,10 +1,9 @@
 extends Panel
-onready var label = $VBoxContainer/HBoxContainer/Label
-onready var line_edit = $VBoxContainer/HBoxContainer/LineEdit
+
 onready var chat_log = $VBoxContainer/RichTextLabel
 onready var focus_bool = false
 
-var origin: Vector2 = Vector2(0,586)
+onready var origin: Vector2 = Vector2(0, 586)
 
 var groups: Array = [
 	{"name": "all", "color": "#ffffff"},
@@ -15,23 +14,12 @@ var groups: Array = [
 ]
 
 var group_index: int = 0
-var user_name: String
+var display_name: String
 
 func _ready():
-	#origin = self.rect_position
-	InputManager.line_edit = $VBoxContainer/HBoxContainer/LineEdit
 # warning-ignore:return_value_discarded
 	Signals.connect("toggle_chat_group", self, "toggle_chat_group")
-# warning-ignore:return_value_discarded
-	Signals.connect("send_message", self, "send_message")
 	change_group(0)
-			
-func change_group(value: int) -> void:
-	group_index += value
-	if group_index > (groups.size()-1):
-		group_index = 0
-	label.text = groups[group_index]["name"]
-	label.set("custom_colors/font_color", Color(groups[group_index]["color"]))
 	
 
 func update_message(username:String, text: String,  group:int = 0) -> void:
@@ -40,12 +28,12 @@ func update_message(username:String, text: String,  group:int = 0) -> void:
 	chat_log.bbcode_text += "[" + username + "]: "
 	chat_log.bbcode_text += text
 	chat_log.bbcode_text += "[/color]"
-
-func send_message() -> void:
-	#print(line_edit.text, " ", group_index)
-	Server.send_chat(line_edit.text, group_index)
-	line_edit.text = ""
 	
+func change_group(value: int) -> void:
+	group_index += value
+	if group_index > (groups.size()-1):
+		group_index = 0
+
 func toggle_chat_group() -> void:
 	change_group(1)
 
