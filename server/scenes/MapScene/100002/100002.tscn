@@ -1,10 +1,10 @@
 [gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://scenes/mapObjects/Portal.tscn" type="PackedScene" id=1]
-[ext_resource path="res://scenes/maps/Map.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/MapScene/Map.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/mapObjects/Ladder.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scenes/mapObjects/Teleporter.tscn" type="PackedScene" id=4]
-[ext_resource path="res://scenes/maps/100002/100002.gd" type="Script" id=5]
+[ext_resource path="res://scenes/MapScene/100002/100002.gd" type="Script" id=5]
 [ext_resource path="res://assets/tiles/0001/platform.tscn" type="PackedScene" id=6]
 
 [node name="100002" type="Node2D"]
