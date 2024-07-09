@@ -6,6 +6,7 @@ var player_state_collection = {}
 var user_characters = {}
 var characters_data = {}
 var equipment_data = []
+var npc_data = {}
 
 var monsterTable
 var itemTable
