@@ -67,6 +67,16 @@ signal server_offline
 signal scene_loaded
 # warning-ignore:unused_signal
 signal connection_unsuccessful
+# warning-ignore:unused_signal
+signal load_quest_dialog
+# warning-ignore:unused_signal
+signal next_quest_dialog
+# warning-ignore:unused_signal
+signal prev_quest_dialog
+# warning-ignore:unused_signal
+signal accept_quest_dialog
+# warning-ignore:unused_signal
+signal refuse_quest_dialog
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
