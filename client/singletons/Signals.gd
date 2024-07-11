@@ -77,6 +77,8 @@ signal prev_quest_dialog
 signal accept_quest_dialog
 # warning-ignore:unused_signal
 signal refuse_quest_dialog
+# warning-ignore:unused_signal
+signal npc_click_false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

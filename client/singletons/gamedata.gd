@@ -5,6 +5,7 @@ var itemTable: Dictionary
 var equipmentTable: Dictionary
 var string_validation: Array
 var npcTable
+var questTable
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -14,8 +15,9 @@ func _ready():
 	
 	monsterTable = gamedata_json.result["MonsterTable"]
 	itemTable = gamedata_json.result["ItemTable"]
-	equipmentTable = gamedata_json.result["EquipmentTable"]	
-	npcTable = gamedata_json.result["NPCTable"]	
+	equipmentTable = gamedata_json.result["EquipmentTable"]
+	npcTable = gamedata_json.result["NPCTable"]
+	questTable = gamedata_json.result["QuestTable"]
 	data_file.close()
 	
 # warning-ignore:unused_variable
