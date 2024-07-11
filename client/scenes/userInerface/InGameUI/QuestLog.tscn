@@ -302,7 +302,7 @@ custom_constants/margin_bottom = 11
 [node name="V" type="VBoxContainer" parent="QuestInfo/M"]
 margin_left = 19.0
 margin_top = 11.0
-margin_right = 399.0
+margin_right = 398.0
 margin_bottom = 413.0
 
 [node name="Header" type="HBoxContainer" parent="QuestInfo/M/V"]
