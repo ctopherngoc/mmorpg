@@ -7,6 +7,7 @@ var string_validation: Array
 var npcTable
 var questTable
 
+onready var playerQuestArray = [9,9,-1,-1]
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	var data_file = File.new()

@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://scenes/userInerface/InGameUI/QuestEntry.gd" type="Script" id=1]
+[ext_resource path="res://assets/fonts/droid-sans/DroidSans-Bold.ttf" type="DynamicFontData" id=2]
+
+[sub_resource type="DynamicFont" id=1]
+size = 22
+font_data = ExtResource( 2 )
+
+[node name="QuestEntry" type="Label"]
+anchor_right = 1.0
+anchor_bottom = 0.993056
+margin_right = -1080.0
+margin_bottom = -701.0
+mouse_filter = 0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 1 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[connection signal="gui_input" from="." to="." method="_on_QuestEntry_gui_input"]
