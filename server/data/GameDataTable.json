@@ -1098,20 +1098,22 @@
   "NPCTable": {
     "100000": {
       "name": "Dustin",
-      "chatDialog": [
+      "bubbleDialog": [
         "Dustin need help",
         "Monsters everywhere",
         "Please help Dustin",
         "Monster make Dustin sad"
-      ]
+      ],
+      "chatDialog": "You look like you need some trainning tips!"
     },
     "100001": {
       "name": "Kevin",
-      "chatDialog": [
+      "bubbleDialog": [
         "Welcome to Blossom! I hope you enjoy your time!",
         "Watch out for the monsters!",
         "Make sure you talk to Dustin!"
-      ]
+      ],
+      "chatDialog": "Welcome to Blossom!"
     }
   },
   "ExperienceTable": {
