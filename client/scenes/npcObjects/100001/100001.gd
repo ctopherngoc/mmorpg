@@ -1,9 +1,8 @@
 extends Sprite
 
-onready var id = "100001"
+onready var id = "100000"
 onready var data = GameData.npcTable[self.id]
-onready var sprite = preload("res://assets/npcSprites/100001/100001.png")
-onready var spriteW = preload("res://assets/npcSprites/100001/100001w.png")
+onready var sprite = preload("res://assets/npcSprites/100000/100000.png")
 onready var label = $Label
 onready var anim = $AnimationPlayer
 onready var dialog_index = 0
@@ -18,27 +17,10 @@ func _ready() -> void:
 	dialog_timer.start()
 	
 func _on_Area2D_input_event(viewport, event, shape_idx) -> void:
-	if can_interact:
+	if can_interact and not clicked:
 		if event is InputEventMouseButton:
-			#clicked = true
 			print("popup dialog for npc")
-#			var dialog = DIALOG.instance()
-#			Global.ui.add_child(dialog)
-#			Global.movable = false
-			
-
-func move(location) -> void:
-	#print(location)
-	if location.x < position.x:
-		self.flip_h = true
-		self.texture = spriteW
-		self.set_position(location)
-	elif location.x > position.x:
-		self.flip_h = false
-		self.texture = spriteW
-		self.set_position(location)
-	else:
-		self.texture = sprite
+			clicked = true
 
 # keeps bubble open
 func _on_DialogTimer_timeout():
