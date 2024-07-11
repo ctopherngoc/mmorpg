@@ -1098,20 +1098,22 @@
   "NPCTable": {
     "100000": {
       "name": "Dustin",
-      "chatDialog": [
+      "bubbleDialog": [
         "Dustin need help",
         "Monsters everywhere",
         "Please help Dustin",
         "Monster make Dustin sad"
-      ]
+      ],
+      "chatDialog": "You look like you need some trainning tips!"
     },
     "100001": {
       "name": "Kevin",
-      "chatDialog": [
+      "bubbleDialog": [
         "Welcome to Blossom! I hope you enjoy your time!",
         "Watch out for the monsters!",
         "Make sure you talk to Dustin!"
-      ]
+      ],
+      "chatDialog": "Welcome to Blossom!"
     }
   },
   "ExperienceTable": {
@@ -1210,30 +1212,41 @@
     "0": {
       "title": "Starting the Journey",
       "description": "Start your journey with consuming an apple",
-      "npcStart": 100000,
+      "npcStart": 100001,
       "reward": [
         "experience",
         20
       ],
-      "questReq": "[900000]",
-      "type": "[use]",
-      "npcEnd": "[100000]",
-      "preReq": "[]"
+      "questReq": [
+        900000,
+        ""
+      ],
+      "type": "use",
+      "npcEnd": 100001,
+      "preReq": null,
+      "startDialog": null,
+      "turnInDialog": null,
+      "incompleteDialog": null,
+      "completeDialog": null
     },
     "1": {
       "title": "Meet your training instructor",
       "description": "Speak to Instructor Kevin",
-      "npcStart": 100000,
+      "npcStart": 100001,
       "reward": null,
       "questReq": null,
-      "type": "[]",
-      "npcEnd": "[100001]",
-      "preReq": "[0]"
+      "type": null,
+      "npcEnd": 100000,
+      "preReq": 0,
+      "startDialog": null,
+      "turnInDialog": null,
+      "incompleteDialog": null,
+      "completeDialog": null
     },
     "2": {
       "title": "Combat Training",
       "description": "Start your combat training with slaying some green guys",
-      "npcStart": 100001,
+      "npcStart": 100000,
       "reward": [
         "experience",
         25,
@@ -1241,28 +1254,44 @@
         5
       ],
       "questReq": [
-        "[[100001",
-        "5]]"
+        100001,
+        5
       ],
-      "type": "[hunt]",
-      "npcEnd": "[100001]",
-      "preReq": "[1]"
+      "type": "hunt",
+      "npcEnd": 100000,
+      "preReq": 1,
+      "startDialog": [
+        "I heard there was a new hunter arriving. Is that you?",
+        "How about we put you to the test? Show me you can fight by eliminating 5 green guys!",
+        "Come back to me when you eliminated 5 green guys.",
+        "I knew you would be a disappointment!"
+      ],
+      "turnInDialog": "Have you eliminated 5 green guys?",
+      "incompleteDialog": "You have not eliminated 5 green guys. Return to me when you have accomplished that.",
+      "completeDialog": [
+        "Good job! You are as good as everyone has been saying!  If you are up for it",
+        "there are more trainings to be done."
+      ]
     },
     "3": {
       "title": "Combat Training II",
       "description": "Continue your combat training with slaying some blue guys",
-      "npcStart": 100001,
+      "npcStart": 100000,
       "reward": [
         "experience",
         45
       ],
       "questReq": [
-        "[[100002",
-        "5]]"
+        100002,
+        5
       ],
-      "type": "[hunt]",
-      "npcEnd": "[100001]",
-      "preReq": "[2]"
+      "type": "hunt",
+      "npcEnd": 100000,
+      "preReq": 2,
+      "startDialog": null,
+      "turnInDialog": null,
+      "incompleteDialog": null,
+      "completeDialog": null
     }
   }
 }
