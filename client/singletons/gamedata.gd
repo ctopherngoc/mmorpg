@@ -21,9 +21,6 @@ func _ready():
 # warning-ignore:unused_variable
 	var file = File.new()
 	data_file.open("res://data/StringValidation.json", File.READ)
-# warning-ignore:shadowed_variable
-# warning-ignore:unused_variable
-# warning-ignore:shadowed_variable
 	var string_validation = JSON.parse(data_file.get_as_text()).result
 	data_file.close()
 	
