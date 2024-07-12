@@ -17,6 +17,7 @@ onready var floating_text = preload("res://scenes/userInerface/FloatingText.tscn
 onready var projectile = preload("res://scenes/skillObjects/Projectile.tscn")
 onready var last_recon
 onready var login_timer = $Timer
+onready var quest_data: Array
 
 var player_template = preload("res://scenes/playerObjects/OtherPlayerSprite.tscn")
 var player_node
@@ -419,6 +420,7 @@ func log_out() -> void:
 	last_portal = null
 	last_map = null
 	player_position = null
+	quest_data.clear()
 
 func despawn_players(world_state_players: Array) -> void:
 	var player_nodes = get_node("/root/GameWorld/MapNode/%s/OtherPlayers" % Global.current_map).get_children()
@@ -434,7 +436,6 @@ func array_comparison(future_arr: Array, current_arr: Array) -> bool:
 
 func process_quests_list() -> void:
 	pass
-
 
 func _on_Timer_timeout():
 	Signals.emit_signal("connection_unsuccessful")

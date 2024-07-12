@@ -413,3 +413,9 @@ func use_skill(id: String) -> void:
 	
 func increase_skill(id: String, level: int) -> void:
 	rpc_id(1, "increase_skill", id, level)
+
+func accept_quest(quest_id) -> void:
+	rpc_id(1, "accept_quest", quest_id)
+	
+remote func send_quest_data(quest_data) -> void:
+	Global.quest_data = quest_data
