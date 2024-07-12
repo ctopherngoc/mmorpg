@@ -6,11 +6,13 @@ var player_state_collection = {}
 var user_characters = {}
 var characters_data = {}
 var equipment_data = []
+var quest_data = {}
 
 var monsterTable
 var itemTable
 var equipmentTable
 var NPCTable
+var questTable
 
 var chat_logs = []
 
@@ -25,6 +27,7 @@ func _ready():
 	itemTable = gamedata_json.result["ItemTable"]
 	equipmentTable = gamedata_json.result["EquipmentTable"]
 	NPCTable = gamedata_json.result["NPCTable"]
+	questTable = gamedata_json.result["QuestTable"]
 
 onready var ign_id_dict = {}
 #	var skill_data_file = File.new()

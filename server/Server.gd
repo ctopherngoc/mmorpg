@@ -148,20 +148,28 @@ func create_characters():
 			temp_player.equipment.rweapon.owner = temp_player.displayname
 
 			print("creating character")
-			var firebase_call2 = Firebase.update_document("characters/%s" % temp_player["displayname"], character_array[2].db_info["token"], temp_player)
-			yield(firebase_call2, 'completed')
+			var firebase_call = Firebase.update_document("characters/%s" % temp_player["displayname"], character_array[2].db_info["token"], temp_player)
+			yield(firebase_call, 'completed')
 			
 			temp_player.stats["buff"] = ServerData.buff_stats.duplicate(true)
 			
 			ServerData.characters_data[temp_player.displayname] = temp_player
 
-			var firebase_call3 = Firebase.update_document("users/%s" % character_array[2].db_info["id"], character_array[2].db_info["token"], character_array[2])
+			var firebase_call2 = Firebase.update_document("users/%s" % character_array[2].db_info["id"], character_array[2].db_info["token"], character_array[2])
+			yield(firebase_call2, 'completed')
+			
+			# hunt [-1, 0, 0, 0]
+			# interact [-1]
+			# use [-1,]
+			var quest_log = [[-1],[-1],[-1, 0],[-1, 0]]
+			
+			var firebase_call3 = Firebase.update_document("quests/%s" % temp_player["displayname"], character_array[2].db_info["token"], quest_log)
 			yield(firebase_call3, 'completed')
 
 			Global.http_requests.append([temp_player.equipment.top, character_array[2]])
 			Global.http_requests.append([temp_player.equipment.bottom, character_array[2]])
 			Global.http_requests.append([temp_player.equipment.rweapon, character_array[2]])
-
+			
 			character_array[2].characters_info_list.append(temp_player)
 
 			# update client with new character
@@ -308,9 +316,10 @@ remote func delete_character(requester, display_name: String) -> void:
 
 	var firebase_call = Firebase.update_document("users/%s" % player_container.db_info["id"], player_container.db_info["token"], player_container)
 	yield(firebase_call, "completed")
-	# warning-ignore:void_assignment
 	var firebase_call2 = Firebase.delete_document("characters/%s" % display_name, player_container.db_info["token"])
 	yield(firebase_call2, "completed")
+	var firebase_call3 = Firebase.delete_document("quests/%s" % display_name, player_container.db_info["token"])
+	yield(firebase_call3, "completed")
 	rpc_id(player_id, "return_delete_character", player_container.characters_info_list, requester)
 
 remote func logout() -> void:
@@ -962,3 +971,17 @@ func update_attack_range(player) -> void:
 		for i in attack_range_list:
 			i.disabled = true
 			i.visible = false
+
+remote func accept_quest(quest_id) -> void:
+	var player_id = get_tree().get_rpc_sender_id()
+	var player_container = _Server_Get_Player_Container(player_id)
+	
+	var quest_data = ServerData.questTable[str(quest_id)]
+	if not player_container.current_character.stats.base.level <= quest_data.reqLevel:
+		print("level not high enough")
+	if not quest_data[player_container.current_character.displayname][quest_id][0] != -1:
+		print("player already accepted quest")
+	quest_data[player_container.current_character.displayname][quest_id][0] = 0
+	#update player questlog
+	
+	
