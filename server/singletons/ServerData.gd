@@ -220,7 +220,7 @@ var static_data = {
 				{'shift': {"nullValue": null}, 'ins': {"nullValue": null}, 'home': {"nullValue": null}, 'pgup': {"nullValue": null}, 'ctrl': {"stringValue": "attack"},  'del': {"nullValue": null}, 'end': {"nullValue": null}, 'pgdn': {"nullValue": null},
 				'`': {"nullValue": null}, '1': {"nullValue": null}, '2': {"nullValue": null}, '3': {"nullValue": null}, '4': {"nullValue": null}, '5': {"nullValue": null}, '6': {"nullValue": null}, '7': {"nullValue": null}, '8': {"nullValue": null}, '9': {"nullValue": null}, '0': {"nullValue": null}, '-': {"nullValue": null}, '=': {"nullValue": null},
 				 'f1': {"nullValue": null}, 'f2': {"nullValue": null}, 'f3': {"nullValue": null}, 'f4': {"nullValue": null}, 'f5': {"nullValue": null}, 'f6': {"nullValue": null}, 'f7': {"nullValue": null}, 'f8': {"nullValue": null}, 'f9': {"nullValue": null}, 'f10': {"nullValue": null}, 'f11': {"nullValue": null}, 'f12': {"nullValue": null},
-				'q': {"nullValue": null}, 'w': {"nullValue": null}, 'e': {"stringValue": "equipment"}, 'r': {"nullValue": null}, 't': {"nullValue": null}, 'y': {"nullValue": null}, 'u': {"nullValue": null}, 'i': {"stringValue": 'inventory'}, 'o': {"nullValue": null}, 'p': {"nullValue": null}, '[': {"nullValue": null}, ']': {"nullValue": null},
+				'q': {"nullValue": 'quest'}, 'w': {"nullValue": null}, 'e': {"stringValue": "equipment"}, 'r': {"nullValue": null}, 't': {"nullValue": null}, 'y': {"nullValue": null}, 'u': {"nullValue": null}, 'i': {"stringValue": 'inventory'}, 'o': {"nullValue": null}, 'p': {"nullValue": null}, '[': {"nullValue": null}, ']': {"nullValue": null},
 				'a': {"nullValue": null}, 's': {"stringValue": "stat"}, 'd': {"nullValue": null}, 'f': {"nullValue": null}, 'g': {"nullValue": null}, 'h': {"nullValue": null}, 'j': {"nullValue": null}, 'k': {"stringValue": 'skill'}, 'l': {"nullValue": null}, ';': {"nullValue": null}, "'": {"nullValue": null},
 				'z': {"stringValue": 'loot'}, 'x': {"nullValue": null}, 'c': {"nullValue": null}, 'v': {"nullValue": null}, 'b': {"nullValue": null}, 'n': {"nullValue": null}, 'm': {"nullValue": null}, ',': {"nullValue": null}, '.': {"nullValue": null}, '/': {"nullValue": null}, 'space': {"nullValue": null}
 				},
@@ -322,7 +322,7 @@ var static_data = {
 			'shift': null, 'ins': null, 'home': null, 'pgup': null, 'ctrl': "attack",  'del': null, 'end': null, 'pgdn': null,
 			'`': null, '1': null, '2': null, '3': null, '4': null, '5': null, '6': null, '7': null, '8': null, '9': null, '0': null, '-': null, '=': null,
 			'f1': null, 'f2': null, 'f3': null, 'f4': null, 'f5': null, 'f6': null, 'f7': null, 'f8': null, 'f9': null, 'f10': null, 'f11': null, 'f12': null,
-			'q': null, 'w': null, 'e': "equipment", 'r': null, 't': null, 'y': null, 'u': null, 'i': "inventory", 'o': null, 'p': null, '[': null, ']': null,
+			'q': 'quest', 'w': null, 'e': "equipment", 'r': null, 't': null, 'y': null, 'u': null, 'i': "inventory", 'o': null, 'p': null, '[': null, ']': null,
 			'a': null, 's': "stat", 'd': null, 'f': null, 'g': null, 'h': null, 'j': null, 'k': "skill", 'l': null, ';': null, "'": null,
 			'z': "loot", 'x': null, 'c': null, 'v': null, 'b': null, 'n': null, 'm': null, ',': null, '.': null, '/': null, 'space': null,
 			}, # keybind
