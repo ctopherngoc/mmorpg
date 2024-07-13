@@ -644,6 +644,10 @@ func item_data_converter(before: Dictionary, after: Dictionary) -> Dictionary:
 	return {'mapValue':{'fields': after}}
 
 func quest_data_converter(game_quest_data, FB_DATA):
+	"""
+	in server quest
+	out fb dict 
+	"""
 	for quest in game_quest_data:
 		var quest_data = []
 		for data in quest:
@@ -659,6 +663,10 @@ func quest_data_converter(game_quest_data, FB_DATA):
 	#print(FB_DATA)
 
 func quest_data_database_converter(FB_DATA) -> Array:
+	"""
+	in fb data 
+	out server data
+	"""
 	#print(FB_DATA)
 	var temp_array = []
 	var shortcut
@@ -668,7 +676,7 @@ func quest_data_database_converter(FB_DATA) -> Array:
 		shortcut = quest['mapValue']['fields']
 		var quest_data_array = []
 		# [{integerValue:-1},{integerValue:-1},{integerValue:-1},]
-		quest_data_array.append(shortcut.state.integerValue)
+		quest_data_array.append(int(shortcut.state.integerValue))
 		if shortcut.has('req'):
 			var shortcut2 = shortcut['req']['arrayValue']['values']
 			var quest_req = []
@@ -676,7 +684,7 @@ func quest_data_database_converter(FB_DATA) -> Array:
 				if values.has("stringValue"):
 					quest_req.append(values.stringValue)
 				elif values.has("integerValue"):
-					quest_req.append(values.integerValue)
+					quest_req.append(int(values.integerValue))
 			quest_data_array.append(quest_req)
 		#print(quest_data_array)
 		temp_array.append(quest_data_array)
