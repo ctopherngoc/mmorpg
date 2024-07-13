@@ -11,4 +11,4 @@ func _on_QuestEntry_gui_input(event):
 		if event.button_index == BUTTON_LEFT and event.pressed:
 			print("open quest detail page")
 			AudioControl.play_audio("menuClick")
-			Signals.emit_signal("toggle_quest_details", quest_data)
+			Signals.emit_signal("toggle_quest_details", quest_id, quest_data)
