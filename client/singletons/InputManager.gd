@@ -84,6 +84,9 @@ func parse_keybind(input: InputEventKey) -> void:
 		elif keybind == "equipment":
 			Signals.emit_signal("toggle_equipment")
 			AudioControl.play_audio("windowToggle")
+		elif keybind == "quest":
+			Signals.emit_signal("toggle_questLog")
+			AudioControl.play_audio("windowToggle")
 		else:
 			# skill
 			if GameData.skill_class_dictionary.has(str(keybind)):
