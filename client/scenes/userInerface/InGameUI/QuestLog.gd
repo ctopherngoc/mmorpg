@@ -20,6 +20,7 @@ onready var drag_position
 func _ready():
 	Signals.connect("update_quest_log", self, "populate_quest_log")
 	Signals.connect("toggle_quest_details", self, "toggle_quest_details")
+	Signals.connect("toggle_questLog", self, "toggle_questLog")
 	populate_quest_log()
 
 func _on_Header_gui_input(event):
@@ -40,24 +41,28 @@ func _on_TabContainer_tab_selected(tab):
 
 func populate_quest_log():
 	var index = 0
-	for quest in GameData.playerQuestArray:
+	for quest in Global.quest_data:
+		if GameData.questTable[str(index)].preReq:
+			if not Global.quest_data[GameData.questTable[str(index)].preReq][0] == 9:
+				index +=1
+				continue
 		var new_entry = quest_entry.instance()
 		new_entry.text = GameData.questTable[str(index)].title
 		new_entry.quest_id = index
 		new_entry.quest_data = GameData.questTable[str(index)]
 		# not started
-		if quest == -1:
+		if quest[0] == -1:
 			avaliable_quests.add_child(new_entry)
 			
 		# finished	
-		elif quest == 9:
+		elif quest[0] == 9:
 			completed_quests.add_child(new_entry)
 		# started but not finished
 		else:
 			in_progress_quests.add_child(new_entry)
 		index += 1
 		
-func toggle_quest_details(quest_data: Dictionary):
+func toggle_quest_details(quest_id, quest_data: Dictionary):
 	# update texture
 	quest_info_npc_texture.texture = load(sprite_location % [str(quest_data.npcStart), str(quest_data.npcStart)])
 	# update quest name
@@ -66,13 +71,20 @@ func toggle_quest_details(quest_data: Dictionary):
 	quest_info_level.text = str("Level: %s" % str(quest_data.levelReq))
 	# update description
 	quest_info_descrption.text = str(quest_data.description)
-	# update objective
 	quest_info_objective.text = str(quest_data.objective)
-	
+	# update objective
+	if quest_data.type == "hunt":
+		var index = 0
+		var hunted_list = Global.quest_data[int(quest_id)][1]
+		for hunted in hunted_list:
+			quest_info_objective.text += "\n%s/%s %s" % [str(hunted), str(quest_data.questReq[index+1]), GameData.monsterTable[str(quest_data.questReq[index])].title] 
+			index += 2
 	# make panel visible
 	if quest_info.visible == false:
 		quest_info.visible = true
 
-
 func _on_ToggleInfo_pressed():
 	quest_info.visible = false
+
+func toggle_questLog() -> void:
+	self.visible = not self.visible
