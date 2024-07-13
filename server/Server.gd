@@ -277,6 +277,7 @@ remote func choose_character(requester: int, display_name: String) -> void:
 	player_container.start_idle_timer()
 	update_attack_range(player_container)
 	Global.calculate_stats(player_container.current_character)
+	rpc_id(player_id, "send_quest_data", ServerData.quest_data[display_name])
 	rpc_id(player_id, "return_choose_character", requester)
 
 remote func fetch_usernames(requester, username: String) -> void:
@@ -982,6 +983,5 @@ remote func accept_quest(quest_id) -> void:
 	if not quest_data[player_container.current_character.displayname][quest_id][0] != -1:
 		print("player already accepted quest")
 	quest_data[player_container.current_character.displayname][quest_id][0] = 0
-	#update player questlog
-	
+	rpc_id(player_id, "send_quest_data", quest_data[player_container.current_character.displayname])
 	
