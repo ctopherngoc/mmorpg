@@ -83,7 +83,8 @@ signal npc_click_false
 signal toggle_quest_details
 # warning-ignore:unused_signal
 signal update_quest_log
-
+# warning-ignore:unused_signal
+signal toggle_questLog
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
