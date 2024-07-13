@@ -282,7 +282,7 @@ onready var skill_class_dictionary = {
 	"600002" : {"class":[0,1,2,3,4], "location": ["0","2"], "icon": "res://assets/skillSprites/0/600002.png"},
 }
 
-onready var mandatory_keys = ["attack", "skill", "inventory", "stat", "loot", "equipment"]
+onready var mandatory_keys = ["attack", "skill", "inventory", "stat", "loot", "equipment", "quest"]
 
 onready var animation_dict: Dictionary = {
 	"attack": "slash",
