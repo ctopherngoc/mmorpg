@@ -1145,7 +1145,7 @@
       "npcStart": 100001,
       "reward": null,
       "questReq": null,
-      "type": null,
+      "type": "interact",
       "npcEnd": 100000,
       "preReq": 0,
       "startDialog": null,
@@ -1202,10 +1202,19 @@
       "type": "hunt",
       "npcEnd": 100000,
       "preReq": 2,
-      "startDialog": null,
-      "turnInDialog": null,
-      "incompleteDialog": null,
-      "completeDialog": null,
+      "startDialog": [
+        "You did well on your first training. How about another training?",
+        "This time",
+        "go onto the next stage and elminiate 5 blue guys.",
+        "Come back to me after you eliminated 5 blue guys.",
+        "I knew you were not the one!"
+      ],
+      "turnInDialog": "Have you eliminated 5 blue guys?",
+      "incompleteDialog": "You have not eliminated 5 blue guys. Return to me when you have accomplished that.",
+      "completeDialog": [
+        "Amazing job! You are much better than I thought. If you are up for it",
+        "there is one more training to be done."
+      ],
       "levelReq": 0,
       "objective": "Slat 5 blue guys."
     }

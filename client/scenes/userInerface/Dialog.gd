@@ -24,7 +24,7 @@ onready var questIndex = 0
 #onready var questDialogBool = false
 
 onready var test_quest_data = {"100000": {"name": "Bobert","chatDialog": "You look like you need some trainning tips!",}}
-onready var test_quest_server_array = [9,9,-1,-1]
+#onready var test_quest_server_array = [9,9,-1,-1]
 
 func _ready():
 	Signals.connect("load_quest_dialog", self, "load_quest_dialog")
@@ -53,7 +53,7 @@ func fill_dialog_box() -> void:
 	# fill in sprite
 	npc_sprite.texture  = load(sprite_location % [npc_id, npc_id])
 	# fill in sprite name 
-	npc_name.text = test_quest_data[npc_id].name
+	npc_name.text = GameData.NPCTable[npc_id].name
 	#npc_name.text = GameData.NPCTable[test_npc_id].name
 	# fill in first index of dialog
 	if chatIndex == 0:
@@ -61,15 +61,15 @@ func fill_dialog_box() -> void:
 		var quest_keys = GameData.questTable.keys()
 		
 		var index = 0
-		for quest in test_quest_server_array:
+		for quest in Global.quest_data:
 			# if quest not completed
 			if quest < 9:
 				# if quest not started and npcStart is current noc
-				if test_quest_server_array[index] == -1 and str(GameData.questTable[str(index)].npcStart) == npc_id:
+				if Global.quest_data[index] == -1 and str(GameData.questTable[str(index)].npcStart) == npc_id:
 					# if has prequest
 					if GameData.questTable[str(index)].preReq:
 						# if NOT prequest completed
-						if not test_quest_server_array[int(GameData.questTable[str(index)].preReq)] == 9:
+						if not Global.quest_data[int(GameData.questTable[str(index)].preReq)] == 9:
 							index += 1
 							continue
 						var new_quest = quest_label.instance()
@@ -126,7 +126,7 @@ func load_quest_dialog(quest_id):
 	print(quest_id)
 	for children in reply_v_box.get_children():
 		children.queue_free()
-	if test_quest_server_array[quest_id] == -1:
+	if Global.quest_data[quest_id] == -1:
 		questDialog = GameData.questTable[str(quest_id)].startDialog
 		chatIndex = 1
 		dialog.text = questDialog[questIndex]
