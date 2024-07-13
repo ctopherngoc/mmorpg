@@ -419,3 +419,4 @@ func accept_quest(quest_id) -> void:
 	
 remote func send_quest_data(quest_data) -> void:
 	Global.quest_data = quest_data
+	Signals.emit_signal("update_quest_log")
