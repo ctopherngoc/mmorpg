@@ -192,6 +192,9 @@ func npc_hit(dmg_list: Array, npc: KinematicBody2D, player: KinematicBody2D):
 					dropSpawn(npc.map_id, npc.position, drop_list, highest_attacker)
 			# drop items from npc location
 			npc.die()
+			# monster die -> check if any quest needs killing tracking
+			if self.update_hunt_quest(player.current_character.displayname, npc.id):
+				server.update_quest_data(player)
 		else:
 			pass
 	if miss_counter == dmg_list.size():
@@ -552,3 +555,28 @@ func generate_unique_id(item_id) -> int:
 		equipment_id = str(item_id) + str(unique_id)
 	ServerData.equipment_data.append(equipment_id)
 	return unique_id
+	
+func update_hunt_quest(displayname, monster_id) -> bool:
+	# quest data is in ServerData.quest_data[displayname]
+	# quest requirements is in ServerData.questTable
+	
+	# set quest index 
+	var update_quests = false
+	var x = 0
+	# iterate through player quest data
+	for quest in ServerData[displayname]:
+		# if current quest started and not ended and is of type hunt
+		if quest[0] >= 0 and quest[0] < 9 and ServerData.questTable[x].type == "hunt":
+			var index = ServerData.questTable[x].questReq.find(monster_id)
+			# if monster id in questReq array
+			if index != -1:
+				# quest_data -> displayname key -> quest index -> requirement index in list == 1 -> index + 1 = actual count -> add one
+				# 0 2 4 6 8 10 12
+				ServerData.quest_data[displayname][x][1][index + 1] += 1
+				update_quests = true
+				print("%s killed %s monster for %s quest" % [displayname, monster_id, ServerData.questTable[x].title])
+		x += 1
+	if update_quests:
+		return true
+	else:
+		return false

@@ -985,3 +985,6 @@ remote func accept_quest(quest_id) -> void:
 	quest_data[player_container.current_character.displayname][quest_id][0] = 0
 	rpc_id(player_id, "send_quest_data", quest_data[player_container.current_character.displayname])
 	
+func update_quest_data(player_container) -> void:
+	rpc_id(int(player_container.name), "send_quest_data", ServerData.quest_data[player_container.current_character.displayname])
+	
