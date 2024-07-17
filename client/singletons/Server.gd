@@ -215,6 +215,7 @@ remote func receive_attack(player_id, attack_time):
 ########################################################################################################	
 
 remote func update_player_stats(player_stats: Dictionary) -> void:
+	#print("weird update all the time")
 	for character in Global.character_list:
 		if character["displayname"] == player_stats["displayname"]:
 			character = player_stats
@@ -257,12 +258,10 @@ remote func update_player_stats(player_stats: Dictionary) -> void:
 					Global.player["stats"]["base"]["experience"] = player_stats["stats"]["base"]["experience"]
 					Signals.emit_signal("update_exp")
 			
-			if not dictionary_comparison(Global.player["inventory"], player_stats["inventory"]):
-			#if player_stats["inventory"].hash() != Global.player["inventory"].hash():
+			if player_stats["inventory"].hash() != Global.player["inventory"].hash():
 				Global.player["inventory"] = player_stats["inventory"]
 				Signals.emit_signal("update_inventory")
-			
-			#if not dictionary_comparison(Global.player["equipment"], player_stats["equipment"]):
+				
 			if player_stats["equipment"].hash() != Global.player["equipment"].hash():
 				print("pls work")
 				Global.player["equipment"] = player_stats["equipment"]
@@ -415,8 +414,22 @@ func increase_skill(id: String, level: int) -> void:
 	rpc_id(1, "increase_skill", id, level)
 
 func accept_quest(quest_id) -> void:
+	print("server accepting quest %s" % str(quest_id))
 	rpc_id(1, "accept_quest", quest_id)
 	
 remote func send_quest_data(quest_data) -> void:
 	Global.quest_data = quest_data
 	Signals.emit_signal("update_quest_log")
+	
+func turn_in_quest(quest_id) -> void:
+	rpc_id(1, "turn_in_quest", quest_id)
+
+remote func return_quest(code) -> void:
+	if code == 1:
+		Signals.emit_signal("quest_error_inventory")
+	elif code == 0:
+		Signals.emit_signal("accept_quest")
+		Signals.emit_signal("update_quest_log")
+	elif code == 2:
+		Signals.emit_signal("complete_quest")
+		Signals.emit_signal("update_quest_log")
