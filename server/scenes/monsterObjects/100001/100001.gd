@@ -67,6 +67,7 @@ func _process(delta):
 				
 				# if new target != previous target
 				else:
+# warning-ignore:shadowed_variable
 					var target_node = get_node(ServerData.player_location[ServerData.ign_id_dict[target]] + "/%s" % ServerData.ign_id_dict[target])
 					target_position = get_distance_from_target(target_node)
 					if target_position.x >= self.position.x:
@@ -137,6 +138,7 @@ func get_target() -> String:
 							highest_damage = attackers[player]
 			return highest_player
 			
+# warning-ignore:shadowed_variable
 func get_distance_from_target(target_node) -> Vector2:
 	if target_node.position.x > self.position.x:
 		return Vector2(target_node.position.x + 50, self.position.y) 
