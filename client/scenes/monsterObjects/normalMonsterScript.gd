@@ -22,7 +22,7 @@ func _ready():
 	collision.scale = sprite_scale
 
 # new functions
-func move(new_position, enemy_state, direction):
+func move(new_position, _enemy_state, direction):
 	if despawn == 1:
 		var curr_position = self.get_position()
 		#turn right
@@ -64,7 +64,6 @@ func on_death():
 	animation_control("die")
 	despawn = 0
 	label.visible = false
-	#sprite.visible = false
 	sprite.modulate = Color8(62,62,62)
 	timer.start()
 	print("%s died" % self.name)
@@ -81,5 +80,5 @@ func animation_control(animation):
 func _on_Timer_timeout():
 	self.queue_free()
 
-func _on_AnimationPlayer_animation_finished(anim_name):
+func _on_AnimationPlayer_animation_finished(_anim_name):
 	pass # Replace with function body.
