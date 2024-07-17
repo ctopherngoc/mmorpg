@@ -152,7 +152,7 @@ func update_hotkey() -> void:
 	else:
 		bg.texture = load(active_bg)
 		var id = Global.player.keybind[self.name]
-		print("id: %s" % id)
+		#print("id: %s" % id)
 		
 		# skill
 		if GameData.skill_class_dictionary.has(str(id)):
@@ -164,7 +164,7 @@ func update_hotkey() -> void:
 		
 		# mando key
 		elif id in GameData.mandatory_keys:
-			print("mandatory keys: %s" % id)
+			#print("mandatory keys: %s" % id)
 			if id == "inventory":
 				quantity_label.text = str("inv") + " "
 			elif id == "equipment":

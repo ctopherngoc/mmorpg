@@ -18,8 +18,11 @@ onready var drag_position
 
 
 func _ready():
+# warning-ignore:return_value_discarded
 	Signals.connect("update_quest_log", self, "populate_quest_log")
+# warning-ignore:return_value_discarded
 	Signals.connect("toggle_quest_details", self, "toggle_quest_details")
+# warning-ignore:return_value_discarded
 	Signals.connect("toggle_questLog", self, "toggle_questLog")
 	populate_quest_log()
 
@@ -27,7 +30,7 @@ func _on_Header_gui_input(event):
 	if event is InputEventMouseButton:
 		# left mouse button
 		if event.pressed && event.get_button_index() == 1:
-			print("left mouse button")
+			#print("left mouse button")
 			drag_position = get_global_mouse_position() - rect_global_position
 			emit_signal('move_to_top', self)
 		else:
@@ -36,16 +39,25 @@ func _on_Header_gui_input(event):
 		rect_global_position = get_global_mouse_position() - drag_position
 
 
-func _on_TabContainer_tab_selected(tab):
+func _on_TabContainer_tab_selected(_tab):
 	pass # Replace with function body.
 
 func populate_quest_log():
+	for child in avaliable_quests.get_children():
+		child.queue_free()
+	for child in in_progress_quests.get_children():
+		child.queue_free()
+	for child in completed_quests.get_children():
+		child.queue_free()
 	var index = 0
 	for quest in Global.quest_data:
-		if GameData.questTable[str(index)].preReq:
+		if not GameData.questTable[str(index)].preReq == null:
+			#print("this quest has a prereq %s" % str(index))
 			if not Global.quest_data[GameData.questTable[str(index)].preReq][0] == 9:
+				#print("this pre req is not completed")
 				index +=1
 				continue
+		
 		var new_entry = quest_entry.instance()
 		new_entry.text = GameData.questTable[str(index)].title
 		new_entry.quest_id = index

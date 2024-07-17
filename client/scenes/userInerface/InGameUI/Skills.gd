@@ -74,8 +74,6 @@ func poplulate_skills():
 				else:
 					skill_container_new.get_node("HBoxContainer/NinePatchRect/Icon").texture = skill_container_new.to_gray_scale(load(GameData.skill_class_dictionary[skill_container_new.skill_data.id].icon))
 				# if character ap > 1
-				print(Global.player.stats.base.ap)
-				print(typeof(Global.player.stats.base.ap[count]))
 				if Global.player.stats.base.ap[count] == 0 or skill_tab_ref[str(tab_count-1)][str(skill_count)] == GameData.skill_data[str(tab_count-1)][str(skill_count)].maxLevel:
 					skill_container_new.get_node("HBoxContainer/VBoxContainer/HBoxContainer2/Button").visible = false
 				skill_tab_new.get_node("ScrollContainer/GridContainer").add_child(skill_container_new, true)

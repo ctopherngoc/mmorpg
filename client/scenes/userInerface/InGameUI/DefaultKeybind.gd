@@ -17,7 +17,7 @@ func _ready():
 
 func get_drag_data(_pos):
 	if label.visible:
-		print("yesyes")
+		#print("yesyes")
 		var data = {}
 		data["origin_node"] = self
 		data["origin_texture"] = icon.texture
@@ -66,7 +66,7 @@ func update_hotkey() -> void:
 			quantity_label.text = ""
 		else:
 			var id = Global.player.keybind[self.name]
-			print("id: %s" % id)
+			#print("id: %s" % id)
 			
 			if GameData.skill_class_dictionary.has(str(id)):
 				icon.texture = load(GameData.skill_class_dictionary[str(id)].icon)

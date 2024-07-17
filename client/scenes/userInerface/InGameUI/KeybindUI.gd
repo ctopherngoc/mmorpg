@@ -127,7 +127,7 @@ func _on_KeyBinds_gui_input(event):
 	if event is InputEventMouseButton:
 		# left mouse button
 		if event.pressed && event.get_button_index() == 1:
-			print("left mouse button")
+			#print("left mouse button")
 			drag_position = get_global_mouse_position() - rect_global_position
 			emit_signal('move_to_top', self)
 		else:
@@ -148,6 +148,7 @@ func populate_key_labels() -> void:
 			keybind_list[key].key = "alt"
 		elif key == "tilda":
 			keybind_list[key].label.text = "`"
+# warning-ignore:unused_variable
 			var temp_bg = keybind_list[key].bg.texture
 			keybind_list[key].key = "`"
 		elif key == "forwardslash":
@@ -174,7 +175,7 @@ func populate_key_labels() -> void:
 		elif key == "equipment":
 			default_keybind_nodes[key].label.text = "equip"
 		else:
-			print(key)
+			#print(key)
 			default_keybind_nodes[key].label.text = key
 		default_keybind_nodes[key].label.rect_min_size = Vector2(30,30)
 		
@@ -280,7 +281,7 @@ func populate_keybinds(keybinds: Dictionary) -> void:
 				keybind_list[key].bg.texture = load(empty_bg)
 				keybind_list[key].hotkey_data = null
 				
-	print(unbound_default_keybind)
+	#print(unbound_default_keybind)
 	for key in unbound_default_keybind:
 		default_keybind_nodes[key].label.visible = true
 #
