@@ -10,7 +10,9 @@ onready var dialog_index = 0
 onready var dialog_bubble = $ChatBox
 onready var dialog_timer = $DialogTimer
 
-onready var can_interact = true
+onready var dialog_box = preload("res://scenes/userInerface/Dialog.tscn")
+
+#onready var can_interact = true
 var clicked = false
 
 func _ready() -> void:
@@ -18,13 +20,16 @@ func _ready() -> void:
 	dialog_timer.start()
 	
 func _on_Area2D_input_event(viewport, event, shape_idx) -> void:
-	if can_interact:
-		if event is InputEventMouseButton:
-			#clicked = true
+	#if can_interact:
+	if event is InputEventMouseButton:
+		if event.button_index == BUTTON_LEFT and event.pressed:
 			print("popup dialog for npc")
-#			var dialog = DIALOG.instance()
-#			Global.ui.add_child(dialog)
-#			Global.movable = false
+#			clicked = true
+#			var dialog = dialog_box.instance()
+#			dialog.npc_id = self.id
+#			dialog.chatDialog = data.chatDialog
+#			self.add_child(dialog)
+			Signals.emit_signal("toggle_dialog", self.id)
 			
 
 func move(location) -> void:
@@ -42,7 +47,7 @@ func move(location) -> void:
 
 # keeps bubble open
 func _on_DialogTimer_timeout():
-	print(dialog_bubble.rect_position)
+	#print(dialog_bubble.rect_position)
 	dialog_bubble.display_text(data.bubbleDialog[dialog_index])
 	if dialog_index + 1 == data.bubbleDialog.size():
 		dialog_index = 0
