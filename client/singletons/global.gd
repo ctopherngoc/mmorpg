@@ -77,7 +77,6 @@ func _physics_process(_delta: float) -> void:
 				if current_map != world_state_buffer[2]["ID"]:
 					return
 				for player_state in world_state_buffer[2]["P"].keys():
-					#print(world_state_buffer[2]["P"][player_state]["S"])
 					if player_state == get_tree().get_network_unique_id():
 						continue
 					if not world_state_buffer[1]["P"].has(player_state):

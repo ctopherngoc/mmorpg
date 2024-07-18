@@ -533,12 +533,10 @@ remote func use_item(item: Array) -> void:
 	item_id[0] = item_id
 	item_id[1] = index slot
 	"""
-	#print("in use_item")
 	# get player container
 	var player_id = get_tree().get_rpc_sender_id()
 	var player_container = _Server_Get_Player_Container(player_id)
 	# if item in inventory
-	#print(item)
 	if item[0] == player_container.current_character.inventory.use[item[1]].id:
 		# if item count > 0
 		if player_container.current_character.inventory.use[item[1]].q > 0:
@@ -549,6 +547,26 @@ remote func use_item(item: Array) -> void:
 			
 			# get item type and amount
 			var quantity = ServerData.itemTable[item[0]].useAmount
+			
+			"""
+			check if item of quest item
+			get list of all active use quests
+			check if item is in requirements
+			check off item used
+			"""
+			var quest_id = 0
+			# for each quest
+			while quest_id < ServerData.questTable.size():
+				# if item is use
+				if ServerData.questTable[str(quest_id)].type == "use":
+					# if item in quest required
+					if int(item[0]) in ServerData.questTable[str(quest_id)].questReq:
+						# get index in list
+						var index = ServerData.questTable[str(quest_id)].questReq.find(quest_id)
+						# update quest_data[quest_id][turn_in_info][item_index] = finished
+						ServerData.quest_data[player_id][quest_id][1][index] = 1
+				quest_id += 1
+				
 			if ServerData.itemTable[item[0]]["useType"] == "health":
 				print("health pot")
 				var total_health = player_container.current_character.stats.base.maxHealth + player_container.current_character.stats.equipment.maxHealth  
@@ -579,7 +597,6 @@ remote func use_item(item: Array) -> void:
 			send_client_notification(player_id, "not enough %s" % ServerData.itemTable[item[0]].itemName)
 
 remote func add_stat(stat: String) -> void:
-	#print("in add_stat")
 	# get player container
 	var player_id = get_tree().get_rpc_sender_id()
 	var player_container = _Server_Get_Player_Container(player_id)
@@ -587,17 +604,13 @@ remote func add_stat(stat: String) -> void:
 	if player_container.current_character.stats.base.sp > 0:
 		player_container.current_character.stats.base.sp -= 1
 		if stat == "s":
-			#print("%s incrase strength" % player_id)
 			player_container.current_character.stats.base.strength += 1
 		elif stat == "w":
 			player_container.current_character.stats.base.wisdom += 1
-			#print("%s incrase wisdom" % player_id)
 		elif stat == "d":
 			player_container.current_character.stats.base.dexterity += 1
-			#print("%s incrase dexterity" % player_id)
 		else:
 			player_container.current_character.stats.base.luck += 1
-			#print("%s incrase luck" % player_id)
 		update_player_stats(player_container)
 		send_client_notification(player_id, "added 1 to %s" % stat)
 	else:
@@ -635,7 +648,6 @@ remote func send_chat(text: String, chat_type: int) -> void:
 remote func drop_request(slot: int, tab: String, quantity: int) -> void:
 	var player_id = get_tree().get_rpc_sender_id()
 	var player_container = _Server_Get_Player_Container(player_id)
-	#print("%s requesting to drop %s %s" % [player_id, quantity, player_container.current_character.inventory[(tab)][slot]])
 	var player_position = player_container.position
 	var map_id = _Server_Get_Player_Map(player_id)
 	Global.player_drop_item(player_container, player_position, map_id, tab, slot, quantity)
@@ -648,7 +660,6 @@ func _unhandled_input(event):
 remote func update_keybind(key: String, type: String, id: String) -> void:
 	var player_id = get_tree().get_rpc_sender_id()
 	var player_container = _Server_Get_Player_Container(player_id)
-	#print("items should be 3XXXXX, skills should be 6XXXXX")
 	print(type, " and ", id)
 	
 	if type == "use":
@@ -760,7 +771,6 @@ remote func skill_request(skill: String) -> void:
 										player_container.current_character.stats.buff[key] += skill_data.stat[key][player_skill_data - 1]
 								#player_container.current_character.stats.buff[skill] = {"stat": skill_data.statType, "A": skill_data.type, "D": skill_data.duration[player_skill_data - 1]}
 							player_container.buffs[skill] = skill_data.duration[player_skill_data - 1]
-							#print(player_container.current_character.stats.buff)
 							update_player_stats(player_container)
 							
 						elif skill_data.type == "heal":
@@ -840,8 +850,6 @@ remote func increase_skill(skill_id: String, level: int) -> void:
 remote func equipment_request(equipment_slot, inventory_slot) -> void:
 	var player_id = get_tree().get_rpc_sender_id()
 	var player_container = _Server_Get_Player_Container(player_id)
-	#print(equipment_slot)
-	#print(inventory_slot)
 	# get slot item type
 	var item = player_container.current_character.inventory.equipment[inventory_slot]
 	var equipment = player_container.current_character.equipment[equipment_slot]
@@ -849,13 +857,10 @@ remote func equipment_request(equipment_slot, inventory_slot) -> void:
 		var temp_equipment = equipment
 		player_container.current_character.equipment[equipment_slot] = item
 		player_container.current_character.inventory.equipment[inventory_slot] = temp_equipment
-
-		#print(player_container.current_character.inventory.equipment[inventory_slot])
 		# remove unequiped item stats
 		if equipment:
 			for stats in player_container.current_character.stats.equipment.keys():
 				player_container.current_character.stats.equipment[stats] -= player_container.current_character.inventory.equipment[inventory_slot][stats]
-		
 		# add new equiped item stats
 		for stats in player_container.current_character.stats.equipment.keys():
 			player_container.current_character.stats.equipment[stats] += player_container.current_character.equipment[equipment_slot][stats]
@@ -872,7 +877,6 @@ remote func remove_equipment_request(equipment_slot, inventory_slot) -> void:
 	var player_container = _Server_Get_Player_Container(player_id)
 	
 	var equipment = player_container.current_character.equipment[equipment_slot]
-	#print(equipment_slot, " ", inventory_slot)
 	
 	if not player_container.current_character.inventory.equipment[inventory_slot]:
 		player_container.current_character.inventory.equipment[inventory_slot] = equipment
@@ -933,9 +937,6 @@ func equipment_swap_check(player, equipment_slot, equipment, item) -> bool:
 	## TYPE CHECK ###
 	# if weapon right hand true
 	print("pass equipment stat check")
-#	print(ServerData.equipmentTable[item.id])
-#	print(equipment)
-#	print(equipment_slot)
 	if ServerData.equipmentTable[item.id].type == "weapon":
 		print("checking weapon")
 		if equipment_slot == "rweapon":

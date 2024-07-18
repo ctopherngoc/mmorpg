@@ -65,7 +65,6 @@ func populate_quest_log():
 		# not started
 		if quest[0] == -1:
 			avaliable_quests.add_child(new_entry)
-			
 		# finished	
 		elif quest[0] == 9:
 			completed_quests.add_child(new_entry)
