@@ -50,8 +50,6 @@ onready var monster_preload = {
 	"100008" : preload("res://scenes/monsterObjects/100008/100008.tscn"),
 	"100009" : preload("res://scenes/monsterObjects/100009/100009.tscn"),
 	"100010" : preload("res://scenes/monsterObjects/100010/100010.tscn"),
-	
-	
 }
 onready var map_dict = {
 	"100000": {"name": "Grassy Road 1 Test", "path": "res://scenes/maps/100000/100000.tscn", "region": "Remy", "bgm": "Remy"},
