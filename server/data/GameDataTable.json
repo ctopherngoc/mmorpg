@@ -1133,7 +1133,8 @@
         "Please help Dustin",
         "Monster make Dustin sad"
       ],
-      "chatDialog": "You look like you need some trainning tips!"
+      "chatDialog": "You look like you need some trainning tips!",
+      "location": 100001
     },
     "100001": {
       "name": "Kevin",
@@ -1142,7 +1143,8 @@
         "Watch out for the monsters!",
         "Make sure you talk to Dustin!"
       ],
-      "chatDialog": "Welcome to Blossom!"
+      "chatDialog": "Welcome to Blossom!",
+      "location": 100001
     }
   },
   "QuestTable": {
