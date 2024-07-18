@@ -5,15 +5,15 @@ const sprite_location = "res://assets/npcSprites/%s/%s.png"
 onready var quest_label = preload('res://scenes/userInerface/DialogQuestText.tscn')
 onready var npc_sprite = $Background/MarginContainer/V/HBoxContainer/NPC_Box/Sprite
 onready var npc_name = $Background/MarginContainer/V/HBoxContainer/NPC_Box/Sprite/Label
-onready var dialog = $Background/MarginContainer/V/HBoxContainer/VBoxContainer2/VBoxContainer/DialogContainer/MarginContainer/RichTextLabel
-onready var reply_v_box = $Background/MarginContainer/V/HBoxContainer/VBoxContainer2/VBoxContainer/ReplyContainer/MarginContainer/VBoxContainer/QuestVBox
+onready var dialog = $Background/MarginContainer/V/HBoxContainer/VBoxContainer2/VBoxContainer/DialogContainer/MarginContainer/VBoxContainer/RichTextLabel
+onready var reply_v_box = $Background/MarginContainer/V/HBoxContainer/VBoxContainer2/VBoxContainer/DialogContainer/MarginContainer/VBoxContainer/QuestVBox
 onready var npc_id
 onready var npc_data
 onready var drag_position
 
 #BUTTONS
-onready var back_button = $Background/MarginContainer/V/HBoxContainer/VBoxContainer2/VBoxContainer/ReplyContainer/MarginContainer/VBoxContainer/ButtonHbox/back
-onready var next_button = $Background/MarginContainer/V/HBoxContainer/VBoxContainer2/VBoxContainer/ReplyContainer/MarginContainer/VBoxContainer/ButtonHbox/next
+onready var back_button = $Background/MarginContainer/V/HBoxContainer/VBoxContainer2/VBoxContainer/DialogContainer/MarginContainer/VBoxContainer/ButtonHbox/back
+onready var next_button = $Background/MarginContainer/V/HBoxContainer/VBoxContainer2/VBoxContainer/DialogContainer/MarginContainer/VBoxContainer/ButtonHbox/next
 onready var exit_button = $Background/MarginContainer/V/HBoxContainer/VBoxContainer2/ButtonContainer/HBoxContainer/exit
 onready var accept_button = $Background/MarginContainer/V/HBoxContainer/VBoxContainer2/ButtonContainer/HBoxContainer/accept
 onready var decline_button = $Background/MarginContainer/V/HBoxContainer/VBoxContainer2/ButtonContainer/HBoxContainer/decline
