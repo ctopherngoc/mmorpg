@@ -45,9 +45,14 @@ func update_bubble():
 	# quest index tracker
 	var quest_id = 0
 	for quest in Global.quest_data:
-		if quest[0] == -1 and not bubble_status:
-			bubble_status = 1
-		elif quest[0] == 0 and quest[0] != 9:
+		# if quest avaliable and npcstart == self and bubble_status is null and player level >= required level
+		if quest[0] == -1 and str(GameData.questTable[str(quest_id)].npcStart) == self.id and not bubble_status and Global.player.stats.base.level >= GameData.questTable[str(quest_id)].levelReq:
+			if GameData.questTable[str(quest_id)].preReq:
+				if Global.quest_data[GameData.questTable[str(quest_id)].preReq][0] == 9:
+					bubble_status = 1
+			else:
+				bubble_status = 1
+		elif quest[0] == 0 and str(GameData.questTable[str(quest_id)].npcEnd) == self.id and quest[0] != 9:
 			bubble_status = 2
 			break
 		quest_id += 1
@@ -55,10 +60,10 @@ func update_bubble():
 	if bubble_status == 1:
 		quest_bubble.texture = avaliable_texture
 		if not quest_bubble.visible:
-			avaliable_texture.visible = true
+			quest_bubble.visible = true
 	elif bubble_status == 2:
 		quest_bubble.texture = active_texture
 		if not quest_bubble.visible:
-			avaliable_texture.visible = true
+			quest_bubble.visible = true
 	else:
 		quest_bubble.visible = false
