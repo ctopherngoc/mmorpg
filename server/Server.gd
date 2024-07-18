@@ -1042,14 +1042,23 @@ remote func turn_in_quest(quest_id) -> void:
 		rpc_id(player_id, "send_quest_data", ServerData.quest_data[player_container.current_character.displayname])
 		rpc_id(player_id, "return_quest", 2)
 	elif quest_data.type == "hunt":
-		pass
+		var index = 1
+		for count in ServerData.quest_data[player_container.current_character.displayname][quest_id][1]:
+			if count == ServerData.questTable[quest_id].questReq[index]:
+				index += 2
+			else:
+				print("player did not kill enough %s" % ServerData.questTable[quest_id].questReq[index-1])
+				rpc_id(player_id, "return_quest", -1)
+				return
+				
 	elif quest_data.type == "use":
 		if ServerData.quest_data[player_container.current_character.displayname][quest_id][1] == 1:
 			ServerData.quest_data[player_container.current_character.displayname][quest_id][0] = 9
 			rpc_id(player_id, "send_quest_data", ServerData.quest_data[player_container.current_character.displayname])
 			rpc_id(player_id, "return_quest", 2)
 		else:
-			rpc_id(player_id, "return_quest", 1)
+			# search if item is in inventory -> replace if not there
+			rpc_id(player_id, "return_quest", -1)
 			print("item not used quest incomplete")
 			return
 			
