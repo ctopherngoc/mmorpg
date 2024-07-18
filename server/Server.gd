@@ -49,6 +49,8 @@ func _Peer_Disconnected(player_id: int) -> void:
 			var cur_character = player_container.current_character
 			var firebase = Firebase.update_document("characters/%s" % str(cur_character['displayname']), player_container.db_info["token"], cur_character)
 			yield(firebase, 'completed')
+			var firebase2 = Firebase.update_document("quests/%s" % str(cur_character['displayname']), player_container.db_info["token"], ServerData.quest_data[cur_character['displayname']])
+			yield(firebase2, 'completed')
 		else:
 			print("dc in characterselect did not save")
 		_Server_Data_Remove_Player(player_id)
@@ -564,7 +566,7 @@ remote func use_item(item: Array) -> void:
 						# get index in list
 						var index = ServerData.questTable[str(quest_id)].questReq.find(quest_id)
 						# update quest_data[quest_id][turn_in_info][item_index] = finished
-						ServerData.quest_data[player_id][quest_id][1][index] = 1
+						ServerData.quest_data[player_container.current_character.displayname][quest_id][1] = 1
 				quest_id += 1
 				
 			if ServerData.itemTable[item[0]]["useType"] == "health":
@@ -1042,7 +1044,15 @@ remote func turn_in_quest(quest_id) -> void:
 	elif quest_data.type == "hunt":
 		pass
 	elif quest_data.type == "use":
-		pass
+		if ServerData.quest_data[player_container.current_character.displayname][quest_id][1] == 1:
+			ServerData.quest_data[player_container.current_character.displayname][quest_id][0] = 9
+			rpc_id(player_id, "send_quest_data", ServerData.quest_data[player_container.current_character.displayname])
+			rpc_id(player_id, "return_quest", 2)
+		else:
+			rpc_id(player_id, "return_quest", 1)
+			print("item not used quest incomplete")
+			return
+			
 	var reward_index = 0
 	var inventory_index_list = []
 	
