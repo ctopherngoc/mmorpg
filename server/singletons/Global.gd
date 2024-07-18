@@ -562,20 +562,24 @@ func update_hunt_quest(displayname, monster_id) -> bool:
 	
 	# set quest index 
 	var update_quests = false
-	var x = 0
+	var quest_id = 0
 	# iterate through player quest data
-	for quest in ServerData[displayname]:
+	for quest in ServerData.quest_data.displayname:
 		# if current quest started and not ended and is of type hunt
-		if quest[0] >= 0 and quest[0] < 9 and ServerData.questTable[x].type == "hunt":
-			var index = ServerData.questTable[x].questReq.find(monster_id)
+		if quest[0] >= 0 and quest[0] < 9 and ServerData.questTable[quest_id].type == "hunt":
+			var index = ServerData.questTable[quest_id].questReq.find(int(monster_id))
 			# if monster id in questReq array
 			if index != -1:
 				# quest_data -> displayname key -> quest index -> requirement index in list == 1 -> index + 1 = actual count -> add one
-				# 0 2 4 6 8 10 12
-				ServerData.quest_data[displayname][x][1][index + 1] += 1
+				# questTable: 0 2 4 6 8 10 12
+				# quest_data :0 1 2 3 4  5  6
+				if index == 0:
+					ServerData.quest_data[displayname][quest_id][1][index] += 1
+				else:
+					ServerData.quest_data[displayname][quest_id][1][int(index / 2)] += 1
 				update_quests = true
-				print("%s killed %s monster for %s quest" % [displayname, monster_id, ServerData.questTable[x].title])
-		x += 1
+				print("%s killed %s monster for %s quest" % [displayname, monster_id, ServerData.questTable[quest_id].title])
+		quest_id += 1
 	if update_quests:
 		return true
 	else:
