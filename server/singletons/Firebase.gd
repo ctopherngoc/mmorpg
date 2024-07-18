@@ -6,9 +6,6 @@ onready var FB_USERNAME: String
 onready var FB_PASSWORD: String
 var user_info := {}
 var server_token = ""
-onready var test_quest_fb_ararytest_quest_fb_arary = {'arrayValue':{'values':[{'mapArray':{'values':{"state": 9, }}},{"state": 9,},
-															{'mapArray':{'values':{"state": -1,}}},
-															{'mapArray':{'values':{"state": -1,}}},]}}
 
 func _ready():
 	var data_file = File.new()
@@ -21,8 +18,10 @@ func _ready():
 	FB_PASSWORD = server_json.result["PASSWORD"]
 	data_file.close()
 	
-	#quest_data_converter([[-1],[-1],[-1, [5]],[-1, 0]], [])
-
+	#var test = quest_data_converter([[-1], [-1, [5]],[-1, 0]], [])
+	#var document := {"fields": {"questLog":{'arrayValue':{'values': test}}}}
+	#print(document)
+	
 func _get_request_headers(token_id: String) -> PoolStringArray:
 	return PoolStringArray([
 		"Content-Type: application/json",
@@ -90,7 +89,8 @@ func update_document(path: String, token: String, data) -> void:
 	elif 'quests/' in path:
 		var FB_DATA = []
 		quest_data_converter(data, FB_DATA)
-		var document := {"fields": {'arrayValue':{'values':FB_DATA}}}
+		# document["fields"]["questLog"]['arrayValue']['values']
+		var document := {"fields": {"questLog":{'arrayValue':{'values':FB_DATA}}}}
 		var body := to_json(document)
 		var url := DATABASE_URL + path
 		# warning-ignore:return_value_discarded
@@ -645,47 +645,52 @@ func item_data_converter(before: Dictionary, after: Dictionary) -> Dictionary:
 
 func quest_data_converter(game_quest_data, FB_DATA):
 	"""
+	document["fields"]["questLog"]['arrayValue']['values']
 	in server quest
 	out fb dict 
 	"""
 	for quest in game_quest_data:
-		var quest_data = []
+		var quest_data = {}
+		var index = 0
 		for data in quest:
 			if typeof(data) == TYPE_INT:
-				quest_data.append({"integerValue": data})
+				if index == 0:
+					quest_data["state"] = {"integerValue": data}
+				else:
+					quest_data["req"] = {"integerValue": data}
+				index += 1
 			elif typeof(data) == TYPE_ARRAY:
 				var req = []
 				for quest_req in data:
 					req.append({"integerValue": quest_req})
-				quest_data.append({'arrayValue': {'values': req}})
-		FB_DATA.append({'arrayValue':{'values': quest_data}})
-	#print("FB_DATA")
-	#print(FB_DATA)
+				quest_data["req"] = {'arrayValue': {'values': req}}
+		FB_DATA.append({'mapValue':{'fields': quest_data}})
 
 func quest_data_database_converter(FB_DATA) -> Array:
 	"""
-	in fb data 
-	out server data
+	in fb data map
+	out server data [[state, req],[state],[state, req]]
 	"""
-	#print(FB_DATA)
 	var temp_array = []
 	var shortcut
 	# for {arrayValue:{values:[{integerValue:-1},{integerValue:-1},{integerValue:-1},}]}}
 	for quest in FB_DATA:
-		#print(quest)
 		shortcut = quest['mapValue']['fields']
 		var quest_data_array = []
 		# [{integerValue:-1},{integerValue:-1},{integerValue:-1},]
 		quest_data_array.append(int(shortcut.state.integerValue))
 		if shortcut.has('req'):
-			var shortcut2 = shortcut['req']['arrayValue']['values']
-			var quest_req = []
-			for values in shortcut2:
-				if values.has("stringValue"):
-					quest_req.append(values.stringValue)
-				elif values.has("integerValue"):
-					quest_req.append(int(values.integerValue))
-			quest_data_array.append(quest_req)
+			if shortcut.req.has("arrayValue"):
+				var shortcut2 = shortcut['req']['arrayValue']['values']
+				var quest_req = []
+				for values in shortcut2:
+					if values.has("stringValue"):
+						quest_req.append(values.stringValue)
+					elif values.has("integerValue"):
+						quest_req.append(int(values.integerValue))
+				quest_data_array.append(quest_req)
+			else:
+				quest_data_array.append(int(shortcut['req']['integerValue']))
 		#print(quest_data_array)
 		temp_array.append(quest_data_array)
 	#print(temp_array)
