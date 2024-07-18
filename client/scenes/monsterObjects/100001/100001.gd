@@ -70,6 +70,5 @@ func animation_control(animation):
 	else:
 		$AnimationPlayer.play("walk")
 
-
 func _on_Timer_timeout():
 	self.queue_free()
