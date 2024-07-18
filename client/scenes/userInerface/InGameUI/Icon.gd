@@ -82,10 +82,8 @@ func can_drop_data(_pos, data):
 			return true
 		else:
 			if data.tab == tab:
-				#data['origin_node'].get_node("ItemInfo").free()
 				return true
 			else:
-				#data['origin_node'].get_node("ItemInfo").free()
 				return false
 
 func drop_data(_pos,data):
@@ -227,14 +225,12 @@ func _on_0_mouse_exited():
 		pass
 	item_info_free()
 
-	
 func item_info_free():
 	for node in self.get_children():
 		if "ItemInfo" in node.name:
 			node.queue_free()
 		if "EquipInfo" in node.name:
 			node.queue_free()
-		
 
 # checking of item in inventory slot matches the slot equipped is dragging from
 func equipment_check(data) -> bool:
