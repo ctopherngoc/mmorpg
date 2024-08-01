@@ -1180,10 +1180,7 @@
         "experience",
         20
       ],
-      "questReq": [
-        900000,
-        ""
-      ],
+      "questReq": 900000,
       "type": "use",
       "npcEnd": 100001,
       "preReq": 0,
@@ -1194,7 +1191,10 @@
         "Come back later if you want to learn how to use items."
       ],
       "turnInDialog": "Have you used the apple?",
-      "incompleteDialog": null,
+      "incompleteDialog": [
+        "Seems like you have not eaten the apple. Come back to me when you've done that",
+        "Seems like you lost the apple. Here is another one!"
+      ],
       "completeDialog": "Congrats! You know the basics of Blossom!",
       "levelReq": 0,
       "objective": "Consume Kevin gave you.",
