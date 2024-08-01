@@ -172,8 +172,14 @@ func _on_0_gui_input(event):
 			if item_data.id == null:
 				print("empty")
 			elif GameData.itemTable[item_data.id].itemType == "use":
-				var q = int(label.text) -1
-				label.text = str(q)
+				var q = int(label.text) - 1
+				
+				if q > 0:
+					label.text = str(q)
+				else:
+					icon.texture = null
+					label.text = ""
+					
 				Server.use_item(item_data.id, slot_index)
 			elif GameData.itemTable[item_data.id].itemType == "equipment":
 				if GameData.equipmentTable[item_data.id].type == "weapon":
