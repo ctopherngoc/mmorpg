@@ -143,7 +143,7 @@ func load_quest_dialog(quest_id):
 		chatIndex = 1
 		dialog.text = questDialog[questIndex]
 	else:
-		print("quest alreardyt started")
+		print("quest alreardy started")
 		quest_state = 1
 		dialog.text = GameData.questTable[str(quest_id)].turnInDialog
 		chatIndex = 1
@@ -178,7 +178,8 @@ func next_quest_dialog():
 				print("turning in quest")
 				Server.turn_in_quest(questID)
 		elif GameData.questTable[str(questID)].type == "hunt":
-			pass
+			print("hello hunt quest")
+			Server.turn_in_quest(questID)
 		elif GameData.questTable[str(questID)].type == "collect":
 			pass
 
@@ -265,7 +266,12 @@ func replace_quest_item():
 	decline_button.visible = false
 
 func incomplete_quest():
-	dialog.text = GameData.questTable[str(questID)].incompleteDialog[0]
+	# all quest not use not array
+	if GameData.questTable[str(questID)].type != "use":
+		dialog.text = GameData.questTable[str(questID)].incompleteDialog
+	# use request has array response
+	else:
+		dialog.text = GameData.questTable[str(questID)].incompleteDialog[0]
 	back_button.visible = false
 	accept_button.visible = false
 	next_button.visible = false
