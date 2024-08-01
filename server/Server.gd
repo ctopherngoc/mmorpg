@@ -1036,11 +1036,14 @@ remote func turn_in_quest(quest_id) -> void:
 		rpc_id(player_id, "return_quest", 2)
 	elif quest_data.type == "hunt":
 		var index = 1
+		#print(ServerData.quest_data[player_container.current_character.displayname][quest_id][1])
 		for count in ServerData.quest_data[player_container.current_character.displayname][quest_id][1]:
-			if count == ServerData.questTable[quest_id].questReq[index]:
+			print(count)
+			if count == ServerData.questTable[str(quest_id)].questReq[index]:
 				index += 2
+				#print("next index %s" % str(index))
 			else:
-				print("player did not kill enough %s" % ServerData.questTable[quest_id].questReq[index-1])
+				print("player did not kill enough %s" % ServerData.questTable[str(quest_id)].questReq[index-1])
 				rpc_id(player_id, "return_quest", -1)
 				return
 				
