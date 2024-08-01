@@ -584,3 +584,20 @@ func update_hunt_quest(displayname, monster_id) -> bool:
 		return true
 	else:
 		return false
+
+func inventory_search(player_container, item_id) -> bool:
+	var item_data = ServerData.itemTable[item_id]
+	
+	for item in player_container.current_character.inventory[item_data.itemType]:
+		if item and item.id == item_id:
+			return true
+	return false
+	
+func empty_inventory_search(player_container, item_id):
+	var item_data = ServerData.itemTable[item_id]
+	var slot = 0
+	for item in player_container.current_character.inventory[item_data.itemType]:
+		if typeof(item) == TYPE_NIL:
+			return slot
+		slot += 1
+	return false
