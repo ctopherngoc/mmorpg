@@ -564,7 +564,7 @@ func update_hunt_quest(displayname, monster_id) -> bool:
 	var update_quests = false
 	var quest_id = 0
 	# iterate through player quest data
-	for quest in ServerData.quest_data.displayname:
+	for quest in ServerData.quest_data[displayname]:
 		# if current quest started and not ended and is of type hunt
 		if quest[0] >= 0 and quest[0] < 9 and ServerData.questTable[quest_id].type == "hunt":
 			var index = ServerData.questTable[quest_id].questReq.find(int(monster_id))
