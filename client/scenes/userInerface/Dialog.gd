@@ -34,6 +34,8 @@ func _ready():
 	Signals.connect("accept_quest_dialog", self, "accept_quest_dialog")
 	Signals.connect("accept_quest", self, "accept_quest")
 	Signals.connect("complete_quest", self, "complete_quest")
+	Signals.connect("replace_quest_item", self, "replace_quest_item")
+	Signals.connect("incomplete_quest", self, "incomplete_quest")
 
 func _on_exit_pressed():
 	print("queuefree dialog box")
@@ -179,9 +181,6 @@ func next_quest_dialog():
 			pass
 		elif GameData.questTable[str(questID)].type == "collect":
 			pass
-#	questIndex += 1
-#	dialog.text = questDialog[questIndex]
-	#update_buttons()
 
 func prev_quest_dialog():
 	if questIndex == 0:
@@ -257,3 +256,17 @@ func toggle_dialog(npc_id) -> void:
 		self.visible = true
 	else:
 		print("dialog already open")
+
+func replace_quest_item():
+	dialog.text = GameData.questTable[str(questID)].incompleteDialog[1]
+	back_button.visible = false
+	accept_button.visible = false
+	next_button.visible = false
+	decline_button.visible = false
+
+func incomplete_quest():
+	dialog.text = GameData.questTable[str(questID)].incompleteDialog[0]
+	back_button.visible = false
+	accept_button.visible = false
+	next_button.visible = false
+	decline_button.visible = false
