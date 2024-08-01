@@ -436,12 +436,6 @@ func return_player_input(player_id: int, server_input_data) -> void:
 	rpc_id(player_id, "return_player_input", server_input_data)
 
 func send_world_state(player_list: Array, map_state: PoolByteArray):
-	"""
-	reduce packet size
-	
-	#######should be renamed to send_map_state
-	altered to send map chunks to each player in the map
-	"""
 	for player in player_list:
 		rpc_unreliable_id(int(player), "receive_world_state", map_state)
 
@@ -562,10 +556,9 @@ remote func use_item(item: Array) -> void:
 				# if item is use
 				if ServerData.questTable[str(quest_id)].type == "use":
 					# if item in quest required
-					if int(item[0]) in ServerData.questTable[str(quest_id)].questReq:
-						# get index in list
-						var index = ServerData.questTable[str(quest_id)].questReq.find(quest_id)
+					if int(item[0]) == int(ServerData.questTable[str(quest_id)].questReq):
 						# update quest_data[quest_id][turn_in_info][item_index] = finished
+						# ServerData.quest_data[player_container.current_character.displayname][quest_id][1] = quest["req"]
 						ServerData.quest_data[player_container.current_character.displayname][quest_id][1] = 1
 				quest_id += 1
 				
@@ -1057,6 +1050,21 @@ remote func turn_in_quest(quest_id) -> void:
 			rpc_id(player_id, "send_quest_data", ServerData.quest_data[player_container.current_character.displayname])
 			rpc_id(player_id, "return_quest", 2)
 		else:
+			if Global.inventory_search(player_container, str(quest_data.questReq)):
+				print("has item")
+			else:
+				print("does not have item")
+				var slot = Global.empty_inventory_search(player_container, str(quest_data.questReq))
+				if slot:
+					print(slot)
+					player_container.current_character.inventory[ServerData.itemTable[str(quest_data.questReq)].itemType][slot] = {'id': str(quest_data.questReq), 'q': 1}
+					update_player_stats(player_container)
+					rpc_id(player_id, "return_quest", -2)
+					return
+				else:
+					print("inventory full")
+					rpc_id(player_id, "return_quest", 1)
+					return
 			# search if item is in inventory -> replace if not there
 			rpc_id(player_id, "return_quest", -1)
 			print("item not used quest incomplete")
@@ -1109,6 +1117,7 @@ remote func turn_in_quest(quest_id) -> void:
 				else:
 					 player_container.current_character.inventory[str(type)][inventory_index_list[reward_index]] = {"id": str(quest_data.reward[reward_index]), "q": 1}
 		reward_index += 2
+		
 func update_quest_data(player_container) -> void:
 	rpc_id(int(player_container.name), "send_quest_data", ServerData.quest_data[player_container.current_character.displayname])
 	
