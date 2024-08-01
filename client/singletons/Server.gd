@@ -427,6 +427,12 @@ func turn_in_quest(quest_id) -> void:
 remote func return_quest(code) -> void:
 	if code == 1:
 		Signals.emit_signal("quest_error_inventory")
+	elif code == -1:
+		print("quest requirement incomplete")
+		Signals.emit_signal("incomplete_quest")
+	elif code == -2:
+		print("lost item")
+		Signals.emit_signal("replace_quest_item")
 	elif code == 0:
 		Signals.emit_signal("accept_quest")
 		Signals.emit_signal("update_quest_log")
