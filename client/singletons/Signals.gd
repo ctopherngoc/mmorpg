@@ -93,6 +93,11 @@ signal toggle_dialog
 signal avaliable_quest
 # warning-ignore:unused_signal
 signal active_quest
+# warning-ignore:unused_signal
+signal replace_quest_item
+# warning-ignore:unused_signal
+signal incomplete_quest
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
