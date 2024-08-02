@@ -1191,10 +1191,7 @@
         "Come back later if you want to learn how to use items."
       ],
       "turnInDialog": "Have you used the apple?",
-      "incompleteDialog": [
-        "Seems like you have not eaten the apple. Come back to me when you've done that",
-        "Seems like you lost the apple. Here is another one!"
-      ],
+      "incompleteDialog": "Seems like you have not eaten the apple. Come back to me when you've done that, Seems like you lost the apple. Here is another one!",
       "completeDialog": "Congrats! You know the basics of Blossom!",
       "levelReq": 0,
       "objective": "Consume Kevin gave you.",
@@ -1249,10 +1246,7 @@
       ],
       "turnInDialog": "Have you eliminated 5 green guys?",
       "incompleteDialog": "You have not eliminated 5 green guys. Return to me when you have accomplished that.",
-      "completeDialog": [
-        "Good job! You are as good as everyone has been saying!  If you are up for it",
-        "there are more trainings to be done."
-      ],
+      "completeDialog": "Good job! You are as good as everyone has been saying!  If you are up for it, there are more trainings to be done.",
       "levelReq": 0,
       "objective": "Slay 5 green guys.",
       "give": null
@@ -1274,19 +1268,15 @@
       "preReq": 3,
       "startDialog": [
         "You did well on your first training. How about another training?",
-        "This time",
-        "go onto the next stage and elminiate 5 blue guys.",
+        "This time, go onto the next stage and elminiate 5 blue guys.",
         "Come back to me after you eliminated 5 blue guys.",
         "I knew you were not the one!"
       ],
       "turnInDialog": "Have you eliminated 5 blue guys?",
       "incompleteDialog": "You have not eliminated 5 blue guys. Return to me when you have accomplished that.",
-      "completeDialog": [
-        "Amazing job! You are much better than I thought. If you are up for it",
-        "there is one more training to be done."
-      ],
+      "completeDialog": "Amazing job! You are much better than I thought. If you are up for it, there is one more training to be done.",
       "levelReq": 0,
-      "objective": "Slat 5 blue guys.",
+      "objective": "Slay 5 blue guys.",
       "give": null
     }
   },
