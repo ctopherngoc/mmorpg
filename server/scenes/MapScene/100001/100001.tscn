@@ -23,6 +23,12 @@ tile_data = PoolIntArray( -1769523, 0, 0, -1769522, 0, 1, -1769521, 0, 2, -17039
 position = Vector2( 207, -104 )
 scale = Vector2( 1, 0.95 )
 
+[node name="ColorRect" parent="MapObjects/Ladder" index="0"]
+margin_top = -289.0
+
+[node name="CollisionShape2D" parent="MapObjects/Ladder" index="1"]
+position = Vector2( 0, -162.737 )
+
 [node name="P1" parent="MapObjects" instance=ExtResource( 6 )]
 position = Vector2( 833, -89 )
 
@@ -47,3 +53,5 @@ position = Vector2( 356, -409 )
 
 [node name="100001" parent="YSort/NPCs" instance=ExtResource( 7 )]
 position = Vector2( -347, -101 )
+
+[editable path="MapObjects/Ladder"]
