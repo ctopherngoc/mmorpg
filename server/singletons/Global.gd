@@ -18,6 +18,8 @@ var testplayer
 ######################################################################
 func _process(_delta: float) -> void:
 	add_item()
+	#print(ServerData.questTable[str(3)].questReq.find(float(100001)))
+	#print(ServerData.questTable[str(3)].questReq.find(str(100001)))
 	
 func _ready() -> void:
 	server = get_node("/root/Server")
@@ -557,6 +559,7 @@ func generate_unique_id(item_id) -> int:
 	return unique_id
 	
 func update_hunt_quest(displayname, monster_id) -> bool:
+	print("inside global.update_hunt_quest")
 	# quest data is in ServerData.quest_data[displayname]
 	# quest requirements is in ServerData.questTable
 	
@@ -565,11 +568,15 @@ func update_hunt_quest(displayname, monster_id) -> bool:
 	var quest_id = 0
 	# iterate through player quest data
 	for quest in ServerData.quest_data[displayname]:
+		print("checking each quest if hunt and has monster")
 		# if current quest started and not ended and is of type hunt
-		if quest[0] >= 0 and quest[0] < 9 and ServerData.questTable[quest_id].type == "hunt":
-			var index = ServerData.questTable[quest_id].questReq.find(int(monster_id))
+		if quest[0] >= 0 and quest[0] < 9 and ServerData.questTable[str(quest_id)].type == "hunt":
+			var index = ServerData.questTable[str(quest_id)].questReq.find(float(monster_id))
+			print("found monste rin questData quest req")
+			print(index)
 			# if monster id in questReq array
 			if index != -1:
+				print("quest has monster")
 				# quest_data -> displayname key -> quest index -> requirement index in list == 1 -> index + 1 = actual count -> add one
 				# questTable: 0 2 4 6 8 10 12
 				# quest_data :0 1 2 3 4  5  6
@@ -577,12 +584,15 @@ func update_hunt_quest(displayname, monster_id) -> bool:
 					ServerData.quest_data[displayname][quest_id][1][index] += 1
 				else:
 					ServerData.quest_data[displayname][quest_id][1][int(index / 2)] += 1
+				print("set update bool to yes")
 				update_quests = true
-				print("%s killed %s monster for %s quest" % [displayname, monster_id, ServerData.questTable[quest_id].title])
+				print("%s killed %s monster for %s quest" % [displayname, monster_id, ServerData.questTable[str(quest_id)].title])
 		quest_id += 1
 	if update_quests:
+		print("update quest")
 		return true
 	else:
+		print("dont need to update quest")
 		return false
 
 func inventory_search(player_container, item_id) -> bool:
