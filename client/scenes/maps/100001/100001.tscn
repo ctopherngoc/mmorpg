@@ -35,9 +35,14 @@ offset = Vector2( 64, 0 )
 [node name="MapObjects" type="Node2D" parent="."]
 
 [node name="Ladder" parent="MapObjects" instance=ExtResource( 10 )]
-visible = false
 position = Vector2( 207, -116 )
 scale = Vector2( 1, 0.9 )
+
+[node name="ColorRect" parent="MapObjects/Ladder" index="0"]
+margin_top = -293.0
+
+[node name="CollisionShape2D" parent="MapObjects/Ladder" index="1"]
+position = Vector2( 0, -164.667 )
 
 [node name="Platform" parent="MapObjects" instance=ExtResource( 7 )]
 tile_data = PoolIntArray( -1376247, 0, 0, -1376246, 0, 1, -1376245, 0, 1, -1376244, 0, 1, -1376243, 0, 1, -1376242, 0, 1, -1376241, 0, 1, -1376240, 0, 1, -1376239, 0, 1, -1376238, 0, 1, -1376237, 0, 1, -1376236, 0, 2, -1310711, 0, 65536, -1310710, 0, 65537, -1310709, 0, 65537, -1310708, 0, 65537, -1310707, 0, 65537, -1310706, 0, 65537, -1310705, 0, 65537, -1310704, 0, 65537, -1310703, 0, 65537, -1310702, 0, 65537, -1310701, 0, 65537, -1310700, 0, 65538, -1245175, 0, 131072, -1245174, 0, 131073, -1245173, 0, 131073, -1245172, 0, 131073, -1245171, 0, 131073, -1245170, 0, 131073, -1245169, 0, 131073, -1245168, 0, 131073, -1245167, 0, 131073, -1245166, 0, 131073, -1245165, 0, 131073, -1245164, 0, 131074, -917513, 0, 0, -917512, 0, 1, -917511, 0, 1, -917510, 0, 1, -917509, 0, 1, -917508, 0, 1, -917507, 0, 1, -917506, 0, 2, -851977, 0, 65536, -851976, 0, 65537, -851975, 0, 65537, -851974, 0, 65537, -851973, 0, 65537, -851972, 0, 65537, -851971, 0, 65537, -851970, 0, 65538, -786441, 0, 131072, -786440, 0, 131073, -786439, 0, 131073, -786438, 0, 131073, -786437, 0, 131073, -786436, 0, 131073, -786435, 0, 131073, -786434, 0, 131074 )
@@ -77,6 +82,7 @@ position = Vector2( -93, -332 )
 [node name="P1" parent="Portals" instance=ExtResource( 8 )]
 position = Vector2( 833, -89 )
 
+[editable path="MapObjects/Ladder"]
 [editable path="MapObjects/Platform"]
 [editable path="Player"]
 [editable path="Player/CompositeSprite"]
