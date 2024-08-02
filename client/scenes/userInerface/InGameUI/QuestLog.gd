@@ -16,6 +16,8 @@ onready var quest_info_objective = $QuestInfo/M/V/ColorRect/MarginContainer/VBox
 onready var quest_entry = preload("res://scenes/userInerface/InGameUI/QuestEntry.tscn")
 onready var drag_position
 
+onready var quest_info_id
+
 
 func _ready():
 # warning-ignore:return_value_discarded
@@ -72,9 +74,12 @@ func populate_quest_log():
 		else:
 			in_progress_quests.add_child(new_entry)
 		index += 1
+	if quest_info.visible == true:
+		self.toggle_quest_details(quest_info_id, GameData.questTable[str(quest_info_id)])
 		
 func toggle_quest_details(quest_id, quest_data: Dictionary):
 	# update texture
+	quest_info_id = quest_id
 	quest_info_npc_texture.texture = load(sprite_location % [str(quest_data.npcStart), str(quest_data.npcStart)])
 	# update quest name
 	quest_info_name.text = str(quest_data.title)
