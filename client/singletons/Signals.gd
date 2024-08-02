@@ -97,6 +97,8 @@ signal active_quest
 signal replace_quest_item
 # warning-ignore:unused_signal
 signal incomplete_quest
+# warning-ignore:unused_signal
+signal update_quest_info_window
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
