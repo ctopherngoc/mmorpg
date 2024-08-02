@@ -1077,7 +1077,8 @@ remote func turn_in_quest(quest_id) -> void:
 	var inventory_index_list = []
 	
 	while reward_index <= quest_data.reward.size() - 2:
-		if quest_data.reward[reward_index] != "experience" and quest_data.reward[reward_index] != 100000:
+		if typeof(quest_data.reward[reward_index]) != TYPE_STRING and quest_data.reward[reward_index] != 100000:
+		#if typeof(quest_data.reward[reward_index]) != TYPE_STRING and quest_data.reward[reward_index] != "experience" and quest_data.reward[reward_index] != 100000:
 			var type = ServerData.itemTable[str(quest_data.reward[reward_index])].itemType
 			var slot = null
 			var inventory_index = 0
@@ -1100,26 +1101,33 @@ remote func turn_in_quest(quest_id) -> void:
 			
 		reward_index += 2
 	print("made it out inventory slot check")
-	print(inventory_index_list)
 	
 	reward_index = 0
 	var item_reward_index = 0
 	while reward_index <= quest_data.reward.size() - 2:
-		if quest_data.reward[reward_index] == "experience":
+		if typeof(quest_data.reward[reward_index]) == TYPE_STRING and quest_data.reward[reward_index] == "experience":
+			print("give xp")
 			player_container.experience(quest_data.reward[reward_index + 1])
 		elif quest_data.reward[reward_index] == 100000:
+			print("give gold")
 			player_container.current_character.inventory["100000"] += quest_data.reward[reward_index + 1]
 		else:
+			print("give item")
 			var type = ServerData.itemTable[str(quest_data.reward[reward_index])].itemType
+			print(type)
 			if type == "equip":
 				pass
 				#player_container.current_character.inventory[str(type)][inventory_index_list[reward_index]] = {"id": str(quest_data.reward[reward_index]), "q": 1}
 			else:
 				if player_container.current_character.inventory[str(type)][inventory_index_list[reward_index]]:
-					player_container.current_character.inventory[str(type)][inventory_index_list[reward_index]].q += 1
+					player_container.current_character.inventory[str(type)][inventory_index_list[reward_index]].q += quest_data.reward[reward_index + 1]
 				else:
 					 player_container.current_character.inventory[str(type)][inventory_index_list[reward_index]] = {"id": str(quest_data.reward[reward_index]), "q": 1}
 		reward_index += 2
+	ServerData.quest_data[player_container.current_character.displayname][quest_id][0] = 9
+	rpc_id(player_id, "send_quest_data", ServerData.quest_data[player_container.current_character.displayname])
+	rpc_id(player_id, "return_quest", 2)
+	self.update_player_stats(player_container)
 		
 func update_quest_data(player_container) -> void:
 	rpc_id(int(player_container.name), "send_quest_data", ServerData.quest_data[player_container.current_character.displayname])
