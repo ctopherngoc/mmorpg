@@ -5,7 +5,9 @@ var itemTable: Dictionary
 var equipmentTable: Dictionary
 var string_validation: Array
 var npcTable
+var questTable
 
+onready var playerQuestArray = [9,9,-1,-1]
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	var data_file = File.new()
@@ -14,16 +16,14 @@ func _ready():
 	
 	monsterTable = gamedata_json.result["MonsterTable"]
 	itemTable = gamedata_json.result["ItemTable"]
-	equipmentTable = gamedata_json.result["EquipmentTable"]	
-	npcTable = gamedata_json.result["NPCTable"]	
+	equipmentTable = gamedata_json.result["EquipmentTable"]
+	npcTable = gamedata_json.result["NPCTable"]
+	questTable = gamedata_json.result["QuestTable"]
 	data_file.close()
 	
 # warning-ignore:unused_variable
 	var file = File.new()
 	data_file.open("res://data/StringValidation.json", File.READ)
-# warning-ignore:shadowed_variable
-# warning-ignore:unused_variable
-# warning-ignore:shadowed_variable
 	var string_validation = JSON.parse(data_file.get_as_text()).result
 	data_file.close()
 	
@@ -50,8 +50,6 @@ onready var monster_preload = {
 	"100008" : preload("res://scenes/monsterObjects/100008/100008.tscn"),
 	"100009" : preload("res://scenes/monsterObjects/100009/100009.tscn"),
 	"100010" : preload("res://scenes/monsterObjects/100010/100010.tscn"),
-	
-	
 }
 onready var map_dict = {
 	"100000": {"name": "Grassy Road 1 Test", "path": "res://scenes/maps/100000/100000.tscn", "region": "Remy", "bgm": "Remy"},
@@ -282,7 +280,7 @@ onready var skill_class_dictionary = {
 	"600002" : {"class":[0,1,2,3,4], "location": ["0","2"], "icon": "res://assets/skillSprites/0/600002.png"},
 }
 
-onready var mandatory_keys = ["attack", "skill", "inventory", "stat", "loot", "equipment"]
+onready var mandatory_keys = ["attack", "skill", "inventory", "stat", "loot", "equipment", "quest"]
 
 onready var animation_dict: Dictionary = {
 	"attack": "slash",

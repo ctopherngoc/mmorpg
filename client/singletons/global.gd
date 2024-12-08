@@ -7,7 +7,7 @@
 
 extends Node
 onready var version: String = "4.1.0"
-onready var local: bool = false
+onready var local: bool = true
 onready var ip: String
 onready var input_queue: Array = []
 onready var interpolation_offset: int = 200
@@ -17,6 +17,7 @@ onready var floating_text = preload("res://scenes/userInerface/FloatingText.tscn
 onready var projectile = preload("res://scenes/skillObjects/Projectile.tscn")
 onready var last_recon
 onready var login_timer = $Timer
+onready var quest_data: Array
 
 var player_template = preload("res://scenes/playerObjects/OtherPlayerSprite.tscn")
 var player_node
@@ -76,7 +77,6 @@ func _physics_process(_delta: float) -> void:
 				if current_map != world_state_buffer[2]["ID"]:
 					return
 				for player_state in world_state_buffer[2]["P"].keys():
-					#print(world_state_buffer[2]["P"][player_state]["S"])
 					if player_state == get_tree().get_network_unique_id():
 						continue
 					if not world_state_buffer[1]["P"].has(player_state):
@@ -419,6 +419,7 @@ func log_out() -> void:
 	last_portal = null
 	last_map = null
 	player_position = null
+	quest_data.clear()
 
 func despawn_players(world_state_players: Array) -> void:
 	var player_nodes = get_node("/root/GameWorld/MapNode/%s/OtherPlayers" % Global.current_map).get_children()
@@ -434,7 +435,6 @@ func array_comparison(future_arr: Array, current_arr: Array) -> bool:
 
 func process_quests_list() -> void:
 	pass
-
 
 func _on_Timer_timeout():
 	Signals.emit_signal("connection_unsuccessful")

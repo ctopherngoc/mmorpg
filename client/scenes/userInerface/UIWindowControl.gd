@@ -26,7 +26,7 @@ func _ready():
 func move_window_to_top(node):
 	move_child(node, get_child_count() - non_movable_windows.size())
 
-func _process(delta):
+func _process(_delta):
 	pass
 """
 data["origin_node"] = self

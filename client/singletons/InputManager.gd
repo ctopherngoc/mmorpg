@@ -84,16 +84,17 @@ func parse_keybind(input: InputEventKey) -> void:
 		elif keybind == "equipment":
 			Signals.emit_signal("toggle_equipment")
 			AudioControl.play_audio("windowToggle")
+		elif keybind == "quest":
+			Signals.emit_signal("toggle_questLog")
+			AudioControl.play_audio("windowToggle")
 		else:
 			# skill
 			if GameData.skill_class_dictionary.has(str(keybind)):
 				Server.use_skill(str(keybind))
-				#Global.player_node.input = keybind
 			# item
 			elif GameData.itemTable.has(keybind):
 				Server.use_item(str(keybind), find_item(str(keybind)))
 			else:
-				#print("inputmanager.gd -> parse_keybind else: %s input" % input.as_text())
 				var key = Global.player.keybind[keybind_dict[input.as_text()]]
 				if key == "attack":
 					Signals.emit_signal("attack")

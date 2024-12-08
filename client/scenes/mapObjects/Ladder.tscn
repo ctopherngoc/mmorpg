@@ -3,7 +3,7 @@
 [ext_resource path="res://scenes/mapObjects/Ladder.gd" type="Script" id=2]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 2.25, 130.5 )
+extents = Vector2( 2.25, 128.667 )
 
 [node name="Ladder" type="Area2D"]
 collision_layer = 0

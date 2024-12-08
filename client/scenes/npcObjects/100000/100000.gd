@@ -1,12 +1,10 @@
 extends Sprite
 
-onready var id = "100001"
+onready var id = "100000"
 onready var data = GameData.npcTable[self.id]
-onready var sprite = preload("res://assets/npcSprites/100001/100001.png")
-onready var spriteW = preload("res://assets/npcSprites/100001/100001w.png")
+onready var sprite = preload("res://assets/npcSprites/100000/100000.png")
 onready var avaliable_texture = preload("res://assets/npcSprites/npcBubbleSprites/QuestBubbleSprite.png")
 onready var active_texture = preload("res://assets/npcSprites/npcBubbleSprites/ActiveQuestBubbleSprite.png")
-
 onready var label = $Label
 onready var anim = $AnimationPlayer
 onready var dialog_index = 0
@@ -16,33 +14,18 @@ onready var quest_bubble = $QuestBubble
 
 onready var dialog_box = preload("res://scenes/userInerface/Dialog.tscn")
 
-#var clicked = false
-
 func _ready() -> void:
 	Signals.connect("update_quest_log", self, "update_bubble")
 	label.text = data.name
 	dialog_timer.start()
 	update_bubble()
-	
+
 func _on_Area2D_input_event(viewport, event, shape_idx) -> void:
-	#if can_interact:
+	#if can_interact and not clicked:
 	if event is InputEventMouseButton:
 		if event.button_index == BUTTON_LEFT and event.pressed:
 			print("popup dialog for npc")
 			Signals.emit_signal("toggle_dialog", self.id)
-			
-
-func move(location) -> void:
-	if location.x < position.x:
-		self.flip_h = true
-		self.texture = spriteW
-		self.set_position(location)
-	elif location.x > position.x:
-		self.flip_h = false
-		self.texture = spriteW
-		self.set_position(location)
-	else:
-		self.texture = sprite
 
 # keeps bubble open
 func _on_DialogTimer_timeout():

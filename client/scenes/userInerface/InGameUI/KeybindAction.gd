@@ -84,7 +84,7 @@ func drop_data(_pos, data):
 	if hotkey_data:
 		
 		if data.origin_node == self:
-			print("same node")
+			#print("same node")
 			return
 		# make copy of current data
 		var destination_data = hotkey_data
@@ -153,7 +153,7 @@ func update_hotkey() -> void:
 	else:
 		bg.texture = load(active_bg)
 		var id = Global.player.keybind[key]
-		print("id: %s" % id)
+		#print("id: %s" % id)
 		
 		# skill
 		if GameData.skill_class_dictionary.has(str(id)):
@@ -165,7 +165,7 @@ func update_hotkey() -> void:
 		
 		# mando key
 		elif id in GameData.mandatory_keys:
-			print("mandatory keys: %s" % id)
+			#print("mandatory keys: %s" % id)
 			if id == "inventory":
 				quantity_label.text = str("inv") + " "
 				#hotkey_data = {"id": "inventory"}

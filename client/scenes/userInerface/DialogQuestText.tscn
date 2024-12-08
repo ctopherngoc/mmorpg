@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://scenes/userInerface/DialogQuestText.gd" type="Script" id=1]
+
+[node name="Label" type="Label"]
+margin_right = 598.0
+margin_bottom = 14.0
+mouse_filter = 0
+custom_colors/font_color = Color( 0.027451, 1, 0.588235, 1 )
+script = ExtResource( 1 )
+
+[connection signal="gui_input" from="." to="." method="_on_Label_gui_input"]
+[connection signal="mouse_entered" from="." to="." method="_on_Label_mouse_entered"]

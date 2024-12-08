@@ -49,6 +49,8 @@ func _Peer_Disconnected(player_id: int) -> void:
 			var cur_character = player_container.current_character
 			var firebase = Firebase.update_document("characters/%s" % str(cur_character['displayname']), player_container.db_info["token"], cur_character)
 			yield(firebase, 'completed')
+			var firebase2 = Firebase.update_document("quests/%s" % str(cur_character['displayname']), player_container.db_info["token"], ServerData.quest_data[cur_character['displayname']])
+			yield(firebase2, 'completed')
 		else:
 			print("dc in characterselect did not save")
 		_Server_Data_Remove_Player(player_id)
@@ -148,20 +150,28 @@ func create_characters():
 			temp_player.equipment.rweapon.owner = temp_player.displayname
 
 			print("creating character")
-			var firebase_call2 = Firebase.update_document("characters/%s" % temp_player["displayname"], character_array[2].db_info["token"], temp_player)
-			yield(firebase_call2, 'completed')
+			var firebase_call = Firebase.update_document("characters/%s" % temp_player["displayname"], character_array[2].db_info["token"], temp_player)
+			yield(firebase_call, 'completed')
 			
 			temp_player.stats["buff"] = ServerData.buff_stats.duplicate(true)
 			
 			ServerData.characters_data[temp_player.displayname] = temp_player
 
-			var firebase_call3 = Firebase.update_document("users/%s" % character_array[2].db_info["id"], character_array[2].db_info["token"], character_array[2])
+			var firebase_call2 = Firebase.update_document("users/%s" % character_array[2].db_info["id"], character_array[2].db_info["token"], character_array[2])
+			yield(firebase_call2, 'completed')
+			
+			# hunt [-1, 0, 0, 0]
+			# interact [-1]
+			# use [-1,]
+			var quest_log = [[-1],[-1],[-1, 0],[-1, 0]]
+			
+			var firebase_call3 = Firebase.update_document("quests/%s" % temp_player["displayname"], character_array[2].db_info["token"], quest_log)
 			yield(firebase_call3, 'completed')
 
 			Global.http_requests.append([temp_player.equipment.top, character_array[2]])
 			Global.http_requests.append([temp_player.equipment.bottom, character_array[2]])
 			Global.http_requests.append([temp_player.equipment.rweapon, character_array[2]])
-
+			
 			character_array[2].characters_info_list.append(temp_player)
 
 			# update client with new character
@@ -269,6 +279,7 @@ remote func choose_character(requester: int, display_name: String) -> void:
 	player_container.start_idle_timer()
 	update_attack_range(player_container)
 	Global.calculate_stats(player_container.current_character)
+	rpc_id(player_id, "send_quest_data", ServerData.quest_data[display_name])
 	rpc_id(player_id, "return_choose_character", requester)
 
 remote func fetch_usernames(requester, username: String) -> void:
@@ -308,9 +319,10 @@ remote func delete_character(requester, display_name: String) -> void:
 
 	var firebase_call = Firebase.update_document("users/%s" % player_container.db_info["id"], player_container.db_info["token"], player_container)
 	yield(firebase_call, "completed")
-	# warning-ignore:void_assignment
 	var firebase_call2 = Firebase.delete_document("characters/%s" % display_name, player_container.db_info["token"])
 	yield(firebase_call2, "completed")
+	var firebase_call3 = Firebase.delete_document("quests/%s" % display_name, player_container.db_info["token"])
+	yield(firebase_call3, "completed")
 	rpc_id(player_id, "return_delete_character", player_container.characters_info_list, requester)
 
 remote func logout() -> void:
@@ -328,6 +340,7 @@ func despawnPlayer(player_id) -> void:
 
 # arugment is a player container
 func update_player_stats(player_container: KinematicBody2D) -> void:
+	#print(get_stack())
 	rpc_id(int(player_container.name), "update_player_stats", player_container.current_character)
 
 # Character containers/information 
@@ -423,12 +436,6 @@ func return_player_input(player_id: int, server_input_data) -> void:
 	rpc_id(player_id, "return_player_input", server_input_data)
 
 func send_world_state(player_list: Array, map_state: PoolByteArray):
-	"""
-	reduce packet size
-	
-	#######should be renamed to send_map_state
-	altered to send map chunks to each player in the map
-	"""
 	for player in player_list:
 		rpc_unreliable_id(int(player), "receive_world_state", map_state)
 
@@ -522,18 +529,39 @@ remote func use_item(item: Array) -> void:
 	item_id[0] = item_id
 	item_id[1] = index slot
 	"""
-	#print("in use_item")
 	# get player container
 	var player_id = get_tree().get_rpc_sender_id()
 	var player_container = _Server_Get_Player_Container(player_id)
 	# if item in inventory
-	#print(item)
 	if item[0] == player_container.current_character.inventory.use[item[1]].id:
-		# if item count > 0 decrement
+		# if item count > 0
 		if player_container.current_character.inventory.use[item[1]].q > 0:
-			player_container.current_character.inventory.use[item[1]].q -= 1
+			if player_container.current_character.inventory.use[item[1]].q == 1:
+				player_container.current_character.inventory.use[item[1]] = null
+			elif player_container.current_character.inventory.use[item[1]].q > 2:
+				player_container.current_character.inventory.use[item[1]].q -= 1
+			
 			# get item type and amount
 			var quantity = ServerData.itemTable[item[0]].useAmount
+			
+			"""
+			check if item of quest item
+			get list of all active use quests
+			check if item is in requirements
+			check off item used
+			"""
+			var quest_id = 0
+			# for each quest
+			while quest_id < ServerData.questTable.size():
+				# if item is use
+				if ServerData.questTable[str(quest_id)].type == "use":
+					# if item in quest required
+					if int(item[0]) == int(ServerData.questTable[str(quest_id)].questReq):
+						# update quest_data[quest_id][turn_in_info][item_index] = finished
+						# ServerData.quest_data[player_container.current_character.displayname][quest_id][1] = quest["req"]
+						ServerData.quest_data[player_container.current_character.displayname][quest_id][1] = 1
+				quest_id += 1
+				
 			if ServerData.itemTable[item[0]]["useType"] == "health":
 				print("health pot")
 				var total_health = player_container.current_character.stats.base.maxHealth + player_container.current_character.stats.equipment.maxHealth  
@@ -564,7 +592,6 @@ remote func use_item(item: Array) -> void:
 			send_client_notification(player_id, "not enough %s" % ServerData.itemTable[item[0]].itemName)
 
 remote func add_stat(stat: String) -> void:
-	#print("in add_stat")
 	# get player container
 	var player_id = get_tree().get_rpc_sender_id()
 	var player_container = _Server_Get_Player_Container(player_id)
@@ -572,17 +599,13 @@ remote func add_stat(stat: String) -> void:
 	if player_container.current_character.stats.base.sp > 0:
 		player_container.current_character.stats.base.sp -= 1
 		if stat == "s":
-			#print("%s incrase strength" % player_id)
 			player_container.current_character.stats.base.strength += 1
 		elif stat == "w":
 			player_container.current_character.stats.base.wisdom += 1
-			#print("%s incrase wisdom" % player_id)
 		elif stat == "d":
 			player_container.current_character.stats.base.dexterity += 1
-			#print("%s incrase dexterity" % player_id)
 		else:
 			player_container.current_character.stats.base.luck += 1
-			#print("%s incrase luck" % player_id)
 		update_player_stats(player_container)
 		send_client_notification(player_id, "added 1 to %s" % stat)
 	else:
@@ -620,7 +643,6 @@ remote func send_chat(text: String, chat_type: int) -> void:
 remote func drop_request(slot: int, tab: String, quantity: int) -> void:
 	var player_id = get_tree().get_rpc_sender_id()
 	var player_container = _Server_Get_Player_Container(player_id)
-	#print("%s requesting to drop %s %s" % [player_id, quantity, player_container.current_character.inventory[(tab)][slot]])
 	var player_position = player_container.position
 	var map_id = _Server_Get_Player_Map(player_id)
 	Global.player_drop_item(player_container, player_position, map_id, tab, slot, quantity)
@@ -633,7 +655,6 @@ func _unhandled_input(event):
 remote func update_keybind(key: String, type: String, id: String) -> void:
 	var player_id = get_tree().get_rpc_sender_id()
 	var player_container = _Server_Get_Player_Container(player_id)
-	#print("items should be 3XXXXX, skills should be 6XXXXX")
 	print(type, " and ", id)
 	
 	if type == "use":
@@ -745,7 +766,6 @@ remote func skill_request(skill: String) -> void:
 										player_container.current_character.stats.buff[key] += skill_data.stat[key][player_skill_data - 1]
 								#player_container.current_character.stats.buff[skill] = {"stat": skill_data.statType, "A": skill_data.type, "D": skill_data.duration[player_skill_data - 1]}
 							player_container.buffs[skill] = skill_data.duration[player_skill_data - 1]
-							#print(player_container.current_character.stats.buff)
 							update_player_stats(player_container)
 							
 						elif skill_data.type == "heal":
@@ -825,8 +845,6 @@ remote func increase_skill(skill_id: String, level: int) -> void:
 remote func equipment_request(equipment_slot, inventory_slot) -> void:
 	var player_id = get_tree().get_rpc_sender_id()
 	var player_container = _Server_Get_Player_Container(player_id)
-	#print(equipment_slot)
-	#print(inventory_slot)
 	# get slot item type
 	var item = player_container.current_character.inventory.equipment[inventory_slot]
 	var equipment = player_container.current_character.equipment[equipment_slot]
@@ -834,13 +852,10 @@ remote func equipment_request(equipment_slot, inventory_slot) -> void:
 		var temp_equipment = equipment
 		player_container.current_character.equipment[equipment_slot] = item
 		player_container.current_character.inventory.equipment[inventory_slot] = temp_equipment
-
-		#print(player_container.current_character.inventory.equipment[inventory_slot])
 		# remove unequiped item stats
 		if equipment:
 			for stats in player_container.current_character.stats.equipment.keys():
 				player_container.current_character.stats.equipment[stats] -= player_container.current_character.inventory.equipment[inventory_slot][stats]
-		
 		# add new equiped item stats
 		for stats in player_container.current_character.stats.equipment.keys():
 			player_container.current_character.stats.equipment[stats] += player_container.current_character.equipment[equipment_slot][stats]
@@ -857,7 +872,6 @@ remote func remove_equipment_request(equipment_slot, inventory_slot) -> void:
 	var player_container = _Server_Get_Player_Container(player_id)
 	
 	var equipment = player_container.current_character.equipment[equipment_slot]
-	#print(equipment_slot, " ", inventory_slot)
 	
 	if not player_container.current_character.inventory.equipment[inventory_slot]:
 		player_container.current_character.inventory.equipment[inventory_slot] = equipment
@@ -918,9 +932,6 @@ func equipment_swap_check(player, equipment_slot, equipment, item) -> bool:
 	## TYPE CHECK ###
 	# if weapon right hand true
 	print("pass equipment stat check")
-#	print(ServerData.equipmentTable[item.id])
-#	print(equipment)
-#	print(equipment_slot)
 	if ServerData.equipmentTable[item.id].type == "weapon":
 		print("checking weapon")
 		if equipment_slot == "rweapon":
@@ -962,3 +973,162 @@ func update_attack_range(player) -> void:
 		for i in attack_range_list:
 			i.disabled = true
 			i.visible = false
+
+remote func accept_quest(quest_id):
+	print("quest id is: %s" % str(quest_id))
+	var player_id = get_tree().get_rpc_sender_id()
+	var player_container = _Server_Get_Player_Container(player_id)
+	
+	var quest_data = ServerData.questTable[str(quest_id)]
+	if not int(player_container.current_character.stats.base.level) >= int(quest_data.levelReq):
+		print("level not high enough")
+	if not ServerData.quest_data[player_container.current_character.displayname][quest_id][0] == -1:
+		print("player already accepted quest")
+	if quest_data.give:
+		print("quest has give")
+		# get item id from quest_data.questReq -> item_id
+		var free
+		var item_id = str(quest_data.give)
+		var type = ServerData.itemTable[str(item_id)].itemType
+		var index = 0
+		var max_index = player_container.current_character.inventory[type].size() - 1
+		print("needed item %s" % item_id)
+		while index <= max_index - 1:
+			if player_container.current_character.inventory[type][index]:
+				if player_container.current_character.inventory[type][index].id == item_id:
+					print("player has item already")
+					break
+			elif player_container.current_character.inventory[type][max_index]:
+				if player_container.current_character.inventory[type][max_index].id == item_id:
+					print("player has item already")
+					break
+			else:
+				if not player_container.current_character.inventory[type][index] and (not free or index < free):
+					print("index at %s" % index)
+					free = index
+				elif not player_container.current_character.inventory[type][max_index] and (not free or max_index < free):
+					print("free slot at max index %s" % max_index)
+					free = max_index
+			index += 1
+			max_index -= 1
+		if free:
+			print("adding item %s in slot %s" % [str(item_id), str(free)])
+			player_container.current_character.inventory[type][free] = {'id': item_id, 'q': 1}
+			self.update_player_stats(player_container)
+		else:
+			print("full inventory")
+			rpc_id(player_id, "return_quest", 1)
+			return
+	print("%s accepcted quest %s" % [str(player_id), str(quest_id)])
+	ServerData.quest_data[player_container.current_character.displayname][quest_id][0] = 0
+	rpc_id(player_id, "send_quest_data", ServerData.quest_data[player_container.current_character.displayname])
+	rpc_id(player_id, "return_quest", 0)
+
+remote func turn_in_quest(quest_id) -> void:
+	print("turn_in_quest")
+	var player_id = get_tree().get_rpc_sender_id()
+	var player_container = _Server_Get_Player_Container(player_id)
+	var quest_data = ServerData.questTable[str(quest_id)]
+
+	if quest_data.type == "interact":
+		ServerData.quest_data[player_container.current_character.displayname][quest_id][0] = 9
+		rpc_id(player_id, "send_quest_data", ServerData.quest_data[player_container.current_character.displayname])
+		rpc_id(player_id, "return_quest", 2)
+	elif quest_data.type == "hunt":
+		var index = 1
+		#print(ServerData.quest_data[player_container.current_character.displayname][quest_id][1])
+		for count in ServerData.quest_data[player_container.current_character.displayname][quest_id][1]:
+			print(count)
+			if count == ServerData.questTable[str(quest_id)].questReq[index]:
+				index += 2
+				#print("next index %s" % str(index))
+			else:
+				print("player did not kill enough %s" % ServerData.questTable[str(quest_id)].questReq[index-1])
+				rpc_id(player_id, "return_quest", -1)
+				return
+				
+	elif quest_data.type == "use":
+		if ServerData.quest_data[player_container.current_character.displayname][quest_id][1] == 1:
+			ServerData.quest_data[player_container.current_character.displayname][quest_id][0] = 9
+			rpc_id(player_id, "send_quest_data", ServerData.quest_data[player_container.current_character.displayname])
+			rpc_id(player_id, "return_quest", 2)
+		else:
+			if Global.inventory_search(player_container, str(quest_data.questReq)):
+				print("has item")
+			else:
+				print("does not have item")
+				var slot = Global.empty_inventory_search(player_container, str(quest_data.questReq))
+				if slot:
+					print(slot)
+					player_container.current_character.inventory[ServerData.itemTable[str(quest_data.questReq)].itemType][slot] = {'id': str(quest_data.questReq), 'q': 1}
+					update_player_stats(player_container)
+					rpc_id(player_id, "return_quest", -2)
+					return
+				else:
+					print("inventory full")
+					rpc_id(player_id, "return_quest", 1)
+					return
+			# search if item is in inventory -> replace if not there
+			rpc_id(player_id, "return_quest", -1)
+			print("item not used quest incomplete")
+			return
+			
+	var reward_index = 0
+	var inventory_index_list = []
+	
+	while reward_index <= quest_data.reward.size() - 2:
+		if typeof(quest_data.reward[reward_index]) != TYPE_STRING and quest_data.reward[reward_index] != 100000:
+		#if typeof(quest_data.reward[reward_index]) != TYPE_STRING and quest_data.reward[reward_index] != "experience" and quest_data.reward[reward_index] != 100000:
+			var type = ServerData.itemTable[str(quest_data.reward[reward_index])].itemType
+			var slot = null
+			var inventory_index = 0
+			
+			for inventory_slot in player_container.current_character.inventory[type]:
+				# if slot not empty
+				if inventory_slot:
+					#check if slot has same item id
+					if inventory_slot.id == str(quest_data.reward[reward_index]):
+						inventory_index_list.append(inventory_index)
+						break
+				# slot null
+				else:
+					if slot:
+						if inventory_index < slot:
+							slot = inventory_index
+					else:
+						slot = inventory_index
+				inventory_index += 1
+			
+		reward_index += 2
+	print("made it out inventory slot check")
+	
+	reward_index = 0
+	var item_reward_index = 0
+	while reward_index <= quest_data.reward.size() - 2:
+		if typeof(quest_data.reward[reward_index]) == TYPE_STRING and quest_data.reward[reward_index] == "experience":
+			print("give xp")
+			player_container.experience(quest_data.reward[reward_index + 1])
+		elif quest_data.reward[reward_index] == 100000:
+			print("give gold")
+			player_container.current_character.inventory["100000"] += quest_data.reward[reward_index + 1]
+		else:
+			print("give item")
+			var type = ServerData.itemTable[str(quest_data.reward[reward_index])].itemType
+			print(type)
+			if type == "equip":
+				pass
+				#player_container.current_character.inventory[str(type)][inventory_index_list[reward_index]] = {"id": str(quest_data.reward[reward_index]), "q": 1}
+			else:
+				if player_container.current_character.inventory[str(type)][inventory_index_list[reward_index]]:
+					player_container.current_character.inventory[str(type)][inventory_index_list[reward_index]].q += quest_data.reward[reward_index + 1]
+				else:
+					 player_container.current_character.inventory[str(type)][inventory_index_list[reward_index]] = {"id": str(quest_data.reward[reward_index]), "q": 1}
+		reward_index += 2
+	ServerData.quest_data[player_container.current_character.displayname][quest_id][0] = 9
+	rpc_id(player_id, "send_quest_data", ServerData.quest_data[player_container.current_character.displayname])
+	rpc_id(player_id, "return_quest", 2)
+	self.update_player_stats(player_container)
+		
+func update_quest_data(player_container) -> void:
+	rpc_id(int(player_container.name), "send_quest_data", ServerData.quest_data[player_container.current_character.displayname])
+	

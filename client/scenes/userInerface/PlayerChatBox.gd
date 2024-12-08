@@ -14,13 +14,13 @@ func display_text(text_to_display: String):
 	if text_to_display == "":
 		pass
 	else:
-		var text = text_to_display
+		#var text = text_to_display
 		label.text = display_name + ": " + text_to_display
 		timer.start()
 		self.visible = true
 		
 func npc_display_text(text_to_display: String):
-	var text = text_to_display
+	#var text = text_to_display
 	label.text = text_to_display
 	timer.start()
 	self.visible = true

@@ -28,8 +28,20 @@ tile_data = PoolIntArray( -2162591, 0, 0, -2162590, 0, 2, -2097055, 0, 65536, -2
 [node name="Ladder" parent="MapObjects" instance=ExtResource( 3 )]
 position = Vector2( 297, -98 )
 
+[node name="ColorRect" parent="MapObjects/Ladder" index="0"]
+margin_top = -304.0
+
+[node name="CollisionShape2D" parent="MapObjects/Ladder" index="1"]
+position = Vector2( 0, -170 )
+
 [node name="Ladder2" parent="MapObjects" instance=ExtResource( 3 )]
 position = Vector2( 856, -98 )
+
+[node name="ColorRect" parent="MapObjects/Ladder2" index="0"]
+margin_top = -307.0
+
+[node name="CollisionShape2D" parent="MapObjects/Ladder2" index="1"]
+position = Vector2( 0, -169.75 )
 
 [node name="Teleporter2" parent="MapObjects" instance=ExtResource( 4 )]
 visible = false
@@ -63,3 +75,4 @@ tile_data = PoolIntArray( -2162679, 0, 0, -2162678, 0, 1, -2162677, 0, 1, -21626
 [node name="Projectiles" type="YSort" parent="YSort"]
 
 [editable path="MapObjects/Ladder"]
+[editable path="MapObjects/Ladder2"]

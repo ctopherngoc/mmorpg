@@ -20,7 +20,7 @@ func _ready():
 	pass
 
 # new functions
-func move(new_position, state, direction):
+func move(new_position, _state, direction):
 	if despawn == 1:
 		var curr_position = self.get_position()
 		#turn right
@@ -69,7 +69,6 @@ func animation_control(animation):
 		$AnimationPlayer.play("idle")
 	else:
 		$AnimationPlayer.play("walk")
-
 
 func _on_Timer_timeout():
 	self.queue_free()

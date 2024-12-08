@@ -362,7 +362,8 @@
       "description": null,
       "useType": null,
       "useAmount": null,
-      "equipmentType": null
+      "equipmentType": null,
+      "questItem": 0
     },
     "100003": {
       "itemName": "Chick Feather",
@@ -373,7 +374,8 @@
       "description": "Feather from a baby chick",
       "useType": null,
       "useAmount": null,
-      "equipmentType": null
+      "equipmentType": null,
+      "questItem": 0
     },
     "100004": {
       "itemName": "Chicken Feather",
@@ -384,7 +386,8 @@
       "description": "Feather from a chicken",
       "useType": null,
       "useAmount": null,
-      "equipmentType": null
+      "equipmentType": null,
+      "questItem": 0
     },
     "100005": {
       "itemName": "Hen Feather",
@@ -395,7 +398,8 @@
       "description": "Feather from a hen",
       "useType": null,
       "useAmount": null,
-      "equipmentType": null
+      "equipmentType": null,
+      "questItem": 0
     },
     "100006": {
       "itemName": "Advance Hen Feather",
@@ -406,7 +410,8 @@
       "description": "Feather from an advance hen",
       "useType": null,
       "useAmount": null,
-      "equipmentType": null
+      "equipmentType": null,
+      "questItem": 0
     },
     "100007": {
       "itemName": "Crazy Hen Feather",
@@ -417,7 +422,8 @@
       "description": "Feather from an advance hen",
       "useType": null,
       "useAmount": null,
-      "equipmentType": null
+      "equipmentType": null,
+      "questItem": 0
     },
     "100008": {
       "itemName": "Rooster Feather",
@@ -428,7 +434,8 @@
       "description": "Feather from a rooster",
       "useType": null,
       "useAmount": null,
-      "equipmentType": null
+      "equipmentType": null,
+      "questItem": 0
     },
     "100009": {
       "itemName": "Wild Rooster Feather",
@@ -439,7 +446,8 @@
       "description": "Feather from a wild rooster",
       "useType": null,
       "useAmount": null,
-      "equipmentType": null
+      "equipmentType": null,
+      "questItem": 0
     },
     "100010": {
       "itemName": "Bully Rooster Feather",
@@ -450,7 +458,8 @@
       "description": "Feather from a bull rooster",
       "useType": null,
       "useAmount": null,
-      "equipmentType": null
+      "equipmentType": null,
+      "questItem": 0
     },
     "200000": {
       "itemName": "Training Sword",
@@ -461,7 +470,8 @@
       "description": "sword used for training",
       "useType": null,
       "useAmount": null,
-      "equipmentType": null
+      "equipmentType": null,
+      "questItem": 0
     },
     "200001": {
       "itemName": "Training Dagger",
@@ -472,7 +482,8 @@
       "description": "dagger used for training",
       "useType": null,
       "useAmount": null,
-      "equipmentType": null
+      "equipmentType": null,
+      "questItem": 0
     },
     "200003": {
       "itemName": "Acorn Armor",
@@ -483,7 +494,8 @@
       "description": "armor made out of acorns",
       "useType": null,
       "useAmount": null,
-      "equipmentType": null
+      "equipmentType": null,
+      "questItem": 0
     },
     "200004": {
       "itemName": "Training Pistol",
@@ -494,7 +506,8 @@
       "description": "pistol for training",
       "useType": null,
       "useAmount": null,
-      "equipmentType": "weapon"
+      "equipmentType": "weapon",
+      "questItem": 0
     },
     "200005": {
       "itemName": "Large Sword",
@@ -505,7 +518,8 @@
       "description": "heavy large sword for slashing",
       "useType": null,
       "useAmount": null,
-      "equipmentType": "weapon"
+      "equipmentType": "weapon",
+      "questItem": 0
     },
     "200006": {
       "itemName": "Large Axe",
@@ -516,7 +530,8 @@
       "description": "heavy large axe for chopping",
       "useType": null,
       "useAmount": null,
-      "equipmentType": "weapon"
+      "equipmentType": "weapon",
+      "questItem": 0
     },
     "200007": {
       "itemName": "Large Hammer",
@@ -527,7 +542,8 @@
       "description": "heavy large hammer for smashing",
       "useType": null,
       "useAmount": null,
-      "equipmentType": "weapon"
+      "equipmentType": "weapon",
+      "questItem": 0
     },
     "200008": {
       "itemName": "Stone Arrow",
@@ -538,7 +554,8 @@
       "description": "arrows for bow with heads made of stone",
       "useType": null,
       "useAmount": null,
-      "equipmentType": null
+      "equipmentType": null,
+      "questItem": 0
     },
     "200009": {
       "itemName": "Acorn Bottom",
@@ -549,7 +566,8 @@
       "description": "bottom armor made of acorns",
       "useType": null,
       "useAmount": null,
-      "equipmentType": "bottom"
+      "equipmentType": "bottom",
+      "questItem": 0
     },
     "300000": {
       "itemName": "Health Potion",
@@ -560,7 +578,8 @@
       "description": "consuming potion heals 20 heath",
       "useType": "health",
       "useAmount": 20,
-      "equipmentType": null
+      "equipmentType": null,
+      "questItem": 0
     },
     "300001": {
       "itemName": "Red Apple",
@@ -571,7 +590,8 @@
       "description": "consuming apple heals 10 health",
       "useType": "health",
       "useAmount": 10,
-      "equipmentType": null
+      "equipmentType": null,
+      "questItem": 0
     },
     "300002": {
       "itemName": "Cheese",
@@ -582,7 +602,8 @@
       "description": "consuming cheese recovers 10 mana",
       "useType": "mana",
       "useAmount": 10,
-      "equipmentType": null
+      "equipmentType": null,
+      "questItem": 0
     },
     "300003": {
       "itemName": "Meat",
@@ -593,7 +614,8 @@
       "description": "consuming meat recovers 20 mana",
       "useType": "mana",
       "useAmount": 20,
-      "equipmentType": null
+      "equipmentType": null,
+      "questItem": 0
     },
     "500000": {
       "itemName": "Cloth Shirt",
@@ -604,7 +626,8 @@
       "description": "shirt made of cloth",
       "useType": null,
       "useAmount": null,
-      "equipmentType": "top"
+      "equipmentType": "top",
+      "questItem": 0
     },
     "500001": {
       "itemName": "Cloth Bottom",
@@ -615,7 +638,8 @@
       "description": "pants made of cloth",
       "useType": null,
       "useAmount": null,
-      "equipmentType": "bottom"
+      "equipmentType": "bottom",
+      "questItem": 0
     },
     "500002": {
       "itemName": "Leather Shirt",
@@ -626,7 +650,8 @@
       "description": "shirt made of leather",
       "useType": null,
       "useAmount": null,
-      "equipmentType": "top"
+      "equipmentType": "top",
+      "questItem": 0
     },
     "500003": {
       "itemName": "Leather Bottom",
@@ -637,7 +662,8 @@
       "description": "pants made of leather",
       "useType": null,
       "useAmount": null,
-      "equipmentType": "bottom"
+      "equipmentType": "bottom",
+      "questItem": 0
     },
     "500004": {
       "itemName": "Woodcutter Shirt",
@@ -648,7 +674,8 @@
       "description": "shirt woodcutters wear",
       "useType": null,
       "useAmount": null,
-      "equipmentType": "top"
+      "equipmentType": "top",
+      "questItem": 0
     },
     "500005": {
       "itemName": "Woodcuttern Bottom",
@@ -659,7 +686,8 @@
       "description": "pants wood cutters wear",
       "useType": null,
       "useAmount": null,
-      "equipmentType": "bottom"
+      "equipmentType": "bottom",
+      "questItem": 0
     },
     "900000": {
       "itemName": "Red Apple",
@@ -670,7 +698,8 @@
       "description": "Juicy red apple. Recovers 20 health",
       "useType": "health",
       "useAmount": 20,
-      "equipmentType": null
+      "equipmentType": null,
+      "questItem": 1
     }
   },
   "EquipmentTable": {
@@ -1098,20 +1127,157 @@
   "NPCTable": {
     "100000": {
       "name": "Dustin",
-      "chatDialog": [
+      "bubbleDialog": [
         "Dustin need help",
         "Monsters everywhere",
         "Please help Dustin",
         "Monster make Dustin sad"
-      ]
+      ],
+      "chatDialog": "You look like you need some trainning tips!",
+      "location": 100001
     },
     "100001": {
       "name": "Kevin",
-      "chatDialog": [
+      "bubbleDialog": [
         "Welcome to Blossom! I hope you enjoy your time!",
         "Watch out for the monsters!",
         "Make sure you talk to Dustin!"
-      ]
+      ],
+      "chatDialog": "Welcome to Blossom!",
+      "location": 100001
+    }
+  },
+  "QuestTable": {
+    "0": {
+      "title": "Starting the Journey",
+      "description": "Learn the basics of Blossom from Kevin",
+      "npcStart": 100001,
+      "reward": [
+        "experience",
+        15
+      ],
+      "questReq": null,
+      "type": "interact",
+      "npcEnd": 100001,
+      "preReq": null,
+      "startDialog": [
+        "Would you like to learn how to play?",
+        "You use the left and right arrow keys to move. You use the up and down keys to climb up and down ropes. You jump by clicking the ALT button. Lastly you can attack using the control button. Give it a try!",
+        "That's too bad. Come back if you want to learn how to play Blossom!"
+      ],
+      "turnInDialog": "Were you able to move around?",
+      "incompleteDialog": null,
+      "completeDialog": "Good job! Continue to the next lesson!",
+      "levelReq": 0,
+      "objective": "Continue to talk to Kevin.",
+      "give": null
+    },
+    "1": {
+      "title": "Consuming Items",
+      "description": "Start your journey with consuming an apple",
+      "npcStart": 100001,
+      "reward": [
+        "experience",
+        20
+      ],
+      "questReq": 900000,
+      "type": "use",
+      "npcEnd": 100001,
+      "preReq": 0,
+      "startDialog": [
+        "It's time to learn how to use items!",
+        "Open your inventory and nagivate to the use tab and double click on an item to use.",
+        "I added an apple to your inventory. Give it a try!",
+        "Come back later if you want to learn how to use items."
+      ],
+      "turnInDialog": "Have you used the apple?",
+      "incompleteDialog": "Seems like you have not eaten the apple. Come back to me when you've done that, Seems like you lost the apple. Here is another one!",
+      "completeDialog": "Congrats! You know the basics of Blossom!",
+      "levelReq": 0,
+      "objective": "Consume Kevin gave you.",
+      "give": 900000
+    },
+    "2": {
+      "title": "Meet your training instructor",
+      "description": "Speak to Instructor Kevin",
+      "npcStart": 100001,
+      "reward": [
+        "experience",
+        10
+      ],
+      "questReq": null,
+      "type": "interact",
+      "npcEnd": 100000,
+      "preReq": 1,
+      "startDialog": [
+        "It's time to begin your combat training!",
+        "Please go speak to Dustin!",
+        "It's okay. Training is not for everyone."
+      ],
+      "turnInDialog": "Did Kevin sent you?",
+      "incompleteDialog": null,
+      "completeDialog": "Kevn siad much about you. We should begin training immediately!",
+      "levelReq": 0,
+      "objective": "Speak to Bobbert.",
+      "give": null
+    },
+    "3": {
+      "title": "Combat Training",
+      "description": "Start your combat training with slaying some green guys",
+      "npcStart": 100000,
+      "reward": [
+        300000,
+        5,
+        "experience",
+        25
+      ],
+      "questReq": [
+        100001,
+        5
+      ],
+      "type": "hunt",
+      "npcEnd": 100000,
+      "preReq": 2,
+      "startDialog": [
+        "I heard there was a new hunter arriving. Is that you?",
+        "How about we put you to the test? Show me you can fight by eliminating 5 green guys!",
+        "Come back to me when you eliminated 5 green guys.",
+        "I knew you would be a disappointment!"
+      ],
+      "turnInDialog": "Have you eliminated 5 green guys?",
+      "incompleteDialog": "You have not eliminated 5 green guys. Return to me when you have accomplished that.",
+      "completeDialog": "Good job! You are as good as everyone has been saying!  If you are up for it, there are more trainings to be done.",
+      "levelReq": 0,
+      "objective": "Slay 5 green guys.",
+      "give": null
+    },
+    "4": {
+      "title": "Combat Training II",
+      "description": "Continue your combat training with slaying some blue guys",
+      "npcStart": 100000,
+      "reward": [
+        "experience",
+        45
+      ],
+      "questReq": [
+        100002,
+        5
+      ],
+      "type": "hunt",
+      "npcEnd": 100000,
+      "preReq": 3,
+      "startDialog": [
+        "You did well on your first training. How about another training?",
+        "This time, go onto the next stage and elminiate 5 blue guys.",
+        "Come back to me after you eliminated 5 blue guys.",
+        "I knew you were not the one!"
+      ],
+      "turnInDialog": "Have you eliminated 5 blue guys?",
+      "incompleteDialog": "You have not eliminated 5 blue guys. Return to me when you have accomplished that.",
+      "completeDialog": "Amazing job! You are much better than I thought. If you are up for it, there is one more training to be done.",
+      "levelReq": 0,
+      "objective": "Slay 5 blue guys.",
+      "give": null
     }
   },
   "ExperienceTable": {
@@ -1204,65 +1370,6 @@
     },
     "30": {
       "experience": 65462
-    }
-  },
-  "QuestTable": {
-    "0": {
-      "title": "Starting the Journey",
-      "description": "Start your journey with consuming an apple",
-      "npcStart": 100000,
-      "reward": [
-        "experience",
-        20
-      ],
-      "questReq": "[900000]",
-      "type": "[use]",
-      "npcEnd": "[100000]",
-      "preReq": "[]"
-    },
-    "1": {
-      "title": "Meet your training instructor",
-      "description": "Speak to Instructor Kevin",
-      "npcStart": 100000,
-      "reward": null,
-      "questReq": null,
-      "type": "[]",
-      "npcEnd": "[100001]",
-      "preReq": "[0]"
-    },
-    "2": {
-      "title": "Combat Training",
-      "description": "Start your combat training with slaying some green guys",
-      "npcStart": 100001,
-      "reward": [
-        "experience",
-        25,
-        300000,
-        5
-      ],
-      "questReq": [
-        "[[100001",
-        "5]]"
-      ],
-      "type": "[hunt]",
-      "npcEnd": "[100001]",
-      "preReq": "[1]"
-    },
-    "3": {
-      "title": "Combat Training II",
-      "description": "Continue your combat training with slaying some blue guys",
-      "npcStart": 100001,
-      "reward": [
-        "experience",
-        45
-      ],
-      "questReq": [
-        "[[100002",
-        "5]]"
-      ],
-      "type": "[hunt]",
-      "npcEnd": "[100001]",
-      "preReq": "[2]"
     }
   }
 }
